@@ -1,690 +1,13 @@
-declare namespace sun.awt.geom {
-    abstract class Crossings {
-        static debug: boolean;
-        limit: number;
-        yranges: number[];
-        xlo: number;
-        ylo: number;
-        xhi: number;
-        yhi: number;
-        constructor(xlo: number, ylo: number, xhi: number, yhi: number);
-        getXLo(): number;
-        getYLo(): number;
-        getXHi(): number;
-        getYHi(): number;
-        abstract record(ystart: number, yend: number, direction: number): any;
-        print(): void;
-        isEmpty(): boolean;
-        abstract covers(ystart: number, yend: number): boolean;
-        static findCrossings$java_util_Vector$double$double$double$double(curves: java.util.Vector<any>, xlo: number, ylo: number, xhi: number, yhi: number): Crossings;
-        static findCrossings(curves?: any, xlo?: any, ylo?: any, xhi?: any, yhi?: any): Crossings;
-        static findCrossings$java_awt_geom_PathIterator$double$double$double$double(pi: java.awt.geom.PathIterator, xlo: number, ylo: number, xhi: number, yhi: number): Crossings;
-        accumulateLine$double$double$double$double(x0: number, y0: number, x1: number, y1: number): boolean;
-        accumulateLine$double$double$double$double$int(x0: number, y0: number, x1: number, y1: number, direction: number): boolean;
-        accumulateLine(x0?: any, y0?: any, x1?: any, y1?: any, direction?: any): boolean;
-        tmp: java.util.Vector<any>;
-        accumulateQuad(x0: number, y0: number, coords: number[]): boolean;
-        accumulateCubic(x0: number, y0: number, coords: number[]): boolean;
-    }
-    namespace Crossings {
-        class EvenOdd extends sun.awt.geom.Crossings {
-            constructor(xlo: number, ylo: number, xhi: number, yhi: number);
-            covers(ystart: number, yend: number): boolean;
-            record(ystart: number, yend: number, direction: number): void;
-        }
-        class NonZero extends sun.awt.geom.Crossings {
-            crosscounts: number[];
-            constructor(xlo: number, ylo: number, xhi: number, yhi: number);
-            covers(ystart: number, yend: number): boolean;
-            remove(cur: number): void;
-            insert(cur: number, lo: number, hi: number, dir: number): void;
-            record(ystart: number, yend: number, direction: number): void;
-        }
-    }
-}
-declare namespace sun.awt.geom {
-    class ChainEnd {
-        head: sun.awt.geom.CurveLink;
-        tail: sun.awt.geom.CurveLink;
-        partner: ChainEnd;
-        etag: number;
-        constructor(first: sun.awt.geom.CurveLink, partner: ChainEnd);
-        getChain(): sun.awt.geom.CurveLink;
-        setOtherEnd(partner: ChainEnd): void;
-        getPartner(): ChainEnd;
-        linkTo(that: ChainEnd): sun.awt.geom.CurveLink;
-        addLink(newlink: sun.awt.geom.CurveLink): void;
-        getX(): number;
-    }
-}
-declare namespace sun.awt.geom {
-    abstract class Curve {
-        static INCREASING: number;
-        static DECREASING: number;
-        direction: number;
-        static insertMove(curves: java.util.Vector<any>, x: number, y: number): void;
-        static insertLine(curves: java.util.Vector<any>, x0: number, y0: number, x1: number, y1: number): void;
-        static insertQuad(curves: java.util.Vector<any>, x0: number, y0: number, coords: number[]): void;
-        static insertCubic(curves: java.util.Vector<any>, x0: number, y0: number, coords: number[]): void;
-        /**
-         * Calculates the number of times the given path crosses the ray extending
-         * to the right from (px,py). If the point lies on a part of the path, then
-         * no crossings are counted for that intersection. +1 is added for each
-         * crossing where the Y coordinate is increasing -1 is added for each
-         * crossing where the Y coordinate is decreasing The return value is the sum
-         * of all crossings for every segment in the path. The path must start with
-         * a SEG_MOVETO, otherwise an exception is thrown. The caller must check
-         * p[xy] for NaN values. The caller may also reject infinite p[xy] values as
-         * well.
-         * @param {*} pi
-         * @param {number} px
-         * @param {number} py
-         * @return {number}
-         */
-        static pointCrossingsForPath(pi: java.awt.geom.PathIterator, px: number, py: number): number;
-        /**
-         * Calculates the number of times the line from (x0,y0) to (x1,y1) crosses
-         * the ray extending to the right from (px,py). If the point lies on the
-         * line, then no crossings are recorded. +1 is returned for a crossing where
-         * the Y coordinate is increasing -1 is returned for a crossing where the Y
-         * coordinate is decreasing
-         * @param {number} px
-         * @param {number} py
-         * @param {number} x0
-         * @param {number} y0
-         * @param {number} x1
-         * @param {number} y1
-         * @return {number}
-         */
-        static pointCrossingsForLine(px: number, py: number, x0: number, y0: number, x1: number, y1: number): number;
-        /**
-         * Calculates the number of times the quad from (x0,y0) to (x1,y1) crosses
-         * the ray extending to the right from (px,py). If the point lies on a part
-         * of the curve, then no crossings are counted for that intersection. the
-         * level parameter should be 0 at the top-level call and will count up for
-         * each recursion level to prevent infinite recursion +1 is added for each
-         * crossing where the Y coordinate is increasing -1 is added for each
-         * crossing where the Y coordinate is decreasing
-         * @param {number} px
-         * @param {number} py
-         * @param {number} x0
-         * @param {number} y0
-         * @param {number} xc
-         * @param {number} yc
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} level
-         * @return {number}
-         */
-        static pointCrossingsForQuad(px: number, py: number, x0: number, y0: number, xc: number, yc: number, x1: number, y1: number, level: number): number;
-        /**
-         * Calculates the number of times the cubic from (x0,y0) to (x1,y1) crosses
-         * the ray extending to the right from (px,py). If the point lies on a part
-         * of the curve, then no crossings are counted for that intersection. the
-         * level parameter should be 0 at the top-level call and will count up for
-         * each recursion level to prevent infinite recursion +1 is added for each
-         * crossing where the Y coordinate is increasing -1 is added for each
-         * crossing where the Y coordinate is decreasing
-         * @param {number} px
-         * @param {number} py
-         * @param {number} x0
-         * @param {number} y0
-         * @param {number} xc0
-         * @param {number} yc0
-         * @param {number} xc1
-         * @param {number} yc1
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} level
-         * @return {number}
-         */
-        static pointCrossingsForCubic(px: number, py: number, x0: number, y0: number, xc0: number, yc0: number, xc1: number, yc1: number, x1: number, y1: number, level: number): number;
-        /**
-         * The rectangle intersection test counts the number of times that the path
-         * crosses through the shadow that the rectangle projects to the right
-         * towards (x => +INFINITY).
-         *
-         * During processing of the path it actually counts every time the path
-         * crosses either or both of the top and bottom edges of that shadow. If the
-         * path enters from the top, the count is incremented. If it then exits back
-         * through the top, the same way it came in, the count is decremented and
-         * there is no impact on the winding count. If, instead, the path exits out
-         * the bottom, then the count is incremented again and a full pass through
-         * the shadow is indicated by the winding count having been incremented by
-         * 2.
-         *
-         * Thus, the winding count that it accumulates is actually double the real
-         * winding count. Since the path is continuous, the final answer should be a
-         * multiple of 2, otherwise there is a logic error somewhere.
-         *
-         * If the path ever has a direct hit on the rectangle, then a special value
-         * is returned. This special value terminates all ongoing accumulation on up
-         * through the call chain and ends up getting returned to the calling
-         * function which can then produce an answer directly. For intersection
-         * tests, the answer is always "true" if the path intersects the rectangle.
-         * For containment tests, the answer is always "false" if the path
-         * intersects the rectangle. Thus, no further processing is ever needed if
-         * an intersection occurs.
-         */
-        static RECT_INTERSECTS: number;
-        /**
-         * Accumulate the number of times the path crosses the shadow extending to
-         * the right of the rectangle. See the comment for the RECT_INTERSECTS
-         * constant for more complete details. The return value is the sum of all
-         * crossings for both the top and bottom of the shadow for every segment in
-         * the path, or the special value RECT_INTERSECTS if the path ever enters
-         * the interior of the rectangle. The path must start with a SEG_MOVETO,
-         * otherwise an exception is thrown. The caller must check r[xy]{min,max}
-         * for NaN values.
-         * @param {*} pi
-         * @param {number} rxmin
-         * @param {number} rymin
-         * @param {number} rxmax
-         * @param {number} rymax
-         * @return {number}
-         */
-        static rectCrossingsForPath(pi: java.awt.geom.PathIterator, rxmin: number, rymin: number, rxmax: number, rymax: number): number;
-        /**
-         * Accumulate the number of times the line crosses the shadow extending to
-         * the right of the rectangle. See the comment for the RECT_INTERSECTS
-         * constant for more complete details.
-         * @param {number} crossings
-         * @param {number} rxmin
-         * @param {number} rymin
-         * @param {number} rxmax
-         * @param {number} rymax
-         * @param {number} x0
-         * @param {number} y0
-         * @param {number} x1
-         * @param {number} y1
-         * @return {number}
-         */
-        static rectCrossingsForLine(crossings: number, rxmin: number, rymin: number, rxmax: number, rymax: number, x0: number, y0: number, x1: number, y1: number): number;
-        /**
-         * Accumulate the number of times the quad crosses the shadow extending to
-         * the right of the rectangle. See the comment for the RECT_INTERSECTS
-         * constant for more complete details.
-         * @param {number} crossings
-         * @param {number} rxmin
-         * @param {number} rymin
-         * @param {number} rxmax
-         * @param {number} rymax
-         * @param {number} x0
-         * @param {number} y0
-         * @param {number} xc
-         * @param {number} yc
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} level
-         * @return {number}
-         */
-        static rectCrossingsForQuad(crossings: number, rxmin: number, rymin: number, rxmax: number, rymax: number, x0: number, y0: number, xc: number, yc: number, x1: number, y1: number, level: number): number;
-        /**
-         * Accumulate the number of times the cubic crosses the shadow extending to
-         * the right of the rectangle. See the comment for the RECT_INTERSECTS
-         * constant for more complete details.
-         * @param {number} crossings
-         * @param {number} rxmin
-         * @param {number} rymin
-         * @param {number} rxmax
-         * @param {number} rymax
-         * @param {number} x0
-         * @param {number} y0
-         * @param {number} xc0
-         * @param {number} yc0
-         * @param {number} xc1
-         * @param {number} yc1
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} level
-         * @return {number}
-         */
-        static rectCrossingsForCubic(crossings: number, rxmin: number, rymin: number, rxmax: number, rymax: number, x0: number, y0: number, xc0: number, yc0: number, xc1: number, yc1: number, x1: number, y1: number, level: number): number;
-        constructor(direction: number);
-        getDirection(): number;
-        getWithDirection(direction: number): Curve;
-        static round(v: number): number;
-        static orderof(x1: number, x2: number): number;
-        static signeddiffbits(y1: number, y2: number): number;
-        static diffbits(y1: number, y2: number): number;
-        static prev(v: number): number;
-        static next(v: number): number;
-        toString(): string;
-        controlPointString(): string;
-        abstract getOrder(): number;
-        abstract getXTop(): number;
-        abstract getYTop(): number;
-        abstract getXBot(): number;
-        abstract getYBot(): number;
-        abstract getXMin(): number;
-        abstract getXMax(): number;
-        abstract getX0(): number;
-        abstract getY0(): number;
-        abstract getX1(): number;
-        abstract getY1(): number;
-        abstract XforY(y: number): number;
-        abstract TforY(y: number): number;
-        abstract XforT(t: number): number;
-        abstract YforT(t: number): number;
-        abstract dXforT(t: number, deriv: number): number;
-        abstract dYforT(t: number, deriv: number): number;
-        abstract nextVertical(t0: number, t1: number): number;
-        crossingsFor(x: number, y: number): number;
-        accumulateCrossings(c: sun.awt.geom.Crossings): boolean;
-        abstract enlarge(r: java.awt.geom.Rectangle2D): any;
-        getSubCurve$double$double(ystart: number, yend: number): Curve;
-        abstract getReversedCurve(): Curve;
-        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): Curve;
-        getSubCurve(ystart?: any, yend?: any, dir?: any): Curve;
-        compareTo(that: Curve, yrange: number[]): number;
-        static TMIN: number;
-        findIntersect(that: Curve, yrange: number[], ymin: number, slevel: number, tlevel: number, s0: number, xs0: number, ys0: number, s1: number, xs1: number, ys1: number, t0: number, xt0: number, yt0: number, t1: number, xt1: number, yt1: number): boolean;
-        refineTforY(t0: number, yt0: number, y0: number): number;
-        fairlyClose(v1: number, v2: number): boolean;
-        abstract getSegment(coords: number[]): number;
-    }
-}
-declare namespace sun.awt.geom {
-    interface PathConsumer2D {
-        /**
-         * @see java.awt.geom.Path2D.Float.moveTo
-         * @param {number} x
-         * @param {number} y
-         */
-        moveTo(x: number, y: number): any;
-        /**
-         * @see java.awt.geom.Path2D.Float.lineTo
-         * @param {number} x
-         * @param {number} y
-         */
-        lineTo(x: number, y: number): any;
-        /**
-         * @see java.awt.geom.Path2D.Float.quadTo
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} x2
-         * @param {number} y2
-         */
-        quadTo(x1: number, y1: number, x2: number, y2: number): any;
-        /**
-         * @see java.awt.geom.Path2D.Float.curveTo
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} x2
-         * @param {number} y2
-         * @param {number} x3
-         * @param {number} y3
-         */
-        curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): any;
-        /**
-         * @see java.awt.geom.Path2D.Float.closePath
-         */
-        closePath(): any;
-        /**
-         * Called after the last segment of the last subpath when the iteration of
-         * the path segments is completely done. This method serves to trigger the
-         * end of path processing in the consumer that would normally be triggered
-         * when a {@link *} returns
-         * {@code true} from its {@code done} method.
-         */
-        pathDone(): any;
-        /**
-         * If a given PathConsumer performs all or most of its work natively then it
-         * can return a (non-zero) pointer to a native function vector that defines
-         * C functions for all of the above methods. The specific pointer it returns
-         * is a pointer to a PathConsumerVec structure as defined in the include
-         * file src/share/native/sun/java2d/pipe/PathConsumer2D.h
-         *
-         * @return {number} a native pointer to a PathConsumerVec structure.
-         */
-        getNativeConsumer(): number;
-    }
-}
-declare namespace sun.awt.geom {
-    abstract class AreaOp {
-        verbose: boolean;
-        constructor();
-        static CTAG_LEFT: number;
-        static CTAG_RIGHT: number;
-        static ETAG_IGNORE: number;
-        static ETAG_ENTER: number;
-        static ETAG_EXIT: number;
-        static RSTAG_INSIDE: number;
-        static RSTAG_OUTSIDE: number;
-        abstract newRow(): any;
-        abstract classify(e: sun.awt.geom.Edge): number;
-        abstract getState(): number;
-        calculate(left: java.util.Vector<any>, right: java.util.Vector<any>): java.util.Vector<any>;
-        static addEdges(edges: java.util.Vector<any>, curves: java.util.Vector<any>, curvetag: number): void;
-        static YXTopComparator: AreaOp.EdgeComparator;
-        static YXTopComparator_$LI$(): AreaOp.EdgeComparator;
-        pruneEdges(edges: java.util.Vector<any>): java.util.Vector<any>;
-        static finalizeSubCurves(subcurves: java.util.Vector<any>, chains: java.util.Vector<any>): void;
-        static EmptyLinkList: sun.awt.geom.CurveLink[];
-        static EmptyLinkList_$LI$(): sun.awt.geom.CurveLink[];
-        static EmptyChainList: sun.awt.geom.ChainEnd[];
-        static EmptyChainList_$LI$(): sun.awt.geom.ChainEnd[];
-        static resolveLinks(subcurves: java.util.Vector<any>, chains: java.util.Vector<any>, links: java.util.Vector<any>): void;
-        static obstructs(v1: number, v2: number, phase: number): boolean;
-    }
-    namespace AreaOp {
-        abstract class CAGOp extends sun.awt.geom.AreaOp {
-            inLeft: boolean;
-            inRight: boolean;
-            inResult: boolean;
-            newRow(): void;
-            classify(e: sun.awt.geom.Edge): number;
-            getState(): number;
-            abstract newClassification(inLeft: boolean, inRight: boolean): boolean;
-            constructor();
-        }
-        class NZWindOp extends sun.awt.geom.AreaOp {
-            count: number;
-            newRow(): void;
-            classify(e: sun.awt.geom.Edge): number;
-            getState(): number;
-            constructor();
-        }
-        class EOWindOp extends sun.awt.geom.AreaOp {
-            inside: boolean;
-            newRow(): void;
-            classify(e: sun.awt.geom.Edge): number;
-            getState(): number;
-            constructor();
-        }
-        class EdgeComparator {
-            /**
-             *
-             * @param {sun.awt.geom.Edge} o1
-             * @param {sun.awt.geom.Edge} o2
-             * @return {number}
-             */
-            compare(o1: sun.awt.geom.Edge, o2: sun.awt.geom.Edge): number;
-            constructor();
-        }
-        class AddOp extends AreaOp.CAGOp {
-            newClassification(inLeft: boolean, inRight: boolean): boolean;
-            constructor();
-        }
-        class SubOp extends AreaOp.CAGOp {
-            newClassification(inLeft: boolean, inRight: boolean): boolean;
-            constructor();
-        }
-        class IntOp extends AreaOp.CAGOp {
-            newClassification(inLeft: boolean, inRight: boolean): boolean;
-            constructor();
-        }
-        class XorOp extends AreaOp.CAGOp {
-            newClassification(inLeft: boolean, inRight: boolean): boolean;
-            constructor();
-        }
-    }
-}
-declare namespace sun.awt.geom {
-    class Edge {
-        static INIT_PARTS: number;
-        static GROW_PARTS: number;
-        curve: sun.awt.geom.Curve;
-        ctag: number;
-        etag: number;
-        activey: number;
-        equivalence: number;
-        constructor(c?: any, ctag?: any, etag?: any);
-        getCurve(): sun.awt.geom.Curve;
-        getCurveTag(): number;
-        getEdgeTag(): number;
-        setEdgeTag(etag: number): void;
-        getEquivalence(): number;
-        setEquivalence(eq: number): void;
-        lastEdge: Edge;
-        lastResult: number;
-        lastLimit: number;
-        compareTo(other: Edge, yrange: number[]): number;
-        record(yend: number, etag: number): void;
-        isActiveFor(y: number, etag: number): boolean;
-        toString(): string;
-    }
-}
-declare namespace sun.awt.geom {
-    class CurveLink {
-        curve: sun.awt.geom.Curve;
-        ytop: number;
-        ybot: number;
-        etag: number;
-        next: CurveLink;
-        constructor(curve: sun.awt.geom.Curve, ystart: number, yend: number, etag: number);
-        absorb$sun_awt_geom_CurveLink(link: CurveLink): boolean;
-        absorb$sun_awt_geom_Curve$double$double$int(curve: sun.awt.geom.Curve, ystart: number, yend: number, etag: number): boolean;
-        absorb(curve?: any, ystart?: any, yend?: any, etag?: any): boolean;
-        isEmpty(): boolean;
-        getCurve(): sun.awt.geom.Curve;
-        getSubCurve(): sun.awt.geom.Curve;
-        getMoveto(): sun.awt.geom.Curve;
-        getXTop(): number;
-        getYTop(): number;
-        getXBot(): number;
-        getYBot(): number;
-        getX(): number;
-        getEdgeTag(): number;
-        setNext(link: CurveLink): void;
-        getNext(): CurveLink;
-    }
-}
-declare namespace java.beans {
-    class PropertyChangeEvent extends java.util.EventObject {
-        static __java_beans_PropertyChangeEvent_serialVersionUID: number;
-        constructor(source: any, propertyName: string, oldValue: any, newValue: any);
-        getPropertyName(): string;
-        getNewValue(): any;
-        getOldValue(): any;
-        setPropagationId(propagationId: any): void;
-        getPropagationId(): any;
-        propertyName: string;
-        newValue: any;
-        oldValue: any;
-        propagationId: any;
-        toString(): string;
-        appendTo(sb: java.lang.StringBuilder): void;
-    }
-}
-declare namespace java.beans {
-    abstract class ChangeListenerMap<L extends java.util.EventListener> {
-        map: java.util.Map<string, L[]>;
-        abstract newArray(length: number): L[];
-        abstract newProxy(name: string, listener: L): L;
-        add(name: string, listener: L): void;
-        remove(name: string, listener: L): void;
-        /**
-         * Returns the list of listeners for the specified property.
-         *
-         * @param {string} name
-         * the name of the property
-         * @return {L[]} the corresponding list of listeners
-         */
-        get(name: string): L[];
-        /**
-         * Sets new list of listeners for the specified property.
-         *
-         * @param {string} name
-         * the name of the property
-         * @param {L[]} listeners
-         * new list of listeners
-         */
-        set(name: string, listeners: L[]): void;
-        getListeners$(): L[];
-        getListeners$java_lang_String(name: string): L[];
-        /**
-         * Returns listeners that have been associated with the named property.
-         *
-         * @param {string} name
-         * the name of the property
-         * @return {L[]} an array of listeners for the named property
-         */
-        getListeners(name?: any): L[];
-        /**
-         * Indicates whether the map contains at least one listener to be notified.
-         *
-         * @param {string} name
-         * the name of the property
-         * @return {boolean} {@code true} if at least one listener exists or {@code false}
-         * otherwise
-         */
-        hasListeners(name: string): boolean;
-        /**
-         * Returns a set of entries from the map. Each entry is a pair consisted of
-         * the property name and the corresponding list of listeners.
-         *
-         * @return {*} a set of entries from the map
-         */
-        getEntries(): java.util.Set<java.util.Map.Entry<string, L[]>>;
-        /**
-         * Extracts a real listener from the proxy listener. It is necessary because
-         * default proxy class is not serializable.
-         *
-         * @return {*} a real listener
-         * @param {*} listener
-         */
-        abstract extract(listener: L): L;
-        constructor();
-    }
-}
-declare namespace java.beans {
-    interface PropertyChangeListener extends java.util.EventListener {
-        propertyChange(evt: java.beans.PropertyChangeEvent): any;
-    }
-}
-declare namespace java.beans {
-    /**
-     * Constructor which binds the {@code PropertyChangeListener}
-     * to a specific property.
-     *
-     * @param {string} propertyName  the name of the property to listen on
-     * @param {*} listener      the listener object
-     * @class
-     * @extends java.util.EventListenerProxy
-     */
-    class PropertyChangeListenerProxy extends java.util.EventListenerProxy<java.beans.PropertyChangeListener> implements java.beans.PropertyChangeListener {
-        propertyName: string;
-        constructor(propertyName: string, listener: java.beans.PropertyChangeListener);
-        /**
-         * Forwards the property change event to the listener delegate.
-         *
-         * @param {java.beans.PropertyChangeEvent} event  the property change event
-         */
-        propertyChange(event: java.beans.PropertyChangeEvent): void;
-        /**
-         * Returns the name of the named property associated with the listener.
-         *
-         * @return {string} the name of the named property associated with the listener
-         */
-        getPropertyName(): string;
-    }
-}
 declare namespace java.awt {
-    class Polygon implements java.awt.Shape, java.io.Serializable {
-        npoints: number;
-        xpoints: number[];
-        ypoints: number[];
-        bounds: java.awt.Rectangle;
+    class CheckboxGroup implements java.io.Serializable {
+        selectedCheckbox: java.awt.Checkbox;
         static serialVersionUID: number;
-        static MIN_LENGTH: number;
-        constructor(xpoints?: any, ypoints?: any, npoints?: any);
-        reset(): void;
-        invalidate(): void;
-        translate(deltaX: number, deltaY: number): void;
-        calculateBounds(xpoints: number[], ypoints: number[], npoints: number): void;
-        updateBounds(x: number, y: number): void;
-        addPoint(x: number, y: number): void;
-        getBounds(): java.awt.Rectangle;
-        getBoundingBox(): java.awt.Rectangle;
-        contains$java_awt_Point(p: java.awt.Point): boolean;
-        contains$int$int(x: number, y: number): boolean;
-        inside(x: number, y: number): boolean;
-        getBounds2D(): java.awt.geom.Rectangle2D;
-        contains$double$double(x: number, y: number): boolean;
-        getCrossings(xlo: number, ylo: number, xhi: number, yhi: number): sun.awt.geom.Crossings;
-        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
-        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
-        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        contains(x?: any, y?: any, w?: any, h?: any): boolean;
-        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
-        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
-        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
-    }
-    namespace Polygon {
-        class PolygonPathIterator implements java.awt.geom.PathIterator {
-            __parent: any;
-            poly: java.awt.Polygon;
-            transform: java.awt.geom.AffineTransform;
-            index: number;
-            constructor(__parent: any, pg: java.awt.Polygon, at: java.awt.geom.AffineTransform);
-            getWindingRule(): number;
-            isDone(): boolean;
-            next(): void;
-            currentSegment$float_A(coords: number[]): number;
-            currentSegment(coords?: any): number;
-            currentSegment$double_A(coords: number[]): number;
-        }
-    }
-}
-declare namespace java.awt {
-    interface ItemSelectable {
-        getSelectedObjects(): any[];
-        addItemListener(l: java.awt.event.ItemListener): any;
-        removeItemListener(l: java.awt.event.ItemListener): any;
-    }
-}
-declare namespace java.awt {
-    /**
-     * Defines an interface for classes that know how to layout Containers
-     * based on a layout constraints object.
-     *
-     * This interface extends the LayoutManager interface to deal with layouts
-     * explicitly in terms of constraint objects that specify how and where
-     * components should be added to the layout.
-     * <p>
-     * This minimal extension to LayoutManager is intended for tool
-     * providers who wish to the creation of constraint-based layouts.
-     * It does not yet provide full, general support for custom
-     * constraint-based layout managers.
-     *
-     * @see LayoutManager
-     * @see Container
-     *
-     * @author      Jonni Kanerva
-     * @class
-     */
-    interface LayoutManager2 extends java.awt.LayoutManager {
-        addLayoutComponent(name?: any, comp?: any): any;
-        /**
-         * Returns the alignment along the x axis.  This specifies how
-         * the component would like to be aligned relative to other
-         * components.  The value should be a number between 0 and 1
-         * where 0 represents alignment along the origin, 1 is aligned
-         * the furthest away from the origin, 0.5 is centered, etc.
-         * @param {java.awt.Container} target
-         * @return {number}
-         */
-        getLayoutAlignmentX(target: java.awt.Container): number;
-        /**
-         * Returns the alignment along the y axis.  This specifies how
-         * the component would like to be aligned relative to other
-         * components.  The value should be a number between 0 and 1
-         * where 0 represents alignment along the origin, 1 is aligned
-         * the furthest away from the origin, 0.5 is centered, etc.
-         * @param {java.awt.Container} target
-         * @return {number}
-         */
-        getLayoutAlignmentY(target: java.awt.Container): number;
-        /**
-         * Invalidates the layout, indicating that if the layout manager
-         * has cached information it should be discarded.
-         * @param {java.awt.Container} target
-         */
-        invalidateLayout(target: java.awt.Container): any;
+        constructor();
+        getSelectedCheckbox(): java.awt.Checkbox;
+        getCurrent(): java.awt.Checkbox;
+        setSelectedCheckbox(box: java.awt.Checkbox): void;
+        setCurrent(box: java.awt.Checkbox): void;
+        toString(): string;
     }
 }
 declare namespace java.awt {
@@ -712,103 +35,6 @@ declare namespace java.awt {
         static SCALE_REPLICATE: number;
         static SCALE_AREA_AVERAGING: number;
         flush(): void;
-    }
-}
-declare namespace java.awt {
-    interface Adjustable {
-        getOrientation(): number;
-        setMinimum(min: number): any;
-        getMinimum(): number;
-        setMaximum(max: number): any;
-        getMaximum(): number;
-        setUnitIncrement(u: number): any;
-        getUnitIncrement(): number;
-        setBlockIncrement(b: number): any;
-        getBlockIncrement(): number;
-        setVisibleAmount(v: number): any;
-        getVisibleAmount(): number;
-        setValue(v: number): any;
-        getValue(): number;
-        addAdjustmentListener(l: java.awt.event.AdjustmentListener): any;
-        removeAdjustmentListener(l: java.awt.event.AdjustmentListener): any;
-    }
-    namespace Adjustable {
-        const HORIZONTAL: number;
-        const VERTICAL: number;
-        const NO_ORIENTATION: number;
-    }
-}
-declare namespace java.awt {
-    class RenderingHints {
-        static KEY_ANTIALIASING: any;
-        static KEY_ANTIALIASING_$LI$(): any;
-        static VALUE_ANTIALIAS_ON: any;
-        static VALUE_ANTIALIAS_ON_$LI$(): any;
-        static VALUE_ANTIALIAS_OFF: any;
-        static VALUE_ANTIALIAS_OFF_$LI$(): any;
-        static VALUE_ANTIALIAS_DEFAULT: any;
-        static VALUE_ANTIALIAS_DEFAULT_$LI$(): any;
-        static KEY_TEXT_ANTIALIASING: any;
-        static KEY_TEXT_ANTIALIASING_$LI$(): any;
-        static VALUE_TEXT_ANTIALIAS_ON: any;
-        static VALUE_TEXT_ANTIALIAS_ON_$LI$(): any;
-        static VALUE_TEXT_ANTIALIAS_OFF: any;
-        static VALUE_TEXT_ANTIALIAS_OFF_$LI$(): any;
-        static VALUE_TEXT_ANTIALIAS_DEFAULT: any;
-        static VALUE_TEXT_ANTIALIAS_DEFAULT_$LI$(): any;
-    }
-}
-declare namespace java.awt {
-    class CheckboxGroup implements java.io.Serializable {
-        selectedCheckbox: java.awt.Checkbox;
-        static serialVersionUID: number;
-        constructor();
-        getSelectedCheckbox(): java.awt.Checkbox;
-        getCurrent(): java.awt.Checkbox;
-        setSelectedCheckbox(box: java.awt.Checkbox): void;
-        setCurrent(box: java.awt.Checkbox): void;
-        toString(): string;
-    }
-}
-declare namespace java.awt {
-    interface HTMLComponent {
-        getHTMLElement(): HTMLElement;
-        bindHTML(htmlElement: HTMLElement): any;
-        createHTML(): any;
-        initHTML(): any;
-    }
-}
-declare namespace java.awt {
-    class Insets implements java.lang.Cloneable, java.io.Serializable {
-        top: number;
-        left: number;
-        bottom: number;
-        right: number;
-        static serialVersionUID: number;
-        constructor(top: number, left: number, bottom: number, right: number);
-        set(top: number, left: number, bottom: number, right: number): void;
-        equals(obj: any): boolean;
-        hashCode(): number;
-        toString(): string;
-        clone(): any;
-    }
-}
-declare namespace java.awt {
-    class MenuComponent {
-        name: string;
-        getName(): string;
-        setName(name: string): void;
-        constructor();
-    }
-}
-declare namespace java.awt {
-    interface Transparency {
-        getTransparency(): number;
-    }
-    namespace Transparency {
-        const OPAQUE: number;
-        const BITMASK: number;
-        const TRANSLUCENT: number;
     }
 }
 declare namespace java.awt {
@@ -851,694 +77,75 @@ declare namespace java.awt {
         setVgap(vgap: number): void;
     }
 }
-declare namespace java.awt {
-    interface LayoutManager {
-        addLayoutComponent(name: string, comp: java.awt.Component): any;
-        removeLayoutComponent(comp: java.awt.Component): any;
-        layoutContainer(parent: java.awt.Container): any;
-    }
-}
-declare namespace java.awt {
-    class Font implements java.io.Serializable {
-        toHTML(): string;
+declare namespace java.awt.geom {
+    /**
+     * The <code>Dimension2D</code> class is to encapsulate a width and a height
+     * dimension.
+     * <p>
+     * This class is only the abstract superclass for all objects that store a 2D
+     * dimension. The actual storage representation of the sizes is left to the
+     * subclass.
+     *
+     * @author Jim Graham
+     * @since 1.2
+     * @class
+     */
+    abstract class Dimension2D implements java.lang.Cloneable {
+        constructor();
         /**
-         * This is now only used during serialization. Typically it is null.
+         * Returns the width of this <code>Dimension</code> in double precision.
          *
-         * @serial
-         * @see #getAttributes()
+         * @return {number} the width of this <code>Dimension</code>.
+         * @since 1.2
          */
-        fRequestedAttributes: java.util.Hashtable<any, any>;
+        abstract getWidth(): number;
         /**
-         * A String constant for the canonical family name of the logical font
-         * "Dialog". It is useful in Font construction to provide compile-time
-         * verification of the name.
+         * Returns the height of this <code>Dimension</code> in double precision.
          *
-         * @since 1.6
+         * @return {number} the height of this <code>Dimension</code>.
+         * @since 1.2
          */
-        static DIALOG: string;
+        abstract getHeight(): number;
+        setSize$double$double(width: number, height: number): void;
         /**
-         * A String constant for the canonical family name of the logical font
-         * "DialogInput". It is useful in Font construction to provide compile-time
-         * verification of the name.
+         * Sets the size of this <code>Dimension</code> object to the specified
+         * width and height. This method is included for completeness, to parallel
+         * the {@link java.awt.Component#getSize} method of
+         * {@link java.awt.Component}.
          *
-         * @since 1.6
+         * @param {number} width
+         * the new width for the <code>Dimension</code> object
+         * @param {number} height
+         * the new height for the <code>Dimension</code> object
+         * @since 1.2
          */
-        static DIALOG_INPUT: string;
-        /**
-         * A String constant for the canonical family name of the logical font
-         * "SansSerif". It is useful in Font construction to provide compile-time
-         * verification of the name.
-         *
-         * @since 1.6
-         */
-        static SANS_SERIF: string;
-        /**
-         * A String constant for the canonical family name of the logical font
-         * "Serif". It is useful in Font construction to provide compile-time
-         * verification of the name.
-         *
-         * @since 1.6
-         */
-        static SERIF: string;
-        /**
-         * A String constant for the canonical family name of the logical font
-         * "Monospaced". It is useful in Font construction to provide compile-time
-         * verification of the name.
-         *
-         * @since 1.6
-         */
-        static MONOSPACED: string;
-        /**
-         * The plain style constant.
-         */
-        static PLAIN: number;
-        /**
-         * The bold style constant. This can be combined with the other style
-         * constants (except PLAIN) for mixed styles.
-         */
-        static BOLD: number;
-        /**
-         * The italicized style constant. This can be combined with the other style
-         * constants (except PLAIN) for mixed styles.
-         */
-        static ITALIC: number;
-        /**
-         * The baseline used in most Roman scripts when laying out text.
-         */
-        static ROMAN_BASELINE: number;
-        /**
-         * The baseline used in ideographic scripts like Chinese, Japanese, and
-         * Korean when laying out text.
-         */
-        static CENTER_BASELINE: number;
-        /**
-         * The baseline used in Devanigiri and similar scripts when laying out text.
-         */
-        static HANGING_BASELINE: number;
-        /**
-         * Identify a font resource of type TRUETYPE. Used to specify a TrueType
-         * font resource to the {@link #createFont} method. The TrueType format was
-         * extended to become the OpenType format, which adds support for fonts with
-         * Postscript outlines, this tag therefore references these fonts, as well
-         * as those with TrueType outlines.
-         *
-         * @since 1.3
-         */
-        static TRUETYPE_FONT: number;
-        /**
-         * Identify a font resource of type TYPE1. Used to specify a Type1 font
-         * resource to the {@link #createFont} method.
-         *
-         * @since 1.5
-         */
-        static TYPE1_FONT: number;
-        /**
-         * The logical name of this <code>Font</code>, as passed to the constructor.
-         *
-         * @since JDK1.0
-         *
-         * @serial
-         * @see #getName
-         */
-        name: string;
-        /**
-         * The style of this <code>Font</code>, as passed to the constructor. This
-         * style can be PLAIN, BOLD, ITALIC, or BOLD+ITALIC.
-         *
-         * @since JDK1.0
-         *
-         * @serial
-         * @see #getStyle()
-         */
-        style: number;
-        /**
-         * The point size of this <code>Font</code>, rounded to integer.
-         *
-         * @since JDK1.0
-         *
-         * @serial
-         * @see #getSize()
-         */
-        size: number;
-        /**
-         * The point size of this <code>Font</code> in <code>float</code>.
-         *
-         * @serial
-         * @see #getSize()
-         * @see #getSize2D()
-         */
-        pointSize: number;
-        static serialVersionUID: number;
-        constructor(name?: any, style?: any, sizePts?: any);
-        getFamily(): string;
-        getName(): string;
-        getFontName(): string;
-        getStyle(): number;
-        getSize(): number;
-        getSize2D(): number;
-        isPlain(): boolean;
-        isBold(): boolean;
-        isItalic(): boolean;
-        static getFont$java_lang_String(nm: string): Font;
-        static decode(str: string): Font;
-        static getFont$java_lang_String$java_awt_Font(nm: string, font: Font): Font;
-        static getFont(nm?: any, font?: any): Font;
-        hash: number;
-        hashCode(): number;
-        equals(obj: any): boolean;
-        getStyleInTextRepr(): string;
-        /**
-         * Converts this <code>Font</code> object to a <code>String</code>
-         * representation.
-         *
-         * @return {string} a <code>String</code> representation of this <code>Font</code>
-         * object.
-         * @since JDK1.0
-         */
-        toString(): string;
-        /**
-         * A flag to layoutGlyphVector indicating that text is left-to-right as
-         * determined by Bidi analysis.
-         */
-        static LAYOUT_LEFT_TO_RIGHT: number;
-        /**
-         * A flag to layoutGlyphVector indicating that text is right-to-left as
-         * determined by Bidi analysis.
-         */
-        static LAYOUT_RIGHT_TO_LEFT: number;
-        /**
-         * A flag to layoutGlyphVector indicating that text in the char array before
-         * the indicated start should not be examined.
-         */
-        static LAYOUT_NO_START_CONTEXT: number;
-        /**
-         * A flag to layoutGlyphVector indicating that text in the char array after
-         * the indicated limit should not be examined.
-         */
-        static LAYOUT_NO_LIMIT_CONTEXT: number;
-    }
-}
-declare namespace java.awt {
-    abstract class Component implements java.awt.HTMLComponent {
-        static TOP_ALIGNMENT: number;
-        static CENTER_ALIGNMENT: number;
-        static BOTTOM_ALIGNMENT: number;
-        static LEFT_ALIGNMENT: number;
-        static RIGHT_ALIGNMENT: number;
-        htmlElement: HTMLElement;
-        enabled: boolean;
-        valid: boolean;
-        background: java.awt.Color;
-        foreground: java.awt.Color;
-        font: java.awt.Font;
-        visible: boolean;
-        name: string;
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-        preferredSize: java.awt.Dimension;
-        minimumSize: java.awt.Dimension;
-        parent: java.awt.Container;
-        /**
-         *
-         * @param {HTMLElement} htmlElement
-         */
-        bindHTML(htmlElement: HTMLElement): void;
-        /**
-         *
-         * @return {HTMLElement}
-         */
-        getHTMLElement(): HTMLElement;
-        /**
-         *
-         */
-        initHTML(): void;
-        getLocationOnScreen(): java.awt.Point;
-        getBounds(): java.awt.Rectangle;
-        setBounds$java_awt_Rectangle(rectangle: java.awt.Rectangle): void;
-        setBounds$int$int$int$int(x: number, y: number, width: number, height: number): void;
-        setBounds(x?: any, y?: any, width?: any, height?: any): any;
-        getWidth(): number;
-        getHeight(): number;
-        getX(): number;
-        getY(): number;
-        setSize$int$int(width: number, height: number): void;
         setSize(width?: any, height?: any): any;
-        setSize$java_awt_Dimension(d: java.awt.Dimension): void;
-        changeSupport: java.beans.PropertyChangeSupport;
-        static CURRENT_ID: number;
-        getPropertyChangeListeners$java_lang_String(propertyName: string): java.beans.PropertyChangeListener[];
-        getPropertyChangeListeners(propertyName?: any): java.beans.PropertyChangeListener[];
-        addPropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        removePropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        getPropertyChangeListeners$(): java.beans.PropertyChangeListener[];
-        addPropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
-        addPropertyChangeListener(propertyName?: any, listener?: any): any;
-        removePropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
-        removePropertyChangeListener(propertyName?: any, listener?: any): any;
-        firePropertyChange(propertyName: string, oldValue: any, newValue: any): void;
-        isEnabled(): boolean;
-        setEnabled(enabled: boolean): void;
-        getBackground(): java.awt.Color;
-        setBackground(background: java.awt.Color): void;
-        getForeground(): java.awt.Color;
-        setForeground(foreground: java.awt.Color): void;
-        getFont(): java.awt.Font;
-        setFont(font: java.awt.Font): void;
-        isVisible(): boolean;
-        setVisible(visible: boolean): void;
-        getName(): string;
-        setName(name: string): void;
-        paramString(): string;
-        isValid(): boolean;
-        setValid(valid: boolean): void;
-        validate(): void;
-        paint(g: java.awt.Graphics): void;
-        update(g: java.awt.Graphics): void;
-        paintAll(g: java.awt.Graphics): void;
-        getGraphics(): java.awt.Graphics;
-        doPaintInternal(): void;
-        getPreferredSize(): java.awt.Dimension;
-        setPreferredSize(preferredSize: java.awt.Dimension): void;
-        getIgnoreRepaint(): boolean;
-        setIgnoreRepaint(ignoreRepaint: boolean): void;
-        getParent(): java.awt.Container;
-        getSize(): java.awt.Dimension;
-        revalidate(): void;
-        invalidate(): void;
-        repaint(): void;
-        addFocusListener(l: java.awt.event.FocusListener): void;
-        getMinimumSize(): java.awt.Dimension;
-        setMinimumSize(minimumSize: java.awt.Dimension): void;
-        setLocation$int$int(x: number, y: number): void;
-        setLocation(x?: any, y?: any): any;
-        setLocation$java_awt_Point(p: java.awt.Point): void;
-        cursor: java.awt.Cursor;
-        getCursor(): java.awt.Cursor;
-        setCursor(cursor: java.awt.Cursor): void;
-        mouseWheelListeners: java.awt.event.MouseWheelListener[];
-        addMouseWheelListener(l: java.awt.event.MouseWheelListener): void;
-        removeMouseWheelListener(l: java.awt.event.MouseWheelListener): void;
-        getMouseWheelListeners(): java.awt.event.MouseWheelListener[];
-        mouseListeners: java.awt.event.MouseListener[];
-        addMouseListener(l: java.awt.event.MouseListener): void;
-        removeMouseListener(l: java.awt.event.MouseListener): void;
-        getMouseListeners(): java.awt.event.MouseListener[];
-        requestFocus(): void;
-        abstract createHTML(): any;
-        constructor();
-    }
-}
-declare namespace java.awt {
-    abstract class AWTEvent extends java.util.EventObject {
-        id: number;
-        consumed: boolean;
+        setSize$java_awt_geom_Dimension2D(d: Dimension2D): void;
         /**
-         * The event mask for selecting component events.
-         */
-        static COMPONENT_EVENT_MASK: number;
-        /**
-         * The event mask for selecting container events.
-         */
-        static CONTAINER_EVENT_MASK: number;
-        /**
-         * The event mask for selecting focus events.
-         */
-        static FOCUS_EVENT_MASK: number;
-        /**
-         * The event mask for selecting key events.
-         */
-        static KEY_EVENT_MASK: number;
-        /**
-         * The event mask for selecting mouse events.
-         */
-        static MOUSE_EVENT_MASK: number;
-        /**
-         * The event mask for selecting mouse motion events.
-         */
-        static MOUSE_MOTION_EVENT_MASK: number;
-        /**
-         * The event mask for selecting window events.
-         */
-        static WINDOW_EVENT_MASK: number;
-        /**
-         * The event mask for selecting action events.
-         */
-        static ACTION_EVENT_MASK: number;
-        /**
-         * The event mask for selecting adjustment events.
-         */
-        static ADJUSTMENT_EVENT_MASK: number;
-        /**
-         * The event mask for selecting item events.
-         */
-        static ITEM_EVENT_MASK: number;
-        /**
-         * The event mask for selecting text events.
-         */
-        static TEXT_EVENT_MASK: number;
-        /**
-         * The event mask for selecting input method events.
-         */
-        static INPUT_METHOD_EVENT_MASK: number;
-        /**
-         * The pseudo event mask for enabling input methods. We're using one bit in
-         * the eventMask so we don't need a separate field inputMethodsEnabled.
-         */
-        static INPUT_METHODS_ENABLED_MASK: number;
-        /**
-         * The event mask for selecting paint events.
-         */
-        static PAINT_EVENT_MASK: number;
-        /**
-         * The event mask for selecting invocation events.
-         */
-        static INVOCATION_EVENT_MASK: number;
-        /**
-         * The event mask for selecting hierarchy events.
-         */
-        static HIERARCHY_EVENT_MASK: number;
-        /**
-         * The event mask for selecting hierarchy bounds events.
-         */
-        static HIERARCHY_BOUNDS_EVENT_MASK: number;
-        /**
-         * The event mask for selecting mouse wheel events.
+         * Creates a new object of the same class as this object.
          *
-         * @since 1.4
+         * @return {*} a clone of this instance.
+         * @exception OutOfMemoryError
+         * if there is not enough memory.
+         * @see java.lang.Cloneable
+         * @since 1.2
          */
-        static MOUSE_WHEEL_EVENT_MASK: number;
-        /**
-         * The event mask for selecting window state events.
-         *
-         * @since 1.4
-         */
-        static WINDOW_STATE_EVENT_MASK: number;
-        /**
-         * The event mask for selecting window focus events.
-         *
-         * @since 1.4
-         */
-        static WINDOW_FOCUS_EVENT_MASK: number;
-        /**
-         * The maximum value for reserved AWT event IDs. Programs defining their own
-         * event IDs should use IDs greater than this value.
-         */
-        static RESERVED_ID_MAX: number;
-        constructor(source?: any, id?: any);
-        setSource(newSource: any): void;
-        /**
-         * Returns a String representation of this object.
-         * @return {string}
-         */
-        toString(): string;
-        paramString(): string;
-        consume(): void;
-        isConsumed(): boolean;
-        /**
-         * Returns the event type.
-         * @return {number}
-         */
-        getID(): number;
-    }
-}
-declare namespace java.awt.image {
-    /**
-     * RenderedImage is a common interface for objects which contain
-     * or can produce image data in the form of Rasters.  The image
-     * data may be stored/produced as a single tile or a regular array
-     * of tiles.
-     * @class
-     */
-    interface RenderedImage {
-        /**
-         * Returns the width of the RenderedImage.
-         * @return {number} the width of this <code>RenderedImage</code>.
-         */
-        getWidth(): number;
-        /**
-         * Returns the height of the RenderedImage.
-         * @return {number} the height of this <code>RenderedImage</code>.
-         */
-        getHeight(): number;
-    }
-}
-declare namespace java.awt.image {
-    interface ImageObserver {
-        imageUpdate(img: java.awt.Image, infoflags: number, x: number, y: number, width: number, height: number): boolean;
-    }
-    namespace ImageObserver {
-        const WIDTH: number;
-        const HEIGHT: number;
-        const PROPERTIES: number;
-        const SOMEBITS: number;
-        const FRAMEBITS: number;
-        const ALLBITS: number;
-        const ERROR: number;
-        const ABORT: number;
-    }
-}
-declare namespace java.awt {
-    interface Stroke {
-    }
-}
-declare namespace java.awt {
-    class Event implements java.io.Serializable {
-        data: number;
-        static SHIFT_MASK: number;
-        static CTRL_MASK: number;
-        static META_MASK: number;
-        static ALT_MASK: number;
-        static HOME: number;
-        static END: number;
-        static PGUP: number;
-        static PGDN: number;
-        static UP: number;
-        static DOWN: number;
-        static LEFT: number;
-        static RIGHT: number;
-        static F1: number;
-        static F2: number;
-        static F3: number;
-        static F4: number;
-        static F5: number;
-        static F6: number;
-        static F7: number;
-        static F8: number;
-        static F9: number;
-        static F10: number;
-        static F11: number;
-        static F12: number;
-        static PRINT_SCREEN: number;
-        static SCROLL_LOCK: number;
-        static CAPS_LOCK: number;
-        static NUM_LOCK: number;
-        static PAUSE: number;
-        static INSERT: number;
-        static ENTER: number;
-        static BACK_SPACE: number;
-        static TAB: number;
-        static ESCAPE: number;
-        static DELETE: number;
-        static WINDOW_EVENT: number;
-        static WINDOW_DESTROY: number;
-        static WINDOW_DESTROY_$LI$(): number;
-        static WINDOW_EXPOSE: number;
-        static WINDOW_EXPOSE_$LI$(): number;
-        static WINDOW_ICONIFY: number;
-        static WINDOW_ICONIFY_$LI$(): number;
-        static WINDOW_DEICONIFY: number;
-        static WINDOW_DEICONIFY_$LI$(): number;
-        static WINDOW_MOVED: number;
-        static WINDOW_MOVED_$LI$(): number;
-        static KEY_EVENT: number;
-        static KEY_PRESS: number;
-        static KEY_PRESS_$LI$(): number;
-        static KEY_RELEASE: number;
-        static KEY_RELEASE_$LI$(): number;
-        static KEY_ACTION: number;
-        static KEY_ACTION_$LI$(): number;
-        static KEY_ACTION_RELEASE: number;
-        static KEY_ACTION_RELEASE_$LI$(): number;
-        static MOUSE_EVENT: number;
-        static MOUSE_DOWN: number;
-        static MOUSE_DOWN_$LI$(): number;
-        static MOUSE_UP: number;
-        static MOUSE_UP_$LI$(): number;
-        static MOUSE_MOVE: number;
-        static MOUSE_MOVE_$LI$(): number;
-        static MOUSE_ENTER: number;
-        static MOUSE_ENTER_$LI$(): number;
-        static MOUSE_EXIT: number;
-        static MOUSE_EXIT_$LI$(): number;
-        static MOUSE_DRAG: number;
-        static MOUSE_DRAG_$LI$(): number;
-        static SCROLL_EVENT: number;
-        static SCROLL_LINE_UP: number;
-        static SCROLL_LINE_UP_$LI$(): number;
-        static SCROLL_LINE_DOWN: number;
-        static SCROLL_LINE_DOWN_$LI$(): number;
-        static SCROLL_PAGE_UP: number;
-        static SCROLL_PAGE_UP_$LI$(): number;
-        static SCROLL_PAGE_DOWN: number;
-        static SCROLL_PAGE_DOWN_$LI$(): number;
-        static SCROLL_ABSOLUTE: number;
-        static SCROLL_ABSOLUTE_$LI$(): number;
-        static SCROLL_BEGIN: number;
-        static SCROLL_BEGIN_$LI$(): number;
-        static SCROLL_END: number;
-        static SCROLL_END_$LI$(): number;
-        static LIST_EVENT: number;
-        static LIST_SELECT: number;
-        static LIST_SELECT_$LI$(): number;
-        static LIST_DESELECT: number;
-        static LIST_DESELECT_$LI$(): number;
-        static MISC_EVENT: number;
-        static ACTION_EVENT: number;
-        static ACTION_EVENT_$LI$(): number;
-        static LOAD_FILE: number;
-        static LOAD_FILE_$LI$(): number;
-        static SAVE_FILE: number;
-        static SAVE_FILE_$LI$(): number;
-        static GOT_FOCUS: number;
-        static GOT_FOCUS_$LI$(): number;
-        static LOST_FOCUS: number;
-        static LOST_FOCUS_$LI$(): number;
-        target: any;
-        when: number;
-        id: number;
-        x: number;
-        y: number;
-        key: number;
-        modifiers: number;
-        clickCount: number;
-        arg: any;
-        evt: Event;
-        consumed: boolean;
-        constructor(target?: any, when?: any, id?: any, x?: any, y?: any, key?: any, modifiers?: any, arg?: any);
-        translate(dx: number, dy: number): void;
-        shiftDown(): boolean;
-        controlDown(): boolean;
-        metaDown(): boolean;
-        consume(): void;
-        isConsumed(): boolean;
-        paramString(): string;
-        toString(): string;
-    }
-}
-declare namespace java.awt {
-    /**
-     * Constructs an IllegalComponentStateException with the specified detail
-     * message.  A detail message is a String that describes this particular
-     * exception.
-     * @param {string} s the String that contains a detailed message
-     * @class
-     * @extends java.lang.IllegalStateException
-     * @author      Jonni Kanerva
-     */
-    class IllegalComponentStateException extends java.lang.IllegalStateException {
-        static serialVersionUID: number;
-        constructor(s?: any);
-    }
-}
-declare namespace java.awt {
-    class BasicStroke implements java.awt.Stroke {
-        static JOIN_MITER: number;
-        static JOIN_ROUND: number;
-        static JOIN_BEVEL: number;
-        static CAP_BUTT: number;
-        static CAP_ROUND: number;
-        static CAP_SQUARE: number;
-        width: number;
-        join: number;
-        cap: number;
-        miterlimit: number;
-        dash: number[];
-        dash_phase: number;
-        constructor(width?: any, cap?: any, join?: any, miterlimit?: any, dash?: any, dash_phase?: any);
-        createStrokedShape(s: java.awt.Shape): java.awt.Shape;
-        getLineWidth(): number;
-        getEndCap(): number;
-        getLineJoin(): number;
-        getMiterLimit(): number;
-        getDashArray(): number[];
-        getDashPhase(): number;
-        hashCode(): number;
-        equals(obj: any): boolean;
-    }
-}
-declare namespace java.awt {
-    abstract class Graphics {
-        constructor();
-        create$(): Graphics;
-        create$int$int$int$int(x: number, y: number, width: number, height: number): Graphics;
-        create(x?: any, y?: any, width?: any, height?: any): Graphics;
-        abstract translate(x: number, y: number): any;
-        abstract getColor(): java.awt.Color;
-        abstract setColor(c: java.awt.Color): any;
-        abstract setPaintMode(): any;
-        abstract getFont(): java.awt.Font;
-        abstract setFont(font: java.awt.Font): any;
-        getClipBounds$(): java.awt.Rectangle;
-        abstract clipRect(x: number, y: number, width: number, height: number): any;
-        setClip$int$int$int$int(x: number, y: number, width: number, height: number): void;
-        setClip(x?: any, y?: any, width?: any, height?: any): any;
-        abstract getClip(): java.awt.Shape;
-        setClip$java_awt_Shape(clip: java.awt.Shape): void;
-        abstract drawLine(x1: number, y1: number, x2: number, y2: number): any;
-        abstract fillRect(x: number, y: number, width: number, height: number): any;
-        drawRect(x: number, y: number, width: number, height: number): void;
-        abstract clearRect(x: number, y: number, width: number, height: number): any;
-        abstract drawRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): any;
-        abstract fillRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): any;
-        draw3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
-        fill3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
-        abstract drawOval(x: number, y: number, width: number, height: number): any;
-        abstract fillOval(x: number, y: number, width: number, height: number): any;
-        abstract drawArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): any;
-        abstract fillArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): any;
-        abstract drawPolyline(xPoints: number[], yPoints: number[], nPoints: number): any;
-        drawPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
-        drawPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
-        drawPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
-        fillPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
-        fillPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
-        fillPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
-        abstract drawString(str: string, x: number, y: number): any;
-        drawImage$java_awt_Image$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
-        drawImage(img?: any, dx1?: any, dy1?: any, dx2?: any, dy2?: any, sx1?: any, sy1?: any, sx2?: any, sy2?: any, bgcolor?: any, observer?: any): boolean;
-        abstract dispose(): any;
-        finalize(): void;
-        toString(): string;
-        hitClip(x: number, y: number, width: number, height: number): boolean;
-        getClipBounds$java_awt_Rectangle(r: java.awt.Rectangle): java.awt.Rectangle;
-        getClipBounds(r?: any): java.awt.Rectangle;
+        clone(): any;
     }
 }
 declare namespace java.awt.geom {
     /**
-     * A utility class to iterate over the path segments of an rounded rectangle
+     * A utility class to iterate over the path segments of a cubic curve segment
      * through the PathIterator interface.
      *
      * @author Jim Graham
      * @class
      */
-    class RoundRectIterator implements java.awt.geom.PathIterator {
-        x: number;
-        y: number;
-        w: number;
-        h: number;
-        aw: number;
-        ah: number;
+    class CubicIterator implements java.awt.geom.PathIterator {
+        cubic: java.awt.geom.CubicCurve2D;
         affine: java.awt.geom.AffineTransform;
         index: number;
-        constructor(rr: java.awt.geom.RoundRectangle2D, at: java.awt.geom.AffineTransform);
+        constructor(q: java.awt.geom.CubicCurve2D, at: java.awt.geom.AffineTransform);
         /**
          * Return the winding rule for determining the insideness of the path.
          *
@@ -1559,22 +166,6 @@ declare namespace java.awt.geom {
          * direction.
          */
         next(): void;
-        static angle: number;
-        static angle_$LI$(): number;
-        static a: number;
-        static a_$LI$(): number;
-        static b: number;
-        static b_$LI$(): number;
-        static c: number;
-        static c_$LI$(): number;
-        static cv: number;
-        static cv_$LI$(): number;
-        static acv: number;
-        static acv_$LI$(): number;
-        static ctrlpts: number[][];
-        static ctrlpts_$LI$(): number[][];
-        static types: number[];
-        static types_$LI$(): number[];
         currentSegment$float_A(coords: number[]): number;
         /**
          * Returns the coordinates and type of the current path segment in the
@@ -1873,726 +464,35 @@ declare namespace java.awt.geom {
 }
 declare namespace java.awt.geom {
     /**
-     * This <code>Line2D</code> represents a line segment in {@code (x,y)}
-     * coordinate space. This class, like all of the Java 2D API, uses a default
-     * coordinate system called <i>user space</i> in which the y-axis values
-     * increase downward and x-axis values increase to the right. For more
-     * information on the user space coordinate system, see the <a href=
-     * "http://docs.oracle.com/javase/1.3/docs/guide/2d/spec/j2d-intro.fm2.html#61857">
-     * Coordinate Systems</a> section of the Java 2D Programmer's Guide.
-     * <p>
-     * This class is only the abstract superclass for all objects that store a 2D
-     * line segment. The actual storage representation of the coordinates is left to
-     * the subclass.
+     * Constructs an instance of <code>NoninvertibleTransformException</code>
+     * with the specified detail message.
      *
-     * @author Jim Graham
+     * @param {string} s
+     * the detail message
      * @since 1.2
      * @class
+     * @extends java.lang.Exception
      */
-    abstract class Line2D implements java.awt.Shape, java.lang.Cloneable {
-        constructor();
-        /**
-         * Returns the X coordinate of the start point in double precision.
-         *
-         * @return {number} the X coordinate of the start point of this {@code Line2D}
-         * object.
-         * @since 1.2
-         */
-        abstract getX1(): number;
-        /**
-         * Returns the Y coordinate of the start point in double precision.
-         *
-         * @return {number} the Y coordinate of the start point of this {@code Line2D}
-         * object.
-         * @since 1.2
-         */
-        abstract getY1(): number;
-        /**
-         * Returns the start <code>Point2D</code> of this <code>Line2D</code>.
-         *
-         * @return {java.awt.geom.Point2D} the start <code>Point2D</code> of this <code>Line2D</code>.
-         * @since 1.2
-         */
-        abstract getP1(): java.awt.geom.Point2D;
-        /**
-         * Returns the X coordinate of the end point in double precision.
-         *
-         * @return {number} the X coordinate of the end point of this {@code Line2D} object.
-         * @since 1.2
-         */
-        abstract getX2(): number;
-        /**
-         * Returns the Y coordinate of the end point in double precision.
-         *
-         * @return {number} the Y coordinate of the end point of this {@code Line2D} object.
-         * @since 1.2
-         */
-        abstract getY2(): number;
-        /**
-         * Returns the end <code>Point2D</code> of this <code>Line2D</code>.
-         *
-         * @return {java.awt.geom.Point2D} the end <code>Point2D</code> of this <code>Line2D</code>.
-         * @since 1.2
-         */
-        abstract getP2(): java.awt.geom.Point2D;
-        setLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): void;
-        /**
-         * Sets the location of the end points of this <code>Line2D</code> to the
-         * specified double coordinates.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @since 1.2
-         */
-        setLine(x1?: any, y1?: any, x2?: any, y2?: any): any;
-        setLine$java_awt_geom_Point2D$java_awt_geom_Point2D(p1: java.awt.geom.Point2D, p2: java.awt.geom.Point2D): void;
-        setLine$java_awt_geom_Line2D(l: Line2D): void;
-        /**
-         * Returns an indicator of where the specified point {@code (px,py)} lies
-         * with respect to the line segment from {@code (x1,y1)} to {@code (x2,y2)}.
-         * The return value can be either 1, -1, or 0 and indicates in which
-         * direction the specified line must pivot around its first end point,
-         * {@code (x1,y1)}, in order to point at the specified point {@code (px,py)}
-         * .
-         * <p>
-         * A return value of 1 indicates that the line segment must turn in the
-         * direction that takes the positive X axis towards the negative Y axis. In
-         * the default coordinate system used by Java 2D, this direction is
-         * counterclockwise.
-         * <p>
-         * A return value of -1 indicates that the line segment must turn in the
-         * direction that takes the positive X axis towards the positive Y axis. In
-         * the default coordinate system, this direction is clockwise.
-         * <p>
-         * A return value of 0 indicates that the point lies exactly on the line
-         * segment. Note that an indicator value of 0 is rare and not useful for
-         * determining collinearity because of floating point rounding issues.
-         * <p>
-         * If the point is colinear with the line segment, but not between the end
-         * points, then the value will be -1 if the point lies
-         * "beyond {@code (x1,y1)}" or 1 if the point lies "beyond {@code (x2,y2)}".
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * segment
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * segment
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * segment
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * segment
-         * @param {number} px
-         * the X coordinate of the specified point to be compared with
-         * the specified line segment
-         * @param {number} py
-         * the Y coordinate of the specified point to be compared with
-         * the specified line segment
-         * @return {number} an integer that indicates the position of the third specified
-         * coordinates with respect to the line segment formed by the first
-         * two specified coordinates.
-         * @since 1.2
-         */
-        static relativeCCW(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
-        relativeCCW$double$double(px: number, py: number): number;
-        /**
-         * Returns an indicator of where the specified point {@code (px,py)} lies
-         * with respect to this line segment. See the method comments of
-         * {@link #relativeCCW(double, double, double, double, double, double)} to
-         * interpret the return value.
-         *
-         * @param {number} px
-         * the X coordinate of the specified point to be compared with
-         * this <code>Line2D</code>
-         * @param {number} py
-         * the Y coordinate of the specified point to be compared with
-         * this <code>Line2D</code>
-         * @return {number} an integer that indicates the position of the specified
-         * coordinates with respect to this <code>Line2D</code>
-         * @see #relativeCCW(double, double, double, double, double, double)
-         * @since 1.2
-         */
-        relativeCCW(px?: any, py?: any): number;
-        relativeCCW$java_awt_geom_Point2D(p: java.awt.geom.Point2D): number;
-        /**
-         * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)}
-         * intersects the line segment from {@code (x3,y3)} to {@code (x4,y4)}.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the first specified
-         * line segment
-         * @param {number} y1
-         * the Y coordinate of the start point of the first specified
-         * line segment
-         * @param {number} x2
-         * the X coordinate of the end point of the first specified line
-         * segment
-         * @param {number} y2
-         * the Y coordinate of the end point of the first specified line
-         * segment
-         * @param {number} x3
-         * the X coordinate of the start point of the second specified
-         * line segment
-         * @param {number} y3
-         * the Y coordinate of the start point of the second specified
-         * line segment
-         * @param {number} x4
-         * the X coordinate of the end point of the second specified line
-         * segment
-         * @param {number} y4
-         * the Y coordinate of the end point of the second specified line
-         * segment
-         * @return {boolean} <code>true</code> if the first specified line segment and the
-         * second specified line segment intersect each other;
-         * <code>false</code> otherwise.
-         * @since 1.2
-         */
-        static linesIntersect(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number): boolean;
-        intersectsLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): boolean;
-        /**
-         * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)}
-         * intersects this line segment.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * segment
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * segment
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * segment
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * segment
-         * @return {boolean} {@code <true>} if this line segment and the specified line
-         * segment intersect each other; <code>false</code> otherwise.
-         * @since 1.2
-         */
-        intersectsLine(x1?: any, y1?: any, x2?: any, y2?: any): boolean;
-        intersectsLine$java_awt_geom_Line2D(l: Line2D): boolean;
-        /**
-         * Returns the square of the distance from a point to a line segment. The
-         * distance measured is the distance between the specified point and the
-         * closest point between the specified end points. If the specified point
-         * intersects the line segment in between the end points, this method
-         * returns 0.0.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * segment
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * segment
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * segment
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * segment
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * the specified line segment
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * the specified line segment
-         * @return {number} a double value that is the square of the distance from the
-         * specified point to the specified line segment.
-         * @see #ptLineDistSq(double, double, double, double, double, double)
-         * @since 1.2
-         */
-        static ptSegDistSq(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
-        /**
-         * Returns the distance from a point to a line segment. The distance
-         * measured is the distance between the specified point and the closest
-         * point between the specified end points. If the specified point intersects
-         * the line segment in between the end points, this method returns 0.0.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * segment
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * segment
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * segment
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * segment
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * the specified line segment
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * the specified line segment
-         * @return {number} a double value that is the distance from the specified point to
-         * the specified line segment.
-         * @see #ptLineDist(double, double, double, double, double, double)
-         * @since 1.2
-         */
-        static ptSegDist(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
-        ptSegDistSq$double$double(px: number, py: number): number;
-        /**
-         * Returns the square of the distance from a point to this line segment. The
-         * distance measured is the distance between the specified point and the
-         * closest point between the current line's end points. If the specified
-         * point intersects the line segment in between the end points, this method
-         * returns 0.0.
-         *
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * this line segment
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * this line segment
-         * @return {number} a double value that is the square of the distance from the
-         * specified point to the current line segment.
-         * @see #ptLineDistSq(double, double)
-         * @since 1.2
-         */
-        ptSegDistSq(px?: any, py?: any): number;
-        ptSegDistSq$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
-        ptSegDist$double$double(px: number, py: number): number;
-        /**
-         * Returns the distance from a point to this line segment. The distance
-         * measured is the distance between the specified point and the closest
-         * point between the current line's end points. If the specified point
-         * intersects the line segment in between the end points, this method
-         * returns 0.0.
-         *
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * this line segment
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * this line segment
-         * @return {number} a double value that is the distance from the specified point to
-         * the current line segment.
-         * @see #ptLineDist(double, double)
-         * @since 1.2
-         */
-        ptSegDist(px?: any, py?: any): number;
-        ptSegDist$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
-        /**
-         * Returns the square of the distance from a point to a line. The distance
-         * measured is the distance between the specified point and the closest
-         * point on the infinitely-extended line defined by the specified
-         * coordinates. If the specified point intersects the line, this method
-         * returns 0.0.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * the specified line
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * the specified line
-         * @return {number} a double value that is the square of the distance from the
-         * specified point to the specified line.
-         * @see #ptSegDistSq(double, double, double, double, double, double)
-         * @since 1.2
-         */
-        static ptLineDistSq(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
-        /**
-         * Returns the distance from a point to a line. The distance measured is the
-         * distance between the specified point and the closest point on the
-         * infinitely-extended line defined by the specified coordinates. If the
-         * specified point intersects the line, this method returns 0.0.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * the specified line
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * the specified line
-         * @return {number} a double value that is the distance from the specified point to
-         * the specified line.
-         * @see #ptSegDist(double, double, double, double, double, double)
-         * @since 1.2
-         */
-        static ptLineDist(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
-        ptLineDistSq$double$double(px: number, py: number): number;
-        /**
-         * Returns the square of the distance from a point to this line. The
-         * distance measured is the distance between the specified point and the
-         * closest point on the infinitely-extended line defined by this
-         * <code>Line2D</code>. If the specified point intersects the line, this
-         * method returns 0.0.
-         *
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * this line
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * this line
-         * @return {number} a double value that is the square of the distance from a
-         * specified point to the current line.
-         * @see #ptSegDistSq(double, double)
-         * @since 1.2
-         */
-        ptLineDistSq(px?: any, py?: any): number;
-        ptLineDistSq$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
-        ptLineDist$double$double(px: number, py: number): number;
-        /**
-         * Returns the distance from a point to this line. The distance measured is
-         * the distance between the specified point and the closest point on the
-         * infinitely-extended line defined by this <code>Line2D</code>. If the
-         * specified point intersects the line, this method returns 0.0.
-         *
-         * @param {number} px
-         * the X coordinate of the specified point being measured against
-         * this line
-         * @param {number} py
-         * the Y coordinate of the specified point being measured against
-         * this line
-         * @return {number} a double value that is the distance from a specified point to the
-         * current line.
-         * @see #ptSegDist(double, double)
-         * @since 1.2
-         */
-        ptLineDist(px?: any, py?: any): number;
-        ptLineDist$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
-        contains$double$double(x: number, y: number): boolean;
-        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
-        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
-        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * Tests if the interior of this <code>Line2D</code> entirely contains the
-         * specified set of rectangular coordinates. This method is required to
-         * implement the <code>Shape</code> interface, but in the case of
-         * <code>Line2D</code> objects it always returns false since a line contains
-         * no area.
-         *
-         * @param {number} x
-         * the X coordinate of the upper-left corner of the specified
-         * rectangular area
-         * @param {number} y
-         * the Y coordinate of the upper-left corner of the specified
-         * rectangular area
-         * @param {number} w
-         * the width of the specified rectangular area
-         * @param {number} h
-         * the height of the specified rectangular area
-         * @return {boolean} <code>false</code> because a <code>Line2D</code> contains no
-         * area.
-         * @since 1.2
-         */
-        contains(x?: any, y?: any, w?: any, h?: any): boolean;
-        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @return {java.awt.Rectangle}
-         */
-        getBounds(): java.awt.Rectangle;
-        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
-        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
-        /**
-         * Returns an iteration object that defines the boundary of this flattened
-         * <code>Line2D</code>. The iterator for this class is not multi-threaded
-         * safe, which means that this <code>Line2D</code> class does not guarantee
-         * that modifications to the geometry of this <code>Line2D</code> object do
-         * not affect any iterations of that geometry that are already in process.
-         *
-         * @param {java.awt.geom.AffineTransform} at
-         * the specified <code>AffineTransform</code>
-         * @param {number} flatness
-         * the maximum amount that the control points for a given curve
-         * can vary from colinear before a subdivided curve is replaced
-         * by a straight line connecting the end points. Since a
-         * <code>Line2D</code> object is always flat, this parameter is
-         * ignored.
-         * @return {*} a <code>PathIterator</code> that defines the boundary of the
-         * flattened <code>Line2D</code>
-         * @since 1.2
-         */
-        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
-        /**
-         * Creates a new object of the same class as this object.
-         *
-         * @return {*} a clone of this instance.
-         * @exception OutOfMemoryError
-         * if there is not enough memory.
-         * @see java.lang.Cloneable
-         * @since 1.2
-         */
-        clone(): any;
-        abstract getBounds2D(): any;
-    }
-    namespace Line2D {
-        /**
-         * Constructs and initializes a Line from the specified coordinates.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @since 1.2
-         * @class
-         * @extends java.awt.geom.Line2D
-         */
-        class Float extends java.awt.geom.Line2D implements java.io.Serializable {
-            /**
-             * The X coordinate of the start point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x1: number;
-            /**
-             * The Y coordinate of the start point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y1: number;
-            /**
-             * The X coordinate of the end point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x2: number;
-            /**
-             * The Y coordinate of the end point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y2: number;
-            constructor(x1?: any, y1?: any, x2?: any, y2?: any);
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP1(): java.awt.geom.Point2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP2(): java.awt.geom.Point2D;
-            setLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): void;
-            setLine$float$float$float$float(x1: number, y1: number, x2: number, y2: number): void;
-            /**
-             * Sets the location of the end points of this <code>Line2D</code> to
-             * the specified float coordinates.
-             *
-             * @param {number} x1
-             * the X coordinate of the start point
-             * @param {number} y1
-             * the Y coordinate of the start point
-             * @param {number} x2
-             * the X coordinate of the end point
-             * @param {number} y2
-             * the Y coordinate of the end point
-             * @since 1.2
-             */
-            setLine(x1?: any, y1?: any, x2?: any, y2?: any): any;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            getBounds2D(): java.awt.geom.Rectangle2D;
-            static serialVersionUID: number;
-        }
-        /**
-         * Constructs and initializes a <code>Line2D</code> from the specified
-         * coordinates.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @since 1.2
-         * @class
-         * @extends java.awt.geom.Line2D
-         */
-        class Double extends java.awt.geom.Line2D implements java.io.Serializable {
-            /**
-             * The X coordinate of the start point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x1: number;
-            /**
-             * The Y coordinate of the start point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y1: number;
-            /**
-             * The X coordinate of the end point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x2: number;
-            /**
-             * The Y coordinate of the end point of the line segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y2: number;
-            constructor(x1?: any, y1?: any, x2?: any, y2?: any);
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP1(): java.awt.geom.Point2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP2(): java.awt.geom.Point2D;
-            setLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): void;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {number} x1
-             * @param {number} y1
-             * @param {number} x2
-             * @param {number} y2
-             */
-            setLine(x1?: any, y1?: any, x2?: any, y2?: any): any;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            getBounds2D(): java.awt.geom.Rectangle2D;
-            static serialVersionUID: number;
-        }
+    class NoninvertibleTransformException extends java.lang.Exception {
+        constructor(s: string);
     }
 }
 declare namespace java.awt.geom {
     /**
-     * A utility class to iterate over the path segments of a cubic curve segment
-     * through the PathIterator interface.
+     * A utility class to iterate over the path segments of a rectangle through the
+     * PathIterator interface.
      *
      * @author Jim Graham
      * @class
      */
-    class CubicIterator implements java.awt.geom.PathIterator {
-        cubic: java.awt.geom.CubicCurve2D;
+    class RectIterator implements java.awt.geom.PathIterator {
+        x: number;
+        y: number;
+        w: number;
+        h: number;
         affine: java.awt.geom.AffineTransform;
         index: number;
-        constructor(q: java.awt.geom.CubicCurve2D, at: java.awt.geom.AffineTransform);
+        constructor(r: java.awt.geom.Rectangle2D, at: java.awt.geom.AffineTransform);
         /**
          * Return the winding rule for determining the insideness of the path.
          *
@@ -2638,81 +538,22 @@ declare namespace java.awt.geom {
 }
 declare namespace java.awt.geom {
     /**
-     * The <code>Dimension2D</code> class is to encapsulate a width and a height
-     * dimension.
-     * <p>
-     * This class is only the abstract superclass for all objects that store a 2D
-     * dimension. The actual storage representation of the sizes is left to the
-     * subclass.
-     *
-     * @author Jim Graham
-     * @since 1.2
-     * @class
-     */
-    abstract class Dimension2D implements java.lang.Cloneable {
-        constructor();
-        /**
-         * Returns the width of this <code>Dimension</code> in double precision.
-         *
-         * @return {number} the width of this <code>Dimension</code>.
-         * @since 1.2
-         */
-        abstract getWidth(): number;
-        /**
-         * Returns the height of this <code>Dimension</code> in double precision.
-         *
-         * @return {number} the height of this <code>Dimension</code>.
-         * @since 1.2
-         */
-        abstract getHeight(): number;
-        setSize$double$double(width: number, height: number): void;
-        /**
-         * Sets the size of this <code>Dimension</code> object to the specified
-         * width and height. This method is included for completeness, to parallel
-         * the {@link java.awt.Component#getSize} method of
-         * {@link java.awt.Component}.
-         *
-         * @param {number} width
-         * the new width for the <code>Dimension</code> object
-         * @param {number} height
-         * the new height for the <code>Dimension</code> object
-         * @since 1.2
-         */
-        setSize(width?: any, height?: any): any;
-        setSize$java_awt_geom_Dimension2D(d: Dimension2D): void;
-        /**
-         * Creates a new object of the same class as this object.
-         *
-         * @return {*} a clone of this instance.
-         * @exception OutOfMemoryError
-         * if there is not enough memory.
-         * @see java.lang.Cloneable
-         * @since 1.2
-         */
-        clone(): any;
-    }
-}
-declare namespace java.awt.geom {
-    /**
-     * A utility class to iterate over the path segments of an arc through the
-     * PathIterator interface.
+     * A utility class to iterate over the path segments of an rounded rectangle
+     * through the PathIterator interface.
      *
      * @author Jim Graham
      * @class
      */
-    class ArcIterator implements java.awt.geom.PathIterator {
+    class RoundRectIterator implements java.awt.geom.PathIterator {
         x: number;
         y: number;
         w: number;
         h: number;
-        angStRad: number;
-        increment: number;
-        cv: number;
+        aw: number;
+        ah: number;
         affine: java.awt.geom.AffineTransform;
         index: number;
-        arcSegs: number;
-        lineSegs: number;
-        constructor(a: java.awt.geom.Arc2D, at: java.awt.geom.AffineTransform);
+        constructor(rr: java.awt.geom.RoundRectangle2D, at: java.awt.geom.AffineTransform);
         /**
          * Return the winding rule for determining the insideness of the path.
          *
@@ -2733,7 +574,78 @@ declare namespace java.awt.geom {
          * direction.
          */
         next(): void;
-        static btan(increment: number): number;
+        static angle: number;
+        static angle_$LI$(): number;
+        static a: number;
+        static a_$LI$(): number;
+        static b: number;
+        static b_$LI$(): number;
+        static c: number;
+        static c_$LI$(): number;
+        static cv: number;
+        static cv_$LI$(): number;
+        static acv: number;
+        static acv_$LI$(): number;
+        static ctrlpts: number[][];
+        static ctrlpts_$LI$(): number[][];
+        static types: number[];
+        static types_$LI$(): number[];
+        currentSegment$float_A(coords: number[]): number;
+        /**
+         * Returns the coordinates and type of the current path segment in the
+         * iteration. The return value is the path segment type: SEG_MOVETO,
+         * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
+         * length 6 must be passed in and may be used to store the coordinates of
+         * the point(s). Each point is stored as a pair of float x,y coordinates.
+         * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
+         * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
+         * not return any points.
+         *
+         * @see #SEG_MOVETO
+         * @see #SEG_LINETO
+         * @see #SEG_QUADTO
+         * @see #SEG_CUBICTO
+         * @see #SEG_CLOSE
+         * @param {float[]} coords
+         * @return {number}
+         */
+        currentSegment(coords?: any): number;
+        currentSegment$double_A(coords: number[]): number;
+    }
+}
+declare namespace java.awt.geom {
+    /**
+     * A utility class to iterate over the path segments of a quadratic curve
+     * segment through the PathIterator interface.
+     *
+     * @author Jim Graham
+     * @class
+     */
+    class QuadIterator implements java.awt.geom.PathIterator {
+        quad: java.awt.geom.QuadCurve2D;
+        affine: java.awt.geom.AffineTransform;
+        index: number;
+        constructor(q: java.awt.geom.QuadCurve2D, at: java.awt.geom.AffineTransform);
+        /**
+         * Return the winding rule for determining the insideness of the path.
+         *
+         * @see #WIND_EVEN_ODD
+         * @see #WIND_NON_ZERO
+         * @return {number}
+         */
+        getWindingRule(): number;
+        /**
+         * Tests if there are more points to read.
+         *
+         * @return {boolean} true if there are more points to read
+         */
+        isDone(): boolean;
+        /**
+         * Moves the iterator to the next segment of the path forwards along the
+         * primary direction of traversal as long as there are more points in that
+         * direction.
+         */
+        next(): void;
         currentSegment$float_A(coords: number[]): number;
         /**
          * Returns the coordinates and type of the current path segment in the
@@ -2772,49 +684,29 @@ declare namespace java.awt.geom {
 }
 declare namespace java.awt.geom {
     /**
-     * The <code>PathIterator</code> interface provides the mechanism for objects
-     * that implement the {@link *} interface to return the
-     * geometry of their boundary by allowing a caller to retrieve the path of that
-     * boundary a segment at a time. This interface allows these objects to retrieve
-     * the path of their boundary a segment at a time by using 1st through 3rd order
-     * B&eacute;zier curves, which are lines and quadratic or cubic B&eacute;zier
-     * splines.
-     * <p>
-     * Multiple subpaths can be expressed by using a "MOVETO" segment to create a
-     * discontinuity in the geometry to move from the end of one subpath to the
-     * beginning of the next.
-     * <p>
-     * Each subpath can be closed manually by ending the last segment in the subpath
-     * on the same coordinate as the beginning "MOVETO" segment for that subpath or
-     * by using a "CLOSE" segment to append a line segment from the last point back
-     * to the first. Be aware that manually closing an outline as opposed to using a
-     * "CLOSE" segment to close the path might result in different line style
-     * decorations being used at the end points of the subpath. For example, the
-     * {@link java.awt.BasicStroke} object uses a line "JOIN" decoration
-     * to connect the first and last points if a "CLOSE" segment is encountered,
-     * whereas simply ending the path on the same coordinate as the beginning
-     * coordinate results in line "CAP" decorations being used at the ends.
-     *
-     * @see java.awt.Shape
-     * @see java.awt.BasicStroke
+     * A utility class to iterate over the path segments of a line segment through
+     * the PathIterator interface.
      *
      * @author Jim Graham
      * @class
      */
-    interface PathIterator {
+    class LineIterator implements java.awt.geom.PathIterator {
+        line: java.awt.geom.Line2D;
+        affine: java.awt.geom.AffineTransform;
+        index: number;
+        constructor(l: java.awt.geom.Line2D, at: java.awt.geom.AffineTransform);
         /**
-         * Returns the winding rule for determining the interior of the path.
+         * Return the winding rule for determining the insideness of the path.
          *
-         * @return {number} the winding rule.
          * @see #WIND_EVEN_ODD
          * @see #WIND_NON_ZERO
+         * @return {number}
          */
         getWindingRule(): number;
         /**
-         * Tests if the iteration is complete.
+         * Tests if there are more points to read.
          *
-         * @return {boolean} <code>true</code> if all the segments have been read;
-         * <code>false</code> otherwise.
+         * @return {boolean} true if there are more points to read
          */
         isDone(): boolean;
         /**
@@ -2822,101 +714,1063 @@ declare namespace java.awt.geom {
          * primary direction of traversal as long as there are more points in that
          * direction.
          */
-        next(): any;
+        next(): void;
+        currentSegment$float_A(coords: number[]): number;
         /**
          * Returns the coordinates and type of the current path segment in the
-         * iteration. The return value is the path-segment type: SEG_MOVETO,
+         * iteration. The return value is the path segment type: SEG_MOVETO,
          * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-         * length 6 must be passed in and can be used to store the coordinates of
+         * length 6 must be passed in and may be used to store the coordinates of
          * the point(s). Each point is stored as a pair of float x,y coordinates.
-         * SEG_MOVETO and SEG_LINETO types returns one point, SEG_QUADTO returns two
-         * points, SEG_CUBICTO returns 3 points and SEG_CLOSE does not return any
-         * points.
+         * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
+         * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
+         * not return any points.
          *
-         * @param {float[]} coords
-         * an array that holds the data returned from this method
-         * @return {number} the path-segment type of the current path segment.
          * @see #SEG_MOVETO
          * @see #SEG_LINETO
          * @see #SEG_QUADTO
          * @see #SEG_CUBICTO
          * @see #SEG_CLOSE
+         * @param {float[]} coords
+         * @return {number}
          */
         currentSegment(coords?: any): number;
+        currentSegment$double_A(coords: number[]): number;
     }
-    namespace PathIterator {
+}
+declare namespace java.awt.geom {
+    /**
+     * The <code>QuadCurve2D</code> class defines a quadratic parametric curve
+     * segment in {@code (x,y)} coordinate space.
+     * <p>
+     * This class is only the abstract superclass for all objects that store a 2D
+     * quadratic curve segment. The actual storage representation of the coordinates
+     * is left to the subclass.
+     *
+     * @author Jim Graham
+     * @since 1.2
+     * @class
+     */
+    abstract class QuadCurve2D implements java.awt.Shape, java.lang.Cloneable {
+        constructor();
         /**
-         * The winding rule constant for specifying an even-odd rule for determining
-         * the interior of a path. The even-odd rule specifies that a point lies
-         * inside the path if a ray drawn in any direction from that point to
-         * infinity is crossed by path segments an odd number of times.
+         * Returns the X coordinate of the start point in <code>double</code> in
+         * precision.
+         *
+         * @return {number} the X coordinate of the start point.
+         * @since 1.2
          */
-        const WIND_EVEN_ODD: number;
+        abstract getX1(): number;
         /**
-         * The winding rule constant for specifying a non-zero rule for determining
-         * the interior of a path. The non-zero rule specifies that a point lies
-         * inside the path if a ray drawn in any direction from that point to
-         * infinity is crossed by path segments a different number of times in the
-         * counter-clockwise direction than the clockwise direction.
+         * Returns the Y coordinate of the start point in <code>double</code>
+         * precision.
+         *
+         * @return {number} the Y coordinate of the start point.
+         * @since 1.2
          */
-        const WIND_NON_ZERO: number;
+        abstract getY1(): number;
         /**
-         * The segment type constant for a point that specifies the starting
-         * location for a new subpath.
+         * Returns the start point.
+         *
+         * @return {java.awt.geom.Point2D} a <code>Point2D</code> that is the start point of this
+         * <code>QuadCurve2D</code>.
+         * @since 1.2
          */
-        const SEG_MOVETO: number;
+        abstract getP1(): java.awt.geom.Point2D;
         /**
-         * The segment type constant for a point that specifies the end point of a
-         * line to be drawn from the most recently specified point.
+         * Returns the X coordinate of the control point in <code>double</code>
+         * precision.
+         *
+         * @return {number} X coordinate the control point
+         * @since 1.2
          */
-        const SEG_LINETO: number;
+        abstract getCtrlX(): number;
         /**
-         * The segment type constant for the pair of points that specify a quadratic
-         * parametric curve to be drawn from the most recently specified point. The
-         * curve is interpolated by solving the parametric control equation in the
-         * range <code>(t=[0..1])</code> using the most recently specified (current)
-         * point (CP), the first control point (P1), and the final interpolated
-         * control point (P2). The parametric control equation for this curve is:
+         * Returns the Y coordinate of the control point in <code>double</code>
+         * precision.
+         *
+         * @return {number} the Y coordinate of the control point.
+         * @since 1.2
+         */
+        abstract getCtrlY(): number;
+        /**
+         * Returns the control point.
+         *
+         * @return {java.awt.geom.Point2D} a <code>Point2D</code> that is the control point of this
+         * <code>Point2D</code>.
+         * @since 1.2
+         */
+        abstract getCtrlPt(): java.awt.geom.Point2D;
+        /**
+         * Returns the X coordinate of the end point in <code>double</code>
+         * precision.
+         *
+         * @return {number} the x coordinate of the end point.
+         * @since 1.2
+         */
+        abstract getX2(): number;
+        /**
+         * Returns the Y coordinate of the end point in <code>double</code>
+         * precision.
+         *
+         * @return {number} the Y coordinate of the end point.
+         * @since 1.2
+         */
+        abstract getY2(): number;
+        /**
+         * Returns the end point.
+         *
+         * @return {java.awt.geom.Point2D} a <code>Point</code> object that is the end point of this
+         * <code>Point2D</code>.
+         * @since 1.2
+         */
+        abstract getP2(): java.awt.geom.Point2D;
+        setCurve$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
+        /**
+         * Sets the location of the end points and control point of this curve to
+         * the specified <code>double</code> coordinates.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} ctrlx
+         * the X coordinate of the control point
+         * @param {number} ctrly
+         * the Y coordinate of the control point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @since 1.2
+         */
+        setCurve(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): any;
+        setCurve$double_A$int(coords: number[], offset: number): void;
+        setCurve$java_awt_geom_Point2D$java_awt_geom_Point2D$java_awt_geom_Point2D(p1: java.awt.geom.Point2D, cp: java.awt.geom.Point2D, p2: java.awt.geom.Point2D): void;
+        setCurve$java_awt_geom_Point2D_A$int(pts: java.awt.geom.Point2D[], offset: number): void;
+        setCurve$java_awt_geom_QuadCurve2D(c: QuadCurve2D): void;
+        static getFlatnessSq$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): number;
+        /**
+         * Returns the square of the flatness, or maximum distance of a control
+         * point from the line connecting the end points, of the quadratic curve
+         * specified by the indicated control points.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} ctrlx
+         * the X coordinate of the control point
+         * @param {number} ctrly
+         * the Y coordinate of the control point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @return {number} the square of the flatness of the quadratic curve defined by the
+         * specified coordinates.
+         * @since 1.2
+         */
+        static getFlatnessSq(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): number;
+        static getFlatness$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): number;
+        /**
+         * Returns the flatness, or maximum distance of a control point from the
+         * line connecting the end points, of the quadratic curve specified by the
+         * indicated control points.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} ctrlx
+         * the X coordinate of the control point
+         * @param {number} ctrly
+         * the Y coordinate of the control point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @return {number} the flatness of the quadratic curve defined by the specified
+         * coordinates.
+         * @since 1.2
+         */
+        static getFlatness(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): number;
+        static getFlatnessSq$double_A$int(coords: number[], offset: number): number;
+        static getFlatness$double_A$int(coords: number[], offset: number): number;
+        /**
+         * Returns the square of the flatness, or maximum distance of a control
+         * point from the line connecting the end points, of this
+         * <code>QuadCurve2D</code>.
+         *
+         * @return {number} the square of the flatness of this <code>QuadCurve2D</code>.
+         * @since 1.2
+         */
+        getFlatnessSq(): number;
+        /**
+         * Returns the flatness, or maximum distance of a control point from the
+         * line connecting the end points, of this <code>QuadCurve2D</code>.
+         *
+         * @return {number} the flatness of this <code>QuadCurve2D</code>.
+         * @since 1.2
+         */
+        getFlatness(): number;
+        /**
+         * Subdivides this <code>QuadCurve2D</code> and stores the resulting two
+         * subdivided curves into the <code>left</code> and <code>right</code> curve
+         * parameters. Either or both of the <code>left</code> and
+         * <code>right</code> objects can be the same as this
+         * <code>QuadCurve2D</code> or <code>null</code>.
+         *
+         * @param {java.awt.geom.QuadCurve2D} left
+         * the <code>QuadCurve2D</code> object for storing the left or
+         * first half of the subdivided curve
+         * @param {java.awt.geom.QuadCurve2D} right
+         * the <code>QuadCurve2D</code> object for storing the right or
+         * second half of the subdivided curve
+         * @since 1.2
+         */
+        subdivide(left: QuadCurve2D, right: QuadCurve2D): void;
+        static subdivide$java_awt_geom_QuadCurve2D$java_awt_geom_QuadCurve2D$java_awt_geom_QuadCurve2D(src: QuadCurve2D, left: QuadCurve2D, right: QuadCurve2D): void;
+        static subdivide$double_A$int$double_A$int$double_A$int(src: number[], srcoff: number, left: number[], leftoff: number, right: number[], rightoff: number): void;
+        /**
+         * Subdivides the quadratic curve specified by the coordinates stored in the
+         * <code>src</code> array at indices <code>srcoff</code> through
+         * <code>srcoff</code>&nbsp;+&nbsp;5 and stores the resulting two subdivided
+         * curves into the two result arrays at the corresponding indices. Either or
+         * both of the <code>left</code> and <code>right</code> arrays can be
+         * <code>null</code> or a reference to the same array and offset as the
+         * <code>src</code> array. Note that the last point in the first subdivided
+         * curve is the same as the first point in the second subdivided curve.
+         * Thus, it is possible to pass the same array for <code>left</code> and
+         * <code>right</code> and to use offsets such that <code>rightoff</code>
+         * equals <code>leftoff</code> + 4 in order to avoid allocating extra
+         * storage for this common point.
+         *
+         * @param {double[]} src
+         * the array holding the coordinates for the source curve
+         * @param {number} srcoff
+         * the offset into the array of the beginning of the the 6 source
+         * coordinates
+         * @param {double[]} left
+         * the array for storing the coordinates for the first half of
+         * the subdivided curve
+         * @param {number} leftoff
+         * the offset into the array of the beginning of the the 6 left
+         * coordinates
+         * @param {double[]} right
+         * the array for storing the coordinates for the second half of
+         * the subdivided curve
+         * @param {number} rightoff
+         * the offset into the array of the beginning of the the 6 right
+         * coordinates
+         * @since 1.2
+         */
+        static subdivide(src?: any, srcoff?: any, left?: any, leftoff?: any, right?: any, rightoff?: any): any;
+        static solveQuadratic$double_A(eqn: number[]): number;
+        static solveQuadratic$double_A$double_A(eqn: number[], res: number[]): number;
+        /**
+         * Solves the quadratic whose coefficients are in the <code>eqn</code> array
+         * and places the non-complex roots into the <code>res</code> array,
+         * returning the number of roots. The quadratic solved is represented by the
+         * equation:
          *
          * <pre>
-         * P(t) = B(2,0)*CP + B(2,1)*P1 + B(2,2)*P2
-         * 0 &lt;= t &lt;= 1
-         *
-         * B(n,m) = mth coefficient of nth degree Bernstein polynomial
-         * = C(n,m) * t^(m) * (1 - t)^(n-m)
-         * C(n,m) = Combinations of n things, taken m at a time
-         * = n! / (m! * (n-m)!)
+         * eqn = {C, B, A};
+         * ax^2 + bx + c = 0
          * </pre>
+         *
+         * A return value of <code>-1</code> is used to distinguish a constant
+         * equation, which might be always 0 or never 0, from an equation that has
+         * no zeroes.
+         *
+         * @param {double[]} eqn
+         * the specified array of coefficients to use to solve the
+         * quadratic equation
+         * @param {double[]} res
+         * the array that contains the non-complex roots resulting from
+         * the solution of the quadratic equation
+         * @return {number} the number of roots, or <code>-1</code> if the equation is a
+         * constant.
+         * @since 1.3
          */
-        const SEG_QUADTO: number;
+        static solveQuadratic(eqn?: any, res?: any): number;
+        contains$double$double(x: number, y: number): boolean;
+        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
         /**
-         * The segment type constant for the set of 3 points that specify a cubic
-         * parametric curve to be drawn from the most recently specified point. The
-         * curve is interpolated by solving the parametric control equation in the
-         * range <code>(t=[0..1])</code> using the most recently specified (current)
-         * point (CP), the first control point (P1), the second control point (P2),
-         * and the final interpolated control point (P3). The parametric control
-         * equation for this curve is:
+         * Fill an array with the coefficients of the parametric equation in t,
+         * ready for solving against val with solveQuadratic. We currently have: val
+         * = Py(t) = C1*(1-t)^2 + 2*CP*t*(1-t) + C2*t^2 = C1 - 2*C1*t + C1*t^2 +
+         * 2*CP*t - 2*CP*t^2 + C2*t^2 = C1 + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2
+         * 0 = (C1 - val) + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2 0 = C + Bt + At^2
+         * C = C1 - val B = 2*CP - 2*C1 A = C1 - 2*CP + C2
+         * @param {double[]} eqn
+         * @param {number} val
+         * @param {number} c1
+         * @param {number} cp
+         * @param {number} c2
+         * @private
+         */
+        static fillEqn(eqn: number[], val: number, c1: number, cp: number, c2: number): void;
+        /**
+         * Evaluate the t values in the first num slots of the vals[] array and
+         * place the evaluated values back into the same array. Only evaluate t
+         * values that are within the range &lt;0, 1&gt;, including the 0 and 1 ends
+         * of the range iff the include0 or include1 booleans are true. If an
+         * "inflection" equation is handed in, then any points which represent a
+         * point of inflection for that quadratic equation are also ignored.
+         * @param {double[]} vals
+         * @param {number} num
+         * @param {boolean} include0
+         * @param {boolean} include1
+         * @param {double[]} inflect
+         * @param {number} c1
+         * @param {number} ctrl
+         * @param {number} c2
+         * @return {number}
+         * @private
+         */
+        static evalQuadratic(vals: number[], num: number, include0: boolean, include1: boolean, inflect: number[], c1: number, ctrl: number, c2: number): number;
+        static BELOW: number;
+        static LOWEDGE: number;
+        static INSIDE: number;
+        static HIGHEDGE: number;
+        static ABOVE: number;
+        /**
+         * Determine where coord lies with respect to the range from low to high. It
+         * is assumed that low &lt;= high. The return value is one of the 5 values
+         * BELOW, LOWEDGE, INSIDE, HIGHEDGE, or ABOVE.
+         * @param {number} coord
+         * @param {number} low
+         * @param {number} high
+         * @return {number}
+         * @private
+         */
+        static getTag(coord: number, low: number, high: number): number;
+        /**
+         * Determine if the pttag represents a coordinate that is already in its
+         * test range, or is on the border with either of the two opttags
+         * representing another coordinate that is "towards the inside" of that test
+         * range. In other words, are either of the two "opt" points
+         * "drawing the pt inward"?
+         * @param {number} pttag
+         * @param {number} opt1tag
+         * @param {number} opt2tag
+         * @return {boolean}
+         * @private
+         */
+        static inwards(pttag: number, opt1tag: number, opt2tag: number): boolean;
+        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
+        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        contains(x?: any, y?: any, w?: any, h?: any): boolean;
+        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @return {java.awt.Rectangle}
+         */
+        getBounds(): java.awt.Rectangle;
+        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
+        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
+        /**
+         * Returns an iteration object that defines the boundary of the flattened
+         * shape of this <code>QuadCurve2D</code>. The iterator for this class is
+         * not multi-threaded safe, which means that this <code>QuadCurve2D</code>
+         * class does not guarantee that modifications to the geometry of this
+         * <code>QuadCurve2D</code> object do not affect any iterations of that
+         * geometry that are already in process.
+         *
+         * @param {java.awt.geom.AffineTransform} at
+         * an optional <code>AffineTransform</code> to apply to the
+         * boundary of the shape
+         * @param {number} flatness
+         * the maximum distance that the control points for a subdivided
+         * curve can be with respect to a line connecting the end points
+         * of this curve before this curve is replaced by a straight line
+         * connecting the end points.
+         * @return {*} a <code>PathIterator</code> object that defines the flattened
+         * boundary of the shape.
+         * @since 1.2
+         */
+        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
+        /**
+         * Creates a new object of the same class and with the same contents as this
+         * object.
+         *
+         * @return {*} a clone of this instance.
+         * @exception OutOfMemoryError
+         * if there is not enough memory.
+         * @see java.lang.Cloneable
+         * @since 1.2
+         */
+        clone(): any;
+        abstract getBounds2D(): any;
+    }
+    namespace QuadCurve2D {
+        /**
+         * Constructs and initializes a <code>QuadCurve2D</code> from the
+         * specified {@code float} coordinates.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} ctrlx
+         * the X coordinate of the control point
+         * @param {number} ctrly
+         * the Y coordinate of the control point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @since 1.2
+         * @class
+         * @extends java.awt.geom.QuadCurve2D
+         */
+        class Float extends java.awt.geom.QuadCurve2D implements java.io.Serializable {
+            /**
+             * The X coordinate of the start point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x1: number;
+            /**
+             * The Y coordinate of the start point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y1: number;
+            /**
+             * The X coordinate of the control point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            ctrlx: number;
+            /**
+             * The Y coordinate of the control point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            ctrly: number;
+            /**
+             * The X coordinate of the end point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x2: number;
+            /**
+             * The Y coordinate of the end point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y2: number;
+            constructor(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any);
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP1(): java.awt.geom.Point2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getCtrlX(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getCtrlY(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getCtrlPt(): java.awt.geom.Point2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP2(): java.awt.geom.Point2D;
+            setCurve$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
+            setCurve$float$float$float$float$float$float(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
+            /**
+             * Sets the location of the end points and control point of this curve
+             * to the specified {@code float} coordinates.
+             *
+             * @param {number} x1
+             * the X coordinate of the start point
+             * @param {number} y1
+             * the Y coordinate of the start point
+             * @param {number} ctrlx
+             * the X coordinate of the control point
+             * @param {number} ctrly
+             * the Y coordinate of the control point
+             * @param {number} x2
+             * the X coordinate of the end point
+             * @param {number} y2
+             * the Y coordinate of the end point
+             * @since 1.2
+             */
+            setCurve(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): any;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            getBounds2D(): java.awt.geom.Rectangle2D;
+            static serialVersionUID: number;
+        }
+        /**
+         * Constructs and initializes a <code>QuadCurve2D</code> from the
+         * specified {@code double} coordinates.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} ctrlx
+         * the X coordinate of the control point
+         * @param {number} ctrly
+         * the Y coordinate of the control point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @since 1.2
+         * @class
+         * @extends java.awt.geom.QuadCurve2D
+         */
+        class Double extends java.awt.geom.QuadCurve2D implements java.io.Serializable {
+            /**
+             * The X coordinate of the start point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x1: number;
+            /**
+             * The Y coordinate of the start point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y1: number;
+            /**
+             * The X coordinate of the control point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            ctrlx: number;
+            /**
+             * The Y coordinate of the control point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            ctrly: number;
+            /**
+             * The X coordinate of the end point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x2: number;
+            /**
+             * The Y coordinate of the end point of the quadratic curve segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y2: number;
+            constructor(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any);
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP1(): java.awt.geom.Point2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getCtrlX(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getCtrlY(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getCtrlPt(): java.awt.geom.Point2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP2(): java.awt.geom.Point2D;
+            setCurve$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {number} x1
+             * @param {number} y1
+             * @param {number} ctrlx
+             * @param {number} ctrly
+             * @param {number} x2
+             * @param {number} y2
+             */
+            setCurve(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): any;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            getBounds2D(): java.awt.geom.Rectangle2D;
+            static serialVersionUID: number;
+        }
+    }
+}
+declare namespace java.awt.geom {
+    /**
+     * The <code>Area</code> class creates an area geometry from the specified
+     * {@link Shape} object. The geometry is explicitly closed, if the
+     * <code>Shape</code> is not already closed. The fill rule (even-odd or
+     * winding) specified by the geometry of the <code>Shape</code> is used to
+     * determine the resulting enclosed area.
+     *
+     * @param {*} s
+     * the <code>Shape</code> from which the area is constructed
+     * @throws NullPointerException
+     * if <code>s</code> is null
+     * @since 1.2
+     * @class
+     */
+    class Area implements java.awt.Shape, java.lang.Cloneable {
+        static EmptyCurves: java.util.Vector<any>;
+        static EmptyCurves_$LI$(): java.util.Vector<any>;
+        curves: java.util.Vector<any>;
+        constructor(s?: any);
+        static pathToCurves(pi: java.awt.geom.PathIterator): java.util.Vector<any>;
+        /**
+         * Adds the shape of the specified <code>Area</code> to the shape of this
+         * <code>Area</code>. The resulting shape of this <code>Area</code> will
+         * include the union of both shapes, or all areas that were contained in
+         * either this or the specified <code>Area</code>.
          *
          * <pre>
-         * P(t) = B(3,0)*CP + B(3,1)*P1 + B(3,2)*P2 + B(3,3)*P3
-         * 0 &lt;= t &lt;= 1
+         * // Example:
+         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
+         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
+         * a1.add(a2);
          *
-         * B(n,m) = mth coefficient of nth degree Bernstein polynomial
-         * = C(n,m) * t^(m) * (1 - t)^(n-m)
-         * C(n,m) = Combinations of n things, taken m at a time
-         * = n! / (m! * (n-m)!)
+         * a1(before)     +         a2         =     a1(after)
+         *
+         * ################     ################     ################
+         * ##############         ##############     ################
+         * ############             ############     ################
+         * ##########                 ##########     ################
+         * ########                     ########     ################
+         * ######                         ######     ######    ######
+         * ####                             ####     ####        ####
+         * ##                                 ##     ##            ##
          * </pre>
          *
-         * This form of curve is commonly known as a B&eacute;zier curve.
+         * @param {java.awt.geom.Area} rhs
+         * the <code>Area</code> to be added to the current shape
+         * @throws NullPointerException
+         * if <code>rhs</code> is null
+         * @since 1.2
          */
-        const SEG_CUBICTO: number;
+        add(rhs: Area): void;
         /**
-         * The segment type constant that specifies that the preceding subpath
-         * should be closed by appending a line segment back to the point
-         * corresponding to the most recent SEG_MOVETO.
+         * Subtracts the shape of the specified <code>Area</code> from the shape of
+         * this <code>Area</code>. The resulting shape of this <code>Area</code>
+         * will include areas that were contained only in this <code>Area</code> and
+         * not in the specified <code>Area</code>.
+         *
+         * <pre>
+         * // Example:
+         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
+         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
+         * a1.subtract(a2);
+         *
+         * a1(before)     -         a2         =     a1(after)
+         *
+         * ################     ################
+         * ##############         ##############     ##
+         * ############             ############     ####
+         * ##########                 ##########     ######
+         * ########                     ########     ########
+         * ######                         ######     ######
+         * ####                             ####     ####
+         * ##                                 ##     ##
+         * </pre>
+         *
+         * @param {java.awt.geom.Area} rhs
+         * the <code>Area</code> to be subtracted from the current shape
+         * @throws NullPointerException
+         * if <code>rhs</code> is null
+         * @since 1.2
          */
-        const SEG_CLOSE: number;
+        subtract(rhs: Area): void;
+        /**
+         * Sets the shape of this <code>Area</code> to the intersection of its
+         * current shape and the shape of the specified <code>Area</code>. The
+         * resulting shape of this <code>Area</code> will include only areas that
+         * were contained in both this <code>Area</code> and also in the specified
+         * <code>Area</code>.
+         *
+         * <pre>
+         * // Example:
+         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
+         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
+         * a1.intersect(a2);
+         *
+         * a1(before)   intersect     a2         =     a1(after)
+         *
+         * ################     ################     ################
+         * ##############         ##############       ############
+         * ############             ############         ########
+         * ##########                 ##########           ####
+         * ########                     ########
+         * ######                         ######
+         * ####                             ####
+         * ##                                 ##
+         * </pre>
+         *
+         * @param {java.awt.geom.Area} rhs
+         * the <code>Area</code> to be intersected with this
+         * <code>Area</code>
+         * @throws NullPointerException
+         * if <code>rhs</code> is null
+         * @since 1.2
+         */
+        intersect(rhs: Area): void;
+        /**
+         * Sets the shape of this <code>Area</code> to be the combined area of its
+         * current shape and the shape of the specified <code>Area</code>, minus
+         * their intersection. The resulting shape of this <code>Area</code> will
+         * include only areas that were contained in either this <code>Area</code>
+         * or in the specified <code>Area</code>, but not in both.
+         *
+         * <pre>
+         * // Example:
+         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
+         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
+         * a1.exclusiveOr(a2);
+         *
+         * a1(before)    xor        a2         =     a1(after)
+         *
+         * ################     ################
+         * ##############         ##############     ##            ##
+         * ############             ############     ####        ####
+         * ##########                 ##########     ######    ######
+         * ########                     ########     ################
+         * ######                         ######     ######    ######
+         * ####                             ####     ####        ####
+         * ##                                 ##     ##            ##
+         * </pre>
+         *
+         * @param {java.awt.geom.Area} rhs
+         * the <code>Area</code> to be exclusive ORed with this
+         * <code>Area</code>.
+         * @throws NullPointerException
+         * if <code>rhs</code> is null
+         * @since 1.2
+         */
+        exclusiveOr(rhs: Area): void;
+        /**
+         * Removes all of the geometry from this <code>Area</code> and restores it
+         * to an empty area.
+         *
+         * @since 1.2
+         */
+        reset(): void;
+        /**
+         * Tests whether this <code>Area</code> object encloses any area.
+         *
+         * @return {boolean} <code>true</code> if this <code>Area</code> object represents an
+         * empty area; <code>false</code> otherwise.
+         * @since 1.2
+         */
+        isEmpty(): boolean;
+        /**
+         * Tests whether this <code>Area</code> consists entirely of straight edged
+         * polygonal geometry.
+         *
+         * @return {boolean} <code>true</code> if the geometry of this <code>Area</code>
+         * consists entirely of line segments; <code>false</code> otherwise.
+         * @since 1.2
+         */
+        isPolygonal(): boolean;
+        /**
+         * Tests whether this <code>Area</code> is rectangular in shape.
+         *
+         * @return {boolean} <code>true</code> if the geometry of this <code>Area</code> is
+         * rectangular in shape; <code>false</code> otherwise.
+         * @since 1.2
+         */
+        isRectangular(): boolean;
+        /**
+         * Tests whether this <code>Area</code> is comprised of a single closed
+         * subpath. This method returns <code>true</code> if the path contains 0 or
+         * 1 subpaths, or <code>false</code> if the path contains more than 1
+         * subpath. The subpaths are counted by the number of
+         * {@link PathIterator#SEG_MOVETO} segments that appear in the
+         * path.
+         *
+         * @return {boolean} <code>true</code> if the <code>Area</code> is comprised of a
+         * single basic geometry; <code>false</code> otherwise.
+         * @since 1.2
+         */
+        isSingular(): boolean;
+        cachedBounds: java.awt.geom.Rectangle2D;
+        invalidateBounds(): void;
+        getCachedBounds(): java.awt.geom.Rectangle2D;
+        /**
+         * Returns a high precision bounding {@link Rectangle2D} that completely
+         * encloses this <code>Area</code>.
+         * <p>
+         * The Area class will attempt to return the tightest bounding box possible
+         * for the Shape. The bounding box will not be padded to include the control
+         * points of curves in the outline of the Shape, but should tightly fit the
+         * actual geometry of the outline itself.
+         *
+         * @return {java.awt.geom.Rectangle2D} the bounding <code>Rectangle2D</code> for the <code>Area</code>.
+         * @since 1.2
+         */
+        getBounds2D(): java.awt.geom.Rectangle2D;
+        /**
+         * Returns a bounding {@link Rectangle} that completely encloses this
+         * <code>Area</code>.
+         * <p>
+         * The Area class will attempt to return the tightest bounding box possible
+         * for the Shape. The bounding box will not be padded to include the control
+         * points of curves in the outline of the Shape, but should tightly fit the
+         * actual geometry of the outline itself. Since the returned object
+         * represents the bounding box with integers, the bounding box can only be
+         * as tight as the nearest integer coordinates that encompass the geometry
+         * of the Shape.
+         *
+         * @return {java.awt.Rectangle} the bounding <code>Rectangle</code> for the <code>Area</code>.
+         * @since 1.2
+         */
+        getBounds(): java.awt.Rectangle;
+        /**
+         * Returns an exact copy of this <code>Area</code> object.
+         *
+         * @return {*} Created clone object
+         * @since 1.2
+         */
+        clone(): any;
+        /**
+         * Tests whether the geometries of the two <code>Area</code> objects are
+         * equal. This method will return false if the argument is null.
+         *
+         * @param {java.awt.geom.Area} other
+         * the <code>Area</code> to be compared to this <code>Area</code>
+         * @return {boolean} <code>true</code> if the two geometries are equal;
+         * <code>false</code> otherwise.
+         * @since 1.2
+         */
+        equals(other: Area): boolean;
+        /**
+         * Transforms the geometry of this <code>Area</code> using the specified
+         * {@link AffineTransform}. The geometry is transformed in place, which
+         * permanently changes the enclosed area defined by this object.
+         *
+         * @param {java.awt.geom.AffineTransform} t
+         * the transformation used to transform the area
+         * @throws NullPointerException
+         * if <code>t</code> is null
+         * @since 1.2
+         */
+        transform(t: java.awt.geom.AffineTransform): void;
+        /**
+         * Creates a new <code>Area</code> object that contains the same geometry as
+         * this <code>Area</code> transformed by the specified
+         * <code>AffineTransform</code>. This <code>Area</code> object is unchanged.
+         *
+         * @param {java.awt.geom.AffineTransform} t
+         * the specified <code>AffineTransform</code> used to transform
+         * the new <code>Area</code>
+         * @throws NullPointerException
+         * if <code>t</code> is null
+         * @return {java.awt.geom.Area} a new <code>Area</code> object representing the transformed
+         * geometry.
+         * @since 1.2
+         */
+        createTransformedArea(t: java.awt.geom.AffineTransform): Area;
+        contains$double$double(x: number, y: number): boolean;
+        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
+        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        contains(x?: any, y?: any, w?: any, h?: any): boolean;
+        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
+        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
+        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
+        /**
+         * Creates a <code>PathIterator</code> for the flattened outline of this
+         * <code>Area</code> object. Only uncurved path segments represented by the
+         * SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types are returned by the
+         * iterator. This <code>Area</code> object is unchanged.
+         *
+         * @param {java.awt.geom.AffineTransform} at
+         * an optional <code>AffineTransform</code> to be applied to the
+         * coordinates as they are returned in the iteration, or
+         * <code>null</code> if untransformed coordinates are desired
+         * @param {number} flatness
+         * the maximum amount that the control points for a given curve
+         * can vary from colinear before a subdivided curve is replaced
+         * by a straight line connecting the end points
+         * @return {*} the <code>PathIterator</code> object that returns the geometry of
+         * the outline of this <code>Area</code>, one segment at a time.
+         * @since 1.2
+         */
+        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
+    }
+    class AreaIterator implements java.awt.geom.PathIterator {
+        transform: java.awt.geom.AffineTransform;
+        curves: java.util.Vector<any>;
+        index: number;
+        prevcurve: sun.awt.geom.Curve;
+        thiscurve: sun.awt.geom.Curve;
+        constructor(curves: java.util.Vector<any>, at: java.awt.geom.AffineTransform);
+        getWindingRule(): number;
+        isDone(): boolean;
+        next(): void;
+        currentSegment$float_A(coords: number[]): number;
+        currentSegment(coords?: any): number;
+        currentSegment$double_A(coords: number[]): number;
     }
 }
 declare namespace java.awt.geom {
@@ -3969,17 +2823,121 @@ declare namespace java.awt.geom {
 }
 declare namespace java.awt.geom {
     /**
-     * A utility class to iterate over the path segments of a quadratic curve
-     * segment through the PathIterator interface.
+     * Constructs a new <code>FlatteningPathIterator</code> object that flattens
+     * a path as it iterates over it. The <code>limit</code> parameter allows
+     * you to control the maximum number of recursive subdivisions that the
+     * iterator can make before it assumes that the curve is flat enough without
+     * measuring against the <code>flatness</code> parameter. The flattened
+     * iteration therefore never generates more than a maximum of
+     * <code>(2^limit)</code> line segments per curve.
+     *
+     * @param {*} src
+     * the original unflattened path being iterated over
+     * @param {number} flatness
+     * the maximum allowable distance between the control points and
+     * the flattened curve
+     * @param {number} limit
+     * the maximum number of recursive subdivisions allowed for any
+     * curved segment
+     * @exception IllegalArgumentException
+     * if <code>flatness</code> or <code>limit</code> is less
+     * than zero
+     * @class
+     * @author Jim Graham
+     */
+    class FlatteningPathIterator implements java.awt.geom.PathIterator {
+        static GROW_SIZE: number;
+        src: java.awt.geom.PathIterator;
+        squareflat: number;
+        limit: number;
+        hold: number[];
+        curx: number;
+        cury: number;
+        movx: number;
+        movy: number;
+        holdType: number;
+        holdEnd: number;
+        holdIndex: number;
+        levels: number[];
+        levelIndex: number;
+        done: boolean;
+        constructor(src?: any, flatness?: any, limit?: any);
+        /**
+         * Returns the flatness of this iterator.
+         *
+         * @return {number} the flatness of this <code>FlatteningPathIterator</code>.
+         */
+        getFlatness(): number;
+        /**
+         * Returns the recursion limit of this iterator.
+         *
+         * @return {number} the recursion limit of this <code>FlatteningPathIterator</code>.
+         */
+        getRecursionLimit(): number;
+        /**
+         * Returns the winding rule for determining the interior of the path.
+         *
+         * @return {number} the winding rule of the original unflattened path being iterated
+         * over.
+         * @see PathIterator#WIND_EVEN_ODD
+         * @see PathIterator#WIND_NON_ZERO
+         */
+        getWindingRule(): number;
+        /**
+         * Tests if the iteration is complete.
+         *
+         * @return {boolean} <code>true</code> if all the segments have been read;
+         * <code>false</code> otherwise.
+         */
+        isDone(): boolean;
+        ensureHoldCapacity(want: number): void;
+        next$(): void;
+        next$boolean(doNext: boolean): void;
+        next(doNext?: any): any;
+        currentSegment$float_A(coords: number[]): number;
+        /**
+         * Returns the coordinates and type of the current path segment in the
+         * iteration. The return value is the path segment type: SEG_MOVETO,
+         * SEG_LINETO, or SEG_CLOSE. A float array of length 6 must be passed in and
+         * can be used to store the coordinates of the point(s). Each point is
+         * stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+         * types return one point, and SEG_CLOSE does not return any points.
+         *
+         * @param {float[]} coords
+         * an array that holds the data returned from this method
+         * @return {number} the path segment type of the current path segment.
+         * @exception NoSuchElementException
+         * if there are no more elements in the flattening path to be
+         * returned.
+         * @see PathIterator#SEG_MOVETO
+         * @see PathIterator#SEG_LINETO
+         * @see PathIterator#SEG_CLOSE
+         */
+        currentSegment(coords?: any): number;
+        currentSegment$double_A(coords: number[]): number;
+    }
+}
+declare namespace java.awt.geom {
+    /**
+     * A utility class to iterate over the path segments of an arc through the
+     * PathIterator interface.
      *
      * @author Jim Graham
      * @class
      */
-    class QuadIterator implements java.awt.geom.PathIterator {
-        quad: java.awt.geom.QuadCurve2D;
+    class ArcIterator implements java.awt.geom.PathIterator {
+        x: number;
+        y: number;
+        w: number;
+        h: number;
+        angStRad: number;
+        increment: number;
+        cv: number;
         affine: java.awt.geom.AffineTransform;
         index: number;
-        constructor(q: java.awt.geom.QuadCurve2D, at: java.awt.geom.AffineTransform);
+        arcSegs: number;
+        lineSegs: number;
+        constructor(a: java.awt.geom.Arc2D, at: java.awt.geom.AffineTransform);
         /**
          * Return the winding rule for determining the insideness of the path.
          *
@@ -4000,6 +2958,7 @@ declare namespace java.awt.geom {
          * direction.
          */
         next(): void;
+        static btan(increment: number): number;
         currentSegment$float_A(coords: number[]): number;
         /**
          * Returns the coordinates and type of the current path segment in the
@@ -4021,6 +2980,864 @@ declare namespace java.awt.geom {
          */
         currentSegment(coords?: any): number;
         currentSegment$double_A(coords: number[]): number;
+    }
+}
+declare namespace java.awt.geom {
+    /**
+     * The <code>PathIterator</code> interface provides the mechanism for objects
+     * that implement the {@link *} interface to return the
+     * geometry of their boundary by allowing a caller to retrieve the path of that
+     * boundary a segment at a time. This interface allows these objects to retrieve
+     * the path of their boundary a segment at a time by using 1st through 3rd order
+     * B&eacute;zier curves, which are lines and quadratic or cubic B&eacute;zier
+     * splines.
+     * <p>
+     * Multiple subpaths can be expressed by using a "MOVETO" segment to create a
+     * discontinuity in the geometry to move from the end of one subpath to the
+     * beginning of the next.
+     * <p>
+     * Each subpath can be closed manually by ending the last segment in the subpath
+     * on the same coordinate as the beginning "MOVETO" segment for that subpath or
+     * by using a "CLOSE" segment to append a line segment from the last point back
+     * to the first. Be aware that manually closing an outline as opposed to using a
+     * "CLOSE" segment to close the path might result in different line style
+     * decorations being used at the end points of the subpath. For example, the
+     * {@link java.awt.BasicStroke} object uses a line "JOIN" decoration
+     * to connect the first and last points if a "CLOSE" segment is encountered,
+     * whereas simply ending the path on the same coordinate as the beginning
+     * coordinate results in line "CAP" decorations being used at the ends.
+     *
+     * @see java.awt.Shape
+     * @see java.awt.BasicStroke
+     *
+     * @author Jim Graham
+     * @class
+     */
+    interface PathIterator {
+        /**
+         * Returns the winding rule for determining the interior of the path.
+         *
+         * @return {number} the winding rule.
+         * @see #WIND_EVEN_ODD
+         * @see #WIND_NON_ZERO
+         */
+        getWindingRule(): number;
+        /**
+         * Tests if the iteration is complete.
+         *
+         * @return {boolean} <code>true</code> if all the segments have been read;
+         * <code>false</code> otherwise.
+         */
+        isDone(): boolean;
+        /**
+         * Moves the iterator to the next segment of the path forwards along the
+         * primary direction of traversal as long as there are more points in that
+         * direction.
+         */
+        next(): any;
+        /**
+         * Returns the coordinates and type of the current path segment in the
+         * iteration. The return value is the path-segment type: SEG_MOVETO,
+         * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
+         * length 6 must be passed in and can be used to store the coordinates of
+         * the point(s). Each point is stored as a pair of float x,y coordinates.
+         * SEG_MOVETO and SEG_LINETO types returns one point, SEG_QUADTO returns two
+         * points, SEG_CUBICTO returns 3 points and SEG_CLOSE does not return any
+         * points.
+         *
+         * @param {float[]} coords
+         * an array that holds the data returned from this method
+         * @return {number} the path-segment type of the current path segment.
+         * @see #SEG_MOVETO
+         * @see #SEG_LINETO
+         * @see #SEG_QUADTO
+         * @see #SEG_CUBICTO
+         * @see #SEG_CLOSE
+         */
+        currentSegment(coords?: any): number;
+    }
+    namespace PathIterator {
+        /**
+         * The winding rule constant for specifying an even-odd rule for determining
+         * the interior of a path. The even-odd rule specifies that a point lies
+         * inside the path if a ray drawn in any direction from that point to
+         * infinity is crossed by path segments an odd number of times.
+         */
+        const WIND_EVEN_ODD: number;
+        /**
+         * The winding rule constant for specifying a non-zero rule for determining
+         * the interior of a path. The non-zero rule specifies that a point lies
+         * inside the path if a ray drawn in any direction from that point to
+         * infinity is crossed by path segments a different number of times in the
+         * counter-clockwise direction than the clockwise direction.
+         */
+        const WIND_NON_ZERO: number;
+        /**
+         * The segment type constant for a point that specifies the starting
+         * location for a new subpath.
+         */
+        const SEG_MOVETO: number;
+        /**
+         * The segment type constant for a point that specifies the end point of a
+         * line to be drawn from the most recently specified point.
+         */
+        const SEG_LINETO: number;
+        /**
+         * The segment type constant for the pair of points that specify a quadratic
+         * parametric curve to be drawn from the most recently specified point. The
+         * curve is interpolated by solving the parametric control equation in the
+         * range <code>(t=[0..1])</code> using the most recently specified (current)
+         * point (CP), the first control point (P1), and the final interpolated
+         * control point (P2). The parametric control equation for this curve is:
+         *
+         * <pre>
+         * P(t) = B(2,0)*CP + B(2,1)*P1 + B(2,2)*P2
+         * 0 &lt;= t &lt;= 1
+         *
+         * B(n,m) = mth coefficient of nth degree Bernstein polynomial
+         * = C(n,m) * t^(m) * (1 - t)^(n-m)
+         * C(n,m) = Combinations of n things, taken m at a time
+         * = n! / (m! * (n-m)!)
+         * </pre>
+         */
+        const SEG_QUADTO: number;
+        /**
+         * The segment type constant for the set of 3 points that specify a cubic
+         * parametric curve to be drawn from the most recently specified point. The
+         * curve is interpolated by solving the parametric control equation in the
+         * range <code>(t=[0..1])</code> using the most recently specified (current)
+         * point (CP), the first control point (P1), the second control point (P2),
+         * and the final interpolated control point (P3). The parametric control
+         * equation for this curve is:
+         *
+         * <pre>
+         * P(t) = B(3,0)*CP + B(3,1)*P1 + B(3,2)*P2 + B(3,3)*P3
+         * 0 &lt;= t &lt;= 1
+         *
+         * B(n,m) = mth coefficient of nth degree Bernstein polynomial
+         * = C(n,m) * t^(m) * (1 - t)^(n-m)
+         * C(n,m) = Combinations of n things, taken m at a time
+         * = n! / (m! * (n-m)!)
+         * </pre>
+         *
+         * This form of curve is commonly known as a B&eacute;zier curve.
+         */
+        const SEG_CUBICTO: number;
+        /**
+         * The segment type constant that specifies that the preceding subpath
+         * should be closed by appending a line segment back to the point
+         * corresponding to the most recent SEG_MOVETO.
+         */
+        const SEG_CLOSE: number;
+    }
+}
+declare namespace java.awt.geom {
+    /**
+     * This <code>Line2D</code> represents a line segment in {@code (x,y)}
+     * coordinate space. This class, like all of the Java 2D API, uses a default
+     * coordinate system called <i>user space</i> in which the y-axis values
+     * increase downward and x-axis values increase to the right. For more
+     * information on the user space coordinate system, see the <a href=
+     * "http://docs.oracle.com/javase/1.3/docs/guide/2d/spec/j2d-intro.fm2.html#61857">
+     * Coordinate Systems</a> section of the Java 2D Programmer's Guide.
+     * <p>
+     * This class is only the abstract superclass for all objects that store a 2D
+     * line segment. The actual storage representation of the coordinates is left to
+     * the subclass.
+     *
+     * @author Jim Graham
+     * @since 1.2
+     * @class
+     */
+    abstract class Line2D implements java.awt.Shape, java.lang.Cloneable {
+        constructor();
+        /**
+         * Returns the X coordinate of the start point in double precision.
+         *
+         * @return {number} the X coordinate of the start point of this {@code Line2D}
+         * object.
+         * @since 1.2
+         */
+        abstract getX1(): number;
+        /**
+         * Returns the Y coordinate of the start point in double precision.
+         *
+         * @return {number} the Y coordinate of the start point of this {@code Line2D}
+         * object.
+         * @since 1.2
+         */
+        abstract getY1(): number;
+        /**
+         * Returns the start <code>Point2D</code> of this <code>Line2D</code>.
+         *
+         * @return {java.awt.geom.Point2D} the start <code>Point2D</code> of this <code>Line2D</code>.
+         * @since 1.2
+         */
+        abstract getP1(): java.awt.geom.Point2D;
+        /**
+         * Returns the X coordinate of the end point in double precision.
+         *
+         * @return {number} the X coordinate of the end point of this {@code Line2D} object.
+         * @since 1.2
+         */
+        abstract getX2(): number;
+        /**
+         * Returns the Y coordinate of the end point in double precision.
+         *
+         * @return {number} the Y coordinate of the end point of this {@code Line2D} object.
+         * @since 1.2
+         */
+        abstract getY2(): number;
+        /**
+         * Returns the end <code>Point2D</code> of this <code>Line2D</code>.
+         *
+         * @return {java.awt.geom.Point2D} the end <code>Point2D</code> of this <code>Line2D</code>.
+         * @since 1.2
+         */
+        abstract getP2(): java.awt.geom.Point2D;
+        setLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): void;
+        /**
+         * Sets the location of the end points of this <code>Line2D</code> to the
+         * specified double coordinates.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @since 1.2
+         */
+        setLine(x1?: any, y1?: any, x2?: any, y2?: any): any;
+        setLine$java_awt_geom_Point2D$java_awt_geom_Point2D(p1: java.awt.geom.Point2D, p2: java.awt.geom.Point2D): void;
+        setLine$java_awt_geom_Line2D(l: Line2D): void;
+        /**
+         * Returns an indicator of where the specified point {@code (px,py)} lies
+         * with respect to the line segment from {@code (x1,y1)} to {@code (x2,y2)}.
+         * The return value can be either 1, -1, or 0 and indicates in which
+         * direction the specified line must pivot around its first end point,
+         * {@code (x1,y1)}, in order to point at the specified point {@code (px,py)}
+         * .
+         * <p>
+         * A return value of 1 indicates that the line segment must turn in the
+         * direction that takes the positive X axis towards the negative Y axis. In
+         * the default coordinate system used by Java 2D, this direction is
+         * counterclockwise.
+         * <p>
+         * A return value of -1 indicates that the line segment must turn in the
+         * direction that takes the positive X axis towards the positive Y axis. In
+         * the default coordinate system, this direction is clockwise.
+         * <p>
+         * A return value of 0 indicates that the point lies exactly on the line
+         * segment. Note that an indicator value of 0 is rare and not useful for
+         * determining collinearity because of floating point rounding issues.
+         * <p>
+         * If the point is colinear with the line segment, but not between the end
+         * points, then the value will be -1 if the point lies
+         * "beyond {@code (x1,y1)}" or 1 if the point lies "beyond {@code (x2,y2)}".
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * segment
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * segment
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * segment
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * segment
+         * @param {number} px
+         * the X coordinate of the specified point to be compared with
+         * the specified line segment
+         * @param {number} py
+         * the Y coordinate of the specified point to be compared with
+         * the specified line segment
+         * @return {number} an integer that indicates the position of the third specified
+         * coordinates with respect to the line segment formed by the first
+         * two specified coordinates.
+         * @since 1.2
+         */
+        static relativeCCW(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
+        relativeCCW$double$double(px: number, py: number): number;
+        /**
+         * Returns an indicator of where the specified point {@code (px,py)} lies
+         * with respect to this line segment. See the method comments of
+         * {@link #relativeCCW(double, double, double, double, double, double)} to
+         * interpret the return value.
+         *
+         * @param {number} px
+         * the X coordinate of the specified point to be compared with
+         * this <code>Line2D</code>
+         * @param {number} py
+         * the Y coordinate of the specified point to be compared with
+         * this <code>Line2D</code>
+         * @return {number} an integer that indicates the position of the specified
+         * coordinates with respect to this <code>Line2D</code>
+         * @see #relativeCCW(double, double, double, double, double, double)
+         * @since 1.2
+         */
+        relativeCCW(px?: any, py?: any): number;
+        relativeCCW$java_awt_geom_Point2D(p: java.awt.geom.Point2D): number;
+        /**
+         * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)}
+         * intersects the line segment from {@code (x3,y3)} to {@code (x4,y4)}.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the first specified
+         * line segment
+         * @param {number} y1
+         * the Y coordinate of the start point of the first specified
+         * line segment
+         * @param {number} x2
+         * the X coordinate of the end point of the first specified line
+         * segment
+         * @param {number} y2
+         * the Y coordinate of the end point of the first specified line
+         * segment
+         * @param {number} x3
+         * the X coordinate of the start point of the second specified
+         * line segment
+         * @param {number} y3
+         * the Y coordinate of the start point of the second specified
+         * line segment
+         * @param {number} x4
+         * the X coordinate of the end point of the second specified line
+         * segment
+         * @param {number} y4
+         * the Y coordinate of the end point of the second specified line
+         * segment
+         * @return {boolean} <code>true</code> if the first specified line segment and the
+         * second specified line segment intersect each other;
+         * <code>false</code> otherwise.
+         * @since 1.2
+         */
+        static linesIntersect(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number): boolean;
+        intersectsLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): boolean;
+        /**
+         * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)}
+         * intersects this line segment.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * segment
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * segment
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * segment
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * segment
+         * @return {boolean} {@code <true>} if this line segment and the specified line
+         * segment intersect each other; <code>false</code> otherwise.
+         * @since 1.2
+         */
+        intersectsLine(x1?: any, y1?: any, x2?: any, y2?: any): boolean;
+        intersectsLine$java_awt_geom_Line2D(l: Line2D): boolean;
+        /**
+         * Returns the square of the distance from a point to a line segment. The
+         * distance measured is the distance between the specified point and the
+         * closest point between the specified end points. If the specified point
+         * intersects the line segment in between the end points, this method
+         * returns 0.0.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * segment
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * segment
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * segment
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * segment
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * the specified line segment
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * the specified line segment
+         * @return {number} a double value that is the square of the distance from the
+         * specified point to the specified line segment.
+         * @see #ptLineDistSq(double, double, double, double, double, double)
+         * @since 1.2
+         */
+        static ptSegDistSq(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
+        /**
+         * Returns the distance from a point to a line segment. The distance
+         * measured is the distance between the specified point and the closest
+         * point between the specified end points. If the specified point intersects
+         * the line segment in between the end points, this method returns 0.0.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * segment
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * segment
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * segment
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * segment
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * the specified line segment
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * the specified line segment
+         * @return {number} a double value that is the distance from the specified point to
+         * the specified line segment.
+         * @see #ptLineDist(double, double, double, double, double, double)
+         * @since 1.2
+         */
+        static ptSegDist(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
+        ptSegDistSq$double$double(px: number, py: number): number;
+        /**
+         * Returns the square of the distance from a point to this line segment. The
+         * distance measured is the distance between the specified point and the
+         * closest point between the current line's end points. If the specified
+         * point intersects the line segment in between the end points, this method
+         * returns 0.0.
+         *
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * this line segment
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * this line segment
+         * @return {number} a double value that is the square of the distance from the
+         * specified point to the current line segment.
+         * @see #ptLineDistSq(double, double)
+         * @since 1.2
+         */
+        ptSegDistSq(px?: any, py?: any): number;
+        ptSegDistSq$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
+        ptSegDist$double$double(px: number, py: number): number;
+        /**
+         * Returns the distance from a point to this line segment. The distance
+         * measured is the distance between the specified point and the closest
+         * point between the current line's end points. If the specified point
+         * intersects the line segment in between the end points, this method
+         * returns 0.0.
+         *
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * this line segment
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * this line segment
+         * @return {number} a double value that is the distance from the specified point to
+         * the current line segment.
+         * @see #ptLineDist(double, double)
+         * @since 1.2
+         */
+        ptSegDist(px?: any, py?: any): number;
+        ptSegDist$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
+        /**
+         * Returns the square of the distance from a point to a line. The distance
+         * measured is the distance between the specified point and the closest
+         * point on the infinitely-extended line defined by the specified
+         * coordinates. If the specified point intersects the line, this method
+         * returns 0.0.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * the specified line
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * the specified line
+         * @return {number} a double value that is the square of the distance from the
+         * specified point to the specified line.
+         * @see #ptSegDistSq(double, double, double, double, double, double)
+         * @since 1.2
+         */
+        static ptLineDistSq(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
+        /**
+         * Returns the distance from a point to a line. The distance measured is the
+         * distance between the specified point and the closest point on the
+         * infinitely-extended line defined by the specified coordinates. If the
+         * specified point intersects the line, this method returns 0.0.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * the specified line
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * the specified line
+         * @return {number} a double value that is the distance from the specified point to
+         * the specified line.
+         * @see #ptSegDist(double, double, double, double, double, double)
+         * @since 1.2
+         */
+        static ptLineDist(x1: number, y1: number, x2: number, y2: number, px: number, py: number): number;
+        ptLineDistSq$double$double(px: number, py: number): number;
+        /**
+         * Returns the square of the distance from a point to this line. The
+         * distance measured is the distance between the specified point and the
+         * closest point on the infinitely-extended line defined by this
+         * <code>Line2D</code>. If the specified point intersects the line, this
+         * method returns 0.0.
+         *
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * this line
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * this line
+         * @return {number} a double value that is the square of the distance from a
+         * specified point to the current line.
+         * @see #ptSegDistSq(double, double)
+         * @since 1.2
+         */
+        ptLineDistSq(px?: any, py?: any): number;
+        ptLineDistSq$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
+        ptLineDist$double$double(px: number, py: number): number;
+        /**
+         * Returns the distance from a point to this line. The distance measured is
+         * the distance between the specified point and the closest point on the
+         * infinitely-extended line defined by this <code>Line2D</code>. If the
+         * specified point intersects the line, this method returns 0.0.
+         *
+         * @param {number} px
+         * the X coordinate of the specified point being measured against
+         * this line
+         * @param {number} py
+         * the Y coordinate of the specified point being measured against
+         * this line
+         * @return {number} a double value that is the distance from a specified point to the
+         * current line.
+         * @see #ptSegDist(double, double)
+         * @since 1.2
+         */
+        ptLineDist(px?: any, py?: any): number;
+        ptLineDist$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): number;
+        contains$double$double(x: number, y: number): boolean;
+        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
+        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
+        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * Tests if the interior of this <code>Line2D</code> entirely contains the
+         * specified set of rectangular coordinates. This method is required to
+         * implement the <code>Shape</code> interface, but in the case of
+         * <code>Line2D</code> objects it always returns false since a line contains
+         * no area.
+         *
+         * @param {number} x
+         * the X coordinate of the upper-left corner of the specified
+         * rectangular area
+         * @param {number} y
+         * the Y coordinate of the upper-left corner of the specified
+         * rectangular area
+         * @param {number} w
+         * the width of the specified rectangular area
+         * @param {number} h
+         * the height of the specified rectangular area
+         * @return {boolean} <code>false</code> because a <code>Line2D</code> contains no
+         * area.
+         * @since 1.2
+         */
+        contains(x?: any, y?: any, w?: any, h?: any): boolean;
+        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @return {java.awt.Rectangle}
+         */
+        getBounds(): java.awt.Rectangle;
+        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
+        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
+        /**
+         * Returns an iteration object that defines the boundary of this flattened
+         * <code>Line2D</code>. The iterator for this class is not multi-threaded
+         * safe, which means that this <code>Line2D</code> class does not guarantee
+         * that modifications to the geometry of this <code>Line2D</code> object do
+         * not affect any iterations of that geometry that are already in process.
+         *
+         * @param {java.awt.geom.AffineTransform} at
+         * the specified <code>AffineTransform</code>
+         * @param {number} flatness
+         * the maximum amount that the control points for a given curve
+         * can vary from colinear before a subdivided curve is replaced
+         * by a straight line connecting the end points. Since a
+         * <code>Line2D</code> object is always flat, this parameter is
+         * ignored.
+         * @return {*} a <code>PathIterator</code> that defines the boundary of the
+         * flattened <code>Line2D</code>
+         * @since 1.2
+         */
+        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
+        /**
+         * Creates a new object of the same class as this object.
+         *
+         * @return {*} a clone of this instance.
+         * @exception OutOfMemoryError
+         * if there is not enough memory.
+         * @see java.lang.Cloneable
+         * @since 1.2
+         */
+        clone(): any;
+        abstract getBounds2D(): any;
+    }
+    namespace Line2D {
+        /**
+         * Constructs and initializes a Line from the specified coordinates.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @since 1.2
+         * @class
+         * @extends java.awt.geom.Line2D
+         */
+        class Float extends java.awt.geom.Line2D implements java.io.Serializable {
+            /**
+             * The X coordinate of the start point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x1: number;
+            /**
+             * The Y coordinate of the start point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y1: number;
+            /**
+             * The X coordinate of the end point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x2: number;
+            /**
+             * The Y coordinate of the end point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y2: number;
+            constructor(x1?: any, y1?: any, x2?: any, y2?: any);
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP1(): java.awt.geom.Point2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP2(): java.awt.geom.Point2D;
+            setLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): void;
+            setLine$float$float$float$float(x1: number, y1: number, x2: number, y2: number): void;
+            /**
+             * Sets the location of the end points of this <code>Line2D</code> to
+             * the specified float coordinates.
+             *
+             * @param {number} x1
+             * the X coordinate of the start point
+             * @param {number} y1
+             * the Y coordinate of the start point
+             * @param {number} x2
+             * the X coordinate of the end point
+             * @param {number} y2
+             * the Y coordinate of the end point
+             * @since 1.2
+             */
+            setLine(x1?: any, y1?: any, x2?: any, y2?: any): any;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            getBounds2D(): java.awt.geom.Rectangle2D;
+            static serialVersionUID: number;
+        }
+        /**
+         * Constructs and initializes a <code>Line2D</code> from the specified
+         * coordinates.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point
+         * @param {number} y1
+         * the Y coordinate of the start point
+         * @param {number} x2
+         * the X coordinate of the end point
+         * @param {number} y2
+         * the Y coordinate of the end point
+         * @since 1.2
+         * @class
+         * @extends java.awt.geom.Line2D
+         */
+        class Double extends java.awt.geom.Line2D implements java.io.Serializable {
+            /**
+             * The X coordinate of the start point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x1: number;
+            /**
+             * The Y coordinate of the start point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y1: number;
+            /**
+             * The X coordinate of the end point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x2: number;
+            /**
+             * The Y coordinate of the end point of the line segment.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y2: number;
+            constructor(x1?: any, y1?: any, x2?: any, y2?: any);
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY1(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP1(): java.awt.geom.Point2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY2(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Point2D}
+             */
+            getP2(): java.awt.geom.Point2D;
+            setLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): void;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {number} x1
+             * @param {number} y1
+             * @param {number} x2
+             * @param {number} y2
+             */
+            setLine(x1?: any, y1?: any, x2?: any, y2?: any): any;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            getBounds2D(): java.awt.geom.Rectangle2D;
+            static serialVersionUID: number;
+        }
     }
 }
 declare namespace java.awt.geom {
@@ -5071,1056 +4888,6 @@ declare namespace java.awt.geom {
 }
 declare namespace java.awt.geom {
     /**
-     * Constructs an instance of <code>NoninvertibleTransformException</code>
-     * with the specified detail message.
-     *
-     * @param {string} s
-     * the detail message
-     * @since 1.2
-     * @class
-     * @extends java.lang.Exception
-     */
-    class NoninvertibleTransformException extends java.lang.Exception {
-        constructor(s: string);
-    }
-}
-declare namespace java.awt.geom {
-    /**
-     * The <code>Area</code> class creates an area geometry from the specified
-     * {@link Shape} object. The geometry is explicitly closed, if the
-     * <code>Shape</code> is not already closed. The fill rule (even-odd or
-     * winding) specified by the geometry of the <code>Shape</code> is used to
-     * determine the resulting enclosed area.
-     *
-     * @param {*} s
-     * the <code>Shape</code> from which the area is constructed
-     * @throws NullPointerException
-     * if <code>s</code> is null
-     * @since 1.2
-     * @class
-     */
-    class Area implements java.awt.Shape, java.lang.Cloneable {
-        static EmptyCurves: java.util.Vector<any>;
-        static EmptyCurves_$LI$(): java.util.Vector<any>;
-        curves: java.util.Vector<any>;
-        constructor(s?: any);
-        static pathToCurves(pi: java.awt.geom.PathIterator): java.util.Vector<any>;
-        /**
-         * Adds the shape of the specified <code>Area</code> to the shape of this
-         * <code>Area</code>. The resulting shape of this <code>Area</code> will
-         * include the union of both shapes, or all areas that were contained in
-         * either this or the specified <code>Area</code>.
-         *
-         * <pre>
-         * // Example:
-         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
-         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
-         * a1.add(a2);
-         *
-         * a1(before)     +         a2         =     a1(after)
-         *
-         * ################     ################     ################
-         * ##############         ##############     ################
-         * ############             ############     ################
-         * ##########                 ##########     ################
-         * ########                     ########     ################
-         * ######                         ######     ######    ######
-         * ####                             ####     ####        ####
-         * ##                                 ##     ##            ##
-         * </pre>
-         *
-         * @param {java.awt.geom.Area} rhs
-         * the <code>Area</code> to be added to the current shape
-         * @throws NullPointerException
-         * if <code>rhs</code> is null
-         * @since 1.2
-         */
-        add(rhs: Area): void;
-        /**
-         * Subtracts the shape of the specified <code>Area</code> from the shape of
-         * this <code>Area</code>. The resulting shape of this <code>Area</code>
-         * will include areas that were contained only in this <code>Area</code> and
-         * not in the specified <code>Area</code>.
-         *
-         * <pre>
-         * // Example:
-         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
-         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
-         * a1.subtract(a2);
-         *
-         * a1(before)     -         a2         =     a1(after)
-         *
-         * ################     ################
-         * ##############         ##############     ##
-         * ############             ############     ####
-         * ##########                 ##########     ######
-         * ########                     ########     ########
-         * ######                         ######     ######
-         * ####                             ####     ####
-         * ##                                 ##     ##
-         * </pre>
-         *
-         * @param {java.awt.geom.Area} rhs
-         * the <code>Area</code> to be subtracted from the current shape
-         * @throws NullPointerException
-         * if <code>rhs</code> is null
-         * @since 1.2
-         */
-        subtract(rhs: Area): void;
-        /**
-         * Sets the shape of this <code>Area</code> to the intersection of its
-         * current shape and the shape of the specified <code>Area</code>. The
-         * resulting shape of this <code>Area</code> will include only areas that
-         * were contained in both this <code>Area</code> and also in the specified
-         * <code>Area</code>.
-         *
-         * <pre>
-         * // Example:
-         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
-         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
-         * a1.intersect(a2);
-         *
-         * a1(before)   intersect     a2         =     a1(after)
-         *
-         * ################     ################     ################
-         * ##############         ##############       ############
-         * ############             ############         ########
-         * ##########                 ##########           ####
-         * ########                     ########
-         * ######                         ######
-         * ####                             ####
-         * ##                                 ##
-         * </pre>
-         *
-         * @param {java.awt.geom.Area} rhs
-         * the <code>Area</code> to be intersected with this
-         * <code>Area</code>
-         * @throws NullPointerException
-         * if <code>rhs</code> is null
-         * @since 1.2
-         */
-        intersect(rhs: Area): void;
-        /**
-         * Sets the shape of this <code>Area</code> to be the combined area of its
-         * current shape and the shape of the specified <code>Area</code>, minus
-         * their intersection. The resulting shape of this <code>Area</code> will
-         * include only areas that were contained in either this <code>Area</code>
-         * or in the specified <code>Area</code>, but not in both.
-         *
-         * <pre>
-         * // Example:
-         * Area a1 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 0,8]);
-         * Area a2 = new Area([triangle 0,0 =&gt; 8,0 =&gt; 8,8]);
-         * a1.exclusiveOr(a2);
-         *
-         * a1(before)    xor        a2         =     a1(after)
-         *
-         * ################     ################
-         * ##############         ##############     ##            ##
-         * ############             ############     ####        ####
-         * ##########                 ##########     ######    ######
-         * ########                     ########     ################
-         * ######                         ######     ######    ######
-         * ####                             ####     ####        ####
-         * ##                                 ##     ##            ##
-         * </pre>
-         *
-         * @param {java.awt.geom.Area} rhs
-         * the <code>Area</code> to be exclusive ORed with this
-         * <code>Area</code>.
-         * @throws NullPointerException
-         * if <code>rhs</code> is null
-         * @since 1.2
-         */
-        exclusiveOr(rhs: Area): void;
-        /**
-         * Removes all of the geometry from this <code>Area</code> and restores it
-         * to an empty area.
-         *
-         * @since 1.2
-         */
-        reset(): void;
-        /**
-         * Tests whether this <code>Area</code> object encloses any area.
-         *
-         * @return {boolean} <code>true</code> if this <code>Area</code> object represents an
-         * empty area; <code>false</code> otherwise.
-         * @since 1.2
-         */
-        isEmpty(): boolean;
-        /**
-         * Tests whether this <code>Area</code> consists entirely of straight edged
-         * polygonal geometry.
-         *
-         * @return {boolean} <code>true</code> if the geometry of this <code>Area</code>
-         * consists entirely of line segments; <code>false</code> otherwise.
-         * @since 1.2
-         */
-        isPolygonal(): boolean;
-        /**
-         * Tests whether this <code>Area</code> is rectangular in shape.
-         *
-         * @return {boolean} <code>true</code> if the geometry of this <code>Area</code> is
-         * rectangular in shape; <code>false</code> otherwise.
-         * @since 1.2
-         */
-        isRectangular(): boolean;
-        /**
-         * Tests whether this <code>Area</code> is comprised of a single closed
-         * subpath. This method returns <code>true</code> if the path contains 0 or
-         * 1 subpaths, or <code>false</code> if the path contains more than 1
-         * subpath. The subpaths are counted by the number of
-         * {@link PathIterator#SEG_MOVETO} segments that appear in the
-         * path.
-         *
-         * @return {boolean} <code>true</code> if the <code>Area</code> is comprised of a
-         * single basic geometry; <code>false</code> otherwise.
-         * @since 1.2
-         */
-        isSingular(): boolean;
-        cachedBounds: java.awt.geom.Rectangle2D;
-        invalidateBounds(): void;
-        getCachedBounds(): java.awt.geom.Rectangle2D;
-        /**
-         * Returns a high precision bounding {@link Rectangle2D} that completely
-         * encloses this <code>Area</code>.
-         * <p>
-         * The Area class will attempt to return the tightest bounding box possible
-         * for the Shape. The bounding box will not be padded to include the control
-         * points of curves in the outline of the Shape, but should tightly fit the
-         * actual geometry of the outline itself.
-         *
-         * @return {java.awt.geom.Rectangle2D} the bounding <code>Rectangle2D</code> for the <code>Area</code>.
-         * @since 1.2
-         */
-        getBounds2D(): java.awt.geom.Rectangle2D;
-        /**
-         * Returns a bounding {@link Rectangle} that completely encloses this
-         * <code>Area</code>.
-         * <p>
-         * The Area class will attempt to return the tightest bounding box possible
-         * for the Shape. The bounding box will not be padded to include the control
-         * points of curves in the outline of the Shape, but should tightly fit the
-         * actual geometry of the outline itself. Since the returned object
-         * represents the bounding box with integers, the bounding box can only be
-         * as tight as the nearest integer coordinates that encompass the geometry
-         * of the Shape.
-         *
-         * @return {java.awt.Rectangle} the bounding <code>Rectangle</code> for the <code>Area</code>.
-         * @since 1.2
-         */
-        getBounds(): java.awt.Rectangle;
-        /**
-         * Returns an exact copy of this <code>Area</code> object.
-         *
-         * @return {*} Created clone object
-         * @since 1.2
-         */
-        clone(): any;
-        /**
-         * Tests whether the geometries of the two <code>Area</code> objects are
-         * equal. This method will return false if the argument is null.
-         *
-         * @param {java.awt.geom.Area} other
-         * the <code>Area</code> to be compared to this <code>Area</code>
-         * @return {boolean} <code>true</code> if the two geometries are equal;
-         * <code>false</code> otherwise.
-         * @since 1.2
-         */
-        equals(other: Area): boolean;
-        /**
-         * Transforms the geometry of this <code>Area</code> using the specified
-         * {@link AffineTransform}. The geometry is transformed in place, which
-         * permanently changes the enclosed area defined by this object.
-         *
-         * @param {java.awt.geom.AffineTransform} t
-         * the transformation used to transform the area
-         * @throws NullPointerException
-         * if <code>t</code> is null
-         * @since 1.2
-         */
-        transform(t: java.awt.geom.AffineTransform): void;
-        /**
-         * Creates a new <code>Area</code> object that contains the same geometry as
-         * this <code>Area</code> transformed by the specified
-         * <code>AffineTransform</code>. This <code>Area</code> object is unchanged.
-         *
-         * @param {java.awt.geom.AffineTransform} t
-         * the specified <code>AffineTransform</code> used to transform
-         * the new <code>Area</code>
-         * @throws NullPointerException
-         * if <code>t</code> is null
-         * @return {java.awt.geom.Area} a new <code>Area</code> object representing the transformed
-         * geometry.
-         * @since 1.2
-         */
-        createTransformedArea(t: java.awt.geom.AffineTransform): Area;
-        contains$double$double(x: number, y: number): boolean;
-        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
-        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        contains(x?: any, y?: any, w?: any, h?: any): boolean;
-        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
-        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
-        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
-        /**
-         * Creates a <code>PathIterator</code> for the flattened outline of this
-         * <code>Area</code> object. Only uncurved path segments represented by the
-         * SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types are returned by the
-         * iterator. This <code>Area</code> object is unchanged.
-         *
-         * @param {java.awt.geom.AffineTransform} at
-         * an optional <code>AffineTransform</code> to be applied to the
-         * coordinates as they are returned in the iteration, or
-         * <code>null</code> if untransformed coordinates are desired
-         * @param {number} flatness
-         * the maximum amount that the control points for a given curve
-         * can vary from colinear before a subdivided curve is replaced
-         * by a straight line connecting the end points
-         * @return {*} the <code>PathIterator</code> object that returns the geometry of
-         * the outline of this <code>Area</code>, one segment at a time.
-         * @since 1.2
-         */
-        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
-    }
-    class AreaIterator implements java.awt.geom.PathIterator {
-        transform: java.awt.geom.AffineTransform;
-        curves: java.util.Vector<any>;
-        index: number;
-        prevcurve: sun.awt.geom.Curve;
-        thiscurve: sun.awt.geom.Curve;
-        constructor(curves: java.util.Vector<any>, at: java.awt.geom.AffineTransform);
-        getWindingRule(): number;
-        isDone(): boolean;
-        next(): void;
-        currentSegment$float_A(coords: number[]): number;
-        currentSegment(coords?: any): number;
-        currentSegment$double_A(coords: number[]): number;
-    }
-}
-declare namespace java.awt.geom {
-    /**
-     * The <code>QuadCurve2D</code> class defines a quadratic parametric curve
-     * segment in {@code (x,y)} coordinate space.
-     * <p>
-     * This class is only the abstract superclass for all objects that store a 2D
-     * quadratic curve segment. The actual storage representation of the coordinates
-     * is left to the subclass.
-     *
-     * @author Jim Graham
-     * @since 1.2
-     * @class
-     */
-    abstract class QuadCurve2D implements java.awt.Shape, java.lang.Cloneable {
-        constructor();
-        /**
-         * Returns the X coordinate of the start point in <code>double</code> in
-         * precision.
-         *
-         * @return {number} the X coordinate of the start point.
-         * @since 1.2
-         */
-        abstract getX1(): number;
-        /**
-         * Returns the Y coordinate of the start point in <code>double</code>
-         * precision.
-         *
-         * @return {number} the Y coordinate of the start point.
-         * @since 1.2
-         */
-        abstract getY1(): number;
-        /**
-         * Returns the start point.
-         *
-         * @return {java.awt.geom.Point2D} a <code>Point2D</code> that is the start point of this
-         * <code>QuadCurve2D</code>.
-         * @since 1.2
-         */
-        abstract getP1(): java.awt.geom.Point2D;
-        /**
-         * Returns the X coordinate of the control point in <code>double</code>
-         * precision.
-         *
-         * @return {number} X coordinate the control point
-         * @since 1.2
-         */
-        abstract getCtrlX(): number;
-        /**
-         * Returns the Y coordinate of the control point in <code>double</code>
-         * precision.
-         *
-         * @return {number} the Y coordinate of the control point.
-         * @since 1.2
-         */
-        abstract getCtrlY(): number;
-        /**
-         * Returns the control point.
-         *
-         * @return {java.awt.geom.Point2D} a <code>Point2D</code> that is the control point of this
-         * <code>Point2D</code>.
-         * @since 1.2
-         */
-        abstract getCtrlPt(): java.awt.geom.Point2D;
-        /**
-         * Returns the X coordinate of the end point in <code>double</code>
-         * precision.
-         *
-         * @return {number} the x coordinate of the end point.
-         * @since 1.2
-         */
-        abstract getX2(): number;
-        /**
-         * Returns the Y coordinate of the end point in <code>double</code>
-         * precision.
-         *
-         * @return {number} the Y coordinate of the end point.
-         * @since 1.2
-         */
-        abstract getY2(): number;
-        /**
-         * Returns the end point.
-         *
-         * @return {java.awt.geom.Point2D} a <code>Point</code> object that is the end point of this
-         * <code>Point2D</code>.
-         * @since 1.2
-         */
-        abstract getP2(): java.awt.geom.Point2D;
-        setCurve$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
-        /**
-         * Sets the location of the end points and control point of this curve to
-         * the specified <code>double</code> coordinates.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} ctrlx
-         * the X coordinate of the control point
-         * @param {number} ctrly
-         * the Y coordinate of the control point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @since 1.2
-         */
-        setCurve(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): any;
-        setCurve$double_A$int(coords: number[], offset: number): void;
-        setCurve$java_awt_geom_Point2D$java_awt_geom_Point2D$java_awt_geom_Point2D(p1: java.awt.geom.Point2D, cp: java.awt.geom.Point2D, p2: java.awt.geom.Point2D): void;
-        setCurve$java_awt_geom_Point2D_A$int(pts: java.awt.geom.Point2D[], offset: number): void;
-        setCurve$java_awt_geom_QuadCurve2D(c: QuadCurve2D): void;
-        static getFlatnessSq$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): number;
-        /**
-         * Returns the square of the flatness, or maximum distance of a control
-         * point from the line connecting the end points, of the quadratic curve
-         * specified by the indicated control points.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} ctrlx
-         * the X coordinate of the control point
-         * @param {number} ctrly
-         * the Y coordinate of the control point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @return {number} the square of the flatness of the quadratic curve defined by the
-         * specified coordinates.
-         * @since 1.2
-         */
-        static getFlatnessSq(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): number;
-        static getFlatness$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): number;
-        /**
-         * Returns the flatness, or maximum distance of a control point from the
-         * line connecting the end points, of the quadratic curve specified by the
-         * indicated control points.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} ctrlx
-         * the X coordinate of the control point
-         * @param {number} ctrly
-         * the Y coordinate of the control point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @return {number} the flatness of the quadratic curve defined by the specified
-         * coordinates.
-         * @since 1.2
-         */
-        static getFlatness(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): number;
-        static getFlatnessSq$double_A$int(coords: number[], offset: number): number;
-        static getFlatness$double_A$int(coords: number[], offset: number): number;
-        /**
-         * Returns the square of the flatness, or maximum distance of a control
-         * point from the line connecting the end points, of this
-         * <code>QuadCurve2D</code>.
-         *
-         * @return {number} the square of the flatness of this <code>QuadCurve2D</code>.
-         * @since 1.2
-         */
-        getFlatnessSq(): number;
-        /**
-         * Returns the flatness, or maximum distance of a control point from the
-         * line connecting the end points, of this <code>QuadCurve2D</code>.
-         *
-         * @return {number} the flatness of this <code>QuadCurve2D</code>.
-         * @since 1.2
-         */
-        getFlatness(): number;
-        /**
-         * Subdivides this <code>QuadCurve2D</code> and stores the resulting two
-         * subdivided curves into the <code>left</code> and <code>right</code> curve
-         * parameters. Either or both of the <code>left</code> and
-         * <code>right</code> objects can be the same as this
-         * <code>QuadCurve2D</code> or <code>null</code>.
-         *
-         * @param {java.awt.geom.QuadCurve2D} left
-         * the <code>QuadCurve2D</code> object for storing the left or
-         * first half of the subdivided curve
-         * @param {java.awt.geom.QuadCurve2D} right
-         * the <code>QuadCurve2D</code> object for storing the right or
-         * second half of the subdivided curve
-         * @since 1.2
-         */
-        subdivide(left: QuadCurve2D, right: QuadCurve2D): void;
-        static subdivide$java_awt_geom_QuadCurve2D$java_awt_geom_QuadCurve2D$java_awt_geom_QuadCurve2D(src: QuadCurve2D, left: QuadCurve2D, right: QuadCurve2D): void;
-        static subdivide$double_A$int$double_A$int$double_A$int(src: number[], srcoff: number, left: number[], leftoff: number, right: number[], rightoff: number): void;
-        /**
-         * Subdivides the quadratic curve specified by the coordinates stored in the
-         * <code>src</code> array at indices <code>srcoff</code> through
-         * <code>srcoff</code>&nbsp;+&nbsp;5 and stores the resulting two subdivided
-         * curves into the two result arrays at the corresponding indices. Either or
-         * both of the <code>left</code> and <code>right</code> arrays can be
-         * <code>null</code> or a reference to the same array and offset as the
-         * <code>src</code> array. Note that the last point in the first subdivided
-         * curve is the same as the first point in the second subdivided curve.
-         * Thus, it is possible to pass the same array for <code>left</code> and
-         * <code>right</code> and to use offsets such that <code>rightoff</code>
-         * equals <code>leftoff</code> + 4 in order to avoid allocating extra
-         * storage for this common point.
-         *
-         * @param {double[]} src
-         * the array holding the coordinates for the source curve
-         * @param {number} srcoff
-         * the offset into the array of the beginning of the the 6 source
-         * coordinates
-         * @param {double[]} left
-         * the array for storing the coordinates for the first half of
-         * the subdivided curve
-         * @param {number} leftoff
-         * the offset into the array of the beginning of the the 6 left
-         * coordinates
-         * @param {double[]} right
-         * the array for storing the coordinates for the second half of
-         * the subdivided curve
-         * @param {number} rightoff
-         * the offset into the array of the beginning of the the 6 right
-         * coordinates
-         * @since 1.2
-         */
-        static subdivide(src?: any, srcoff?: any, left?: any, leftoff?: any, right?: any, rightoff?: any): any;
-        static solveQuadratic$double_A(eqn: number[]): number;
-        static solveQuadratic$double_A$double_A(eqn: number[], res: number[]): number;
-        /**
-         * Solves the quadratic whose coefficients are in the <code>eqn</code> array
-         * and places the non-complex roots into the <code>res</code> array,
-         * returning the number of roots. The quadratic solved is represented by the
-         * equation:
-         *
-         * <pre>
-         * eqn = {C, B, A};
-         * ax^2 + bx + c = 0
-         * </pre>
-         *
-         * A return value of <code>-1</code> is used to distinguish a constant
-         * equation, which might be always 0 or never 0, from an equation that has
-         * no zeroes.
-         *
-         * @param {double[]} eqn
-         * the specified array of coefficients to use to solve the
-         * quadratic equation
-         * @param {double[]} res
-         * the array that contains the non-complex roots resulting from
-         * the solution of the quadratic equation
-         * @return {number} the number of roots, or <code>-1</code> if the equation is a
-         * constant.
-         * @since 1.3
-         */
-        static solveQuadratic(eqn?: any, res?: any): number;
-        contains$double$double(x: number, y: number): boolean;
-        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
-        /**
-         * Fill an array with the coefficients of the parametric equation in t,
-         * ready for solving against val with solveQuadratic. We currently have: val
-         * = Py(t) = C1*(1-t)^2 + 2*CP*t*(1-t) + C2*t^2 = C1 - 2*C1*t + C1*t^2 +
-         * 2*CP*t - 2*CP*t^2 + C2*t^2 = C1 + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2
-         * 0 = (C1 - val) + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2 0 = C + Bt + At^2
-         * C = C1 - val B = 2*CP - 2*C1 A = C1 - 2*CP + C2
-         * @param {double[]} eqn
-         * @param {number} val
-         * @param {number} c1
-         * @param {number} cp
-         * @param {number} c2
-         * @private
-         */
-        static fillEqn(eqn: number[], val: number, c1: number, cp: number, c2: number): void;
-        /**
-         * Evaluate the t values in the first num slots of the vals[] array and
-         * place the evaluated values back into the same array. Only evaluate t
-         * values that are within the range &lt;0, 1&gt;, including the 0 and 1 ends
-         * of the range iff the include0 or include1 booleans are true. If an
-         * "inflection" equation is handed in, then any points which represent a
-         * point of inflection for that quadratic equation are also ignored.
-         * @param {double[]} vals
-         * @param {number} num
-         * @param {boolean} include0
-         * @param {boolean} include1
-         * @param {double[]} inflect
-         * @param {number} c1
-         * @param {number} ctrl
-         * @param {number} c2
-         * @return {number}
-         * @private
-         */
-        static evalQuadratic(vals: number[], num: number, include0: boolean, include1: boolean, inflect: number[], c1: number, ctrl: number, c2: number): number;
-        static BELOW: number;
-        static LOWEDGE: number;
-        static INSIDE: number;
-        static HIGHEDGE: number;
-        static ABOVE: number;
-        /**
-         * Determine where coord lies with respect to the range from low to high. It
-         * is assumed that low &lt;= high. The return value is one of the 5 values
-         * BELOW, LOWEDGE, INSIDE, HIGHEDGE, or ABOVE.
-         * @param {number} coord
-         * @param {number} low
-         * @param {number} high
-         * @return {number}
-         * @private
-         */
-        static getTag(coord: number, low: number, high: number): number;
-        /**
-         * Determine if the pttag represents a coordinate that is already in its
-         * test range, or is on the border with either of the two opttags
-         * representing another coordinate that is "towards the inside" of that test
-         * range. In other words, are either of the two "opt" points
-         * "drawing the pt inward"?
-         * @param {number} pttag
-         * @param {number} opt1tag
-         * @param {number} opt2tag
-         * @return {boolean}
-         * @private
-         */
-        static inwards(pttag: number, opt1tag: number, opt2tag: number): boolean;
-        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
-        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        contains(x?: any, y?: any, w?: any, h?: any): boolean;
-        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @return {java.awt.Rectangle}
-         */
-        getBounds(): java.awt.Rectangle;
-        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
-        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
-        /**
-         * Returns an iteration object that defines the boundary of the flattened
-         * shape of this <code>QuadCurve2D</code>. The iterator for this class is
-         * not multi-threaded safe, which means that this <code>QuadCurve2D</code>
-         * class does not guarantee that modifications to the geometry of this
-         * <code>QuadCurve2D</code> object do not affect any iterations of that
-         * geometry that are already in process.
-         *
-         * @param {java.awt.geom.AffineTransform} at
-         * an optional <code>AffineTransform</code> to apply to the
-         * boundary of the shape
-         * @param {number} flatness
-         * the maximum distance that the control points for a subdivided
-         * curve can be with respect to a line connecting the end points
-         * of this curve before this curve is replaced by a straight line
-         * connecting the end points.
-         * @return {*} a <code>PathIterator</code> object that defines the flattened
-         * boundary of the shape.
-         * @since 1.2
-         */
-        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
-        /**
-         * Creates a new object of the same class and with the same contents as this
-         * object.
-         *
-         * @return {*} a clone of this instance.
-         * @exception OutOfMemoryError
-         * if there is not enough memory.
-         * @see java.lang.Cloneable
-         * @since 1.2
-         */
-        clone(): any;
-        abstract getBounds2D(): any;
-    }
-    namespace QuadCurve2D {
-        /**
-         * Constructs and initializes a <code>QuadCurve2D</code> from the
-         * specified {@code float} coordinates.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} ctrlx
-         * the X coordinate of the control point
-         * @param {number} ctrly
-         * the Y coordinate of the control point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @since 1.2
-         * @class
-         * @extends java.awt.geom.QuadCurve2D
-         */
-        class Float extends java.awt.geom.QuadCurve2D implements java.io.Serializable {
-            /**
-             * The X coordinate of the start point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x1: number;
-            /**
-             * The Y coordinate of the start point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y1: number;
-            /**
-             * The X coordinate of the control point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            ctrlx: number;
-            /**
-             * The Y coordinate of the control point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            ctrly: number;
-            /**
-             * The X coordinate of the end point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x2: number;
-            /**
-             * The Y coordinate of the end point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y2: number;
-            constructor(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any);
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP1(): java.awt.geom.Point2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getCtrlX(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getCtrlY(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getCtrlPt(): java.awt.geom.Point2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP2(): java.awt.geom.Point2D;
-            setCurve$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
-            setCurve$float$float$float$float$float$float(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
-            /**
-             * Sets the location of the end points and control point of this curve
-             * to the specified {@code float} coordinates.
-             *
-             * @param {number} x1
-             * the X coordinate of the start point
-             * @param {number} y1
-             * the Y coordinate of the start point
-             * @param {number} ctrlx
-             * the X coordinate of the control point
-             * @param {number} ctrly
-             * the Y coordinate of the control point
-             * @param {number} x2
-             * the X coordinate of the end point
-             * @param {number} y2
-             * the Y coordinate of the end point
-             * @since 1.2
-             */
-            setCurve(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): any;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            getBounds2D(): java.awt.geom.Rectangle2D;
-            static serialVersionUID: number;
-        }
-        /**
-         * Constructs and initializes a <code>QuadCurve2D</code> from the
-         * specified {@code double} coordinates.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point
-         * @param {number} y1
-         * the Y coordinate of the start point
-         * @param {number} ctrlx
-         * the X coordinate of the control point
-         * @param {number} ctrly
-         * the Y coordinate of the control point
-         * @param {number} x2
-         * the X coordinate of the end point
-         * @param {number} y2
-         * the Y coordinate of the end point
-         * @since 1.2
-         * @class
-         * @extends java.awt.geom.QuadCurve2D
-         */
-        class Double extends java.awt.geom.QuadCurve2D implements java.io.Serializable {
-            /**
-             * The X coordinate of the start point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x1: number;
-            /**
-             * The Y coordinate of the start point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y1: number;
-            /**
-             * The X coordinate of the control point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            ctrlx: number;
-            /**
-             * The Y coordinate of the control point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            ctrly: number;
-            /**
-             * The X coordinate of the end point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x2: number;
-            /**
-             * The Y coordinate of the end point of the quadratic curve segment.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y2: number;
-            constructor(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any);
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY1(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP1(): java.awt.geom.Point2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getCtrlX(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getCtrlY(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getCtrlPt(): java.awt.geom.Point2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY2(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Point2D}
-             */
-            getP2(): java.awt.geom.Point2D;
-            setCurve$double$double$double$double$double$double(x1: number, y1: number, ctrlx: number, ctrly: number, x2: number, y2: number): void;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {number} x1
-             * @param {number} y1
-             * @param {number} ctrlx
-             * @param {number} ctrly
-             * @param {number} x2
-             * @param {number} y2
-             */
-            setCurve(x1?: any, y1?: any, ctrlx?: any, ctrly?: any, x2?: any, y2?: any): any;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            getBounds2D(): java.awt.geom.Rectangle2D;
-            static serialVersionUID: number;
-        }
-    }
-}
-declare namespace java.awt.geom {
-    /**
      * A utility class to iterate over the path segments of an ellipse through the
      * PathIterator interface.
      *
@@ -6185,215 +4952,962 @@ declare namespace java.awt.geom {
         currentSegment$double_A(coords: number[]): number;
     }
 }
-declare namespace java.awt.geom {
-    /**
-     * A utility class to iterate over the path segments of a rectangle through the
-     * PathIterator interface.
-     *
-     * @author Jim Graham
-     * @class
-     */
-    class RectIterator implements java.awt.geom.PathIterator {
-        x: number;
-        y: number;
-        w: number;
-        h: number;
-        affine: java.awt.geom.AffineTransform;
-        index: number;
-        constructor(r: java.awt.geom.Rectangle2D, at: java.awt.geom.AffineTransform);
-        /**
-         * Return the winding rule for determining the insideness of the path.
-         *
-         * @see #WIND_EVEN_ODD
-         * @see #WIND_NON_ZERO
-         * @return {number}
-         */
-        getWindingRule(): number;
-        /**
-         * Tests if there are more points to read.
-         *
-         * @return {boolean} true if there are more points to read
-         */
-        isDone(): boolean;
-        /**
-         * Moves the iterator to the next segment of the path forwards along the
-         * primary direction of traversal as long as there are more points in that
-         * direction.
-         */
-        next(): void;
-        currentSegment$float_A(coords: number[]): number;
-        /**
-         * Returns the coordinates and type of the current path segment in the
-         * iteration. The return value is the path segment type: SEG_MOVETO,
-         * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-         * length 6 must be passed in and may be used to store the coordinates of
-         * the point(s). Each point is stored as a pair of float x,y coordinates.
-         * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-         * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-         * not return any points.
-         *
-         * @see #SEG_MOVETO
-         * @see #SEG_LINETO
-         * @see #SEG_QUADTO
-         * @see #SEG_CUBICTO
-         * @see #SEG_CLOSE
-         * @param {float[]} coords
-         * @return {number}
-         */
-        currentSegment(coords?: any): number;
-        currentSegment$double_A(coords: number[]): number;
+declare namespace java.awt {
+    class MenuComponent {
+        name: string;
+        getName(): string;
+        setName(name: string): void;
+        constructor();
     }
 }
-declare namespace java.awt.geom {
+declare namespace java.awt {
     /**
-     * Constructs a new <code>FlatteningPathIterator</code> object that flattens
-     * a path as it iterates over it. The <code>limit</code> parameter allows
-     * you to control the maximum number of recursive subdivisions that the
-     * iterator can make before it assumes that the curve is flat enough without
-     * measuring against the <code>flatness</code> parameter. The flattened
-     * iteration therefore never generates more than a maximum of
-     * <code>(2^limit)</code> line segments per curve.
-     *
-     * @param {*} src
-     * the original unflattened path being iterated over
-     * @param {number} flatness
-     * the maximum allowable distance between the control points and
-     * the flattened curve
-     * @param {number} limit
-     * the maximum number of recursive subdivisions allowed for any
-     * curved segment
-     * @exception IllegalArgumentException
-     * if <code>flatness</code> or <code>limit</code> is less
-     * than zero
+     * Constructs an IllegalComponentStateException with the specified detail
+     * message.  A detail message is a String that describes this particular
+     * exception.
+     * @param {string} s the String that contains a detailed message
      * @class
-     * @author Jim Graham
+     * @extends java.lang.IllegalStateException
+     * @author      Jonni Kanerva
      */
-    class FlatteningPathIterator implements java.awt.geom.PathIterator {
-        static GROW_SIZE: number;
-        src: java.awt.geom.PathIterator;
-        squareflat: number;
-        limit: number;
-        hold: number[];
-        curx: number;
-        cury: number;
-        movx: number;
-        movy: number;
-        holdType: number;
-        holdEnd: number;
-        holdIndex: number;
-        levels: number[];
-        levelIndex: number;
-        done: boolean;
-        constructor(src?: any, flatness?: any, limit?: any);
-        /**
-         * Returns the flatness of this iterator.
-         *
-         * @return {number} the flatness of this <code>FlatteningPathIterator</code>.
-         */
-        getFlatness(): number;
-        /**
-         * Returns the recursion limit of this iterator.
-         *
-         * @return {number} the recursion limit of this <code>FlatteningPathIterator</code>.
-         */
-        getRecursionLimit(): number;
-        /**
-         * Returns the winding rule for determining the interior of the path.
-         *
-         * @return {number} the winding rule of the original unflattened path being iterated
-         * over.
-         * @see PathIterator#WIND_EVEN_ODD
-         * @see PathIterator#WIND_NON_ZERO
-         */
-        getWindingRule(): number;
-        /**
-         * Tests if the iteration is complete.
-         *
-         * @return {boolean} <code>true</code> if all the segments have been read;
-         * <code>false</code> otherwise.
-         */
-        isDone(): boolean;
-        ensureHoldCapacity(want: number): void;
-        next$(): void;
-        next$boolean(doNext: boolean): void;
-        next(doNext?: any): any;
-        currentSegment$float_A(coords: number[]): number;
-        /**
-         * Returns the coordinates and type of the current path segment in the
-         * iteration. The return value is the path segment type: SEG_MOVETO,
-         * SEG_LINETO, or SEG_CLOSE. A float array of length 6 must be passed in and
-         * can be used to store the coordinates of the point(s). Each point is
-         * stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
-         * types return one point, and SEG_CLOSE does not return any points.
-         *
-         * @param {float[]} coords
-         * an array that holds the data returned from this method
-         * @return {number} the path segment type of the current path segment.
-         * @exception NoSuchElementException
-         * if there are no more elements in the flattening path to be
-         * returned.
-         * @see PathIterator#SEG_MOVETO
-         * @see PathIterator#SEG_LINETO
-         * @see PathIterator#SEG_CLOSE
-         */
-        currentSegment(coords?: any): number;
-        currentSegment$double_A(coords: number[]): number;
+    class IllegalComponentStateException extends java.lang.IllegalStateException {
+        static serialVersionUID: number;
+        constructor(s?: any);
     }
 }
-declare namespace java.awt.geom {
+declare namespace java.awt {
+    interface Transparency {
+        getTransparency(): number;
+    }
+    namespace Transparency {
+        const OPAQUE: number;
+        const BITMASK: number;
+        const TRANSLUCENT: number;
+    }
+}
+declare namespace java.awt {
+    class Toolkit {
+        static toolkit: Toolkit;
+        images: java.util.Map<string, java.awt.Image>;
+        static getProperty(key: string, defaultValue: string): string;
+        static getDefaultToolkit(): Toolkit;
+        createImage(filename: string): java.awt.Image;
+        getImage(filename: string): java.awt.Image;
+        constructor();
+    }
+}
+declare namespace java.awt.event {
     /**
-     * A utility class to iterate over the path segments of a line segment through
-     * the PathIterator interface.
+     * An abstract adapter class for receiving container events.
+     * The methods in this class are empty. This class exists as
+     * convenience for creating listener objects.
+     * <P>
+     * Extend this class to create a <code>ContainerEvent</code> listener
+     * and override the methods for the events of interest. (If you implement the
+     * <code>ContainerListener</code> interface, you have to define all of
+     * the methods in it. This abstract class defines null methods for them
+     * all, so you can only have to define methods for events you care about.)
+     * <P>
+     * Create a listener object using the extended class and then register it with
+     * a component using the component's <code>addContainerListener</code>
+     * method. When the container's contents change because a component has
+     * been added or removed, the relevant method in the listener object is invoked,
+     * and the <code>ContainerEvent</code> is passed to it.
      *
-     * @author Jim Graham
+     * @see ContainerEvent
+     * @see ContainerListener
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/containerlistener.html">Tutorial: Writing a Container Listener</a>
+     *
+     * @author Amy Fowler
+     * @since 1.1
      * @class
      */
-    class LineIterator implements java.awt.geom.PathIterator {
-        line: java.awt.geom.Line2D;
-        affine: java.awt.geom.AffineTransform;
-        index: number;
-        constructor(l: java.awt.geom.Line2D, at: java.awt.geom.AffineTransform);
+    abstract class ContainerAdapter implements java.awt.event.ContainerListener {
         /**
-         * Return the winding rule for determining the insideness of the path.
+         * Invoked when a component has been added to the container.
+         * @param {java.awt.event.ContainerEvent} e
+         */
+        componentAdded(e: java.awt.event.ContainerEvent): void;
+        /**
+         * Invoked when a component has been removed from the container.
+         * @param {java.awt.event.ContainerEvent} e
+         */
+        componentRemoved(e: java.awt.event.ContainerEvent): void;
+        constructor();
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving adjustment events.
+     *
+     * @author Amy Fowler
+     * @since 1.1
+     * @class
+     */
+    interface AdjustmentListener extends java.util.EventListener {
+        /**
+         * Invoked when the value of the adjustable has changed.
+         * @param {java.awt.event.AdjustmentEvent} e
+         */
+        adjustmentValueChanged(e: java.awt.event.AdjustmentEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * An abstract adapter class for receiving component events.
+     * The methods in this class are empty. This class exists as
+     * convenience for creating listener objects.
+     * <P>
+     * Extend this class to create a <code>ComponentEvent</code> listener
+     * and override the methods for the events of interest. (If you implement the
+     * <code>ComponentListener</code> interface, you have to define all of
+     * the methods in it. This abstract class defines null methods for them
+     * all, so you can only have to define methods for events you care about.)
+     * <P>
+     * Create a listener object using your class and then register it with a
+     * component using the component's <code>addComponentListener</code>
+     * method. When the component's size, location, or visibility
+     * changes, the relevant method in the listener object is invoked,
+     * and the <code>ComponentEvent</code> is passed to it.
+     *
+     * @see ComponentEvent
+     * @see ComponentListener
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
+     *
+     * @author Carl Quinn
+     * @since 1.1
+     * @class
+     */
+    abstract class ComponentAdapter implements java.awt.event.ComponentListener {
+        /**
+         * Invoked when the component's size changes.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentResized(e: java.awt.event.ComponentEvent): void;
+        /**
+         * Invoked when the component's position changes.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentMoved(e: java.awt.event.ComponentEvent): void;
+        /**
+         * Invoked when the component has been made visible.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentShown(e: java.awt.event.ComponentEvent): void;
+        /**
+         * Invoked when the component has been made invisible.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentHidden(e: java.awt.event.ComponentEvent): void;
+        constructor();
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving container events.
+     * The class that is interested in processing a container event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>ContainerAdapter</code> class
+     * (overriding only the methods of interest).
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addContainerListener</code>
+     * method. When the container's contents change because a component
+     * has been added or removed, the relevant method in the listener object
+     * is invoked, and the <code>ContainerEvent</code> is passed to it.
+     * <P>
+     * Container events are provided for notification purposes ONLY;
+     * The AWT will automatically handle add and remove operations
+     * internally so the program works properly regardless of
+     * whether the program registers a {@code ContainerListener} or not.
+     *
+     * @see ContainerAdapter
+     * @see ContainerEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/containerlistener.html">Tutorial: Writing a Container Listener</a>
+     *
+     * @author Tim Prinzing
+     * @author Amy Fowler
+     * @since 1.1
+     * @class
+     */
+    interface ContainerListener extends java.util.EventListener {
+        /**
+         * Invoked when a component has been added to the container.
+         * @param {java.awt.event.ContainerEvent} e
+         */
+        componentAdded(e: java.awt.event.ContainerEvent): any;
+        /**
+         * Invoked when a component has been removed from the container.
+         * @param {java.awt.event.ContainerEvent} e
+         */
+        componentRemoved(e: java.awt.event.ContainerEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving keyboard events (keystrokes).
+     * The class that is interested in processing a keyboard event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>KeyAdapter</code> class
+     * (overriding only the methods of interest).
+     * <P>
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addKeyListener</code>
+     * method. A keyboard event is generated when a key is pressed, released,
+     * or typed. The relevant method in the listener
+     * object is then invoked, and the <code>KeyEvent</code> is passed to it.
+     *
+     * @author Carl Quinn
+     *
+     * @see KeyAdapter
+     * @see KeyEvent
+     * @see <a href="http://java.sun.com/docs/books/tutorial/post1.0/ui/keylistener.html">Tutorial: Writing a Key Listener</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    interface KeyListener extends java.util.EventListener {
+        /**
+         * Invoked when a key has been typed.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key typed event.
+         * @param {java.awt.event.KeyEvent} e
+         */
+        keyTyped(e: java.awt.event.KeyEvent): any;
+        /**
+         * Invoked when a key has been pressed.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key pressed event.
+         * @param {java.awt.event.KeyEvent} e
+         */
+        keyPressed(e: java.awt.event.KeyEvent): any;
+        /**
+         * Invoked when a key has been released.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key released event.
+         * @param {java.awt.event.KeyEvent} e
+         */
+        keyReleased(e: java.awt.event.KeyEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    interface ActionListener extends java.util.EventListener {
+        actionPerformed(ae: java.awt.event.ActionEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving mouse wheel events on a component.
+     * (For clicks and other mouse events, use the <code>MouseListener</code>.
+     * For mouse movement and drags, use the <code>MouseMotionListener</code>.)
+     * <P>
+     * The class that is interested in processing a mouse wheel event
+     * implements this interface (and all the methods it contains).
+     * <P>
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addMouseWheelListener</code>
+     * method. A mouse wheel event is generated when the mouse wheel is rotated.
+     * When a mouse wheel event occurs, that object's <code>mouseWheelMoved</code>
+     * method is invoked.
+     * <p>
+     * For information on how mouse wheel events are dispatched, see
+     * the class description for {@link MouseWheelEvent}.
+     *
+     * @author Brent Christian
+     * @see MouseWheelEvent
+     * @since 1.4
+     * @class
+     */
+    interface MouseWheelListener extends java.util.EventListener {
+        /**
+         * Invoked when the mouse wheel is rotated.
+         * @see MouseWheelEvent
+         * @param {java.awt.event.MouseWheelEvent} e
+         */
+        mouseWheelMoved(e: java.awt.event.MouseWheelEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving "interesting" mouse events
+     * (press, release, click, enter, and exit) on a component.
+     * (To track mouse moves and mouse drags, use the
+     * <code>MouseMotionListener</code>.)
+     * <P>
+     * The class that is interested in processing a mouse event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>MouseAdapter</code> class
+     * (overriding only the methods of interest).
+     * <P>
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addMouseListener</code>
+     * method. A mouse event is generated when the mouse is pressed, released
+     * clicked (pressed and released). A mouse event is also generated when
+     * the mouse cursor enters or leaves a component. When a mouse event
+     * occurs, the relevant method in the listener object is invoked, and
+     * the <code>MouseEvent</code> is passed to it.
+     *
+     * @author Carl Quinn
+     *
+     * @see MouseAdapter
+     * @see MouseEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html">Tutorial: Writing a Mouse Listener</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    interface MouseListener extends java.util.EventListener {
+        /**
+         * Invoked when the mouse button has been clicked (pressed
+         * and released) on a component.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseClicked(e: java.awt.event.MouseEvent): any;
+        /**
+         * Invoked when a mouse button has been pressed on a component.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mousePressed(e: java.awt.event.MouseEvent): any;
+        /**
+         * Invoked when a mouse button has been released on a component.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseReleased(e: java.awt.event.MouseEvent): any;
+        /**
+         * Invoked when the mouse enters a component.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseEntered(e: java.awt.event.MouseEvent): any;
+        /**
+         * Invoked when the mouse exits a component.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseExited(e: java.awt.event.MouseEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving component events.
+     * The class that is interested in processing a component event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>ComponentAdapter</code> class
+     * (overriding only the methods of interest).
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addComponentListener</code>
+     * method. When the component's size, location, or visibility
+     * changes, the relevant method in the listener object is invoked,
+     * and the <code>ComponentEvent</code> is passed to it.
+     * <P>
+     * Component events are provided for notification purposes ONLY;
+     * The AWT will automatically handle component moves and resizes
+     * internally so that GUI layout works properly regardless of
+     * whether a program registers a <code>ComponentListener</code> or not.
+     *
+     * @see ComponentAdapter
+     * @see ComponentEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
+     *
+     * @author Carl Quinn
+     * @since 1.1
+     * @class
+     */
+    interface ComponentListener extends java.util.EventListener {
+        /**
+         * Invoked when the component's size changes.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentResized(e: java.awt.event.ComponentEvent): any;
+        /**
+         * Invoked when the component's position changes.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentMoved(e: java.awt.event.ComponentEvent): any;
+        /**
+         * Invoked when the component has been made visible.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentShown(e: java.awt.event.ComponentEvent): any;
+        /**
+         * Invoked when the component has been made invisible.
+         * @param {java.awt.event.ComponentEvent} e
+         */
+        componentHidden(e: java.awt.event.ComponentEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * An abstract adapter class for receiving mouse motion events.
+     * The methods in this class are empty. This class exists as
+     * convenience for creating listener objects.
+     * <P>
+     * Mouse motion events occur when a mouse is moved or dragged.
+     * (Many such events will be generated in a normal program.
+     * To track clicks and other mouse events, use the MouseAdapter.)
+     * <P>
+     * Extend this class to create a <code>MouseEvent</code> listener
+     * and override the methods for the events of interest. (If you implement the
+     * <code>MouseMotionListener</code> interface, you have to define all of
+     * the methods in it. This abstract class defines null methods for them
+     * all, so you can only have to define methods for events you care about.)
+     * <P>
+     * Create a listener object using the extended class and then register it with
+     * a component using the component's <code>addMouseMotionListener</code>
+     * method. When the mouse is moved or dragged, the relevant method in the
+     * listener object is invoked and the <code>MouseEvent</code> is passed to it.
+     *
+     * @author Amy Fowler
+     *
+     * @see MouseEvent
+     * @see MouseMotionListener
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mousemotionlistener.html">Tutorial: Writing a Mouse Motion Listener</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    abstract class MouseMotionAdapter implements java.awt.event.MouseMotionListener {
+        /**
+         * Invoked when a mouse button is pressed on a component and then
+         * dragged.  Mouse drag events will continue to be delivered to
+         * the component where the first originated until the mouse button is
+         * released (regardless of whether the mouse position is within the
+         * bounds of the component).
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseDragged(e: java.awt.event.MouseEvent): void;
+        /**
+         * Invoked when the mouse button has been moved on a component
+         * (with no buttons no down).
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseMoved(e: java.awt.event.MouseEvent): void;
+        constructor();
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving item events.
+     * The class that is interested in processing an item event
+     * implements this interface. The object created with that
+     * class is then registered with a component using the
+     * component's <code>addItemListener</code> method. When an
+     * item-selection event occurs, the listener object's
+     * <code>itemStateChanged</code> method is invoked.
+     *
+     * @author Amy Fowler
+     *
+     * @see java.awt.ItemSelectable
+     * @see ItemEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/itemlistener.html">Tutorial: Writing an Item Listener</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    interface ItemListener extends java.util.EventListener {
+        /**
+         * Invoked when an item has been selected or deselected by the user.
+         * The code written for this method performs the operations
+         * that need to occur when an item is selected (or deselected).
+         * @param {java.awt.event.ItemEvent} e
+         */
+        itemStateChanged(e: java.awt.event.ItemEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving window events.
+     * The class that is interested in processing a window event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>WindowAdapter</code> class
+     * (overriding only the methods of interest).
+     * The listener object created from that class is then registered with a
+     * Window using the window's <code>addWindowListener</code>
+     * method. When the window's status changes by virtue of being opened,
+     * closed, activated or deactivated, iconified or deiconified,
+     * the relevant method in the listener object is invoked, and the
+     * <code>WindowEvent</code> is passed to it.
+     *
+     * @author Carl Quinn
+     *
+     * @see WindowAdapter
+     * @see WindowEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: How to Write Window Listeners</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    interface WindowListener extends java.util.EventListener {
+        /**
+         * Invoked the first time a window is made visible.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowOpened(e: java.awt.event.WindowEvent): any;
+        /**
+         * Invoked when the user attempts to close the window
+         * from the window's system menu.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowClosing(e: java.awt.event.WindowEvent): any;
+        /**
+         * Invoked when a window has been closed as the result
+         * of calling dispose on the window.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowClosed(e: java.awt.event.WindowEvent): any;
+        /**
+         * Invoked when a window is changed from a normal to a
+         * minimized state. For many platforms, a minimized window
+         * is displayed as the icon specified in the window's
+         * iconImage property.
+         * @see java.awt.Frame#setIconImage
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowIconified(e: java.awt.event.WindowEvent): any;
+        /**
+         * Invoked when a window is changed from a minimized
+         * to a normal state.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowDeiconified(e: java.awt.event.WindowEvent): any;
+        /**
+         * Invoked when the Window is set to be the active Window. Only a Frame or
+         * a Dialog can be the active Window. The native windowing system may
+         * denote the active Window or its children with special decorations, such
+         * as a highlighted title bar. The active Window is always either the
+         * focused Window, or the first Frame or Dialog that is an owner of the
+         * focused Window.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowActivated(e: java.awt.event.WindowEvent): any;
+        /**
+         * Invoked when a Window is no longer the active Window. Only a Frame or a
+         * Dialog can be the active Window. The native windowing system may denote
+         * the active Window or its children with special decorations, such as a
+         * highlighted title bar. The active Window is always either the focused
+         * Window, or the first Frame or Dialog that is an owner of the focused
+         * Window.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowDeactivated(e: java.awt.event.WindowEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving mouse motion events on a component.
+     * (For clicks and other mouse events, use the <code>MouseListener</code>.)
+     * <P>
+     * The class that is interested in processing a mouse motion event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>MouseMotionAdapter</code> class
+     * (overriding only the methods of interest).
+     * <P>
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addMouseMotionListener</code>
+     * method. A mouse motion event is generated when the mouse is moved
+     * or dragged. (Many such events will be generated). When a mouse motion event
+     * occurs, the relevant method in the listener object is invoked, and
+     * the <code>MouseEvent</code> is passed to it.
+     *
+     * @author Amy Fowler
+     *
+     * @see MouseMotionAdapter
+     * @see MouseEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mousemotionlistener.html">Tutorial: Writing a Mouse Motion Listener</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    interface MouseMotionListener extends java.util.EventListener {
+        /**
+         * Invoked when a mouse button is pressed on a component and then
+         * dragged.  <code>MOUSE_DRAGGED</code> events will continue to be
+         * delivered to the component where the drag originated until the
+         * mouse button is released (regardless of whether the mouse position
+         * is within the bounds of the component).
+         * <p>
+         * Due to platform-dependent Drag&amp;Drop implementations,
+         * <code>MOUSE_DRAGGED</code> events may not be delivered during a native
+         * Drag&amp;Drop operation.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseDragged(e: java.awt.event.MouseEvent): any;
+        /**
+         * Invoked when the mouse cursor has been moved onto a component
+         * but no buttons have been pushed.
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseMoved(e: java.awt.event.MouseEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving window state events.
+     * <p>
+     * The class that is interested in processing a window state event
+     * either implements this interface (and all the methods it contains)
+     * or extends the abstract <code>WindowAdapter</code> class
+     * (overriding only the methods of interest).
+     * <p>
+     * The listener object created from that class is then registered with
+     * a window using the <code>Window</code>'s
+     * <code>addWindowStateListener</code> method.  When the window's
+     * state changes by virtue of being iconified, maximized etc., the
+     * <code>windowStateChanged</code> method in the listener object is
+     * invoked, and the <code>WindowEvent</code> is passed to it.
+     *
+     * @see java.awt.event.WindowAdapter
+     * @see java.awt.event.WindowEvent
+     *
+     * @since 1.4
+     * @class
+     */
+    interface WindowStateListener extends java.util.EventListener {
+        /**
+         * Invoked when window state is changed.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowStateChanged(e: java.awt.event.WindowEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving keyboard focus events on
+     * a component.
+     * The class that is interested in processing a focus event
+     * either implements this interface (and all the methods it
+     * contains) or extends the abstract <code>FocusAdapter</code> class
+     * (overriding only the methods of interest).
+     * The listener object created from that class is then registered with a
+     * component using the component's <code>addFocusListener</code>
+     * method. When the component gains or loses the keyboard focus,
+     * the relevant method in the listener object
+     * is invoked, and the <code>FocusEvent</code> is passed to it.
+     *
+     * @see FocusAdapter
+     * @see FocusEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/focuslistener.html">Tutorial: Writing a Focus Listener</a>
+     *
+     * @author Carl Quinn
+     * @since 1.1
+     * @class
+     */
+    interface FocusListener extends java.util.EventListener {
+        /**
+         * Invoked when a component gains the keyboard focus.
+         * @param {java.awt.event.FocusEvent} e
+         */
+        focusGained(e: java.awt.event.FocusEvent): any;
+        /**
+         * Invoked when a component loses the keyboard focus.
+         * @param {java.awt.event.FocusEvent} e
+         */
+        focusLost(e: java.awt.event.FocusEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * An abstract adapter class for receiving window events.
+     * The methods in this class are empty. This class exists as
+     * convenience for creating listener objects.
+     * <P>
+     * Extend this class to create a <code>WindowEvent</code> listener
+     * and override the methods for the events of interest. (If you implement the
+     * <code>WindowListener</code> interface, you have to define all of
+     * the methods in it. This abstract class defines null methods for them
+     * all, so you can only have to define methods for events you care about.)
+     * <P>
+     * Create a listener object using the extended class and then register it with
+     * a Window using the window's <code>addWindowListener</code>
+     * method. When the window's status changes by virtue of being opened,
+     * closed, activated or deactivated, iconified or deiconified,
+     * the relevant method in the listener
+     * object is invoked, and the <code>WindowEvent</code> is passed to it.
+     *
+     * @see WindowEvent
+     * @see WindowListener
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
+     *
+     * @author Carl Quinn
+     * @author Amy Fowler
+     * @author David Mendenhall
+     * @since 1.1
+     * @class
+     */
+    abstract class WindowAdapter implements java.awt.event.WindowListener, java.awt.event.WindowStateListener, java.awt.event.WindowFocusListener {
+        /**
+         * Invoked when a window has been opened.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowOpened(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window is in the process of being closed.
+         * The close operation can be overridden at this point.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowClosing(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window has been closed.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowClosed(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window is iconified.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowIconified(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window is de-iconified.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowDeiconified(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window is activated.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowActivated(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window is de-activated.
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowDeactivated(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when a window state is changed.
+         * @since 1.4
+         * @param {java.awt.event.WindowEvent} e
+         */
+        windowStateChanged(e: java.awt.event.WindowEvent): void;
+        /**
+         * Invoked when the Window is set to be the focused Window, which means
+         * that the Window, or one of its subcomponents, will receive keyboard
+         * events.
          *
-         * @see #WIND_EVEN_ODD
-         * @see #WIND_NON_ZERO
-         * @return {number}
+         * @since 1.4
+         * @param {java.awt.event.WindowEvent} e
          */
-        getWindingRule(): number;
+        windowGainedFocus(e: java.awt.event.WindowEvent): void;
         /**
-         * Tests if there are more points to read.
+         * Invoked when the Window is no longer the focused Window, which means
+         * that keyboard events will no longer be delivered to the Window or any of
+         * its subcomponents.
          *
-         * @return {boolean} true if there are more points to read
+         * @since 1.4
+         * @param {java.awt.event.WindowEvent} e
          */
-        isDone(): boolean;
+        windowLostFocus(e: java.awt.event.WindowEvent): void;
+        constructor();
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving <code>WindowEvents</code>, including
+     * <code>WINDOW_GAINED_FOCUS</code> and <code>WINDOW_LOST_FOCUS</code> events.
+     * The class that is interested in processing a <code>WindowEvent</code>
+     * either implements this interface (and
+     * all the methods it contains) or extends the abstract
+     * <code>WindowAdapter</code> class (overriding only the methods of interest).
+     * The listener object created from that class is then registered with a
+     * <code>Window</code>
+     * using the <code>Window</code>'s <code>addWindowFocusListener</code> method.
+     * When the <code>Window</code>'s
+     * status changes by virtue of it being opened, closed, activated, deactivated,
+     * iconified, or deiconified, or by focus being transfered into or out of the
+     * <code>Window</code>, the relevant method in the listener object is invoked,
+     * and the <code>WindowEvent</code> is passed to it.
+     *
+     * @author David Mendenhall
+     *
+     * @see WindowAdapter
+     * @see WindowEvent
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
+     *
+     * @since 1.4
+     * @class
+     */
+    interface WindowFocusListener extends java.util.EventListener {
         /**
-         * Moves the iterator to the next segment of the path forwards along the
-         * primary direction of traversal as long as there are more points in that
-         * direction.
+         * Invoked when the Window is set to be the focused Window, which means
+         * that the Window, or one of its subcomponents, will receive keyboard
+         * events.
+         * @param {java.awt.event.WindowEvent} e
          */
-        next(): void;
-        currentSegment$float_A(coords: number[]): number;
+        windowGainedFocus(e: java.awt.event.WindowEvent): any;
         /**
-         * Returns the coordinates and type of the current path segment in the
-         * iteration. The return value is the path segment type: SEG_MOVETO,
-         * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-         * length 6 must be passed in and may be used to store the coordinates of
-         * the point(s). Each point is stored as a pair of float x,y coordinates.
-         * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-         * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-         * not return any points.
-         *
-         * @see #SEG_MOVETO
-         * @see #SEG_LINETO
-         * @see #SEG_QUADTO
-         * @see #SEG_CUBICTO
-         * @see #SEG_CLOSE
-         * @param {float[]} coords
-         * @return {number}
+         * Invoked when the Window is no longer the focused Window, which means
+         * that keyboard events will no longer be delivered to the Window or any of
+         * its subcomponents.
+         * @param {java.awt.event.WindowEvent} e
          */
-        currentSegment(coords?: any): number;
-        currentSegment$double_A(coords: number[]): number;
+        windowLostFocus(e: java.awt.event.WindowEvent): any;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * An abstract adapter class for receiving mouse events.
+     * The methods in this class are empty. This class exists as
+     * convenience for creating listener objects.
+     * <P>
+     * Mouse events let you track when a mouse is pressed, released, clicked,
+     * moved, dragged, when it enters a component, when it exits and
+     * when a mouse wheel is moved.
+     * <P>
+     * Extend this class to create a {@code MouseEvent}
+     * (including drag and motion events) or/and {@code MouseWheelEvent}
+     * listener and override the methods for the events of interest. (If you implement the
+     * {@code MouseListener},
+     * {@code MouseMotionListener}
+     * interface, you have to define all of
+     * the methods in it. This abstract class defines null methods for them
+     * all, so you can only have to define methods for events you care about.)
+     * <P>
+     * Create a listener object using the extended class and then register it with
+     * a component using the component's {@code addMouseListener}
+     * {@code addMouseMotionListener}, {@code addMouseWheelListener}
+     * methods.
+     * The relevant method in the listener object is invoked  and the {@code MouseEvent}
+     * or {@code MouseWheelEvent}  is passed to it in following cases:
+     * <ul>
+     * <li>when a mouse button is pressed, released, or clicked (pressed and  released)
+     * <li>when the mouse cursor enters or exits the component
+     * <li>when the mouse wheel rotated, or mouse moved or dragged
+     * </ul>
+     *
+     * @author Carl Quinn
+     * @author Andrei Dmitriev
+     *
+     * @see MouseEvent
+     * @see MouseWheelEvent
+     * @see MouseListener
+     * @see MouseMotionListener
+     * @see MouseWheelListener
+     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html">Tutorial: Writing a Mouse Listener</a>
+     *
+     * @since 1.1
+     * @class
+     */
+    abstract class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseWheelListener, java.awt.event.MouseMotionListener {
+        /**
+         * {@inheritDoc}
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseClicked(e: java.awt.event.MouseEvent): void;
+        /**
+         * {@inheritDoc}
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mousePressed(e: java.awt.event.MouseEvent): void;
+        /**
+         * {@inheritDoc}
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseReleased(e: java.awt.event.MouseEvent): void;
+        /**
+         * {@inheritDoc}
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseEntered(e: java.awt.event.MouseEvent): void;
+        /**
+         * {@inheritDoc}
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseExited(e: java.awt.event.MouseEvent): void;
+        /**
+         * {@inheritDoc}
+         * @since 1.6
+         * @param {java.awt.event.MouseWheelEvent} e
+         */
+        mouseWheelMoved(e: java.awt.event.MouseWheelEvent): void;
+        /**
+         * {@inheritDoc}
+         * @since 1.6
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseDragged(e: java.awt.event.MouseEvent): void;
+        /**
+         * {@inheritDoc}
+         * @since 1.6
+         * @param {java.awt.event.MouseEvent} e
+         */
+        mouseMoved(e: java.awt.event.MouseEvent): void;
+        constructor();
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * The listener interface for receiving text events.
+     *
+     * The class that is interested in processing a text event
+     * implements this interface. The object created with that
+     * class is then registered with a component using the
+     * component's <code>addTextListener</code> method. When the
+     * component's text changes, the listener object's
+     * <code>textValueChanged</code> method is invoked.
+     *
+     * @author Georges Saab
+     *
+     * @see TextEvent
+     *
+     * @since 1.1
+     * @class
+     */
+    interface TextListener extends java.util.EventListener {
+        /**
+         * Invoked when the value of the text has changed.
+         * The code written for this method performs the operations
+         * that need to occur when text changes.
+         * @param {java.awt.event.TextEvent} e
+         */
+        textValueChanged(e: java.awt.event.TextEvent): any;
+    }
+}
+declare namespace java.awt {
+    abstract class Graphics {
+        constructor();
+        create$(): Graphics;
+        create$int$int$int$int(x: number, y: number, width: number, height: number): Graphics;
+        create(x?: any, y?: any, width?: any, height?: any): Graphics;
+        abstract translate(x: number, y: number): any;
+        abstract getColor(): java.awt.Color;
+        abstract setColor(c: java.awt.Color): any;
+        abstract setPaintMode(): any;
+        abstract getFont(): java.awt.Font;
+        abstract setFont(font: java.awt.Font): any;
+        getClipBounds$(): java.awt.Rectangle;
+        abstract clipRect(x: number, y: number, width: number, height: number): any;
+        setClip$int$int$int$int(x: number, y: number, width: number, height: number): void;
+        setClip(x?: any, y?: any, width?: any, height?: any): any;
+        abstract getClip(): java.awt.Shape;
+        setClip$java_awt_Shape(clip: java.awt.Shape): void;
+        abstract drawLine(x1: number, y1: number, x2: number, y2: number): any;
+        abstract fillRect(x: number, y: number, width: number, height: number): any;
+        drawRect(x: number, y: number, width: number, height: number): void;
+        abstract clearRect(x: number, y: number, width: number, height: number): any;
+        abstract drawRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): any;
+        abstract fillRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): any;
+        draw3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
+        fill3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
+        abstract drawOval(x: number, y: number, width: number, height: number): any;
+        abstract fillOval(x: number, y: number, width: number, height: number): any;
+        abstract drawArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): any;
+        abstract fillArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): any;
+        abstract drawPolyline(xPoints: number[], yPoints: number[], nPoints: number): any;
+        drawPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
+        drawPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
+        drawPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
+        fillPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
+        fillPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
+        fillPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
+        abstract drawString(str: string, x: number, y: number): any;
+        drawImage$java_awt_Image$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
+        drawImage(img?: any, dx1?: any, dy1?: any, dx2?: any, dy2?: any, sx1?: any, sy1?: any, sx2?: any, sy2?: any, bgcolor?: any, observer?: any): boolean;
+        abstract dispose(): any;
+        finalize(): void;
+        toString(): string;
+        hitClip(x: number, y: number, width: number, height: number): boolean;
+        getClipBounds$java_awt_Rectangle(r: java.awt.Rectangle): java.awt.Rectangle;
+        getClipBounds(r?: any): java.awt.Rectangle;
     }
 }
 declare namespace java.awt {
@@ -6688,8 +6202,47 @@ declare namespace java.awt {
         toString(): string;
     }
 }
+declare namespace java.awt.image {
+    /**
+     * RenderedImage is a common interface for objects which contain
+     * or can produce image data in the form of Rasters.  The image
+     * data may be stored/produced as a single tile or a regular array
+     * of tiles.
+     * @class
+     */
+    interface RenderedImage {
+        /**
+         * Returns the width of the RenderedImage.
+         * @return {number} the width of this <code>RenderedImage</code>.
+         */
+        getWidth(): number;
+        /**
+         * Returns the height of the RenderedImage.
+         * @return {number} the height of this <code>RenderedImage</code>.
+         */
+        getHeight(): number;
+    }
+}
+declare namespace java.awt.image {
+    interface ImageObserver {
+        imageUpdate(img: java.awt.Image, infoflags: number, x: number, y: number, width: number, height: number): boolean;
+    }
+    namespace ImageObserver {
+        const WIDTH: number;
+        const HEIGHT: number;
+        const PROPERTIES: number;
+        const SOMEBITS: number;
+        const FRAMEBITS: number;
+        const ALLBITS: number;
+        const ERROR: number;
+        const ABORT: number;
+    }
+}
 declare namespace java.awt {
-    interface Paint {
+    interface LayoutManager {
+        addLayoutComponent(name: string, comp: java.awt.Component): any;
+        removeLayoutComponent(comp: java.awt.Component): any;
+        layoutContainer(parent: java.awt.Container): any;
     }
 }
 declare namespace java.awt {
@@ -6711,1209 +6264,6 @@ declare namespace java.awt {
         initHTML(): void;
         abstract createHTML(): any;
         constructor();
-    }
-}
-declare namespace java.awt {
-    class NoLayout implements java.awt.LayoutManager {
-        created: boolean;
-        parent: java.awt.Container;
-        constructor();
-        /**
-         *
-         * @param {string} name
-         * @param {java.awt.Component} component
-         */
-        addLayoutComponent(name: string, component: java.awt.Component): void;
-        /**
-         *
-         * @param {java.awt.Component} component
-         */
-        removeLayoutComponent(component: java.awt.Component): void;
-        /**
-         *
-         * @param {java.awt.Container} parent
-         */
-        layoutContainer(parent: java.awt.Container): void;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving container events.
-     * The class that is interested in processing a container event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>ContainerAdapter</code> class
-     * (overriding only the methods of interest).
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addContainerListener</code>
-     * method. When the container's contents change because a component
-     * has been added or removed, the relevant method in the listener object
-     * is invoked, and the <code>ContainerEvent</code> is passed to it.
-     * <P>
-     * Container events are provided for notification purposes ONLY;
-     * The AWT will automatically handle add and remove operations
-     * internally so the program works properly regardless of
-     * whether the program registers a {@code ContainerListener} or not.
-     *
-     * @see ContainerAdapter
-     * @see ContainerEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/containerlistener.html">Tutorial: Writing a Container Listener</a>
-     *
-     * @author Tim Prinzing
-     * @author Amy Fowler
-     * @since 1.1
-     * @class
-     */
-    interface ContainerListener extends java.util.EventListener {
-        /**
-         * Invoked when a component has been added to the container.
-         * @param {java.awt.event.ContainerEvent} e
-         */
-        componentAdded(e: java.awt.event.ContainerEvent): any;
-        /**
-         * Invoked when a component has been removed from the container.
-         * @param {java.awt.event.ContainerEvent} e
-         */
-        componentRemoved(e: java.awt.event.ContainerEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving "interesting" mouse events
-     * (press, release, click, enter, and exit) on a component.
-     * (To track mouse moves and mouse drags, use the
-     * <code>MouseMotionListener</code>.)
-     * <P>
-     * The class that is interested in processing a mouse event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>MouseAdapter</code> class
-     * (overriding only the methods of interest).
-     * <P>
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addMouseListener</code>
-     * method. A mouse event is generated when the mouse is pressed, released
-     * clicked (pressed and released). A mouse event is also generated when
-     * the mouse cursor enters or leaves a component. When a mouse event
-     * occurs, the relevant method in the listener object is invoked, and
-     * the <code>MouseEvent</code> is passed to it.
-     *
-     * @author Carl Quinn
-     *
-     * @see MouseAdapter
-     * @see MouseEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html">Tutorial: Writing a Mouse Listener</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    interface MouseListener extends java.util.EventListener {
-        /**
-         * Invoked when the mouse button has been clicked (pressed
-         * and released) on a component.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseClicked(e: java.awt.event.MouseEvent): any;
-        /**
-         * Invoked when a mouse button has been pressed on a component.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mousePressed(e: java.awt.event.MouseEvent): any;
-        /**
-         * Invoked when a mouse button has been released on a component.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseReleased(e: java.awt.event.MouseEvent): any;
-        /**
-         * Invoked when the mouse enters a component.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseEntered(e: java.awt.event.MouseEvent): any;
-        /**
-         * Invoked when the mouse exits a component.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseExited(e: java.awt.event.MouseEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving mouse motion events on a component.
-     * (For clicks and other mouse events, use the <code>MouseListener</code>.)
-     * <P>
-     * The class that is interested in processing a mouse motion event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>MouseMotionAdapter</code> class
-     * (overriding only the methods of interest).
-     * <P>
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addMouseMotionListener</code>
-     * method. A mouse motion event is generated when the mouse is moved
-     * or dragged. (Many such events will be generated). When a mouse motion event
-     * occurs, the relevant method in the listener object is invoked, and
-     * the <code>MouseEvent</code> is passed to it.
-     *
-     * @author Amy Fowler
-     *
-     * @see MouseMotionAdapter
-     * @see MouseEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mousemotionlistener.html">Tutorial: Writing a Mouse Motion Listener</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    interface MouseMotionListener extends java.util.EventListener {
-        /**
-         * Invoked when a mouse button is pressed on a component and then
-         * dragged.  <code>MOUSE_DRAGGED</code> events will continue to be
-         * delivered to the component where the drag originated until the
-         * mouse button is released (regardless of whether the mouse position
-         * is within the bounds of the component).
-         * <p>
-         * Due to platform-dependent Drag&amp;Drop implementations,
-         * <code>MOUSE_DRAGGED</code> events may not be delivered during a native
-         * Drag&amp;Drop operation.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseDragged(e: java.awt.event.MouseEvent): any;
-        /**
-         * Invoked when the mouse cursor has been moved onto a component
-         * but no buttons have been pushed.
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseMoved(e: java.awt.event.MouseEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    interface ActionListener extends java.util.EventListener {
-        actionPerformed(ae: java.awt.event.ActionEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * An abstract adapter class for receiving window events.
-     * The methods in this class are empty. This class exists as
-     * convenience for creating listener objects.
-     * <P>
-     * Extend this class to create a <code>WindowEvent</code> listener
-     * and override the methods for the events of interest. (If you implement the
-     * <code>WindowListener</code> interface, you have to define all of
-     * the methods in it. This abstract class defines null methods for them
-     * all, so you can only have to define methods for events you care about.)
-     * <P>
-     * Create a listener object using the extended class and then register it with
-     * a Window using the window's <code>addWindowListener</code>
-     * method. When the window's status changes by virtue of being opened,
-     * closed, activated or deactivated, iconified or deiconified,
-     * the relevant method in the listener
-     * object is invoked, and the <code>WindowEvent</code> is passed to it.
-     *
-     * @see WindowEvent
-     * @see WindowListener
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
-     *
-     * @author Carl Quinn
-     * @author Amy Fowler
-     * @author David Mendenhall
-     * @since 1.1
-     * @class
-     */
-    abstract class WindowAdapter implements java.awt.event.WindowListener, java.awt.event.WindowStateListener, java.awt.event.WindowFocusListener {
-        /**
-         * Invoked when a window has been opened.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowOpened(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window is in the process of being closed.
-         * The close operation can be overridden at this point.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowClosing(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window has been closed.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowClosed(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window is iconified.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowIconified(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window is de-iconified.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowDeiconified(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window is activated.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowActivated(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window is de-activated.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowDeactivated(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when a window state is changed.
-         * @since 1.4
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowStateChanged(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when the Window is set to be the focused Window, which means
-         * that the Window, or one of its subcomponents, will receive keyboard
-         * events.
-         *
-         * @since 1.4
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowGainedFocus(e: java.awt.event.WindowEvent): void;
-        /**
-         * Invoked when the Window is no longer the focused Window, which means
-         * that keyboard events will no longer be delivered to the Window or any of
-         * its subcomponents.
-         *
-         * @since 1.4
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowLostFocus(e: java.awt.event.WindowEvent): void;
-        constructor();
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving keyboard events (keystrokes).
-     * The class that is interested in processing a keyboard event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>KeyAdapter</code> class
-     * (overriding only the methods of interest).
-     * <P>
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addKeyListener</code>
-     * method. A keyboard event is generated when a key is pressed, released,
-     * or typed. The relevant method in the listener
-     * object is then invoked, and the <code>KeyEvent</code> is passed to it.
-     *
-     * @author Carl Quinn
-     *
-     * @see KeyAdapter
-     * @see KeyEvent
-     * @see <a href="http://java.sun.com/docs/books/tutorial/post1.0/ui/keylistener.html">Tutorial: Writing a Key Listener</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    interface KeyListener extends java.util.EventListener {
-        /**
-         * Invoked when a key has been typed.
-         * See the class description for {@link KeyEvent} for a definition of
-         * a key typed event.
-         * @param {java.awt.event.KeyEvent} e
-         */
-        keyTyped(e: java.awt.event.KeyEvent): any;
-        /**
-         * Invoked when a key has been pressed.
-         * See the class description for {@link KeyEvent} for a definition of
-         * a key pressed event.
-         * @param {java.awt.event.KeyEvent} e
-         */
-        keyPressed(e: java.awt.event.KeyEvent): any;
-        /**
-         * Invoked when a key has been released.
-         * See the class description for {@link KeyEvent} for a definition of
-         * a key released event.
-         * @param {java.awt.event.KeyEvent} e
-         */
-        keyReleased(e: java.awt.event.KeyEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * An abstract adapter class for receiving container events.
-     * The methods in this class are empty. This class exists as
-     * convenience for creating listener objects.
-     * <P>
-     * Extend this class to create a <code>ContainerEvent</code> listener
-     * and override the methods for the events of interest. (If you implement the
-     * <code>ContainerListener</code> interface, you have to define all of
-     * the methods in it. This abstract class defines null methods for them
-     * all, so you can only have to define methods for events you care about.)
-     * <P>
-     * Create a listener object using the extended class and then register it with
-     * a component using the component's <code>addContainerListener</code>
-     * method. When the container's contents change because a component has
-     * been added or removed, the relevant method in the listener object is invoked,
-     * and the <code>ContainerEvent</code> is passed to it.
-     *
-     * @see ContainerEvent
-     * @see ContainerListener
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/containerlistener.html">Tutorial: Writing a Container Listener</a>
-     *
-     * @author Amy Fowler
-     * @since 1.1
-     * @class
-     */
-    abstract class ContainerAdapter implements java.awt.event.ContainerListener {
-        /**
-         * Invoked when a component has been added to the container.
-         * @param {java.awt.event.ContainerEvent} e
-         */
-        componentAdded(e: java.awt.event.ContainerEvent): void;
-        /**
-         * Invoked when a component has been removed from the container.
-         * @param {java.awt.event.ContainerEvent} e
-         */
-        componentRemoved(e: java.awt.event.ContainerEvent): void;
-        constructor();
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * An abstract adapter class for receiving mouse motion events.
-     * The methods in this class are empty. This class exists as
-     * convenience for creating listener objects.
-     * <P>
-     * Mouse motion events occur when a mouse is moved or dragged.
-     * (Many such events will be generated in a normal program.
-     * To track clicks and other mouse events, use the MouseAdapter.)
-     * <P>
-     * Extend this class to create a <code>MouseEvent</code> listener
-     * and override the methods for the events of interest. (If you implement the
-     * <code>MouseMotionListener</code> interface, you have to define all of
-     * the methods in it. This abstract class defines null methods for them
-     * all, so you can only have to define methods for events you care about.)
-     * <P>
-     * Create a listener object using the extended class and then register it with
-     * a component using the component's <code>addMouseMotionListener</code>
-     * method. When the mouse is moved or dragged, the relevant method in the
-     * listener object is invoked and the <code>MouseEvent</code> is passed to it.
-     *
-     * @author Amy Fowler
-     *
-     * @see MouseEvent
-     * @see MouseMotionListener
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mousemotionlistener.html">Tutorial: Writing a Mouse Motion Listener</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    abstract class MouseMotionAdapter implements java.awt.event.MouseMotionListener {
-        /**
-         * Invoked when a mouse button is pressed on a component and then
-         * dragged.  Mouse drag events will continue to be delivered to
-         * the component where the first originated until the mouse button is
-         * released (regardless of whether the mouse position is within the
-         * bounds of the component).
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseDragged(e: java.awt.event.MouseEvent): void;
-        /**
-         * Invoked when the mouse button has been moved on a component
-         * (with no buttons no down).
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseMoved(e: java.awt.event.MouseEvent): void;
-        constructor();
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving item events.
-     * The class that is interested in processing an item event
-     * implements this interface. The object created with that
-     * class is then registered with a component using the
-     * component's <code>addItemListener</code> method. When an
-     * item-selection event occurs, the listener object's
-     * <code>itemStateChanged</code> method is invoked.
-     *
-     * @author Amy Fowler
-     *
-     * @see java.awt.ItemSelectable
-     * @see ItemEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/itemlistener.html">Tutorial: Writing an Item Listener</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    interface ItemListener extends java.util.EventListener {
-        /**
-         * Invoked when an item has been selected or deselected by the user.
-         * The code written for this method performs the operations
-         * that need to occur when an item is selected (or deselected).
-         * @param {java.awt.event.ItemEvent} e
-         */
-        itemStateChanged(e: java.awt.event.ItemEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * An abstract adapter class for receiving mouse events.
-     * The methods in this class are empty. This class exists as
-     * convenience for creating listener objects.
-     * <P>
-     * Mouse events let you track when a mouse is pressed, released, clicked,
-     * moved, dragged, when it enters a component, when it exits and
-     * when a mouse wheel is moved.
-     * <P>
-     * Extend this class to create a {@code MouseEvent}
-     * (including drag and motion events) or/and {@code MouseWheelEvent}
-     * listener and override the methods for the events of interest. (If you implement the
-     * {@code MouseListener},
-     * {@code MouseMotionListener}
-     * interface, you have to define all of
-     * the methods in it. This abstract class defines null methods for them
-     * all, so you can only have to define methods for events you care about.)
-     * <P>
-     * Create a listener object using the extended class and then register it with
-     * a component using the component's {@code addMouseListener}
-     * {@code addMouseMotionListener}, {@code addMouseWheelListener}
-     * methods.
-     * The relevant method in the listener object is invoked  and the {@code MouseEvent}
-     * or {@code MouseWheelEvent}  is passed to it in following cases:
-     * <ul>
-     * <li>when a mouse button is pressed, released, or clicked (pressed and  released)
-     * <li>when the mouse cursor enters or exits the component
-     * <li>when the mouse wheel rotated, or mouse moved or dragged
-     * </ul>
-     *
-     * @author Carl Quinn
-     * @author Andrei Dmitriev
-     *
-     * @see MouseEvent
-     * @see MouseWheelEvent
-     * @see MouseListener
-     * @see MouseMotionListener
-     * @see MouseWheelListener
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html">Tutorial: Writing a Mouse Listener</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    abstract class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseWheelListener, java.awt.event.MouseMotionListener {
-        /**
-         * {@inheritDoc}
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseClicked(e: java.awt.event.MouseEvent): void;
-        /**
-         * {@inheritDoc}
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mousePressed(e: java.awt.event.MouseEvent): void;
-        /**
-         * {@inheritDoc}
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseReleased(e: java.awt.event.MouseEvent): void;
-        /**
-         * {@inheritDoc}
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseEntered(e: java.awt.event.MouseEvent): void;
-        /**
-         * {@inheritDoc}
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseExited(e: java.awt.event.MouseEvent): void;
-        /**
-         * {@inheritDoc}
-         * @since 1.6
-         * @param {java.awt.event.MouseWheelEvent} e
-         */
-        mouseWheelMoved(e: java.awt.event.MouseWheelEvent): void;
-        /**
-         * {@inheritDoc}
-         * @since 1.6
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseDragged(e: java.awt.event.MouseEvent): void;
-        /**
-         * {@inheritDoc}
-         * @since 1.6
-         * @param {java.awt.event.MouseEvent} e
-         */
-        mouseMoved(e: java.awt.event.MouseEvent): void;
-        constructor();
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving component events.
-     * The class that is interested in processing a component event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>ComponentAdapter</code> class
-     * (overriding only the methods of interest).
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addComponentListener</code>
-     * method. When the component's size, location, or visibility
-     * changes, the relevant method in the listener object is invoked,
-     * and the <code>ComponentEvent</code> is passed to it.
-     * <P>
-     * Component events are provided for notification purposes ONLY;
-     * The AWT will automatically handle component moves and resizes
-     * internally so that GUI layout works properly regardless of
-     * whether a program registers a <code>ComponentListener</code> or not.
-     *
-     * @see ComponentAdapter
-     * @see ComponentEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
-     *
-     * @author Carl Quinn
-     * @since 1.1
-     * @class
-     */
-    interface ComponentListener extends java.util.EventListener {
-        /**
-         * Invoked when the component's size changes.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentResized(e: java.awt.event.ComponentEvent): any;
-        /**
-         * Invoked when the component's position changes.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentMoved(e: java.awt.event.ComponentEvent): any;
-        /**
-         * Invoked when the component has been made visible.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentShown(e: java.awt.event.ComponentEvent): any;
-        /**
-         * Invoked when the component has been made invisible.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentHidden(e: java.awt.event.ComponentEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving mouse wheel events on a component.
-     * (For clicks and other mouse events, use the <code>MouseListener</code>.
-     * For mouse movement and drags, use the <code>MouseMotionListener</code>.)
-     * <P>
-     * The class that is interested in processing a mouse wheel event
-     * implements this interface (and all the methods it contains).
-     * <P>
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addMouseWheelListener</code>
-     * method. A mouse wheel event is generated when the mouse wheel is rotated.
-     * When a mouse wheel event occurs, that object's <code>mouseWheelMoved</code>
-     * method is invoked.
-     * <p>
-     * For information on how mouse wheel events are dispatched, see
-     * the class description for {@link MouseWheelEvent}.
-     *
-     * @author Brent Christian
-     * @see MouseWheelEvent
-     * @since 1.4
-     * @class
-     */
-    interface MouseWheelListener extends java.util.EventListener {
-        /**
-         * Invoked when the mouse wheel is rotated.
-         * @see MouseWheelEvent
-         * @param {java.awt.event.MouseWheelEvent} e
-         */
-        mouseWheelMoved(e: java.awt.event.MouseWheelEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving text events.
-     *
-     * The class that is interested in processing a text event
-     * implements this interface. The object created with that
-     * class is then registered with a component using the
-     * component's <code>addTextListener</code> method. When the
-     * component's text changes, the listener object's
-     * <code>textValueChanged</code> method is invoked.
-     *
-     * @author Georges Saab
-     *
-     * @see TextEvent
-     *
-     * @since 1.1
-     * @class
-     */
-    interface TextListener extends java.util.EventListener {
-        /**
-         * Invoked when the value of the text has changed.
-         * The code written for this method performs the operations
-         * that need to occur when text changes.
-         * @param {java.awt.event.TextEvent} e
-         */
-        textValueChanged(e: java.awt.event.TextEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving window state events.
-     * <p>
-     * The class that is interested in processing a window state event
-     * either implements this interface (and all the methods it contains)
-     * or extends the abstract <code>WindowAdapter</code> class
-     * (overriding only the methods of interest).
-     * <p>
-     * The listener object created from that class is then registered with
-     * a window using the <code>Window</code>'s
-     * <code>addWindowStateListener</code> method.  When the window's
-     * state changes by virtue of being iconified, maximized etc., the
-     * <code>windowStateChanged</code> method in the listener object is
-     * invoked, and the <code>WindowEvent</code> is passed to it.
-     *
-     * @see java.awt.event.WindowAdapter
-     * @see java.awt.event.WindowEvent
-     *
-     * @since 1.4
-     * @class
-     */
-    interface WindowStateListener extends java.util.EventListener {
-        /**
-         * Invoked when window state is changed.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowStateChanged(e: java.awt.event.WindowEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving <code>WindowEvents</code>, including
-     * <code>WINDOW_GAINED_FOCUS</code> and <code>WINDOW_LOST_FOCUS</code> events.
-     * The class that is interested in processing a <code>WindowEvent</code>
-     * either implements this interface (and
-     * all the methods it contains) or extends the abstract
-     * <code>WindowAdapter</code> class (overriding only the methods of interest).
-     * The listener object created from that class is then registered with a
-     * <code>Window</code>
-     * using the <code>Window</code>'s <code>addWindowFocusListener</code> method.
-     * When the <code>Window</code>'s
-     * status changes by virtue of it being opened, closed, activated, deactivated,
-     * iconified, or deiconified, or by focus being transfered into or out of the
-     * <code>Window</code>, the relevant method in the listener object is invoked,
-     * and the <code>WindowEvent</code> is passed to it.
-     *
-     * @author David Mendenhall
-     *
-     * @see WindowAdapter
-     * @see WindowEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
-     *
-     * @since 1.4
-     * @class
-     */
-    interface WindowFocusListener extends java.util.EventListener {
-        /**
-         * Invoked when the Window is set to be the focused Window, which means
-         * that the Window, or one of its subcomponents, will receive keyboard
-         * events.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowGainedFocus(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when the Window is no longer the focused Window, which means
-         * that keyboard events will no longer be delivered to the Window or any of
-         * its subcomponents.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowLostFocus(e: java.awt.event.WindowEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving window events.
-     * The class that is interested in processing a window event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>WindowAdapter</code> class
-     * (overriding only the methods of interest).
-     * The listener object created from that class is then registered with a
-     * Window using the window's <code>addWindowListener</code>
-     * method. When the window's status changes by virtue of being opened,
-     * closed, activated or deactivated, iconified or deiconified,
-     * the relevant method in the listener object is invoked, and the
-     * <code>WindowEvent</code> is passed to it.
-     *
-     * @author Carl Quinn
-     *
-     * @see WindowAdapter
-     * @see WindowEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: How to Write Window Listeners</a>
-     *
-     * @since 1.1
-     * @class
-     */
-    interface WindowListener extends java.util.EventListener {
-        /**
-         * Invoked the first time a window is made visible.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowOpened(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when the user attempts to close the window
-         * from the window's system menu.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowClosing(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when a window has been closed as the result
-         * of calling dispose on the window.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowClosed(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when a window is changed from a normal to a
-         * minimized state. For many platforms, a minimized window
-         * is displayed as the icon specified in the window's
-         * iconImage property.
-         * @see java.awt.Frame#setIconImage
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowIconified(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when a window is changed from a minimized
-         * to a normal state.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowDeiconified(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when the Window is set to be the active Window. Only a Frame or
-         * a Dialog can be the active Window. The native windowing system may
-         * denote the active Window or its children with special decorations, such
-         * as a highlighted title bar. The active Window is always either the
-         * focused Window, or the first Frame or Dialog that is an owner of the
-         * focused Window.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowActivated(e: java.awt.event.WindowEvent): any;
-        /**
-         * Invoked when a Window is no longer the active Window. Only a Frame or a
-         * Dialog can be the active Window. The native windowing system may denote
-         * the active Window or its children with special decorations, such as a
-         * highlighted title bar. The active Window is always either the focused
-         * Window, or the first Frame or Dialog that is an owner of the focused
-         * Window.
-         * @param {java.awt.event.WindowEvent} e
-         */
-        windowDeactivated(e: java.awt.event.WindowEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving adjustment events.
-     *
-     * @author Amy Fowler
-     * @since 1.1
-     * @class
-     */
-    interface AdjustmentListener extends java.util.EventListener {
-        /**
-         * Invoked when the value of the adjustable has changed.
-         * @param {java.awt.event.AdjustmentEvent} e
-         */
-        adjustmentValueChanged(e: java.awt.event.AdjustmentEvent): any;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * An abstract adapter class for receiving component events.
-     * The methods in this class are empty. This class exists as
-     * convenience for creating listener objects.
-     * <P>
-     * Extend this class to create a <code>ComponentEvent</code> listener
-     * and override the methods for the events of interest. (If you implement the
-     * <code>ComponentListener</code> interface, you have to define all of
-     * the methods in it. This abstract class defines null methods for them
-     * all, so you can only have to define methods for events you care about.)
-     * <P>
-     * Create a listener object using your class and then register it with a
-     * component using the component's <code>addComponentListener</code>
-     * method. When the component's size, location, or visibility
-     * changes, the relevant method in the listener object is invoked,
-     * and the <code>ComponentEvent</code> is passed to it.
-     *
-     * @see ComponentEvent
-     * @see ComponentListener
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
-     *
-     * @author Carl Quinn
-     * @since 1.1
-     * @class
-     */
-    abstract class ComponentAdapter implements java.awt.event.ComponentListener {
-        /**
-         * Invoked when the component's size changes.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentResized(e: java.awt.event.ComponentEvent): void;
-        /**
-         * Invoked when the component's position changes.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentMoved(e: java.awt.event.ComponentEvent): void;
-        /**
-         * Invoked when the component has been made visible.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentShown(e: java.awt.event.ComponentEvent): void;
-        /**
-         * Invoked when the component has been made invisible.
-         * @param {java.awt.event.ComponentEvent} e
-         */
-        componentHidden(e: java.awt.event.ComponentEvent): void;
-        constructor();
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * The listener interface for receiving keyboard focus events on
-     * a component.
-     * The class that is interested in processing a focus event
-     * either implements this interface (and all the methods it
-     * contains) or extends the abstract <code>FocusAdapter</code> class
-     * (overriding only the methods of interest).
-     * The listener object created from that class is then registered with a
-     * component using the component's <code>addFocusListener</code>
-     * method. When the component gains or loses the keyboard focus,
-     * the relevant method in the listener object
-     * is invoked, and the <code>FocusEvent</code> is passed to it.
-     *
-     * @see FocusAdapter
-     * @see FocusEvent
-     * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/focuslistener.html">Tutorial: Writing a Focus Listener</a>
-     *
-     * @author Carl Quinn
-     * @since 1.1
-     * @class
-     */
-    interface FocusListener extends java.util.EventListener {
-        /**
-         * Invoked when a component gains the keyboard focus.
-         * @param {java.awt.event.FocusEvent} e
-         */
-        focusGained(e: java.awt.event.FocusEvent): any;
-        /**
-         * Invoked when a component loses the keyboard focus.
-         * @param {java.awt.event.FocusEvent} e
-         */
-        focusLost(e: java.awt.event.FocusEvent): any;
-    }
-}
-declare namespace java.awt {
-    class Toolkit {
-        static toolkit: Toolkit;
-        images: java.util.Map<string, java.awt.Image>;
-        static getProperty(key: string, defaultValue: string): string;
-        static getDefaultToolkit(): Toolkit;
-        createImage(filename: string): java.awt.Image;
-        getImage(filename: string): java.awt.Image;
-        constructor();
-    }
-}
-declare namespace java.awt {
-    class GridLayout implements java.awt.LayoutManager2 {
-        created: boolean;
-        parent: java.awt.Container;
-        table: HTMLTableElement;
-        currentPosition: number;
-        cols: number;
-        rows: number;
-        constructor(rows: number, cols: number);
-        addLayoutComponent$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): void;
-        /**
-         *
-         * @param {string} name
-         * @param {java.awt.Component} component
-         */
-        addLayoutComponent(name?: any, component?: any): any;
-        /**
-         *
-         * @param {java.awt.Component} component
-         */
-        removeLayoutComponent(component: java.awt.Component): void;
-        /**
-         *
-         * @param {java.awt.Container} parent
-         */
-        layoutContainer(parent: java.awt.Container): void;
-        addLayoutComponent$java_awt_Component$java_lang_Object(component: java.awt.Component, o: any): void;
-        /**
-         *
-         * @param {java.awt.Container} container
-         * @return {number}
-         */
-        getLayoutAlignmentX(container: java.awt.Container): number;
-        /**
-         *
-         * @param {java.awt.Container} container
-         * @return {number}
-         */
-        getLayoutAlignmentY(container: java.awt.Container): number;
-        /**
-         *
-         * @param {java.awt.Container} container
-         */
-        invalidateLayout(container: java.awt.Container): void;
-    }
-}
-declare namespace java.awt {
-    /**
-     * The <code>Shape</code> interface provides definitions for objects
-     * that represent some form of geometric shape.  The <code>Shape</code>
-     * is described by a {@link PathIterator} object, which can express the
-     * outline of the <code>Shape</code> as well as a rule for determining
-     * how the outline divides the 2D plane into interior and exterior
-     * points.  Each <code>Shape</code> object provides callbacks to get the
-     * bounding box of the geometry, determine whether points or
-     * rectangles lie partly or entirely within the interior
-     * of the <code>Shape</code>, and retrieve a <code>PathIterator</code>
-     * object that describes the trajectory path of the <code>Shape</code>
-     * outline.
-     * <p>
-     * <a name="def_insideness"><b>Definition of insideness:</b></a>
-     * A point is considered to lie inside a
-     * <code>Shape</code> if and only if:
-     * <ul>
-     * <li> it lies completely
-     * inside the<code>Shape</code> boundary <i>or</i>
-     * <li>
-     * it lies exactly on the <code>Shape</code> boundary <i>and</i> the
-     * space immediately adjacent to the
-     * point in the increasing <code>X</code> direction is
-     * entirely inside the boundary <i>or</i>
-     * <li>
-     * it lies exactly on a horizontal boundary segment <b>and</b> the
-     * space immediately adjacent to the point in the
-     * increasing <code>Y</code> direction is inside the boundary.
-     * </ul>
-     * <p>The <code>contains</code> and <code>intersects</code> methods
-     * consider the interior of a <code>Shape</code> to be the area it
-     * encloses as if it were filled.  This means that these methods
-     * consider
-     * unclosed shapes to be implicitly closed for the purpose of
-     * determining if a shape contains or intersects a rectangle or if a
-     * shape contains a point.
-     *
-     * @see java.awt.geom.PathIterator
-     * @see java.awt.geom.AffineTransform
-     * @see java.awt.geom.FlatteningPathIterator
-     * @see java.awt.geom.GeneralPath
-     *
-     * @author Jim Graham
-     * @since 1.2
-     * @class
-     */
-    interface Shape {
-        /**
-         * Returns an integer {@link Rectangle} that completely encloses the
-         * <code>Shape</code>.  Note that there is no guarantee that the
-         * returned <code>Rectangle</code> is the smallest bounding box that
-         * encloses the <code>Shape</code>, only that the <code>Shape</code>
-         * lies entirely within the indicated  <code>Rectangle</code>.  The
-         * returned <code>Rectangle</code> might also fail to completely
-         * enclose the <code>Shape</code> if the <code>Shape</code> overflows
-         * the limited range of the integer data type.  The
-         * <code>getBounds2D</code> method generally returns a
-         * tighter bounding box due to its greater flexibility in
-         * representation.
-         *
-         * <p>
-         * Note that the <a href="{@docRoot}/java/awt/Shape.html#def_insideness">
-         * definition of insideness</a> can lead to situations where points
-         * on the defining outline of the {@code shape} may not be considered
-         * contained in the returned {@code bounds} object, but only in cases
-         * where those points are also not considered contained in the original
-         * {@code shape}.
-         * </p>
-         * <p>
-         * If a {@code point} is inside the {@code shape} according to the
-         * {@link #contains(double x, double y) contains(point)} method, then
-         * it must be inside the returned {@code Rectangle} bounds object
-         * according to the {@link #contains(double x, double y) contains(point)}
-         * method of the {@code bounds}. Specifically:
-         * </p>
-         * <p>
-         * {@code shape.contains(x,y)} requires {@code bounds.contains(x,y)}
-         * </p>
-         * <p>
-         * If a {@code point} is not inside the {@code shape}, then it might
-         * still be contained in the {@code bounds} object:
-         * </p>
-         * <p>
-         * {@code bounds.contains(x,y)} does not imply {@code shape.contains(x,y)}
-         * </p>
-         * @return {java.awt.Rectangle} an integer <code>Rectangle</code> that completely encloses
-         * the <code>Shape</code>.
-         * @see #getBounds2D
-         * @since 1.2
-         */
-        getBounds(): java.awt.Rectangle;
-        /**
-         * Returns a high precision and more accurate bounding box of
-         * the <code>Shape</code> than the <code>getBounds</code> method.
-         * Note that there is no guarantee that the returned
-         * {@link Rectangle2D} is the smallest bounding box that encloses
-         * the <code>Shape</code>, only that the <code>Shape</code> lies
-         * entirely within the indicated <code>Rectangle2D</code>.  The
-         * bounding box returned by this method is usually tighter than that
-         * returned by the <code>getBounds</code> method and never fails due
-         * to overflow problems since the return value can be an instance of
-         * the <code>Rectangle2D</code> that uses double precision values to
-         * store the dimensions.
-         *
-         * <p>
-         * Note that the <a href="{@docRoot}/java/awt/Shape.html#def_insideness">
-         * definition of insideness</a> can lead to situations where points
-         * on the defining outline of the {@code shape} may not be considered
-         * contained in the returned {@code bounds} object, but only in cases
-         * where those points are also not considered contained in the original
-         * {@code shape}.
-         * </p>
-         * <p>
-         * If a {@code point} is inside the {@code shape} according to the
-         * {@link #contains(Point2D p) contains(point)} method, then it must
-         * be inside the returned {@code Rectangle2D} bounds object according
-         * to the {@link #contains(Point2D p) contains(point)} method of the
-         * {@code bounds}. Specifically:
-         * </p>
-         * <p>
-         * {@code shape.contains(p)} requires {@code bounds.contains(p)}
-         * </p>
-         * <p>
-         * If a {@code point} is not inside the {@code shape}, then it might
-         * still be contained in the {@code bounds} object:
-         * </p>
-         * <p>
-         * {@code bounds.contains(p)} does not imply {@code shape.contains(p)}
-         * </p>
-         * @return {java.awt.geom.Rectangle2D} an instance of <code>Rectangle2D</code> that is a
-         * high-precision bounding box of the <code>Shape</code>.
-         * @see #getBounds
-         * @since 1.2
-         */
-        getBounds2D(): java.awt.geom.Rectangle2D;
-        /**
-         * Tests if the interior of the <code>Shape</code> intersects the
-         * interior of a specified rectangular area.
-         * The rectangular area is considered to intersect the <code>Shape</code>
-         * if any point is contained in both the interior of the
-         * <code>Shape</code> and the specified rectangular area.
-         * <p>
-         * The {@code Shape.intersects()} method allows a {@code Shape}
-         * implementation to conservatively return {@code true} when:
-         * <ul>
-         * <li>
-         * there is a high probability that the rectangular area and the
-         * <code>Shape</code> intersect, but
-         * <li>
-         * the calculations to accurately determine this intersection
-         * are prohibitively expensive.
-         * </ul>
-         * This means that for some {@code Shapes} this method might
-         * return {@code true} even though the rectangular area does not
-         * intersect the {@code Shape}.
-         * The {@link java.awt.geom.Area} class performs
-         * more accurate computations of geometric intersection than most
-         * {@code Shape} objects and therefore can be used if a more precise
-         * answer is required.
-         *
-         * @param {number} x the X coordinate of the upper-left corner
-         * of the specified rectangular area
-         * @param {number} y the Y coordinate of the upper-left corner
-         * of the specified rectangular area
-         * @param {number} w the width of the specified rectangular area
-         * @param {number} h the height of the specified rectangular area
-         * @return {boolean} <code>true</code> if the interior of the <code>Shape</code> and
-         * the interior of the rectangular area intersect, or are
-         * both highly likely to intersect and intersection calculations
-         * would be too expensive to perform; <code>false</code> otherwise.
-         * @see java.awt.geom.Area
-         * @since 1.2
-         */
-        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
-        /**
-         * Tests if the interior of the <code>Shape</code> entirely contains
-         * the specified rectangular area.  All coordinates that lie inside
-         * the rectangular area must lie within the <code>Shape</code> for the
-         * entire rectangular area to be considered contained within the
-         * <code>Shape</code>.
-         * <p>
-         * The {@code Shape.contains()} method allows a {@code Shape}
-         * implementation to conservatively return {@code false} when:
-         * <ul>
-         * <li>
-         * the <code>intersect</code> method returns <code>true</code> and
-         * <li>
-         * the calculations to determine whether or not the
-         * <code>Shape</code> entirely contains the rectangular area are
-         * prohibitively expensive.
-         * </ul>
-         * This means that for some {@code Shapes} this method might
-         * return {@code false} even though the {@code Shape} contains
-         * the rectangular area.
-         * The {@link java.awt.geom.Area} class performs
-         * more accurate geometric computations than most
-         * {@code Shape} objects and therefore can be used if a more precise
-         * answer is required.
-         *
-         * @param {number} x the X coordinate of the upper-left corner
-         * of the specified rectangular area
-         * @param {number} y the Y coordinate of the upper-left corner
-         * of the specified rectangular area
-         * @param {number} w the width of the specified rectangular area
-         * @param {number} h the height of the specified rectangular area
-         * @return {boolean} <code>true</code> if the interior of the <code>Shape</code>
-         * entirely contains the specified rectangular area;
-         * <code>false</code> otherwise or, if the <code>Shape</code>
-         * contains the rectangular area and the
-         * <code>intersects</code> method returns <code>true</code>
-         * and the containment calculations would be too expensive to
-         * perform.
-         * @see java.awt.geom.Area
-         * @see #intersects
-         * @since 1.2
-         */
-        contains(x?: any, y?: any, w?: any, h?: any): boolean;
-        /**
-         * Returns an iterator object that iterates along the <code>Shape</code>
-         * boundary and provides access to a flattened view of the
-         * <code>Shape</code> outline geometry.
-         * <p>
-         * Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types are
-         * returned by the iterator.
-         * <p>
-         * If an optional <code>AffineTransform</code> is specified,
-         * the coordinates returned in the iteration are transformed
-         * accordingly.
-         * <p>
-         * The amount of subdivision of the curved segments is controlled
-         * by the <code>flatness</code> parameter, which specifies the
-         * maximum distance that any point on the unflattened transformed
-         * curve can deviate from the returned flattened path segments.
-         * Note that a limit on the accuracy of the flattened path might be
-         * silently imposed, causing very small flattening parameters to be
-         * treated as larger values.  This limit, if there is one, is
-         * defined by the particular implementation that is used.
-         * <p>
-         * Each call to this method returns a fresh <code>PathIterator</code>
-         * object that traverses the <code>Shape</code> object geometry
-         * independently from any other <code>PathIterator</code> objects in use at
-         * the same time.
-         * <p>
-         * It is recommended, but not guaranteed, that objects
-         * implementing the <code>Shape</code> interface isolate iterations
-         * that are in process from any changes that might occur to the original
-         * object's geometry during such iterations.
-         *
-         * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the
-         * coordinates as they are returned in the iteration, or
-         * <code>null</code> if untransformed coordinates are desired
-         * @param {number} flatness the maximum distance that the line segments used to
-         * approximate the curved segments are allowed to deviate
-         * from any point on the original curve
-         * @return {*} a new <code>PathIterator</code> that independently traverses
-         * a flattened view of the geometry of the  <code>Shape</code>.
-         * @since 1.2
-         */
-        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
     }
 }
 declare namespace java.awt {
@@ -8455,6 +6805,912 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class Font implements java.io.Serializable {
+        toHTML(): string;
+        /**
+         * This is now only used during serialization. Typically it is null.
+         *
+         * @serial
+         * @see #getAttributes()
+         */
+        fRequestedAttributes: java.util.Hashtable<any, any>;
+        /**
+         * A String constant for the canonical family name of the logical font
+         * "Dialog". It is useful in Font construction to provide compile-time
+         * verification of the name.
+         *
+         * @since 1.6
+         */
+        static DIALOG: string;
+        /**
+         * A String constant for the canonical family name of the logical font
+         * "DialogInput". It is useful in Font construction to provide compile-time
+         * verification of the name.
+         *
+         * @since 1.6
+         */
+        static DIALOG_INPUT: string;
+        /**
+         * A String constant for the canonical family name of the logical font
+         * "SansSerif". It is useful in Font construction to provide compile-time
+         * verification of the name.
+         *
+         * @since 1.6
+         */
+        static SANS_SERIF: string;
+        /**
+         * A String constant for the canonical family name of the logical font
+         * "Serif". It is useful in Font construction to provide compile-time
+         * verification of the name.
+         *
+         * @since 1.6
+         */
+        static SERIF: string;
+        /**
+         * A String constant for the canonical family name of the logical font
+         * "Monospaced". It is useful in Font construction to provide compile-time
+         * verification of the name.
+         *
+         * @since 1.6
+         */
+        static MONOSPACED: string;
+        /**
+         * The plain style constant.
+         */
+        static PLAIN: number;
+        /**
+         * The bold style constant. This can be combined with the other style
+         * constants (except PLAIN) for mixed styles.
+         */
+        static BOLD: number;
+        /**
+         * The italicized style constant. This can be combined with the other style
+         * constants (except PLAIN) for mixed styles.
+         */
+        static ITALIC: number;
+        /**
+         * The baseline used in most Roman scripts when laying out text.
+         */
+        static ROMAN_BASELINE: number;
+        /**
+         * The baseline used in ideographic scripts like Chinese, Japanese, and
+         * Korean when laying out text.
+         */
+        static CENTER_BASELINE: number;
+        /**
+         * The baseline used in Devanigiri and similar scripts when laying out text.
+         */
+        static HANGING_BASELINE: number;
+        /**
+         * Identify a font resource of type TRUETYPE. Used to specify a TrueType
+         * font resource to the {@link #createFont} method. The TrueType format was
+         * extended to become the OpenType format, which adds support for fonts with
+         * Postscript outlines, this tag therefore references these fonts, as well
+         * as those with TrueType outlines.
+         *
+         * @since 1.3
+         */
+        static TRUETYPE_FONT: number;
+        /**
+         * Identify a font resource of type TYPE1. Used to specify a Type1 font
+         * resource to the {@link #createFont} method.
+         *
+         * @since 1.5
+         */
+        static TYPE1_FONT: number;
+        /**
+         * The logical name of this <code>Font</code>, as passed to the constructor.
+         *
+         * @since JDK1.0
+         *
+         * @serial
+         * @see #getName
+         */
+        name: string;
+        /**
+         * The style of this <code>Font</code>, as passed to the constructor. This
+         * style can be PLAIN, BOLD, ITALIC, or BOLD+ITALIC.
+         *
+         * @since JDK1.0
+         *
+         * @serial
+         * @see #getStyle()
+         */
+        style: number;
+        /**
+         * The point size of this <code>Font</code>, rounded to integer.
+         *
+         * @since JDK1.0
+         *
+         * @serial
+         * @see #getSize()
+         */
+        size: number;
+        /**
+         * The point size of this <code>Font</code> in <code>float</code>.
+         *
+         * @serial
+         * @see #getSize()
+         * @see #getSize2D()
+         */
+        pointSize: number;
+        static serialVersionUID: number;
+        constructor(name?: any, style?: any, sizePts?: any);
+        getFamily(): string;
+        getName(): string;
+        getFontName(): string;
+        getStyle(): number;
+        getSize(): number;
+        getSize2D(): number;
+        isPlain(): boolean;
+        isBold(): boolean;
+        isItalic(): boolean;
+        static getFont$java_lang_String(nm: string): Font;
+        static decode(str: string): Font;
+        static getFont$java_lang_String$java_awt_Font(nm: string, font: Font): Font;
+        static getFont(nm?: any, font?: any): Font;
+        hash: number;
+        hashCode(): number;
+        equals(obj: any): boolean;
+        getStyleInTextRepr(): string;
+        /**
+         * Converts this <code>Font</code> object to a <code>String</code>
+         * representation.
+         *
+         * @return {string} a <code>String</code> representation of this <code>Font</code>
+         * object.
+         * @since JDK1.0
+         */
+        toString(): string;
+        /**
+         * A flag to layoutGlyphVector indicating that text is left-to-right as
+         * determined by Bidi analysis.
+         */
+        static LAYOUT_LEFT_TO_RIGHT: number;
+        /**
+         * A flag to layoutGlyphVector indicating that text is right-to-left as
+         * determined by Bidi analysis.
+         */
+        static LAYOUT_RIGHT_TO_LEFT: number;
+        /**
+         * A flag to layoutGlyphVector indicating that text in the char array before
+         * the indicated start should not be examined.
+         */
+        static LAYOUT_NO_START_CONTEXT: number;
+        /**
+         * A flag to layoutGlyphVector indicating that text in the char array after
+         * the indicated limit should not be examined.
+         */
+        static LAYOUT_NO_LIMIT_CONTEXT: number;
+    }
+}
+declare namespace java.awt {
+    interface Paint {
+    }
+}
+declare namespace java.awt {
+    class Event implements java.io.Serializable {
+        data: number;
+        static SHIFT_MASK: number;
+        static CTRL_MASK: number;
+        static META_MASK: number;
+        static ALT_MASK: number;
+        static HOME: number;
+        static END: number;
+        static PGUP: number;
+        static PGDN: number;
+        static UP: number;
+        static DOWN: number;
+        static LEFT: number;
+        static RIGHT: number;
+        static F1: number;
+        static F2: number;
+        static F3: number;
+        static F4: number;
+        static F5: number;
+        static F6: number;
+        static F7: number;
+        static F8: number;
+        static F9: number;
+        static F10: number;
+        static F11: number;
+        static F12: number;
+        static PRINT_SCREEN: number;
+        static SCROLL_LOCK: number;
+        static CAPS_LOCK: number;
+        static NUM_LOCK: number;
+        static PAUSE: number;
+        static INSERT: number;
+        static ENTER: number;
+        static BACK_SPACE: number;
+        static TAB: number;
+        static ESCAPE: number;
+        static DELETE: number;
+        static WINDOW_EVENT: number;
+        static WINDOW_DESTROY: number;
+        static WINDOW_DESTROY_$LI$(): number;
+        static WINDOW_EXPOSE: number;
+        static WINDOW_EXPOSE_$LI$(): number;
+        static WINDOW_ICONIFY: number;
+        static WINDOW_ICONIFY_$LI$(): number;
+        static WINDOW_DEICONIFY: number;
+        static WINDOW_DEICONIFY_$LI$(): number;
+        static WINDOW_MOVED: number;
+        static WINDOW_MOVED_$LI$(): number;
+        static KEY_EVENT: number;
+        static KEY_PRESS: number;
+        static KEY_PRESS_$LI$(): number;
+        static KEY_RELEASE: number;
+        static KEY_RELEASE_$LI$(): number;
+        static KEY_ACTION: number;
+        static KEY_ACTION_$LI$(): number;
+        static KEY_ACTION_RELEASE: number;
+        static KEY_ACTION_RELEASE_$LI$(): number;
+        static MOUSE_EVENT: number;
+        static MOUSE_DOWN: number;
+        static MOUSE_DOWN_$LI$(): number;
+        static MOUSE_UP: number;
+        static MOUSE_UP_$LI$(): number;
+        static MOUSE_MOVE: number;
+        static MOUSE_MOVE_$LI$(): number;
+        static MOUSE_ENTER: number;
+        static MOUSE_ENTER_$LI$(): number;
+        static MOUSE_EXIT: number;
+        static MOUSE_EXIT_$LI$(): number;
+        static MOUSE_DRAG: number;
+        static MOUSE_DRAG_$LI$(): number;
+        static SCROLL_EVENT: number;
+        static SCROLL_LINE_UP: number;
+        static SCROLL_LINE_UP_$LI$(): number;
+        static SCROLL_LINE_DOWN: number;
+        static SCROLL_LINE_DOWN_$LI$(): number;
+        static SCROLL_PAGE_UP: number;
+        static SCROLL_PAGE_UP_$LI$(): number;
+        static SCROLL_PAGE_DOWN: number;
+        static SCROLL_PAGE_DOWN_$LI$(): number;
+        static SCROLL_ABSOLUTE: number;
+        static SCROLL_ABSOLUTE_$LI$(): number;
+        static SCROLL_BEGIN: number;
+        static SCROLL_BEGIN_$LI$(): number;
+        static SCROLL_END: number;
+        static SCROLL_END_$LI$(): number;
+        static LIST_EVENT: number;
+        static LIST_SELECT: number;
+        static LIST_SELECT_$LI$(): number;
+        static LIST_DESELECT: number;
+        static LIST_DESELECT_$LI$(): number;
+        static MISC_EVENT: number;
+        static ACTION_EVENT: number;
+        static ACTION_EVENT_$LI$(): number;
+        static LOAD_FILE: number;
+        static LOAD_FILE_$LI$(): number;
+        static SAVE_FILE: number;
+        static SAVE_FILE_$LI$(): number;
+        static GOT_FOCUS: number;
+        static GOT_FOCUS_$LI$(): number;
+        static LOST_FOCUS: number;
+        static LOST_FOCUS_$LI$(): number;
+        target: any;
+        when: number;
+        id: number;
+        x: number;
+        y: number;
+        key: number;
+        modifiers: number;
+        clickCount: number;
+        arg: any;
+        evt: Event;
+        consumed: boolean;
+        constructor(target?: any, when?: any, id?: any, x?: any, y?: any, key?: any, modifiers?: any, arg?: any);
+        translate(dx: number, dy: number): void;
+        shiftDown(): boolean;
+        controlDown(): boolean;
+        metaDown(): boolean;
+        consume(): void;
+        isConsumed(): boolean;
+        paramString(): string;
+        toString(): string;
+    }
+}
+declare namespace java.awt {
+    abstract class AWTEvent extends java.util.EventObject {
+        id: number;
+        consumed: boolean;
+        /**
+         * The event mask for selecting component events.
+         */
+        static COMPONENT_EVENT_MASK: number;
+        /**
+         * The event mask for selecting container events.
+         */
+        static CONTAINER_EVENT_MASK: number;
+        /**
+         * The event mask for selecting focus events.
+         */
+        static FOCUS_EVENT_MASK: number;
+        /**
+         * The event mask for selecting key events.
+         */
+        static KEY_EVENT_MASK: number;
+        /**
+         * The event mask for selecting mouse events.
+         */
+        static MOUSE_EVENT_MASK: number;
+        /**
+         * The event mask for selecting mouse motion events.
+         */
+        static MOUSE_MOTION_EVENT_MASK: number;
+        /**
+         * The event mask for selecting window events.
+         */
+        static WINDOW_EVENT_MASK: number;
+        /**
+         * The event mask for selecting action events.
+         */
+        static ACTION_EVENT_MASK: number;
+        /**
+         * The event mask for selecting adjustment events.
+         */
+        static ADJUSTMENT_EVENT_MASK: number;
+        /**
+         * The event mask for selecting item events.
+         */
+        static ITEM_EVENT_MASK: number;
+        /**
+         * The event mask for selecting text events.
+         */
+        static TEXT_EVENT_MASK: number;
+        /**
+         * The event mask for selecting input method events.
+         */
+        static INPUT_METHOD_EVENT_MASK: number;
+        /**
+         * The pseudo event mask for enabling input methods. We're using one bit in
+         * the eventMask so we don't need a separate field inputMethodsEnabled.
+         */
+        static INPUT_METHODS_ENABLED_MASK: number;
+        /**
+         * The event mask for selecting paint events.
+         */
+        static PAINT_EVENT_MASK: number;
+        /**
+         * The event mask for selecting invocation events.
+         */
+        static INVOCATION_EVENT_MASK: number;
+        /**
+         * The event mask for selecting hierarchy events.
+         */
+        static HIERARCHY_EVENT_MASK: number;
+        /**
+         * The event mask for selecting hierarchy bounds events.
+         */
+        static HIERARCHY_BOUNDS_EVENT_MASK: number;
+        /**
+         * The event mask for selecting mouse wheel events.
+         *
+         * @since 1.4
+         */
+        static MOUSE_WHEEL_EVENT_MASK: number;
+        /**
+         * The event mask for selecting window state events.
+         *
+         * @since 1.4
+         */
+        static WINDOW_STATE_EVENT_MASK: number;
+        /**
+         * The event mask for selecting window focus events.
+         *
+         * @since 1.4
+         */
+        static WINDOW_FOCUS_EVENT_MASK: number;
+        /**
+         * The maximum value for reserved AWT event IDs. Programs defining their own
+         * event IDs should use IDs greater than this value.
+         */
+        static RESERVED_ID_MAX: number;
+        constructor(source?: any, id?: any);
+        setSource(newSource: any): void;
+        /**
+         * Returns a String representation of this object.
+         * @return {string}
+         */
+        toString(): string;
+        paramString(): string;
+        consume(): void;
+        isConsumed(): boolean;
+        /**
+         * Returns the event type.
+         * @return {number}
+         */
+        getID(): number;
+    }
+}
+declare namespace java.awt {
+    /**
+     * The <code>Shape</code> interface provides definitions for objects
+     * that represent some form of geometric shape.  The <code>Shape</code>
+     * is described by a {@link PathIterator} object, which can express the
+     * outline of the <code>Shape</code> as well as a rule for determining
+     * how the outline divides the 2D plane into interior and exterior
+     * points.  Each <code>Shape</code> object provides callbacks to get the
+     * bounding box of the geometry, determine whether points or
+     * rectangles lie partly or entirely within the interior
+     * of the <code>Shape</code>, and retrieve a <code>PathIterator</code>
+     * object that describes the trajectory path of the <code>Shape</code>
+     * outline.
+     * <p>
+     * <a name="def_insideness"><b>Definition of insideness:</b></a>
+     * A point is considered to lie inside a
+     * <code>Shape</code> if and only if:
+     * <ul>
+     * <li> it lies completely
+     * inside the<code>Shape</code> boundary <i>or</i>
+     * <li>
+     * it lies exactly on the <code>Shape</code> boundary <i>and</i> the
+     * space immediately adjacent to the
+     * point in the increasing <code>X</code> direction is
+     * entirely inside the boundary <i>or</i>
+     * <li>
+     * it lies exactly on a horizontal boundary segment <b>and</b> the
+     * space immediately adjacent to the point in the
+     * increasing <code>Y</code> direction is inside the boundary.
+     * </ul>
+     * <p>The <code>contains</code> and <code>intersects</code> methods
+     * consider the interior of a <code>Shape</code> to be the area it
+     * encloses as if it were filled.  This means that these methods
+     * consider
+     * unclosed shapes to be implicitly closed for the purpose of
+     * determining if a shape contains or intersects a rectangle or if a
+     * shape contains a point.
+     *
+     * @see java.awt.geom.PathIterator
+     * @see java.awt.geom.AffineTransform
+     * @see java.awt.geom.FlatteningPathIterator
+     * @see java.awt.geom.GeneralPath
+     *
+     * @author Jim Graham
+     * @since 1.2
+     * @class
+     */
+    interface Shape {
+        /**
+         * Returns an integer {@link Rectangle} that completely encloses the
+         * <code>Shape</code>.  Note that there is no guarantee that the
+         * returned <code>Rectangle</code> is the smallest bounding box that
+         * encloses the <code>Shape</code>, only that the <code>Shape</code>
+         * lies entirely within the indicated  <code>Rectangle</code>.  The
+         * returned <code>Rectangle</code> might also fail to completely
+         * enclose the <code>Shape</code> if the <code>Shape</code> overflows
+         * the limited range of the integer data type.  The
+         * <code>getBounds2D</code> method generally returns a
+         * tighter bounding box due to its greater flexibility in
+         * representation.
+         *
+         * <p>
+         * Note that the <a href="{@docRoot}/java/awt/Shape.html#def_insideness">
+         * definition of insideness</a> can lead to situations where points
+         * on the defining outline of the {@code shape} may not be considered
+         * contained in the returned {@code bounds} object, but only in cases
+         * where those points are also not considered contained in the original
+         * {@code shape}.
+         * </p>
+         * <p>
+         * If a {@code point} is inside the {@code shape} according to the
+         * {@link #contains(double x, double y) contains(point)} method, then
+         * it must be inside the returned {@code Rectangle} bounds object
+         * according to the {@link #contains(double x, double y) contains(point)}
+         * method of the {@code bounds}. Specifically:
+         * </p>
+         * <p>
+         * {@code shape.contains(x,y)} requires {@code bounds.contains(x,y)}
+         * </p>
+         * <p>
+         * If a {@code point} is not inside the {@code shape}, then it might
+         * still be contained in the {@code bounds} object:
+         * </p>
+         * <p>
+         * {@code bounds.contains(x,y)} does not imply {@code shape.contains(x,y)}
+         * </p>
+         * @return {java.awt.Rectangle} an integer <code>Rectangle</code> that completely encloses
+         * the <code>Shape</code>.
+         * @see #getBounds2D
+         * @since 1.2
+         */
+        getBounds(): java.awt.Rectangle;
+        /**
+         * Returns a high precision and more accurate bounding box of
+         * the <code>Shape</code> than the <code>getBounds</code> method.
+         * Note that there is no guarantee that the returned
+         * {@link Rectangle2D} is the smallest bounding box that encloses
+         * the <code>Shape</code>, only that the <code>Shape</code> lies
+         * entirely within the indicated <code>Rectangle2D</code>.  The
+         * bounding box returned by this method is usually tighter than that
+         * returned by the <code>getBounds</code> method and never fails due
+         * to overflow problems since the return value can be an instance of
+         * the <code>Rectangle2D</code> that uses double precision values to
+         * store the dimensions.
+         *
+         * <p>
+         * Note that the <a href="{@docRoot}/java/awt/Shape.html#def_insideness">
+         * definition of insideness</a> can lead to situations where points
+         * on the defining outline of the {@code shape} may not be considered
+         * contained in the returned {@code bounds} object, but only in cases
+         * where those points are also not considered contained in the original
+         * {@code shape}.
+         * </p>
+         * <p>
+         * If a {@code point} is inside the {@code shape} according to the
+         * {@link #contains(Point2D p) contains(point)} method, then it must
+         * be inside the returned {@code Rectangle2D} bounds object according
+         * to the {@link #contains(Point2D p) contains(point)} method of the
+         * {@code bounds}. Specifically:
+         * </p>
+         * <p>
+         * {@code shape.contains(p)} requires {@code bounds.contains(p)}
+         * </p>
+         * <p>
+         * If a {@code point} is not inside the {@code shape}, then it might
+         * still be contained in the {@code bounds} object:
+         * </p>
+         * <p>
+         * {@code bounds.contains(p)} does not imply {@code shape.contains(p)}
+         * </p>
+         * @return {java.awt.geom.Rectangle2D} an instance of <code>Rectangle2D</code> that is a
+         * high-precision bounding box of the <code>Shape</code>.
+         * @see #getBounds
+         * @since 1.2
+         */
+        getBounds2D(): java.awt.geom.Rectangle2D;
+        /**
+         * Tests if the interior of the <code>Shape</code> intersects the
+         * interior of a specified rectangular area.
+         * The rectangular area is considered to intersect the <code>Shape</code>
+         * if any point is contained in both the interior of the
+         * <code>Shape</code> and the specified rectangular area.
+         * <p>
+         * The {@code Shape.intersects()} method allows a {@code Shape}
+         * implementation to conservatively return {@code true} when:
+         * <ul>
+         * <li>
+         * there is a high probability that the rectangular area and the
+         * <code>Shape</code> intersect, but
+         * <li>
+         * the calculations to accurately determine this intersection
+         * are prohibitively expensive.
+         * </ul>
+         * This means that for some {@code Shapes} this method might
+         * return {@code true} even though the rectangular area does not
+         * intersect the {@code Shape}.
+         * The {@link java.awt.geom.Area} class performs
+         * more accurate computations of geometric intersection than most
+         * {@code Shape} objects and therefore can be used if a more precise
+         * answer is required.
+         *
+         * @param {number} x the X coordinate of the upper-left corner
+         * of the specified rectangular area
+         * @param {number} y the Y coordinate of the upper-left corner
+         * of the specified rectangular area
+         * @param {number} w the width of the specified rectangular area
+         * @param {number} h the height of the specified rectangular area
+         * @return {boolean} <code>true</code> if the interior of the <code>Shape</code> and
+         * the interior of the rectangular area intersect, or are
+         * both highly likely to intersect and intersection calculations
+         * would be too expensive to perform; <code>false</code> otherwise.
+         * @see java.awt.geom.Area
+         * @since 1.2
+         */
+        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
+        /**
+         * Tests if the interior of the <code>Shape</code> entirely contains
+         * the specified rectangular area.  All coordinates that lie inside
+         * the rectangular area must lie within the <code>Shape</code> for the
+         * entire rectangular area to be considered contained within the
+         * <code>Shape</code>.
+         * <p>
+         * The {@code Shape.contains()} method allows a {@code Shape}
+         * implementation to conservatively return {@code false} when:
+         * <ul>
+         * <li>
+         * the <code>intersect</code> method returns <code>true</code> and
+         * <li>
+         * the calculations to determine whether or not the
+         * <code>Shape</code> entirely contains the rectangular area are
+         * prohibitively expensive.
+         * </ul>
+         * This means that for some {@code Shapes} this method might
+         * return {@code false} even though the {@code Shape} contains
+         * the rectangular area.
+         * The {@link java.awt.geom.Area} class performs
+         * more accurate geometric computations than most
+         * {@code Shape} objects and therefore can be used if a more precise
+         * answer is required.
+         *
+         * @param {number} x the X coordinate of the upper-left corner
+         * of the specified rectangular area
+         * @param {number} y the Y coordinate of the upper-left corner
+         * of the specified rectangular area
+         * @param {number} w the width of the specified rectangular area
+         * @param {number} h the height of the specified rectangular area
+         * @return {boolean} <code>true</code> if the interior of the <code>Shape</code>
+         * entirely contains the specified rectangular area;
+         * <code>false</code> otherwise or, if the <code>Shape</code>
+         * contains the rectangular area and the
+         * <code>intersects</code> method returns <code>true</code>
+         * and the containment calculations would be too expensive to
+         * perform.
+         * @see java.awt.geom.Area
+         * @see #intersects
+         * @since 1.2
+         */
+        contains(x?: any, y?: any, w?: any, h?: any): boolean;
+        /**
+         * Returns an iterator object that iterates along the <code>Shape</code>
+         * boundary and provides access to a flattened view of the
+         * <code>Shape</code> outline geometry.
+         * <p>
+         * Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types are
+         * returned by the iterator.
+         * <p>
+         * If an optional <code>AffineTransform</code> is specified,
+         * the coordinates returned in the iteration are transformed
+         * accordingly.
+         * <p>
+         * The amount of subdivision of the curved segments is controlled
+         * by the <code>flatness</code> parameter, which specifies the
+         * maximum distance that any point on the unflattened transformed
+         * curve can deviate from the returned flattened path segments.
+         * Note that a limit on the accuracy of the flattened path might be
+         * silently imposed, causing very small flattening parameters to be
+         * treated as larger values.  This limit, if there is one, is
+         * defined by the particular implementation that is used.
+         * <p>
+         * Each call to this method returns a fresh <code>PathIterator</code>
+         * object that traverses the <code>Shape</code> object geometry
+         * independently from any other <code>PathIterator</code> objects in use at
+         * the same time.
+         * <p>
+         * It is recommended, but not guaranteed, that objects
+         * implementing the <code>Shape</code> interface isolate iterations
+         * that are in process from any changes that might occur to the original
+         * object's geometry during such iterations.
+         *
+         * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the
+         * coordinates as they are returned in the iteration, or
+         * <code>null</code> if untransformed coordinates are desired
+         * @param {number} flatness the maximum distance that the line segments used to
+         * approximate the curved segments are allowed to deviate
+         * from any point on the original curve
+         * @return {*} a new <code>PathIterator</code> that independently traverses
+         * a flattened view of the geometry of the  <code>Shape</code>.
+         * @since 1.2
+         */
+        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
+    }
+}
+declare namespace java.awt {
+    class BasicStroke implements java.awt.Stroke {
+        static JOIN_MITER: number;
+        static JOIN_ROUND: number;
+        static JOIN_BEVEL: number;
+        static CAP_BUTT: number;
+        static CAP_ROUND: number;
+        static CAP_SQUARE: number;
+        width: number;
+        join: number;
+        cap: number;
+        miterlimit: number;
+        dash: number[];
+        dash_phase: number;
+        constructor(width?: any, cap?: any, join?: any, miterlimit?: any, dash?: any, dash_phase?: any);
+        createStrokedShape(s: java.awt.Shape): java.awt.Shape;
+        getLineWidth(): number;
+        getEndCap(): number;
+        getLineJoin(): number;
+        getMiterLimit(): number;
+        getDashArray(): number[];
+        getDashPhase(): number;
+        hashCode(): number;
+        equals(obj: any): boolean;
+    }
+}
+declare namespace java.awt {
+    /**
+     * Defines an interface for classes that know how to layout Containers
+     * based on a layout constraints object.
+     *
+     * This interface extends the LayoutManager interface to deal with layouts
+     * explicitly in terms of constraint objects that specify how and where
+     * components should be added to the layout.
+     * <p>
+     * This minimal extension to LayoutManager is intended for tool
+     * providers who wish to the creation of constraint-based layouts.
+     * It does not yet provide full, general support for custom
+     * constraint-based layout managers.
+     *
+     * @see LayoutManager
+     * @see Container
+     *
+     * @author      Jonni Kanerva
+     * @class
+     */
+    interface LayoutManager2 extends java.awt.LayoutManager {
+        addLayoutComponent(name?: any, comp?: any): any;
+        /**
+         * Returns the alignment along the x axis.  This specifies how
+         * the component would like to be aligned relative to other
+         * components.  The value should be a number between 0 and 1
+         * where 0 represents alignment along the origin, 1 is aligned
+         * the furthest away from the origin, 0.5 is centered, etc.
+         * @param {java.awt.Container} target
+         * @return {number}
+         */
+        getLayoutAlignmentX(target: java.awt.Container): number;
+        /**
+         * Returns the alignment along the y axis.  This specifies how
+         * the component would like to be aligned relative to other
+         * components.  The value should be a number between 0 and 1
+         * where 0 represents alignment along the origin, 1 is aligned
+         * the furthest away from the origin, 0.5 is centered, etc.
+         * @param {java.awt.Container} target
+         * @return {number}
+         */
+        getLayoutAlignmentY(target: java.awt.Container): number;
+        /**
+         * Invalidates the layout, indicating that if the layout manager
+         * has cached information it should be discarded.
+         * @param {java.awt.Container} target
+         */
+        invalidateLayout(target: java.awt.Container): any;
+    }
+}
+declare namespace java.awt {
+    class RenderingHints {
+        static KEY_ANTIALIASING: any;
+        static KEY_ANTIALIASING_$LI$(): any;
+        static VALUE_ANTIALIAS_ON: any;
+        static VALUE_ANTIALIAS_ON_$LI$(): any;
+        static VALUE_ANTIALIAS_OFF: any;
+        static VALUE_ANTIALIAS_OFF_$LI$(): any;
+        static VALUE_ANTIALIAS_DEFAULT: any;
+        static VALUE_ANTIALIAS_DEFAULT_$LI$(): any;
+        static KEY_TEXT_ANTIALIASING: any;
+        static KEY_TEXT_ANTIALIASING_$LI$(): any;
+        static VALUE_TEXT_ANTIALIAS_ON: any;
+        static VALUE_TEXT_ANTIALIAS_ON_$LI$(): any;
+        static VALUE_TEXT_ANTIALIAS_OFF: any;
+        static VALUE_TEXT_ANTIALIAS_OFF_$LI$(): any;
+        static VALUE_TEXT_ANTIALIAS_DEFAULT: any;
+        static VALUE_TEXT_ANTIALIAS_DEFAULT_$LI$(): any;
+    }
+}
+declare namespace java.awt {
+    interface HTMLComponent {
+        getHTMLElement(): HTMLElement;
+        bindHTML(htmlElement: HTMLElement): any;
+        createHTML(): any;
+        initHTML(): any;
+    }
+}
+declare namespace java.awt {
+    class GridLayout implements java.awt.LayoutManager2 {
+        created: boolean;
+        parent: java.awt.Container;
+        table: HTMLTableElement;
+        currentPosition: number;
+        cols: number;
+        rows: number;
+        constructor(rows: number, cols: number);
+        addLayoutComponent$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): void;
+        /**
+         *
+         * @param {string} name
+         * @param {java.awt.Component} component
+         */
+        addLayoutComponent(name?: any, component?: any): any;
+        /**
+         *
+         * @param {java.awt.Component} component
+         */
+        removeLayoutComponent(component: java.awt.Component): void;
+        /**
+         *
+         * @param {java.awt.Container} parent
+         */
+        layoutContainer(parent: java.awt.Container): void;
+        addLayoutComponent$java_awt_Component$java_lang_Object(component: java.awt.Component, o: any): void;
+        /**
+         *
+         * @param {java.awt.Container} container
+         * @return {number}
+         */
+        getLayoutAlignmentX(container: java.awt.Container): number;
+        /**
+         *
+         * @param {java.awt.Container} container
+         * @return {number}
+         */
+        getLayoutAlignmentY(container: java.awt.Container): number;
+        /**
+         *
+         * @param {java.awt.Container} container
+         */
+        invalidateLayout(container: java.awt.Container): void;
+    }
+}
+declare namespace java.awt {
+    class NoLayout implements java.awt.LayoutManager {
+        created: boolean;
+        parent: java.awt.Container;
+        constructor();
+        /**
+         *
+         * @param {string} name
+         * @param {java.awt.Component} component
+         */
+        addLayoutComponent(name: string, component: java.awt.Component): void;
+        /**
+         *
+         * @param {java.awt.Component} component
+         */
+        removeLayoutComponent(component: java.awt.Component): void;
+        /**
+         *
+         * @param {java.awt.Container} parent
+         */
+        layoutContainer(parent: java.awt.Container): void;
+    }
+}
+declare namespace java.awt {
+    class Polygon implements java.awt.Shape, java.io.Serializable {
+        npoints: number;
+        xpoints: number[];
+        ypoints: number[];
+        bounds: java.awt.Rectangle;
+        static serialVersionUID: number;
+        static MIN_LENGTH: number;
+        constructor(xpoints?: any, ypoints?: any, npoints?: any);
+        reset(): void;
+        invalidate(): void;
+        translate(deltaX: number, deltaY: number): void;
+        calculateBounds(xpoints: number[], ypoints: number[], npoints: number): void;
+        updateBounds(x: number, y: number): void;
+        addPoint(x: number, y: number): void;
+        getBounds(): java.awt.Rectangle;
+        getBoundingBox(): java.awt.Rectangle;
+        contains$java_awt_Point(p: java.awt.Point): boolean;
+        contains$int$int(x: number, y: number): boolean;
+        inside(x: number, y: number): boolean;
+        getBounds2D(): java.awt.geom.Rectangle2D;
+        contains$double$double(x: number, y: number): boolean;
+        getCrossings(xlo: number, ylo: number, xhi: number, yhi: number): sun.awt.geom.Crossings;
+        contains$java_awt_geom_Point2D(p: java.awt.geom.Point2D): boolean;
+        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
+        intersects$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        contains(x?: any, y?: any, w?: any, h?: any): boolean;
+        contains$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): boolean;
+        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
+        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
+        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
+    }
+    namespace Polygon {
+        class PolygonPathIterator implements java.awt.geom.PathIterator {
+            __parent: any;
+            poly: java.awt.Polygon;
+            transform: java.awt.geom.AffineTransform;
+            index: number;
+            constructor(__parent: any, pg: java.awt.Polygon, at: java.awt.geom.AffineTransform);
+            getWindingRule(): number;
+            isDone(): boolean;
+            next(): void;
+            currentSegment$float_A(coords: number[]): number;
+            currentSegment(coords?: any): number;
+            currentSegment$double_A(coords: number[]): number;
+        }
+    }
+}
+declare namespace java.awt {
     /**
      * Creates a new cursor object with the specified type.
      *
@@ -8603,6 +7859,750 @@ declare namespace java.awt {
         toString(): string;
     }
 }
+declare namespace java.awt {
+    class Insets implements java.lang.Cloneable, java.io.Serializable {
+        top: number;
+        left: number;
+        bottom: number;
+        right: number;
+        static serialVersionUID: number;
+        constructor(top: number, left: number, bottom: number, right: number);
+        set(top: number, left: number, bottom: number, right: number): void;
+        equals(obj: any): boolean;
+        hashCode(): number;
+        toString(): string;
+        clone(): any;
+    }
+}
+declare namespace java.awt {
+    interface Adjustable {
+        getOrientation(): number;
+        setMinimum(min: number): any;
+        getMinimum(): number;
+        setMaximum(max: number): any;
+        getMaximum(): number;
+        setUnitIncrement(u: number): any;
+        getUnitIncrement(): number;
+        setBlockIncrement(b: number): any;
+        getBlockIncrement(): number;
+        setVisibleAmount(v: number): any;
+        getVisibleAmount(): number;
+        setValue(v: number): any;
+        getValue(): number;
+        addAdjustmentListener(l: java.awt.event.AdjustmentListener): any;
+        removeAdjustmentListener(l: java.awt.event.AdjustmentListener): any;
+    }
+    namespace Adjustable {
+        const HORIZONTAL: number;
+        const VERTICAL: number;
+        const NO_ORIENTATION: number;
+    }
+}
+declare namespace java.awt {
+    abstract class Component implements java.awt.HTMLComponent {
+        static TOP_ALIGNMENT: number;
+        static CENTER_ALIGNMENT: number;
+        static BOTTOM_ALIGNMENT: number;
+        static LEFT_ALIGNMENT: number;
+        static RIGHT_ALIGNMENT: number;
+        htmlElement: HTMLElement;
+        enabled: boolean;
+        valid: boolean;
+        background: java.awt.Color;
+        foreground: java.awt.Color;
+        font: java.awt.Font;
+        visible: boolean;
+        name: string;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        preferredSize: java.awt.Dimension;
+        minimumSize: java.awt.Dimension;
+        parent: java.awt.Container;
+        /**
+         *
+         * @param {HTMLElement} htmlElement
+         */
+        bindHTML(htmlElement: HTMLElement): void;
+        /**
+         *
+         * @return {HTMLElement}
+         */
+        getHTMLElement(): HTMLElement;
+        /**
+         *
+         */
+        initHTML(): void;
+        getLocationOnScreen(): java.awt.Point;
+        getBounds(): java.awt.Rectangle;
+        setBounds$java_awt_Rectangle(rectangle: java.awt.Rectangle): void;
+        setBounds$int$int$int$int(x: number, y: number, width: number, height: number): void;
+        setBounds(x?: any, y?: any, width?: any, height?: any): any;
+        getWidth(): number;
+        getHeight(): number;
+        getX(): number;
+        getY(): number;
+        setSize$int$int(width: number, height: number): void;
+        setSize(width?: any, height?: any): any;
+        setSize$java_awt_Dimension(d: java.awt.Dimension): void;
+        changeSupport: java.beans.PropertyChangeSupport;
+        static CURRENT_ID: number;
+        getPropertyChangeListeners$java_lang_String(propertyName: string): java.beans.PropertyChangeListener[];
+        getPropertyChangeListeners(propertyName?: any): java.beans.PropertyChangeListener[];
+        addPropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        removePropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        getPropertyChangeListeners$(): java.beans.PropertyChangeListener[];
+        addPropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
+        addPropertyChangeListener(propertyName?: any, listener?: any): any;
+        removePropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
+        removePropertyChangeListener(propertyName?: any, listener?: any): any;
+        firePropertyChange(propertyName: string, oldValue: any, newValue: any): void;
+        isEnabled(): boolean;
+        setEnabled(enabled: boolean): void;
+        getBackground(): java.awt.Color;
+        setBackground(background: java.awt.Color): void;
+        getForeground(): java.awt.Color;
+        setForeground(foreground: java.awt.Color): void;
+        getFont(): java.awt.Font;
+        setFont(font: java.awt.Font): void;
+        isVisible(): boolean;
+        setVisible(visible: boolean): void;
+        getName(): string;
+        setName(name: string): void;
+        paramString(): string;
+        isValid(): boolean;
+        setValid(valid: boolean): void;
+        validate(): void;
+        paint(g: java.awt.Graphics): void;
+        update(g: java.awt.Graphics): void;
+        paintAll(g: java.awt.Graphics): void;
+        getGraphics(): java.awt.Graphics;
+        doPaintInternal(): void;
+        getPreferredSize(): java.awt.Dimension;
+        setPreferredSize(preferredSize: java.awt.Dimension): void;
+        getIgnoreRepaint(): boolean;
+        setIgnoreRepaint(ignoreRepaint: boolean): void;
+        getParent(): java.awt.Container;
+        getSize(): java.awt.Dimension;
+        revalidate(): void;
+        invalidate(): void;
+        repaint(): void;
+        addFocusListener(l: java.awt.event.FocusListener): void;
+        getMinimumSize(): java.awt.Dimension;
+        setMinimumSize(minimumSize: java.awt.Dimension): void;
+        setLocation$int$int(x: number, y: number): void;
+        setLocation(x?: any, y?: any): any;
+        setLocation$java_awt_Point(p: java.awt.Point): void;
+        cursor: java.awt.Cursor;
+        getCursor(): java.awt.Cursor;
+        setCursor(cursor: java.awt.Cursor): void;
+        mouseWheelListeners: java.awt.event.MouseWheelListener[];
+        addMouseWheelListener(l: java.awt.event.MouseWheelListener): void;
+        removeMouseWheelListener(l: java.awt.event.MouseWheelListener): void;
+        getMouseWheelListeners(): java.awt.event.MouseWheelListener[];
+        mouseListeners: java.awt.event.MouseListener[];
+        addMouseListener(l: java.awt.event.MouseListener): void;
+        removeMouseListener(l: java.awt.event.MouseListener): void;
+        getMouseListeners(): java.awt.event.MouseListener[];
+        requestFocus(): void;
+        abstract createHTML(): any;
+        constructor();
+    }
+}
+declare namespace java.awt {
+    interface Stroke {
+    }
+}
+declare namespace java.awt {
+    interface ItemSelectable {
+        getSelectedObjects(): any[];
+        addItemListener(l: java.awt.event.ItemListener): any;
+        removeItemListener(l: java.awt.event.ItemListener): any;
+    }
+}
+declare namespace java.beans {
+    /**
+     * Constructor which binds the {@code PropertyChangeListener}
+     * to a specific property.
+     *
+     * @param {string} propertyName  the name of the property to listen on
+     * @param {*} listener      the listener object
+     * @class
+     * @extends java.util.EventListenerProxy
+     */
+    class PropertyChangeListenerProxy extends java.util.EventListenerProxy<java.beans.PropertyChangeListener> implements java.beans.PropertyChangeListener {
+        propertyName: string;
+        constructor(propertyName: string, listener: java.beans.PropertyChangeListener);
+        /**
+         * Forwards the property change event to the listener delegate.
+         *
+         * @param {java.beans.PropertyChangeEvent} event  the property change event
+         */
+        propertyChange(event: java.beans.PropertyChangeEvent): void;
+        /**
+         * Returns the name of the named property associated with the listener.
+         *
+         * @return {string} the name of the named property associated with the listener
+         */
+        getPropertyName(): string;
+    }
+}
+declare namespace java.beans {
+    interface PropertyChangeListener extends java.util.EventListener {
+        propertyChange(evt: java.beans.PropertyChangeEvent): any;
+    }
+}
+declare namespace java.beans {
+    abstract class ChangeListenerMap<L extends java.util.EventListener> {
+        map: java.util.Map<string, L[]>;
+        abstract newArray(length: number): L[];
+        abstract newProxy(name: string, listener: L): L;
+        add(name: string, listener: L): void;
+        remove(name: string, listener: L): void;
+        /**
+         * Returns the list of listeners for the specified property.
+         *
+         * @param {string} name
+         * the name of the property
+         * @return {L[]} the corresponding list of listeners
+         */
+        get(name: string): L[];
+        /**
+         * Sets new list of listeners for the specified property.
+         *
+         * @param {string} name
+         * the name of the property
+         * @param {L[]} listeners
+         * new list of listeners
+         */
+        set(name: string, listeners: L[]): void;
+        getListeners$(): L[];
+        getListeners$java_lang_String(name: string): L[];
+        /**
+         * Returns listeners that have been associated with the named property.
+         *
+         * @param {string} name
+         * the name of the property
+         * @return {L[]} an array of listeners for the named property
+         */
+        getListeners(name?: any): L[];
+        /**
+         * Indicates whether the map contains at least one listener to be notified.
+         *
+         * @param {string} name
+         * the name of the property
+         * @return {boolean} {@code true} if at least one listener exists or {@code false}
+         * otherwise
+         */
+        hasListeners(name: string): boolean;
+        /**
+         * Returns a set of entries from the map. Each entry is a pair consisted of
+         * the property name and the corresponding list of listeners.
+         *
+         * @return {*} a set of entries from the map
+         */
+        getEntries(): java.util.Set<java.util.Map.Entry<string, L[]>>;
+        /**
+         * Extracts a real listener from the proxy listener. It is necessary because
+         * default proxy class is not serializable.
+         *
+         * @return {*} a real listener
+         * @param {*} listener
+         */
+        abstract extract(listener: L): L;
+        constructor();
+    }
+}
+declare namespace java.beans {
+    class PropertyChangeEvent extends java.util.EventObject {
+        static __java_beans_PropertyChangeEvent_serialVersionUID: number;
+        constructor(source: any, propertyName: string, oldValue: any, newValue: any);
+        getPropertyName(): string;
+        getNewValue(): any;
+        getOldValue(): any;
+        setPropagationId(propagationId: any): void;
+        getPropagationId(): any;
+        propertyName: string;
+        newValue: any;
+        oldValue: any;
+        propagationId: any;
+        toString(): string;
+        appendTo(sb: java.lang.StringBuilder): void;
+    }
+}
+declare namespace sun.awt.geom {
+    class Edge {
+        static INIT_PARTS: number;
+        static GROW_PARTS: number;
+        curve: sun.awt.geom.Curve;
+        ctag: number;
+        etag: number;
+        activey: number;
+        equivalence: number;
+        constructor(c?: any, ctag?: any, etag?: any);
+        getCurve(): sun.awt.geom.Curve;
+        getCurveTag(): number;
+        getEdgeTag(): number;
+        setEdgeTag(etag: number): void;
+        getEquivalence(): number;
+        setEquivalence(eq: number): void;
+        lastEdge: Edge;
+        lastResult: number;
+        lastLimit: number;
+        compareTo(other: Edge, yrange: number[]): number;
+        record(yend: number, etag: number): void;
+        isActiveFor(y: number, etag: number): boolean;
+        toString(): string;
+    }
+}
+declare namespace sun.awt.geom {
+    interface PathConsumer2D {
+        /**
+         * @see java.awt.geom.Path2D.Float.moveTo
+         * @param {number} x
+         * @param {number} y
+         */
+        moveTo(x: number, y: number): any;
+        /**
+         * @see java.awt.geom.Path2D.Float.lineTo
+         * @param {number} x
+         * @param {number} y
+         */
+        lineTo(x: number, y: number): any;
+        /**
+         * @see java.awt.geom.Path2D.Float.quadTo
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         */
+        quadTo(x1: number, y1: number, x2: number, y2: number): any;
+        /**
+         * @see java.awt.geom.Path2D.Float.curveTo
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         * @param {number} x3
+         * @param {number} y3
+         */
+        curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): any;
+        /**
+         * @see java.awt.geom.Path2D.Float.closePath
+         */
+        closePath(): any;
+        /**
+         * Called after the last segment of the last subpath when the iteration of
+         * the path segments is completely done. This method serves to trigger the
+         * end of path processing in the consumer that would normally be triggered
+         * when a {@link *} returns
+         * {@code true} from its {@code done} method.
+         */
+        pathDone(): any;
+        /**
+         * If a given PathConsumer performs all or most of its work natively then it
+         * can return a (non-zero) pointer to a native function vector that defines
+         * C functions for all of the above methods. The specific pointer it returns
+         * is a pointer to a PathConsumerVec structure as defined in the include
+         * file src/share/native/sun/java2d/pipe/PathConsumer2D.h
+         *
+         * @return {number} a native pointer to a PathConsumerVec structure.
+         */
+        getNativeConsumer(): number;
+    }
+}
+declare namespace sun.awt.geom {
+    class ChainEnd {
+        head: sun.awt.geom.CurveLink;
+        tail: sun.awt.geom.CurveLink;
+        partner: ChainEnd;
+        etag: number;
+        constructor(first: sun.awt.geom.CurveLink, partner: ChainEnd);
+        getChain(): sun.awt.geom.CurveLink;
+        setOtherEnd(partner: ChainEnd): void;
+        getPartner(): ChainEnd;
+        linkTo(that: ChainEnd): sun.awt.geom.CurveLink;
+        addLink(newlink: sun.awt.geom.CurveLink): void;
+        getX(): number;
+    }
+}
+declare namespace sun.awt.geom {
+    abstract class AreaOp {
+        verbose: boolean;
+        constructor();
+        static CTAG_LEFT: number;
+        static CTAG_RIGHT: number;
+        static ETAG_IGNORE: number;
+        static ETAG_ENTER: number;
+        static ETAG_EXIT: number;
+        static RSTAG_INSIDE: number;
+        static RSTAG_OUTSIDE: number;
+        abstract newRow(): any;
+        abstract classify(e: sun.awt.geom.Edge): number;
+        abstract getState(): number;
+        calculate(left: java.util.Vector<any>, right: java.util.Vector<any>): java.util.Vector<any>;
+        static addEdges(edges: java.util.Vector<any>, curves: java.util.Vector<any>, curvetag: number): void;
+        static YXTopComparator: AreaOp.EdgeComparator;
+        static YXTopComparator_$LI$(): AreaOp.EdgeComparator;
+        pruneEdges(edges: java.util.Vector<any>): java.util.Vector<any>;
+        static finalizeSubCurves(subcurves: java.util.Vector<any>, chains: java.util.Vector<any>): void;
+        static EmptyLinkList: sun.awt.geom.CurveLink[];
+        static EmptyLinkList_$LI$(): sun.awt.geom.CurveLink[];
+        static EmptyChainList: sun.awt.geom.ChainEnd[];
+        static EmptyChainList_$LI$(): sun.awt.geom.ChainEnd[];
+        static resolveLinks(subcurves: java.util.Vector<any>, chains: java.util.Vector<any>, links: java.util.Vector<any>): void;
+        static obstructs(v1: number, v2: number, phase: number): boolean;
+    }
+    namespace AreaOp {
+        abstract class CAGOp extends sun.awt.geom.AreaOp {
+            inLeft: boolean;
+            inRight: boolean;
+            inResult: boolean;
+            newRow(): void;
+            classify(e: sun.awt.geom.Edge): number;
+            getState(): number;
+            abstract newClassification(inLeft: boolean, inRight: boolean): boolean;
+            constructor();
+        }
+        class NZWindOp extends sun.awt.geom.AreaOp {
+            count: number;
+            newRow(): void;
+            classify(e: sun.awt.geom.Edge): number;
+            getState(): number;
+            constructor();
+        }
+        class EOWindOp extends sun.awt.geom.AreaOp {
+            inside: boolean;
+            newRow(): void;
+            classify(e: sun.awt.geom.Edge): number;
+            getState(): number;
+            constructor();
+        }
+        class EdgeComparator {
+            /**
+             *
+             * @param {sun.awt.geom.Edge} o1
+             * @param {sun.awt.geom.Edge} o2
+             * @return {number}
+             */
+            compare(o1: sun.awt.geom.Edge, o2: sun.awt.geom.Edge): number;
+            constructor();
+        }
+        class AddOp extends AreaOp.CAGOp {
+            newClassification(inLeft: boolean, inRight: boolean): boolean;
+            constructor();
+        }
+        class SubOp extends AreaOp.CAGOp {
+            newClassification(inLeft: boolean, inRight: boolean): boolean;
+            constructor();
+        }
+        class IntOp extends AreaOp.CAGOp {
+            newClassification(inLeft: boolean, inRight: boolean): boolean;
+            constructor();
+        }
+        class XorOp extends AreaOp.CAGOp {
+            newClassification(inLeft: boolean, inRight: boolean): boolean;
+            constructor();
+        }
+    }
+}
+declare namespace sun.awt.geom {
+    class CurveLink {
+        curve: sun.awt.geom.Curve;
+        ytop: number;
+        ybot: number;
+        etag: number;
+        next: CurveLink;
+        constructor(curve: sun.awt.geom.Curve, ystart: number, yend: number, etag: number);
+        absorb$sun_awt_geom_CurveLink(link: CurveLink): boolean;
+        absorb$sun_awt_geom_Curve$double$double$int(curve: sun.awt.geom.Curve, ystart: number, yend: number, etag: number): boolean;
+        absorb(curve?: any, ystart?: any, yend?: any, etag?: any): boolean;
+        isEmpty(): boolean;
+        getCurve(): sun.awt.geom.Curve;
+        getSubCurve(): sun.awt.geom.Curve;
+        getMoveto(): sun.awt.geom.Curve;
+        getXTop(): number;
+        getYTop(): number;
+        getXBot(): number;
+        getYBot(): number;
+        getX(): number;
+        getEdgeTag(): number;
+        setNext(link: CurveLink): void;
+        getNext(): CurveLink;
+    }
+}
+declare namespace sun.awt.geom {
+    abstract class Curve {
+        static INCREASING: number;
+        static DECREASING: number;
+        direction: number;
+        static insertMove(curves: java.util.Vector<any>, x: number, y: number): void;
+        static insertLine(curves: java.util.Vector<any>, x0: number, y0: number, x1: number, y1: number): void;
+        static insertQuad(curves: java.util.Vector<any>, x0: number, y0: number, coords: number[]): void;
+        static insertCubic(curves: java.util.Vector<any>, x0: number, y0: number, coords: number[]): void;
+        /**
+         * Calculates the number of times the given path crosses the ray extending
+         * to the right from (px,py). If the point lies on a part of the path, then
+         * no crossings are counted for that intersection. +1 is added for each
+         * crossing where the Y coordinate is increasing -1 is added for each
+         * crossing where the Y coordinate is decreasing The return value is the sum
+         * of all crossings for every segment in the path. The path must start with
+         * a SEG_MOVETO, otherwise an exception is thrown. The caller must check
+         * p[xy] for NaN values. The caller may also reject infinite p[xy] values as
+         * well.
+         * @param {*} pi
+         * @param {number} px
+         * @param {number} py
+         * @return {number}
+         */
+        static pointCrossingsForPath(pi: java.awt.geom.PathIterator, px: number, py: number): number;
+        /**
+         * Calculates the number of times the line from (x0,y0) to (x1,y1) crosses
+         * the ray extending to the right from (px,py). If the point lies on the
+         * line, then no crossings are recorded. +1 is returned for a crossing where
+         * the Y coordinate is increasing -1 is returned for a crossing where the Y
+         * coordinate is decreasing
+         * @param {number} px
+         * @param {number} py
+         * @param {number} x0
+         * @param {number} y0
+         * @param {number} x1
+         * @param {number} y1
+         * @return {number}
+         */
+        static pointCrossingsForLine(px: number, py: number, x0: number, y0: number, x1: number, y1: number): number;
+        /**
+         * Calculates the number of times the quad from (x0,y0) to (x1,y1) crosses
+         * the ray extending to the right from (px,py). If the point lies on a part
+         * of the curve, then no crossings are counted for that intersection. the
+         * level parameter should be 0 at the top-level call and will count up for
+         * each recursion level to prevent infinite recursion +1 is added for each
+         * crossing where the Y coordinate is increasing -1 is added for each
+         * crossing where the Y coordinate is decreasing
+         * @param {number} px
+         * @param {number} py
+         * @param {number} x0
+         * @param {number} y0
+         * @param {number} xc
+         * @param {number} yc
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} level
+         * @return {number}
+         */
+        static pointCrossingsForQuad(px: number, py: number, x0: number, y0: number, xc: number, yc: number, x1: number, y1: number, level: number): number;
+        /**
+         * Calculates the number of times the cubic from (x0,y0) to (x1,y1) crosses
+         * the ray extending to the right from (px,py). If the point lies on a part
+         * of the curve, then no crossings are counted for that intersection. the
+         * level parameter should be 0 at the top-level call and will count up for
+         * each recursion level to prevent infinite recursion +1 is added for each
+         * crossing where the Y coordinate is increasing -1 is added for each
+         * crossing where the Y coordinate is decreasing
+         * @param {number} px
+         * @param {number} py
+         * @param {number} x0
+         * @param {number} y0
+         * @param {number} xc0
+         * @param {number} yc0
+         * @param {number} xc1
+         * @param {number} yc1
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} level
+         * @return {number}
+         */
+        static pointCrossingsForCubic(px: number, py: number, x0: number, y0: number, xc0: number, yc0: number, xc1: number, yc1: number, x1: number, y1: number, level: number): number;
+        /**
+         * The rectangle intersection test counts the number of times that the path
+         * crosses through the shadow that the rectangle projects to the right
+         * towards (x => +INFINITY).
+         *
+         * During processing of the path it actually counts every time the path
+         * crosses either or both of the top and bottom edges of that shadow. If the
+         * path enters from the top, the count is incremented. If it then exits back
+         * through the top, the same way it came in, the count is decremented and
+         * there is no impact on the winding count. If, instead, the path exits out
+         * the bottom, then the count is incremented again and a full pass through
+         * the shadow is indicated by the winding count having been incremented by
+         * 2.
+         *
+         * Thus, the winding count that it accumulates is actually double the real
+         * winding count. Since the path is continuous, the final answer should be a
+         * multiple of 2, otherwise there is a logic error somewhere.
+         *
+         * If the path ever has a direct hit on the rectangle, then a special value
+         * is returned. This special value terminates all ongoing accumulation on up
+         * through the call chain and ends up getting returned to the calling
+         * function which can then produce an answer directly. For intersection
+         * tests, the answer is always "true" if the path intersects the rectangle.
+         * For containment tests, the answer is always "false" if the path
+         * intersects the rectangle. Thus, no further processing is ever needed if
+         * an intersection occurs.
+         */
+        static RECT_INTERSECTS: number;
+        /**
+         * Accumulate the number of times the path crosses the shadow extending to
+         * the right of the rectangle. See the comment for the RECT_INTERSECTS
+         * constant for more complete details. The return value is the sum of all
+         * crossings for both the top and bottom of the shadow for every segment in
+         * the path, or the special value RECT_INTERSECTS if the path ever enters
+         * the interior of the rectangle. The path must start with a SEG_MOVETO,
+         * otherwise an exception is thrown. The caller must check r[xy]{min,max}
+         * for NaN values.
+         * @param {*} pi
+         * @param {number} rxmin
+         * @param {number} rymin
+         * @param {number} rxmax
+         * @param {number} rymax
+         * @return {number}
+         */
+        static rectCrossingsForPath(pi: java.awt.geom.PathIterator, rxmin: number, rymin: number, rxmax: number, rymax: number): number;
+        /**
+         * Accumulate the number of times the line crosses the shadow extending to
+         * the right of the rectangle. See the comment for the RECT_INTERSECTS
+         * constant for more complete details.
+         * @param {number} crossings
+         * @param {number} rxmin
+         * @param {number} rymin
+         * @param {number} rxmax
+         * @param {number} rymax
+         * @param {number} x0
+         * @param {number} y0
+         * @param {number} x1
+         * @param {number} y1
+         * @return {number}
+         */
+        static rectCrossingsForLine(crossings: number, rxmin: number, rymin: number, rxmax: number, rymax: number, x0: number, y0: number, x1: number, y1: number): number;
+        /**
+         * Accumulate the number of times the quad crosses the shadow extending to
+         * the right of the rectangle. See the comment for the RECT_INTERSECTS
+         * constant for more complete details.
+         * @param {number} crossings
+         * @param {number} rxmin
+         * @param {number} rymin
+         * @param {number} rxmax
+         * @param {number} rymax
+         * @param {number} x0
+         * @param {number} y0
+         * @param {number} xc
+         * @param {number} yc
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} level
+         * @return {number}
+         */
+        static rectCrossingsForQuad(crossings: number, rxmin: number, rymin: number, rxmax: number, rymax: number, x0: number, y0: number, xc: number, yc: number, x1: number, y1: number, level: number): number;
+        /**
+         * Accumulate the number of times the cubic crosses the shadow extending to
+         * the right of the rectangle. See the comment for the RECT_INTERSECTS
+         * constant for more complete details.
+         * @param {number} crossings
+         * @param {number} rxmin
+         * @param {number} rymin
+         * @param {number} rxmax
+         * @param {number} rymax
+         * @param {number} x0
+         * @param {number} y0
+         * @param {number} xc0
+         * @param {number} yc0
+         * @param {number} xc1
+         * @param {number} yc1
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} level
+         * @return {number}
+         */
+        static rectCrossingsForCubic(crossings: number, rxmin: number, rymin: number, rxmax: number, rymax: number, x0: number, y0: number, xc0: number, yc0: number, xc1: number, yc1: number, x1: number, y1: number, level: number): number;
+        constructor(direction: number);
+        getDirection(): number;
+        getWithDirection(direction: number): Curve;
+        static round(v: number): number;
+        static orderof(x1: number, x2: number): number;
+        static signeddiffbits(y1: number, y2: number): number;
+        static diffbits(y1: number, y2: number): number;
+        static prev(v: number): number;
+        static next(v: number): number;
+        toString(): string;
+        controlPointString(): string;
+        abstract getOrder(): number;
+        abstract getXTop(): number;
+        abstract getYTop(): number;
+        abstract getXBot(): number;
+        abstract getYBot(): number;
+        abstract getXMin(): number;
+        abstract getXMax(): number;
+        abstract getX0(): number;
+        abstract getY0(): number;
+        abstract getX1(): number;
+        abstract getY1(): number;
+        abstract XforY(y: number): number;
+        abstract TforY(y: number): number;
+        abstract XforT(t: number): number;
+        abstract YforT(t: number): number;
+        abstract dXforT(t: number, deriv: number): number;
+        abstract dYforT(t: number, deriv: number): number;
+        abstract nextVertical(t0: number, t1: number): number;
+        crossingsFor(x: number, y: number): number;
+        accumulateCrossings(c: sun.awt.geom.Crossings): boolean;
+        abstract enlarge(r: java.awt.geom.Rectangle2D): any;
+        getSubCurve$double$double(ystart: number, yend: number): Curve;
+        abstract getReversedCurve(): Curve;
+        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): Curve;
+        getSubCurve(ystart?: any, yend?: any, dir?: any): Curve;
+        compareTo(that: Curve, yrange: number[]): number;
+        static TMIN: number;
+        findIntersect(that: Curve, yrange: number[], ymin: number, slevel: number, tlevel: number, s0: number, xs0: number, ys0: number, s1: number, xs1: number, ys1: number, t0: number, xt0: number, yt0: number, t1: number, xt1: number, yt1: number): boolean;
+        refineTforY(t0: number, yt0: number, y0: number): number;
+        fairlyClose(v1: number, v2: number): boolean;
+        abstract getSegment(coords: number[]): number;
+    }
+}
+declare namespace sun.awt.geom {
+    abstract class Crossings {
+        static debug: boolean;
+        limit: number;
+        yranges: number[];
+        xlo: number;
+        ylo: number;
+        xhi: number;
+        yhi: number;
+        constructor(xlo: number, ylo: number, xhi: number, yhi: number);
+        getXLo(): number;
+        getYLo(): number;
+        getXHi(): number;
+        getYHi(): number;
+        abstract record(ystart: number, yend: number, direction: number): any;
+        print(): void;
+        isEmpty(): boolean;
+        abstract covers(ystart: number, yend: number): boolean;
+        static findCrossings$java_util_Vector$double$double$double$double(curves: java.util.Vector<any>, xlo: number, ylo: number, xhi: number, yhi: number): Crossings;
+        static findCrossings(curves?: any, xlo?: any, ylo?: any, xhi?: any, yhi?: any): Crossings;
+        static findCrossings$java_awt_geom_PathIterator$double$double$double$double(pi: java.awt.geom.PathIterator, xlo: number, ylo: number, xhi: number, yhi: number): Crossings;
+        accumulateLine$double$double$double$double(x0: number, y0: number, x1: number, y1: number): boolean;
+        accumulateLine$double$double$double$double$int(x0: number, y0: number, x1: number, y1: number, direction: number): boolean;
+        accumulateLine(x0?: any, y0?: any, x1?: any, y1?: any, direction?: any): boolean;
+        tmp: java.util.Vector<any>;
+        accumulateQuad(x0: number, y0: number, coords: number[]): boolean;
+        accumulateCubic(x0: number, y0: number, coords: number[]): boolean;
+    }
+    namespace Crossings {
+        class EvenOdd extends sun.awt.geom.Crossings {
+            constructor(xlo: number, ylo: number, xhi: number, yhi: number);
+            covers(ystart: number, yend: number): boolean;
+            record(ystart: number, yend: number, direction: number): void;
+        }
+        class NonZero extends sun.awt.geom.Crossings {
+            crosscounts: number[];
+            constructor(xlo: number, ylo: number, xhi: number, yhi: number);
+            covers(ystart: number, yend: number): boolean;
+            remove(cur: number): void;
+            insert(cur: number, lo: number, hi: number, dir: number): void;
+            record(ystart: number, yend: number, direction: number): void;
+        }
+    }
+}
 declare namespace javax.swing {
     /**
      * The editor component used for JComboBox components.
@@ -8644,28 +8644,1145 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
-    interface ButtonModel extends java.awt.ItemSelectable {
+    /**
+     * This interface defines the methods components like JList use
+     * to get the value of each cell in a list and the length of the list.
+     * Logically the model is a vector, indices vary from 0 to
+     * ListDataModel.getSize() - 1.  Any change to the contents or
+     * length of the data model must be reported to all of the
+     * ListDataListeners.
+     *
+     * @param <E> the type of the elements of this model
+     *
+     * @author Hans Muller
+     * @see JList
+     * @class
+     */
+    interface ListModel<E> {
+        /**
+         * Returns the length of the list.
+         * @return {number} the length of the list
+         */
+        getSize(): number;
+        /**
+         * Returns the value at the specified index.
+         * @param {number} index the requested index
+         * @return {*} the value at <code>index</code>
+         */
+        getElementAt(index: number): E;
+        /**
+         * Adds a listener to the list that's notified each time a change
+         * to the data model occurs.
+         * @param {*} l the <code>ListDataListener</code> to be added
+         */
+        addListDataListener(l: javax.swing.event.ListDataListener): any;
+        /**
+         * Removes a listener from the list that's notified each time a
+         * change to the data model occurs.
+         * @param {*} l the <code>ListDataListener</code> to be removed
+         */
+        removeListDataListener(l: javax.swing.event.ListDataListener): any;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * A generic implementation of SingleSelectionModel.
+     * <p>
+     * <strong>Warning:</strong>
+     * Serialized objects of this class will not be compatible with
+     * future Swing releases. The current serialization support is
+     * appropriate for short term storage or RMI between applications running
+     * the same version of Swing.  As of 1.4, support for long term storage
+     * of all JavaBeans&trade;
+     * has been added to the <code>java.beans</code> package.
+     * Please see {@link java.beans.XMLEncoder}.
+     *
+     * @author Dave Moore
+     * @class
+     */
+    class DefaultSingleSelectionModel implements javax.swing.SingleSelectionModel, java.io.Serializable {
+        changeEvent: javax.swing.event.ChangeEvent;
+        /**
+         * The collection of registered listeners
+         */
+        listenerList: javax.swing.event.EventListenerList;
+        index: number;
+        getSelectedIndex(): number;
+        setSelectedIndex(index: number): void;
+        clearSelection(): void;
+        isSelected(): boolean;
+        /**
+         * Adds a <code>ChangeListener</code> to the button.
+         * @param {*} l
+         */
+        addChangeListener(l: javax.swing.event.ChangeListener): void;
+        /**
+         * Removes a <code>ChangeListener</code> from the button.
+         * @param {*} l
+         */
+        removeChangeListener(l: javax.swing.event.ChangeListener): void;
+        /**
+         * Returns an array of all the change listeners
+         * registered on this <code>DefaultSingleSelectionModel</code>.
+         *
+         * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s
+         * or an empty
+         * array if no change listeners are currently registered
+         *
+         * @see #addChangeListener
+         * @see #removeChangeListener
+         *
+         * @since 1.4
+         */
+        getChangeListeners(): javax.swing.event.ChangeListener[];
+        /**
+         * Notifies all listeners that have registered interest for
+         * notification on this event type.  The event instance
+         * is created lazily.
+         * @see EventListenerList
+         */
+        fireStateChanged(): void;
+        /**
+         * Returns an array of all the objects currently registered as
+         * <code><em>Foo</em>Listener</code>s
+         * upon this model.
+         * <code><em>Foo</em>Listener</code>s
+         * are registered using the <code>add<em>Foo</em>Listener</code> method.
+         * <p>
+         * You can specify the <code>listenerType</code> argument
+         * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
+         * For example, you can query a <code>DefaultSingleSelectionModel</code>
+         * instance <code>m</code>
+         * for its change listeners
+         * with the following code:
+         *
+         * <pre>ChangeListener[] cls = (ChangeListener[])(m.getListeners(ChangeListener.class));</pre>
+         *
+         * If no such listeners exist,
+         * this method returns an empty array.
+         *
+         * @param {java.lang.Class} listenerType  the type of listeners requested;
+         * this parameter should specify an interface
+         * that descends from <code>java.util.EventListener</code>
+         * @return {T[]} an array of all objects registered as
+         * <code><em>Foo</em>Listener</code>s
+         * on this model,
+         * or an empty array if no such
+         * listeners have been added
+         * @exception ClassCastException if <code>listenerType</code> doesn't
+         * specify a class or interface that implements
+         * <code>java.util.EventListener</code>
+         *
+         * @see #getChangeListeners
+         *
+         * @since 1.3
+         */
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        constructor();
+    }
+}
+declare namespace javax.swing {
+    class BoxLayout implements java.awt.LayoutManager2, java.io.Serializable {
+        static X_AXIS: number;
+        static Y_AXIS: number;
+        static LINE_AXIS: number;
+        static PAGE_AXIS: number;
+        table: HTMLTableElement;
+        constructor(target: java.awt.Container, axis: number);
+        getTarget(): java.awt.Container;
+        getAxis(): number;
+        invalidateLayout(target: java.awt.Container): void;
+        addLayoutComponent$java_lang_String$java_awt_Component(name: string, comp: java.awt.Component): void;
+        addLayoutComponent(name?: any, comp?: any): any;
+        removeLayoutComponent(comp: java.awt.Component): void;
+        addLayoutComponent$java_awt_Component$java_lang_Object(comp: java.awt.Component, constraints: any): void;
+        getLayoutAlignmentX(target: java.awt.Container): number;
+        getLayoutAlignmentY(target: java.awt.Container): number;
+        /**
+         *
+         * @param {java.awt.Container} target
+         */
+        layoutContainer(target: java.awt.Container): void;
+        axis: number;
+        target: java.awt.Container;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * A model that supports at most one indexed selection.
+     *
+     * @author Dave Moore
+     * @class
+     */
+    interface SingleSelectionModel {
+        /**
+         * Returns the model's selection.
+         *
+         * @return  {number} the model's selection, or -1 if there is no selection
+         * @see     #setSelectedIndex
+         */
+        getSelectedIndex(): number;
+        /**
+         * Sets the model's selected index to <I>index</I>.
+         *
+         * Notifies any listeners if the model changes
+         *
+         * @param {number} index an int specifying the model selection
+         * @see   #getSelectedIndex
+         * @see   #addChangeListener
+         */
+        setSelectedIndex(index: number): any;
+        /**
+         * Clears the selection (to -1).
+         */
+        clearSelection(): any;
+        /**
+         * Returns true if the selection model currently has a selected value.
+         * @return {boolean} true if a value is currently selected
+         */
+        isSelected(): boolean;
+        /**
+         * Adds <I>listener</I> as a listener to changes in the model.
+         * @param {*} listener the ChangeListener to add
+         */
+        addChangeListener(listener: javax.swing.event.ChangeListener): any;
+        /**
+         * Removes <I>listener</I> as a listener to changes in the model.
+         * @param {*} listener the ChangeListener to remove
+         */
+        removeChangeListener(listener: javax.swing.event.ChangeListener): any;
+    }
+}
+declare namespace javax.swing {
+    interface Action extends java.awt.event.ActionListener {
+        getValue(key: string): any;
+        putValue(key: string, value: any): any;
+        setEnabled(b: boolean): any;
+        isEnabled(): boolean;
+        addPropertyChangeListener(listener: java.beans.PropertyChangeListener): any;
+        removePropertyChangeListener(listener: java.beans.PropertyChangeListener): any;
+    }
+    namespace Action {
+        const DEFAULT: string;
+        const NAME: string;
+        const SHORT_DESCRIPTION: string;
+        const LONG_DESCRIPTION: string;
+        const SMALL_ICON: string;
+        const ACTION_COMMAND_KEY: string;
+        const ACCELERATOR_KEY: string;
+        const MNEMONIC_KEY: string;
+        const SELECTED_KEY: string;
+        const DISPLAYED_MNEMONIC_INDEX_KEY: string;
+        const LARGE_ICON_KEY: string;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Interface implemented by a class interested in hearing about
+     * undoable operations.
+     *
+     * @author Ray Ryan
+     * @class
+     */
+    interface UndoableEditListener extends java.util.EventListener {
+        /**
+         * An undoable edit happened
+         * @param {javax.swing.event.UndoableEditEvent} e
+         */
+        undoableEditHappened(e: javax.swing.event.UndoableEditEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    interface ChangeListener extends java.util.EventListener {
+        stateChanged(e: javax.swing.event.ChangeEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Represents a change in selection status between {@code firstIndex} and
+     * {@code lastIndex}, inclusive. {@code firstIndex} is less than or equal to
+     * {@code lastIndex}. The selection of at least one index within the range will
+     * have changed.
+     *
+     * @param {number} firstIndex the first index in the range, &lt;= lastIndex
+     * @param {number} lastIndex the last index in the range, &gt;= firstIndex
+     * @param {boolean} isAdjusting whether or not this is one in a series of
+     * multiple events, where changes are still being made
+     * @param {*} source
+     * @class
+     * @extends java.util.EventObject
+     * @author Hans Muller
+     */
+    class ListSelectionEvent extends java.util.EventObject {
+        firstIndex: number;
+        lastIndex: number;
+        isAdjusting: boolean;
+        constructor(source: any, firstIndex: number, lastIndex: number, isAdjusting: boolean);
+        /**
+         * Returns the index of the first row whose selection may have changed.
+         * {@code getFirstIndex() &lt;= getLastIndex()}
+         *
+         * @return {number} the first row whose selection value may have changed,
+         * where zero is the first row
+         */
+        getFirstIndex(): number;
+        /**
+         * Returns the index of the last row whose selection may have changed.
+         * {@code getLastIndex() &gt;= getFirstIndex()}
+         *
+         * @return {number} the last row whose selection value may have changed,
+         * where zero is the first row
+         */
+        getLastIndex(): number;
+        /**
+         * Returns whether or not this is one in a series of multiple events,
+         * where changes are still being made. See the documentation for
+         * {@link javax.swing.ListSelectionModel#setValueIsAdjusting} for
+         * more details on how this is used.
+         *
+         * @return {boolean} {@code true} if this is one in a series of multiple events,
+         * where changes are still being made
+         */
+        getValueIsAdjusting(): boolean;
+        /**
+         * Returns a {@code String} that displays and identifies this
+         * object's properties.
+         *
+         * @return {string} a String representation of this object
+         */
+        toString(): string;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Constructs an UndoableEditEvent object.
+     *
+     * @param {*} source  the Object that originated the event
+     * (typically <code>this</code>)
+     * @param {*} edit    an UndoableEdit object
+     * @class
+     * @extends java.util.EventObject
+     * @author Ray Ryan
+     */
+    class UndoableEditEvent extends java.util.EventObject {
+        myEdit: javax.swing.undo.UndoableEdit;
+        constructor(source: any, edit: javax.swing.undo.UndoableEdit);
+        /**
+         * Returns the edit value.
+         *
+         * @return {*} the UndoableEdit object encapsulating the edit
+         */
+        getEdit(): javax.swing.undo.UndoableEdit;
+    }
+}
+declare namespace javax.swing.event {
+    interface MouseInputListener extends java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * The listener that's notified when a lists selection value
+     * changes.
+     *
+     * @see javax.swing.ListSelectionModel
+     *
+     * @author Hans Muller
+     * @class
+     */
+    interface ListSelectionListener extends java.util.EventListener {
+        /**
+         * Called whenever the value of the selection changes.
+         * @param {javax.swing.event.ListSelectionEvent} e the event that characterizes the change.
+         */
+        valueChanged(e: javax.swing.event.ListSelectionEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Defines a listener for menu events.
+     *
+     * @author Georges Saab
+     * @class
+     */
+    interface MenuListener extends java.util.EventListener {
+        /**
+         * Invoked when a menu is selected.
+         *
+         * @param {javax.swing.event.MenuEvent} e  a MenuEvent object
+         */
+        menuSelected(e: javax.swing.event.MenuEvent): any;
+        /**
+         * Invoked when the menu is deselected.
+         *
+         * @param {javax.swing.event.MenuEvent} e  a MenuEvent object
+         */
+        menuDeselected(e: javax.swing.event.MenuEvent): any;
+        /**
+         * Invoked when the menu is canceled.
+         *
+         * @param {javax.swing.event.MenuEvent} e  a MenuEvent object
+         */
+        menuCanceled(e: javax.swing.event.MenuEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    class EventListenerList implements java.io.Serializable {
+        static NULL_ARRAY: any[];
+        static NULL_ARRAY_$LI$(): any[];
+        listenerList: any[];
+        getListenerList(): any[];
+        getListeners$java_lang_Class<T extends java.util.EventListener>(t: any): T[];
+        getListeners<T0 = any>(t?: any): any;
+        getListeners$java_lang_String<T extends java.util.EventListener>(t: string): T[];
+        getListenerCount$(): number;
+        getListenerCount$java_lang_Class(t: any): number;
+        getListenerCount$java_lang_String(t: string): number;
+        getListenerCount$java_lang_Object_A$java_lang_Class(list: any[], t: any): number;
+        getListenerCount(list?: any, t?: any): number;
+        getListenerCount$java_lang_Object_A$java_lang_String(list: any[], t: string): number;
+        add<T extends java.util.EventListener>(t: any, l: T): void;
+        remove<T extends java.util.EventListener>(t: any, l: T): void;
+        /**
+         * Returns a string representation of the EventListenerList.
+         * @return {string}
+         */
+        toString(): string;
+        constructor();
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * A popup menu listener
+     *
+     * @author Arnaud Weber
+     * @class
+     */
+    interface PopupMenuListener extends java.util.EventListener {
+        /**
+         * This method is called before the popup menu becomes visible
+         * @param {javax.swing.event.PopupMenuEvent} e
+         */
+        popupMenuWillBecomeVisible(e: javax.swing.event.PopupMenuEvent): any;
+        /**
+         * This method is called before the popup menu becomes invisible
+         * Note that a JPopupMenu can become invisible any time
+         * @param {javax.swing.event.PopupMenuEvent} e
+         */
+        popupMenuWillBecomeInvisible(e: javax.swing.event.PopupMenuEvent): any;
+        /**
+         * This method is called when the popup menu is canceled
+         * @param {javax.swing.event.PopupMenuEvent} e
+         */
+        popupMenuCanceled(e: javax.swing.event.PopupMenuEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    class ListDataEvent extends java.util.EventObject {
+        static CONTENTS_CHANGED: number;
+        static INTERVAL_ADDED: number;
+        static INTERVAL_REMOVED: number;
+        type: number;
+        index0: number;
+        index1: number;
+        getType(): number;
+        getIndex0(): number;
+        getIndex1(): number;
+        constructor(source: any, type: number, index0: number, index1: number);
+        toString(): string;
+    }
+}
+declare namespace javax.swing.event {
+    interface ListDataListener extends java.util.EventListener {
+        intervalAdded(e: javax.swing.event.ListDataEvent): any;
+        intervalRemoved(e: javax.swing.event.ListDataEvent): any;
+        contentsChanged(e: javax.swing.event.ListDataEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Constructs a MenuEvent object.
+     *
+     * @param {*} source  the Object that originated the event
+     * (typically <code>this</code>)
+     * @class
+     * @extends java.util.EventObject
+     * @author Georges Saab
+     */
+    class MenuEvent extends java.util.EventObject {
+        constructor(source: any);
+    }
+}
+declare namespace javax.swing.event {
+    class ChangeEvent extends java.util.EventObject {
+        constructor(source: any);
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * MenuKeyListener
+     *
+     * @author Georges Saab
+     * @class
+     */
+    interface MenuKeyListener extends java.util.EventListener {
+        /**
+         * Invoked when a key has been typed.
+         * This event occurs when a key press is followed by a key release.
+         * @param {javax.swing.event.MenuKeyEvent} e
+         */
+        menuKeyTyped(e: javax.swing.event.MenuKeyEvent): any;
+        /**
+         * Invoked when a key has been pressed.
+         * @param {javax.swing.event.MenuKeyEvent} e
+         */
+        menuKeyPressed(e: javax.swing.event.MenuKeyEvent): any;
+        /**
+         * Invoked when a key has been released.
+         * @param {javax.swing.event.MenuKeyEvent} e
+         */
+        menuKeyReleased(e: javax.swing.event.MenuKeyEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Constructs a PopupMenuEvent object.
+     *
+     * @param {*} source  the Object that originated the event
+     * (typically <code>this</code>)
+     * @class
+     * @extends java.util.EventObject
+     * @author Arnaud Weber
+     */
+    class PopupMenuEvent extends java.util.EventObject {
+        constructor(source: any);
+    }
+}
+declare namespace javax.swing {
+    class UIManager {
+        static getString(key: string): string;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * A mutable version of <code>ComboBoxModel</code>.
+     *
+     * @param <E> the type of the elements of this model
+     *
+     * @author Tom Santos
+     * @class
+     */
+    interface MutableComboBoxModel<E> extends javax.swing.ComboBoxModel<E> {
+        /**
+         * Adds an item at the end of the model. The implementation of this method
+         * should notify all registered <code>ListDataListener</code>s that the
+         * item has been added.
+         *
+         * @param {*} item the item to be added
+         */
+        addElement(item: E): any;
+        /**
+         * Removes an item from the model. The implementation of this method should
+         * should notify all registered <code>ListDataListener</code>s that the
+         * item has been removed.
+         *
+         * @param {*} obj the <code>Object</code> to be removed
+         */
+        removeElement(obj: any): any;
+        /**
+         * Adds an item at a specific index.  The implementation of this method
+         * should notify all registered <code>ListDataListener</code>s that the
+         * item has been added.
+         *
+         * @param {*} item  the item to be added
+         * @param {number} index  location to add the object
+         */
+        insertElementAt(item: E, index: number): any;
+        /**
+         * Removes an item at a specific index. The implementation of this method
+         * should notify all registered <code>ListDataListener</code>s that the
+         * item has been removed.
+         *
+         * @param {number} index  location of the item to be removed
+         */
+        removeElementAt(index: number): any;
+    }
+}
+declare namespace javax.swing {
+    class ImageIcon implements javax.swing.Icon, java.io.Serializable {
+        filename: string;
+        location: java.net.URL;
+        image: java.awt.Image;
+        loadStatus: number;
+        imageObserver: java.awt.image.ImageObserver;
+        description: string;
+        width: number;
+        height: number;
+        /**
+         *
+         * @return {HTMLImageElement}
+         */
+        getInternalHTMLImageElement(): HTMLImageElement;
+        constructor(filename?: any, description?: any);
+        loadImage(image: java.awt.Image): void;
+        getImageLoadStatus(): number;
+        getImage(): java.awt.Image;
+        setImage(image: java.awt.Image): void;
+        getDescription(): string;
+        setDescription(description: string): void;
+        paintIcon(c: java.awt.Component, g: java.awt.Graphics, x: number, y: number): void;
+        getIconWidth(): number;
+        getIconHeight(): number;
+        setImageObserver(observer: java.awt.image.ImageObserver): void;
+        getImageObserver(): java.awt.image.ImageObserver;
+        toString(): string;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Any component that can be placed into a menu should implement this interface.
+     * This interface is used by <code>MenuSelectionManager</code>
+     * to handle selection and navigation in menu hierarchies.
+     *
+     * @author Arnaud Weber
+     * @class
+     */
+    interface MenuElement {
+        /**
+         * Process a key event.
+         * @param {java.awt.event.KeyEvent} event
+         * @param {javax.swing.MenuElement[]} path
+         * @param {javax.swing.MenuSelectionManager} manager
+         */
+        processKeyEvent(event: java.awt.event.KeyEvent, path: MenuElement[], manager: javax.swing.MenuSelectionManager): any;
+        /**
+         * Call by the <code>MenuSelectionManager</code> when the
+         * <code>MenuElement</code> is added or remove from
+         * the menu selection.
+         * @param {boolean} isIncluded
+         */
+        menuSelectionChanged(isIncluded: boolean): any;
+        /**
+         * This method should return an array containing the sub-elements for the receiving menu element
+         *
+         * @return {javax.swing.MenuElement[]} an array of MenuElements
+         */
+        getSubElements(): MenuElement[];
+        /**
+         * This method should return the java.awt.Component used to paint the receiving element.
+         * The returned component will be used to convert events and detect if an event is inside
+         * a MenuElement's component.
+         *
+         * @return {java.awt.Component} the Component value
+         */
+        getComponent(): java.awt.Component;
+    }
+}
+declare namespace javax.swing {
+    interface Icon {
+        paintIcon(c: java.awt.Component, g: java.awt.Graphics, x: number, y: number): any;
+        getIconWidth(): number;
+        getIconHeight(): number;
+        getInternalHTMLImageElement(): HTMLImageElement;
+    }
+}
+declare namespace javax.swing.text {
+    /**
+     * Represents a location within a document.  It is intended to abstract away
+     * implementation details of the document and enable specification of
+     * positions within the document that are capable of tracking of change as
+     * the document is edited.
+     * <p>
+     * A {@code Position} object points at a location between two characters.
+     * As the surrounding content is altered, the {@code Position} object
+     * adjusts its offset automatically to reflect the changes. If content is
+     * inserted or removed before the {@code Position} object's location, then the
+     * {@code Position} increments or decrements its offset, respectively,
+     * so as to point to the same location. If a portion of the document is removed
+     * that contains a {@code Position}'s offset, then the {@code Position}'s
+     * offset becomes that of the beginning of the removed region. For example, if
+     * a {@code Position} has an offset of 5 and the region 2-10 is removed, then
+     * the {@code Position}'s offset becomes 2.
+     * <p>
+     * {@code Position} with an offset of 0 is a special case. It never changes its
+     * offset while document content is altered.
+     *
+     * @author  Timothy Prinzing
+     * @class
+     */
+    interface Position {
+        /**
+         * Fetches the current offset within the document.
+         *
+         * @return {number} the offset &gt;= 0
+         */
+        getOffset(): number;
+    }
+    namespace Position {
+        /**
+         * A typesafe enumeration to indicate bias to a position
+         * in the model.  A position indicates a location between
+         * two characters.  The bias can be used to indicate an
+         * interest toward one of the two sides of the position
+         * in boundary conditions where a simple offset is
+         * ambiguous.
+         * @class
+         */
+        class Bias {
+            /**
+             * Indicates to bias toward the next character
+             * in the model.
+             */
+            static Forward: Position.Bias;
+            static Forward_$LI$(): Position.Bias;
+            /**
+             * Indicates a bias toward the previous character
+             * in the model.
+             */
+            static Backward: Position.Bias;
+            static Backward_$LI$(): Position.Bias;
+            /**
+             * string representation
+             * @return {string}
+             */
+            toString(): string;
+            constructor(name: string);
+            name: string;
+        }
+    }
+}
+declare namespace javax.swing {
+    class SwingUtilities implements javax.swing.SwingConstants {
+        constructor();
+        static invokeLater(doRun: () => void): void;
+        static invokeAndWait(doRun: () => void): void;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Creates an {@code Action} with the specified name and small icon.
+     *
+     * @param {string} name
+     * the name ({@code Action.NAME}) for the action; a value of
+     * {@code null} is ignored
+     * @param {*} icon
+     * the small icon ({@code Action.SMALL_ICON}) for the action; a
+     * value of {@code null} is ignored
+     * @class
+     * @author Georges Saab
+     */
+    abstract class AbstractAction implements javax.swing.Action, java.lang.Cloneable, java.io.Serializable {
+        /**
+         * Whether or not actions should reconfigure all properties on null.
+         */
+        static RECONFIGURE_ON_NULL: boolean;
+        /**
+         * Specifies whether action is enabled; the default is true.
+         */
+        enabled: boolean;
+        /**
+         * Contains the array of key bindings.
+         */
+        arrayTable: java.util.Map<string, any>;
+        /**
+         * Sets the enabled state of a component from an Action.
+         *
+         * @param {javax.swing.JComponent} c
+         * the Component to set the enabled state on
+         * @param {*} a
+         * the Action to set the enabled state from, may be null
+         */
+        static setEnabledFromAction(c: javax.swing.JComponent, a: javax.swing.Action): void;
+        /**
+         * Sets the tooltip text of a component from an Action.
+         *
+         * @param {javax.swing.JComponent} c
+         * the Component to set the tooltip text on
+         * @param {*} a
+         * the Action to set the tooltip text from, may be null
+         */
+        static setToolTipTextFromAction(c: javax.swing.JComponent, a: javax.swing.Action): void;
+        static hasSelectedKey(a: javax.swing.Action): boolean;
+        static isSelected(a: javax.swing.Action): boolean;
+        constructor(name?: any, icon?: any);
+        /**
+         * Gets the <code>Object</code> associated with the specified key.
+         *
+         * @param {string} key
+         * a string containing the specified <code>key</code>
+         * @return {*} the binding <code>Object</code> stored with this key; if there
+         * are no keys, it will return <code>null</code>
+         * @see Action#getValue
+         */
+        getValue(key: string): any;
+        /**
+         * Sets the <code>Value</code> associated with the specified key.
+         *
+         * @param {string} key
+         * the <code>String</code> that identifies the stored object
+         * @param {*} newValue
+         * the <code>Object</code> to store using this key
+         * @see Action#putValue
+         */
+        putValue(key: string, newValue: any): void;
+        /**
+         * Returns true if the action is enabled.
+         *
+         * @return {boolean} true if the action is enabled, false otherwise
+         * @see Action#isEnabled
+         */
+        isEnabled(): boolean;
+        /**
+         * Sets whether the {@code Action} is enabled. The default is {@code true}.
+         *
+         * @param {boolean} newValue
+         * {@code true} to enable the action, {@code false} to disable it
+         * @see Action#setEnabled
+         */
+        setEnabled(newValue: boolean): void;
+        /**
+         * Returns an array of <code>Object</code>s which are keys for which values
+         * have been set for this <code>AbstractAction</code>, or <code>null</code>
+         * if no keys have values set.
+         *
+         * @return {java.lang.Object[]} an array of key objects, or <code>null</code> if no keys have
+         * values set
+         * @since 1.3
+         */
+        getKeys(): any[];
+        /**
+         * If any <code>PropertyChangeListeners</code> have been registered, the
+         * <code>changeSupport</code> field describes them.
+         */
+        changeSupport: javax.swing.event.SwingPropertyChangeSupport;
+        /**
+         * Supports reporting bound property changes. This method can be called when
+         * a bound property has changed and it will send the appropriate
+         * <code>PropertyChangeEvent</code> to any registered
+         * <code>PropertyChangeListeners</code>.
+         * @param {string} propertyName
+         * @param {*} oldValue
+         * @param {*} newValue
+         */
+        firePropertyChange(propertyName: string, oldValue: any, newValue: any): void;
+        /**
+         * Adds a <code>PropertyChangeListener</code> to the listener list. The
+         * listener is registered for all properties.
+         * <p>
+         * A <code>PropertyChangeEvent</code> will get fired in response to setting
+         * a bound property, e.g. <code>setFont</code>, <code>setBackground</code>,
+         * or <code>setForeground</code>. Note that if the current component is
+         * inheriting its foreground, background, or font from its container, then
+         * no event will be fired in response to a change in the inherited property.
+         *
+         * @param {*} listener
+         * The <code>PropertyChangeListener</code> to be added
+         *
+         * @see Action#addPropertyChangeListener
+         */
+        addPropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        /**
+         * Removes a <code>PropertyChangeListener</code> from the listener list.
+         * This removes a <code>PropertyChangeListener</code> that was registered
+         * for all properties.
+         *
+         * @param {*} listener
+         * the <code>PropertyChangeListener</code> to be removed
+         *
+         * @see Action#removePropertyChangeListener
+         */
+        removePropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        /**
+         * Returns an array of all the <code>PropertyChangeListener</code>s added to
+         * this AbstractAction with addPropertyChangeListener().
+         *
+         * @return {java.beans.PropertyChangeListener[]} all of the <code>PropertyChangeListener</code>s added or an empty
+         * array if no listeners have been added
+         * @since 1.4
+         */
+        getPropertyChangeListeners(): java.beans.PropertyChangeListener[];
+        /**
+         * Clones the abstract action. This gives the clone its own copy of the
+         * key/value list, which is not handled for you by
+         * <code>Object.clone()</code>.
+         * @return {*}
+         */
+        clone(): any;
+        abstract actionPerformed(ae?: any): any;
+    }
+}
+declare namespace javax.swing {
+    class DefaultButtonModel implements javax.swing.ButtonModel, java.io.Serializable {
+        stateMask: number;
+        actionCommand: string;
+        group: javax.swing.ButtonGroup;
+        mnemonic: number;
+        changeEvent: javax.swing.event.ChangeEvent;
+        listenerList: javax.swing.event.EventListenerList;
+        menuItem: boolean;
+        constructor();
+        static ARMED: number;
+        static SELECTED: number;
+        static PRESSED: number;
+        static ENABLED: number;
+        static ROLLOVER: number;
+        setActionCommand(actionCommand: string): void;
+        getActionCommand(): string;
         isArmed(): boolean;
         isSelected(): boolean;
         isEnabled(): boolean;
         isPressed(): boolean;
         isRollover(): boolean;
-        setArmed(b: boolean): any;
-        setSelected(b: boolean): any;
-        setEnabled(b: boolean): any;
-        setPressed(b: boolean): any;
-        setRollover(b: boolean): any;
-        setMnemonic(key: number): any;
+        setArmed(b: boolean): void;
+        setEnabled(b: boolean): void;
+        setSelected(b: boolean): void;
+        setPressed(b: boolean): void;
+        setRollover(b: boolean): void;
+        setMnemonic(key: number): void;
         getMnemonic(): number;
-        setActionCommand(s: string): any;
-        getActionCommand(): string;
-        setGroup(group: javax.swing.ButtonGroup): any;
-        addActionListener(l: java.awt.event.ActionListener): any;
-        removeActionListener(l: java.awt.event.ActionListener): any;
-        addItemListener(l: java.awt.event.ItemListener): any;
-        removeItemListener(l: java.awt.event.ItemListener): any;
-        addChangeListener(l: javax.swing.event.ChangeListener): any;
-        removeChangeListener(l: javax.swing.event.ChangeListener): any;
+        addChangeListener(l: javax.swing.event.ChangeListener): void;
+        removeChangeListener(l: javax.swing.event.ChangeListener): void;
+        getChangeListeners(): javax.swing.event.ChangeListener[];
+        fireStateChanged(): void;
+        addActionListener(l: java.awt.event.ActionListener): void;
+        removeActionListener(l: java.awt.event.ActionListener): void;
+        getActionListeners(): java.awt.event.ActionListener[];
+        fireActionPerformed(e: java.awt.event.ActionEvent): void;
+        addItemListener(l: java.awt.event.ItemListener): void;
+        removeItemListener(l: java.awt.event.ItemListener): void;
+        getItemListeners(): java.awt.event.ItemListener[];
+        fireItemStateChanged(e: java.awt.event.ItemEvent): void;
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        getSelectedObjects(): any[];
+        setGroup(group: javax.swing.ButtonGroup): void;
+        getGroup(): javax.swing.ButtonGroup;
+        isMenuItem(): boolean;
+        setMenuItem(menuItem: boolean): void;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Initializes value, extent, minimum and maximum. Adjusting is false.
+     * Throws an <code>IllegalArgumentException</code> if the following
+     * constraints aren't satisfied:
+     * <pre>
+     * min &lt;= value &lt;= value+extent &lt;= max
+     * </pre>
+     * @param {number} value
+     * @param {number} extent
+     * @param {number} min
+     * @param {number} max
+     * @class
+     * @author David Kloba
+     */
+    class DefaultBoundedRangeModel implements javax.swing.BoundedRangeModel, java.io.Serializable {
+        /**
+         * Only one <code>ChangeEvent</code> is needed per model instance since the
+         * event's only (read-only) state is the source property.  The source
+         * of events generated here is always "this".
+         */
+        changeEvent: javax.swing.event.ChangeEvent;
+        /**
+         * The listeners waiting for model changes.
+         */
+        listenerList: javax.swing.event.EventListenerList;
+        value: number;
+        extent: number;
+        min: number;
+        max: number;
+        isAdjusting: boolean;
+        constructor(value?: any, extent?: any, min?: any, max?: any);
+        /**
+         * Returns the model's current value.
+         * @return {number} the model's current value
+         * @see #setValue
+         * @see BoundedRangeModel#getValue
+         */
+        getValue(): number;
+        /**
+         * Returns the model's extent.
+         * @return {number} the model's extent
+         * @see #setExtent
+         * @see BoundedRangeModel#getExtent
+         */
+        getExtent(): number;
+        /**
+         * Returns the model's minimum.
+         * @return {number} the model's minimum
+         * @see #setMinimum
+         * @see BoundedRangeModel#getMinimum
+         */
+        getMinimum(): number;
+        /**
+         * Returns the model's maximum.
+         * @return  {number} the model's maximum
+         * @see #setMaximum
+         * @see BoundedRangeModel#getMaximum
+         */
+        getMaximum(): number;
+        /**
+         * Sets the current value of the model. For a slider, that
+         * determines where the knob appears. Ensures that the new
+         * value, <I>n</I> falls within the model's constraints:
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         *
+         * @see BoundedRangeModel#setValue
+         * @param {number} n
+         */
+        setValue(n: number): void;
+        /**
+         * Sets the extent to <I>n</I> after ensuring that <I>n</I>
+         * is greater than or equal to zero and falls within the model's
+         * constraints:
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         * @see BoundedRangeModel#setExtent
+         * @param {number} n
+         */
+        setExtent(n: number): void;
+        /**
+         * Sets the minimum to <I>n</I> after ensuring that <I>n</I>
+         * that the other three properties obey the model's constraints:
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         * @see #getMinimum
+         * @see BoundedRangeModel#setMinimum
+         * @param {number} n
+         */
+        setMinimum(n: number): void;
+        /**
+         * Sets the maximum to <I>n</I> after ensuring that <I>n</I>
+         * that the other three properties obey the model's constraints:
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         * @see BoundedRangeModel#setMaximum
+         * @param {number} n
+         */
+        setMaximum(n: number): void;
+        /**
+         * Sets the <code>valueIsAdjusting</code> property.
+         *
+         * @see #getValueIsAdjusting
+         * @see #setValue
+         * @see BoundedRangeModel#setValueIsAdjusting
+         * @param {boolean} b
+         */
+        setValueIsAdjusting(b: boolean): void;
+        /**
+         * Returns true if the value is in the process of changing
+         * as a result of actions being taken by the user.
+         *
+         * @return {boolean} the value of the <code>valueIsAdjusting</code> property
+         * @see #setValue
+         * @see BoundedRangeModel#getValueIsAdjusting
+         */
+        getValueIsAdjusting(): boolean;
+        /**
+         * Sets all of the <code>BoundedRangeModel</code> properties after forcing
+         * the arguments to obey the usual constraints:
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         * <p>
+         * At most, one <code>ChangeEvent</code> is generated.
+         *
+         * @see BoundedRangeModel#setRangeProperties
+         * @see #setValue
+         * @see #setExtent
+         * @see #setMinimum
+         * @see #setMaximum
+         * @see #setValueIsAdjusting
+         * @param {number} newValue
+         * @param {number} newExtent
+         * @param {number} newMin
+         * @param {number} newMax
+         * @param {boolean} adjusting
+         */
+        setRangeProperties(newValue: number, newExtent: number, newMin: number, newMax: number, adjusting: boolean): void;
+        /**
+         * Adds a <code>ChangeListener</code>.  The change listeners are run each
+         * time any one of the Bounded Range model properties changes.
+         *
+         * @param {*} l the ChangeListener to add
+         * @see #removeChangeListener
+         * @see BoundedRangeModel#addChangeListener
+         */
+        addChangeListener(l: javax.swing.event.ChangeListener): void;
+        /**
+         * Removes a <code>ChangeListener</code>.
+         *
+         * @param {*} l the <code>ChangeListener</code> to remove
+         * @see #addChangeListener
+         * @see BoundedRangeModel#removeChangeListener
+         */
+        removeChangeListener(l: javax.swing.event.ChangeListener): void;
+        /**
+         * Returns an array of all the change listeners
+         * registered on this <code>DefaultBoundedRangeModel</code>.
+         *
+         * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s
+         * or an empty
+         * array if no change listeners are currently registered
+         *
+         * @see #addChangeListener
+         * @see #removeChangeListener
+         *
+         * @since 1.4
+         */
+        getChangeListeners(): javax.swing.event.ChangeListener[];
+        /**
+         * Runs each <code>ChangeListener</code>'s <code>stateChanged</code> method.
+         *
+         * @see #setRangeProperties
+         * @see EventListenerList
+         */
+        fireStateChanged(): void;
+        /**
+         * Returns a string that displays all of the
+         * <code>BoundedRangeModel</code> properties.
+         * @return {string}
+         */
+        toString(): string;
+        /**
+         * Returns an array of all the objects currently registered as
+         * <code><em>Foo</em>Listener</code>s
+         * upon this model.
+         * <code><em>Foo</em>Listener</code>s
+         * are registered using the <code>add<em>Foo</em>Listener</code> method.
+         * <p>
+         * You can specify the <code>listenerType</code> argument
+         * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
+         * For example, you can query a <code>DefaultBoundedRangeModel</code>
+         * instance <code>m</code>
+         * for its change listeners
+         * with the following code:
+         *
+         * <pre>ChangeListener[] cls = (ChangeListener[])(m.getListeners(ChangeListener.class));</pre>
+         *
+         * If no such listeners exist,
+         * this method returns an empty array.
+         *
+         * @param {java.lang.Class} listenerType  the type of listeners requested;
+         * this parameter should specify an interface
+         * that descends from <code>java.util.EventListener</code>
+         * @return {T[]} an array of all objects registered as
+         * <code><em>Foo</em>Listener</code>s
+         * on this model,
+         * or an empty array if no such
+         * listeners have been added
+         * @exception ClassCastException if <code>listenerType</code> doesn't
+         * specify a class or interface that implements
+         * <code>java.util.EventListener</code>
+         *
+         * @see #getChangeListeners
+         *
+         * @since 1.3
+         */
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
     }
 }
 declare namespace javax.swing {
@@ -9037,1227 +10154,6 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     /**
-     * Drop modes, used to determine the method by which a component
-     * tracks and indicates a drop location during drag and drop.
-     *
-     * @author Shannon Hickey
-     * @see JTable#setDropMode
-     * @see JList#setDropMode
-     * @see JTree#setDropMode
-     * @see javax.swing.text.JTextComponent#setDropMode
-     * @since 1.6
-     * @enum
-     * @property {javax.swing.DropMode} USE_SELECTION
-     * A component's own internal selection mechanism (or caret for text
-     * components) should be used to track the drop location.
-     * @property {javax.swing.DropMode} ON
-     * The drop location should be tracked in terms of the index of
-     * existing items. Useful for dropping on items in tables, lists,
-     * and trees.
-     * @property {javax.swing.DropMode} INSERT
-     * The drop location should be tracked in terms of the position
-     * where new data should be inserted. For components that manage
-     * a list of items (list and tree for example), the drop location
-     * should indicate the index where new data should be inserted.
-     * For text components the location should represent a position
-     * between characters. For components that manage tabular data
-     * (table for example), the drop location should indicate
-     * where to insert new rows, columns, or both, to accommodate
-     * the dropped data.
-     * @property {javax.swing.DropMode} INSERT_ROWS
-     * The drop location should be tracked in terms of the row index
-     * where new rows should be inserted to accommodate the dropped
-     * data. This is useful for components that manage tabular data.
-     * @property {javax.swing.DropMode} INSERT_COLS
-     * The drop location should be tracked in terms of the column index
-     * where new columns should be inserted to accommodate the dropped
-     * data. This is useful for components that manage tabular data.
-     * @property {javax.swing.DropMode} ON_OR_INSERT
-     * This mode is a combination of <code>ON</code>
-     * and <code>INSERT</code>, specifying that data can be
-     * dropped on existing items, or in insert locations
-     * as specified by <code>INSERT</code>.
-     * @property {javax.swing.DropMode} ON_OR_INSERT_ROWS
-     * This mode is a combination of <code>ON</code>
-     * and <code>INSERT_ROWS</code>, specifying that data can be
-     * dropped on existing items, or as insert rows
-     * as specified by <code>INSERT_ROWS</code>.
-     * @property {javax.swing.DropMode} ON_OR_INSERT_COLS
-     * This mode is a combination of <code>ON</code>
-     * and <code>INSERT_COLS</code>, specifying that data can be
-     * dropped on existing items, or as insert columns
-     * as specified by <code>INSERT_COLS</code>.
-     * @class
-     */
-    enum DropMode {
-        /**
-         * A component's own internal selection mechanism (or caret for text
-         * components) should be used to track the drop location.
-         */
-        USE_SELECTION = 0,
-        /**
-         * The drop location should be tracked in terms of the index of
-         * existing items. Useful for dropping on items in tables, lists,
-         * and trees.
-         */
-        ON = 1,
-        /**
-         * The drop location should be tracked in terms of the position
-         * where new data should be inserted. For components that manage
-         * a list of items (list and tree for example), the drop location
-         * should indicate the index where new data should be inserted.
-         * For text components the location should represent a position
-         * between characters. For components that manage tabular data
-         * (table for example), the drop location should indicate
-         * where to insert new rows, columns, or both, to accommodate
-         * the dropped data.
-         */
-        INSERT = 2,
-        /**
-         * The drop location should be tracked in terms of the row index
-         * where new rows should be inserted to accommodate the dropped
-         * data. This is useful for components that manage tabular data.
-         */
-        INSERT_ROWS = 3,
-        /**
-         * The drop location should be tracked in terms of the column index
-         * where new columns should be inserted to accommodate the dropped
-         * data. This is useful for components that manage tabular data.
-         */
-        INSERT_COLS = 4,
-        /**
-         * This mode is a combination of <code>ON</code>
-         * and <code>INSERT</code>, specifying that data can be
-         * dropped on existing items, or in insert locations
-         * as specified by <code>INSERT</code>.
-         */
-        ON_OR_INSERT = 5,
-        /**
-         * This mode is a combination of <code>ON</code>
-         * and <code>INSERT_ROWS</code>, specifying that data can be
-         * dropped on existing items, or as insert rows
-         * as specified by <code>INSERT_ROWS</code>.
-         */
-        ON_OR_INSERT_ROWS = 6,
-        /**
-         * This mode is a combination of <code>ON</code>
-         * and <code>INSERT_COLS</code>, specifying that data can be
-         * dropped on existing items, or as insert columns
-         * as specified by <code>INSERT_COLS</code>.
-         */
-        ON_OR_INSERT_COLS = 7
-    }
-}
-declare namespace javax.swing {
-    /**
-     * A mutable version of <code>ComboBoxModel</code>.
-     *
-     * @param <E> the type of the elements of this model
-     *
-     * @author Tom Santos
-     * @class
-     */
-    interface MutableComboBoxModel<E> extends javax.swing.ComboBoxModel<E> {
-        /**
-         * Adds an item at the end of the model. The implementation of this method
-         * should notify all registered <code>ListDataListener</code>s that the
-         * item has been added.
-         *
-         * @param {*} item the item to be added
-         */
-        addElement(item: E): any;
-        /**
-         * Removes an item from the model. The implementation of this method should
-         * should notify all registered <code>ListDataListener</code>s that the
-         * item has been removed.
-         *
-         * @param {*} obj the <code>Object</code> to be removed
-         */
-        removeElement(obj: any): any;
-        /**
-         * Adds an item at a specific index.  The implementation of this method
-         * should notify all registered <code>ListDataListener</code>s that the
-         * item has been added.
-         *
-         * @param {*} item  the item to be added
-         * @param {number} index  location to add the object
-         */
-        insertElementAt(item: E, index: number): any;
-        /**
-         * Removes an item at a specific index. The implementation of this method
-         * should notify all registered <code>ListDataListener</code>s that the
-         * item has been removed.
-         *
-         * @param {number} index  location of the item to be removed
-         */
-        removeElementAt(index: number): any;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * A collection of constants generally used for positioning and orienting
-     * components on the screen.
-     *
-     * @author Jeff Dinkins
-     * @author Ralph Kar (orientation support)
-     * @class
-     */
-    interface SwingConstants {
-    }
-    namespace SwingConstants {
-        /**
-         * The central position in an area. Used for
-         * both compass-direction constants (NORTH, etc.)
-         * and box-orientation constants (TOP, etc.).
-         */
-        const CENTER: number;
-        /**
-         * Box-orientation constant used to specify the top of a box.
-         */
-        const TOP: number;
-        /**
-         * Box-orientation constant used to specify the left side of a box.
-         */
-        const LEFT: number;
-        /**
-         * Box-orientation constant used to specify the bottom of a box.
-         */
-        const BOTTOM: number;
-        /**
-         * Box-orientation constant used to specify the right side of a box.
-         */
-        const RIGHT: number;
-        /**
-         * Compass-direction North (up).
-         */
-        const NORTH: number;
-        /**
-         * Compass-direction north-east (upper right).
-         */
-        const NORTH_EAST: number;
-        /**
-         * Compass-direction east (right).
-         */
-        const EAST: number;
-        /**
-         * Compass-direction south-east (lower right).
-         */
-        const SOUTH_EAST: number;
-        /**
-         * Compass-direction south (down).
-         */
-        const SOUTH: number;
-        /**
-         * Compass-direction south-west (lower left).
-         */
-        const SOUTH_WEST: number;
-        /**
-         * Compass-direction west (left).
-         */
-        const WEST: number;
-        /**
-         * Compass-direction north west (upper left).
-         */
-        const NORTH_WEST: number;
-        /**
-         * Horizontal orientation. Used for scrollbars and sliders.
-         */
-        const HORIZONTAL: number;
-        /**
-         * Vertical orientation. Used for scrollbars and sliders.
-         */
-        const VERTICAL: number;
-        /**
-         * Identifies the leading edge of text for use with left-to-right
-         * and right-to-left languages. Used by buttons and labels.
-         */
-        const LEADING: number;
-        /**
-         * Identifies the trailing edge of text for use with left-to-right
-         * and right-to-left languages. Used by buttons and labels.
-         */
-        const TRAILING: number;
-        /**
-         * Identifies the next direction in a sequence.
-         *
-         * @since 1.4
-         */
-        const NEXT: number;
-        /**
-         * Identifies the previous direction in a sequence.
-         *
-         * @since 1.4
-         */
-        const PREVIOUS: number;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * The abstract definition for the data model that provides
-     * a <code>List</code> with its contents.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @param <E> the type of the elements of this model
-     *
-     * @author Hans Muller
-     * @class
-     */
-    abstract class AbstractListModel<E> implements javax.swing.ListModel<E>, java.io.Serializable {
-        listenerList: javax.swing.event.EventListenerList;
-        /**
-         * Adds a listener to the list that's notified each time a change
-         * to the data model occurs.
-         *
-         * @param {*} l the <code>ListDataListener</code> to be added
-         */
-        addListDataListener(l: javax.swing.event.ListDataListener): void;
-        /**
-         * Removes a listener from the list that's notified each time a
-         * change to the data model occurs.
-         *
-         * @param {*} l the <code>ListDataListener</code> to be removed
-         */
-        removeListDataListener(l: javax.swing.event.ListDataListener): void;
-        /**
-         * Returns an array of all the list data listeners
-         * registered on this <code>AbstractListModel</code>.
-         *
-         * @return {javax.swing.event.ListDataListener[]} all of this model's <code>ListDataListener</code>s,
-         * or an empty array if no list data listeners
-         * are currently registered
-         *
-         * @see #addListDataListener
-         * @see #removeListDataListener
-         *
-         * @since 1.4
-         */
-        getListDataListeners(): javax.swing.event.ListDataListener[];
-        /**
-         * <code>AbstractListModel</code> subclasses must call this method
-         * <b>after</b>
-         * one or more elements of the list change.  The changed elements
-         * are specified by the closed interval index0, index1 -- the endpoints
-         * are included.  Note that
-         * index0 need not be less than or equal to index1.
-         *
-         * @param {*} source the <code>ListModel</code> that changed, typically "this"
-         * @param {number} index0 one end of the new interval
-         * @param {number} index1 the other end of the new interval
-         * @see EventListenerList
-         * @see DefaultListModel
-         */
-        fireContentsChanged(source: any, index0: number, index1: number): void;
-        /**
-         * <code>AbstractListModel</code> subclasses must call this method
-         * <b>after</b>
-         * one or more elements are added to the model.  The new elements
-         * are specified by a closed interval index0, index1 -- the enpoints
-         * are included.  Note that
-         * index0 need not be less than or equal to index1.
-         *
-         * @param {*} source the <code>ListModel</code> that changed, typically "this"
-         * @param {number} index0 one end of the new interval
-         * @param {number} index1 the other end of the new interval
-         * @see EventListenerList
-         * @see DefaultListModel
-         */
-        fireIntervalAdded(source: any, index0: number, index1: number): void;
-        /**
-         * <code>AbstractListModel</code> subclasses must call this method
-         * <b>after</b> one or more elements are removed from the model.
-         * <code>index0</code> and <code>index1</code> are the end points
-         * of the interval that's been removed.  Note that <code>index0</code>
-         * need not be less than or equal to <code>index1</code>.
-         *
-         * @param {*} source the <code>ListModel</code> that changed, typically "this"
-         * @param {number} index0 one end of the removed interval,
-         * including <code>index0</code>
-         * @param {number} index1 the other end of the removed interval,
-         * including <code>index1</code>
-         * @see EventListenerList
-         * @see DefaultListModel
-         */
-        fireIntervalRemoved(source: any, index0: number, index1: number): void;
-        /**
-         * Returns an array of all the objects currently registered as
-         * <code><em>Foo</em>Listener</code>s
-         * upon this model.
-         * <code><em>Foo</em>Listener</code>s
-         * are registered using the <code>add<em>Foo</em>Listener</code> method.
-         * <p>
-         * You can specify the <code>listenerType</code> argument
-         * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-         * For example, you can query a list model
-         * <code>m</code>
-         * for its list data listeners
-         * with the following code:
-         *
-         * <pre>ListDataListener[] ldls = (ListDataListener[])(m.getListeners(ListDataListener.class));</pre>
-         *
-         * If no such listeners exist,
-         * this method returns an empty array.
-         *
-         * @param {java.lang.Class} listenerType  the type of listeners requested;
-         * this parameter should specify an interface
-         * that descends from <code>java.util.EventListener</code>
-         * @return {T[]} an array of all objects registered as
-         * <code><em>Foo</em>Listener</code>s
-         * on this model,
-         * or an empty array if no such
-         * listeners have been added
-         * @exception ClassCastException if <code>listenerType</code> doesn't
-         * specify a class or interface that implements
-         * <code>java.util.EventListener</code>
-         *
-         * @see #getListDataListeners
-         *
-         * @since 1.3
-         */
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        abstract getElementAt(index?: any): any;
-        abstract getSize(): any;
-        constructor();
-    }
-}
-declare namespace javax.swing {
-    interface WindowConstants {
-    }
-    namespace WindowConstants {
-        const DO_NOTHING_ON_CLOSE: number;
-        const HIDE_ON_CLOSE: number;
-        const DISPOSE_ON_CLOSE: number;
-        const EXIT_ON_CLOSE: number;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * A generic implementation of SingleSelectionModel.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @author Dave Moore
-     * @class
-     */
-    class DefaultSingleSelectionModel implements javax.swing.SingleSelectionModel, java.io.Serializable {
-        changeEvent: javax.swing.event.ChangeEvent;
-        /**
-         * The collection of registered listeners
-         */
-        listenerList: javax.swing.event.EventListenerList;
-        index: number;
-        getSelectedIndex(): number;
-        setSelectedIndex(index: number): void;
-        clearSelection(): void;
-        isSelected(): boolean;
-        /**
-         * Adds a <code>ChangeListener</code> to the button.
-         * @param {*} l
-         */
-        addChangeListener(l: javax.swing.event.ChangeListener): void;
-        /**
-         * Removes a <code>ChangeListener</code> from the button.
-         * @param {*} l
-         */
-        removeChangeListener(l: javax.swing.event.ChangeListener): void;
-        /**
-         * Returns an array of all the change listeners
-         * registered on this <code>DefaultSingleSelectionModel</code>.
-         *
-         * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s
-         * or an empty
-         * array if no change listeners are currently registered
-         *
-         * @see #addChangeListener
-         * @see #removeChangeListener
-         *
-         * @since 1.4
-         */
-        getChangeListeners(): javax.swing.event.ChangeListener[];
-        /**
-         * Notifies all listeners that have registered interest for
-         * notification on this event type.  The event instance
-         * is created lazily.
-         * @see EventListenerList
-         */
-        fireStateChanged(): void;
-        /**
-         * Returns an array of all the objects currently registered as
-         * <code><em>Foo</em>Listener</code>s
-         * upon this model.
-         * <code><em>Foo</em>Listener</code>s
-         * are registered using the <code>add<em>Foo</em>Listener</code> method.
-         * <p>
-         * You can specify the <code>listenerType</code> argument
-         * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-         * For example, you can query a <code>DefaultSingleSelectionModel</code>
-         * instance <code>m</code>
-         * for its change listeners
-         * with the following code:
-         *
-         * <pre>ChangeListener[] cls = (ChangeListener[])(m.getListeners(ChangeListener.class));</pre>
-         *
-         * If no such listeners exist,
-         * this method returns an empty array.
-         *
-         * @param {java.lang.Class} listenerType  the type of listeners requested;
-         * this parameter should specify an interface
-         * that descends from <code>java.util.EventListener</code>
-         * @return {T[]} an array of all objects registered as
-         * <code><em>Foo</em>Listener</code>s
-         * on this model,
-         * or an empty array if no such
-         * listeners have been added
-         * @exception ClassCastException if <code>listenerType</code> doesn't
-         * specify a class or interface that implements
-         * <code>java.util.EventListener</code>
-         *
-         * @see #getChangeListeners
-         *
-         * @since 1.3
-         */
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        constructor();
-    }
-}
-declare namespace javax.swing {
-    class UIManager {
-        static getString(key: string): string;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Defines the data model used by components like <code>Slider</code>s
-     * and <code>ProgressBar</code>s.
-     * Defines four interrelated integer properties: minimum, maximum, extent
-     * and value.  These four integers define two nested ranges like this:
-     * <pre>
-     * minimum &lt;= value &lt;= value+extent &lt;= maximum
-     * </pre>
-     * The outer range is <code>minimum,maximum</code> and the inner
-     * range is <code>value,value+extent</code>.  The inner range
-     * must lie within the outer one, i.e. <code>value</code> must be
-     * less than or equal to <code>maximum</code> and <code>value+extent</code>
-     * must greater than or equal to <code>minimum</code>, and <code>maximum</code>
-     * must be greater than or equal to <code>minimum</code>.
-     * There are a few features of this model that one might find a little
-     * surprising.  These quirks exist for the convenience of the
-     * Swing BoundedRangeModel clients, such as <code>Slider</code> and
-     * <code>ScrollBar</code>.
-     * <ul>
-     * <li>
-     * The minimum and maximum set methods "correct" the other
-     * three properties to accommodate their new value argument.  For
-     * example setting the model's minimum may change its maximum, value,
-     * and extent properties (in that order), to maintain the constraints
-     * specified above.
-     *
-     * <li>
-     * The value and extent set methods "correct" their argument to
-     * fit within the limits defined by the other three properties.
-     * For example if <code>value == maximum</code>, <code>setExtent(10)</code>
-     * would change the extent (back) to zero.
-     *
-     * <li>
-     * The four BoundedRangeModel values are defined as Java Beans properties
-     * however Swing ChangeEvents are used to notify clients of changes rather
-     * than PropertyChangeEvents. This was done to keep the overhead of monitoring
-     * a BoundedRangeModel low. Changes are often reported at MouseDragged rates.
-     * </ul>
-     *
-     * <p>
-     *
-     * For an example of specifying custom bounded range models used by sliders,
-     * see <a
-     * href="http://www.oracle.com/technetwork/java/architecture-142923.html#separable">Separable model architecture</a>
-     * in <em>A Swing Architecture Overview.</em>
-     *
-     * @author Hans Muller
-     * @see DefaultBoundedRangeModel
-     * @class
-     */
-    interface BoundedRangeModel {
-        /**
-         * Returns the minimum acceptable value.
-         *
-         * @return {number} the value of the minimum property
-         * @see #setMinimum
-         */
-        getMinimum(): number;
-        /**
-         * Sets the model's minimum to <I>newMinimum</I>.   The
-         * other three properties may be changed as well, to ensure
-         * that:
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         * <p>
-         * Notifies any listeners if the model changes.
-         *
-         * @param {number} newMinimum the model's new minimum
-         * @see #getMinimum
-         * @see #addChangeListener
-         */
-        setMinimum(newMinimum: number): any;
-        /**
-         * Returns the model's maximum.  Note that the upper
-         * limit on the model's value is (maximum - extent).
-         *
-         * @return {number} the value of the maximum property.
-         * @see #setMaximum
-         * @see #setExtent
-         */
-        getMaximum(): number;
-        /**
-         * Sets the model's maximum to <I>newMaximum</I>. The other
-         * three properties may be changed as well, to ensure that
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         * <p>
-         * Notifies any listeners if the model changes.
-         *
-         * @param {number} newMaximum the model's new maximum
-         * @see #getMaximum
-         * @see #addChangeListener
-         */
-        setMaximum(newMaximum: number): any;
-        /**
-         * Returns the model's current value.  Note that the upper
-         * limit on the model's value is <code>maximum - extent</code>
-         * and the lower limit is <code>minimum</code>.
-         *
-         * @return  {number} the model's value
-         * @see     #setValue
-         */
-        getValue(): number;
-        /**
-         * Sets the model's current value to <code>newValue</code> if <code>newValue</code>
-         * satisfies the model's constraints. Those constraints are:
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         * Otherwise, if <code>newValue</code> is less than <code>minimum</code>
-         * it's set to <code>minimum</code>, if its greater than
-         * <code>maximum</code> then it's set to <code>maximum</code>, and
-         * if it's greater than <code>value+extent</code> then it's set to
-         * <code>value+extent</code>.
-         * <p>
-         * When a BoundedRange model is used with a scrollbar the value
-         * specifies the origin of the scrollbar knob (aka the "thumb" or
-         * "elevator").  The value usually represents the origin of the
-         * visible part of the object being scrolled.
-         * <p>
-         * Notifies any listeners if the model changes.
-         *
-         * @param {number} newValue the model's new value
-         * @see #getValue
-         */
-        setValue(newValue: number): any;
-        /**
-         * This attribute indicates that any upcoming changes to the value
-         * of the model should be considered a single event. This attribute
-         * will be set to true at the start of a series of changes to the value,
-         * and will be set to false when the value has finished changing.  Normally
-         * this allows a listener to only take action when the final value change in
-         * committed, instead of having to do updates for all intermediate values.
-         * <p>
-         * Sliders and scrollbars use this property when a drag is underway.
-         *
-         * @param {boolean} b true if the upcoming changes to the value property are part of a series
-         */
-        setValueIsAdjusting(b: boolean): any;
-        /**
-         * Returns true if the current changes to the value property are part
-         * of a series of changes.
-         *
-         * @return {boolean} the valueIsAdjustingProperty.
-         * @see #setValueIsAdjusting
-         */
-        getValueIsAdjusting(): boolean;
-        /**
-         * Returns the model's extent, the length of the inner range that
-         * begins at the model's value.
-         *
-         * @return  {number} the value of the model's extent property
-         * @see     #setExtent
-         * @see     #setValue
-         */
-        getExtent(): number;
-        /**
-         * Sets the model's extent.  The <I>newExtent</I> is forced to
-         * be greater than or equal to zero and less than or equal to
-         * maximum - value.
-         * <p>
-         * When a BoundedRange model is used with a scrollbar the extent
-         * defines the length of the scrollbar knob (aka the "thumb" or
-         * "elevator").  The extent usually represents how much of the
-         * object being scrolled is visible. When used with a slider,
-         * the extent determines how much the value can "jump", for
-         * example when the user presses PgUp or PgDn.
-         * <p>
-         * Notifies any listeners if the model changes.
-         *
-         * @param  {number} newExtent the model's new extent
-         * @see #getExtent
-         * @see #setValue
-         */
-        setExtent(newExtent: number): any;
-        /**
-         * This method sets all of the model's data with a single method call.
-         * The method results in a single change event being generated. This is
-         * convenient when you need to adjust all the model data simultaneously and
-         * do not want individual change events to occur.
-         *
-         * @param {number} value  an int giving the current value
-         * @param {number} extent an int giving the amount by which the value can "jump"
-         * @param {number} min    an int giving the minimum value
-         * @param {number} max    an int giving the maximum value
-         * @param {boolean} adjusting a boolean, true if a series of changes are in
-         * progress
-         *
-         * @see #setValue
-         * @see #setExtent
-         * @see #setMinimum
-         * @see #setMaximum
-         * @see #setValueIsAdjusting
-         */
-        setRangeProperties(value: number, extent: number, min: number, max: number, adjusting: boolean): any;
-        /**
-         * Adds a ChangeListener to the model's listener list.
-         *
-         * @param {*} x the ChangeListener to add
-         * @see #removeChangeListener
-         */
-        addChangeListener(x: javax.swing.event.ChangeListener): any;
-        /**
-         * Removes a ChangeListener from the model's listener list.
-         *
-         * @param {*} x the ChangeListener to remove
-         * @see #addChangeListener
-         */
-        removeChangeListener(x: javax.swing.event.ChangeListener): any;
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * Constructs an <code>UndoableEditSupport</code> object.
-     *
-     * @param {*} r
-     * an <code>Object</code>
-     * @class
-     * @author Ray Ryan
-     */
-    class UndoableEditSupport {
-        updateLevel: number;
-        compoundEdit: javax.swing.undo.CompoundEdit;
-        listeners: java.util.Vector<javax.swing.event.UndoableEditListener>;
-        realSource: any;
-        constructor(r?: any);
-        /**
-         * Registers an <code>UndoableEditListener</code>. The listener is notified
-         * whenever an edit occurs which can be undone.
-         *
-         * @param {*} l
-         * an <code>UndoableEditListener</code> object
-         * @see #removeUndoableEditListener
-         */
-        addUndoableEditListener(l: javax.swing.event.UndoableEditListener): void;
-        /**
-         * Removes an <code>UndoableEditListener</code>.
-         *
-         * @param {*} l
-         * the <code>UndoableEditListener</code> object to be removed
-         * @see #addUndoableEditListener
-         */
-        removeUndoableEditListener(l: javax.swing.event.UndoableEditListener): void;
-        /**
-         * Returns an array of all the <code>UndoableEditListener</code>s added to
-         * this UndoableEditSupport with addUndoableEditListener().
-         *
-         * @return {javax.swing.event.UndoableEditListener[]} all of the <code>UndoableEditListener</code>s added or an empty
-         * array if no listeners have been added
-         * @since 1.4
-         */
-        getUndoableEditListeners(): javax.swing.event.UndoableEditListener[];
-        /**
-         * Called only from <code>postEdit</code> and <code>endUpdate</code>. Calls
-         * <code>undoableEditHappened</code> in all listeners. No synchronization is
-         * performed here, since the two calling methods are synchronized.
-         * @param {*} e
-         */
-        _postEdit(e: javax.swing.undo.UndoableEdit): void;
-        /**
-         * DEADLOCK WARNING: Calling this method may call
-         * <code>undoableEditHappened</code> in all listeners. It is unwise to call
-         * this method from one of its listeners.
-         * @param {*} e
-         */
-        postEdit(e: javax.swing.undo.UndoableEdit): void;
-        /**
-         * Returns the update level value.
-         *
-         * @return {number} an integer representing the update level
-         */
-        getUpdateLevel(): number;
-        /**
-         *
-         */
-        beginUpdate(): void;
-        /**
-         * Called only from <code>beginUpdate</code>. Exposed here for subclasses'
-         * use.
-         * @return {javax.swing.undo.CompoundEdit}
-         */
-        createCompoundEdit(): javax.swing.undo.CompoundEdit;
-        /**
-         * DEADLOCK WARNING: Calling this method may call
-         * <code>undoableEditHappened</code> in all listeners. It is unwise to call
-         * this method from one of its listeners.
-         */
-        endUpdate(): void;
-        /**
-         * Returns a string that displays and identifies this object's properties.
-         *
-         * @return {string} a <code>String</code> representation of this object
-         */
-        toString(): string;
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * Thrown when an UndoableEdit is told to <code>redo()</code> and can't.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @author Ray Ryan
-     * @class
-     * @extends java.lang.RuntimeException
-     */
-    class CannotRedoException extends java.lang.RuntimeException {
-        constructor();
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * An <code>UndoableEdit</code> represents an edit.  The edit may
-     * be undone, or if already undone the edit may be redone.
-     * <p>
-     * <code>UndoableEdit</code> is designed to be used with the
-     * <code>UndoManager</code>.  As <code>UndoableEdit</code>s are generated
-     * by an <code>UndoableEditListener</code> they are typically added to
-     * the <code>UndoManager</code>.  When an <code>UndoableEdit</code>
-     * is added to an <code>UndoManager</code> the following occurs (assuming
-     * <code>end</code> has not been called on the <code>UndoManager</code>):
-     * <ol>
-     * <li>If the <code>UndoManager</code> contains edits it will call
-     * <code>addEdit</code> on the current edit passing in the new edit
-     * as the argument.  If <code>addEdit</code> returns true the
-     * new edit is assumed to have been incorporated into the current edit and
-     * the new edit will not be added to the list of current edits.
-     * Edits can use <code>addEdit</code> as a way for smaller edits to
-     * be incorporated into a larger edit and treated as a single edit.
-     * <li>If <code>addEdit</code> returns false <code>replaceEdit</code>
-     * is called on the new edit with the current edit passed in as the
-     * argument. This is the inverse of <code>addEdit</code> &#151;
-     * if the new edit returns true from <code>replaceEdit</code>, the new
-     * edit replaces the current edit.
-     * </ol>
-     * The <code>UndoManager</code> makes use of
-     * <code>isSignificant</code> to determine how many edits should be
-     * undone or redone.  The <code>UndoManager</code> will undo or redo
-     * all insignificant edits (<code>isSignificant</code> returns false)
-     * between the current edit and the last or
-     * next significant edit.   <code>addEdit</code> and
-     * <code>replaceEdit</code> can be used to treat multiple edits as
-     * a single edit, returning false from <code>isSignificant</code>
-     * allows for treating can be used to
-     * have many smaller edits undone or redone at once.  Similar functionality
-     * can also be done using the <code>addEdit</code> method.
-     *
-     * @author Ray Ryan
-     * @class
-     */
-    interface UndoableEdit {
-        /**
-         * Undo the edit.
-         *
-         * @throws CannotUndoException if this edit can not be undone
-         */
-        undo(): any;
-        /**
-         * Returns true if this edit may be undone.
-         *
-         * @return {boolean} true if this edit may be undone
-         */
-        canUndo(): boolean;
-        /**
-         * Re-applies the edit.
-         *
-         * @throws CannotRedoException if this edit can not be redone
-         */
-        redo(): any;
-        /**
-         * Returns true if this edit may be redone.
-         *
-         * @return {boolean} true if this edit may be redone
-         */
-        canRedo(): boolean;
-        /**
-         * Informs the edit that it should no longer be used. Once an
-         * <code>UndoableEdit</code> has been marked as dead it can no longer
-         * be undone or redone.
-         * <p>
-         * This is a useful hook for cleaning up state no longer
-         * needed once undoing or redoing is impossible--for example,
-         * deleting file resources used by objects that can no longer be
-         * undeleted. <code>UndoManager</code> calls this before it dequeues edits.
-         * <p>
-         * Note that this is a one-way operation. There is no "un-die"
-         * method.
-         *
-         * @see CompoundEdit#die
-         */
-        die(): any;
-        /**
-         * Adds an <code>UndoableEdit</code> to this <code>UndoableEdit</code>.
-         * This method can be used to coalesce smaller edits into a larger
-         * compound edit.  For example, text editors typically allow
-         * undo operations to apply to words or sentences.  The text
-         * editor may choose to generate edits on each key event, but allow
-         * those edits to be coalesced into a more user-friendly unit, such as
-         * a word. In this case, the <code>UndoableEdit</code> would
-         * override <code>addEdit</code> to return true when the edits may
-         * be coalesced.
-         * <p>
-         * A return value of true indicates <code>anEdit</code> was incorporated
-         * into this edit.  A return value of false indicates <code>anEdit</code>
-         * may not be incorporated into this edit.
-         * <p>Typically the receiver is already in the queue of a
-         * <code>UndoManager</code> (or other <code>UndoableEditListener</code>),
-         * and is being given a chance to incorporate <code>anEdit</code>
-         * rather than letting it be added to the queue in turn.</p>
-         *
-         * <p>If true is returned, from now on <code>anEdit</code> must return
-         * false from <code>canUndo</code> and <code>canRedo</code>,
-         * and must throw the appropriate exception on <code>undo</code> or
-         * <code>redo</code>.</p>
-         *
-         * @param {*} anEdit the edit to be added
-         * @return {boolean} true if <code>anEdit</code> may be incorporated into this
-         * edit
-         */
-        addEdit(anEdit: UndoableEdit): boolean;
-        /**
-         * Returns true if this <code>UndoableEdit</code> should replace
-         * <code>anEdit</code>. This method is used by <code>CompoundEdit</code>
-         * and the <code>UndoManager</code>; it is called if
-         * <code>anEdit</code> could not be added to the current edit
-         * (<code>addEdit</code> returns false).
-         * <p>
-         * This method provides a way for an edit to replace an existing edit.
-         * <p>This message is the opposite of addEdit--anEdit has typically
-         * already been queued in an <code>UndoManager</code> (or other
-         * UndoableEditListener), and the receiver is being given a chance
-         * to take its place.</p>
-         *
-         * <p>If true is returned, from now on anEdit must return false from
-         * canUndo() and canRedo(), and must throw the appropriate
-         * exception on undo() or redo().</p>
-         *
-         * @param {*} anEdit the edit that replaces the current edit
-         * @return {boolean} true if this edit should replace <code>anEdit</code>
-         */
-        replaceEdit(anEdit: UndoableEdit): boolean;
-        /**
-         * Returns true if this edit is considered significant.  A significant
-         * edit is typically an edit that should be presented to the user, perhaps
-         * on a menu item or tooltip.  The <code>UndoManager</code> will undo,
-         * or redo, all insignificant edits to the next significant edit.
-         *
-         * @return {boolean} true if this edit is significant
-         */
-        isSignificant(): boolean;
-        /**
-         * Returns a localized, human-readable description of this edit, suitable
-         * for use in a change log, for example.
-         *
-         * @return {string} description of this edit
-         */
-        getPresentationName(): string;
-        /**
-         * Returns a localized, human-readable description of the undoable form of
-         * this edit, suitable for use as an Undo menu item, for example.
-         * This is typically derived from <code>getPresentationName</code>.
-         *
-         * @return {string} a description of the undoable form of this edit
-         */
-        getUndoPresentationName(): string;
-        /**
-         * Returns a localized, human-readable description of the redoable form of
-         * this edit, suitable for use as a Redo menu item, for example. This is
-         * typically derived from <code>getPresentationName</code>.
-         *
-         * @return {string} a description of the redoable form of this edit
-         */
-        getRedoPresentationName(): string;
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * Thrown when an UndoableEdit is told to <code>undo()</code> and can't.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @author Ray Ryan
-     * @class
-     * @extends java.lang.RuntimeException
-     */
-    class CannotUndoException extends java.lang.RuntimeException {
-        constructor();
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * Creates an <code>AbstractUndoableEdit</code> which defaults
-     * <code>hasBeenDone</code> and <code>alive</code> to <code>true</code>.
-     * @class
-     * @author Ray Ryan
-     */
-    class AbstractUndoableEdit implements javax.swing.undo.UndoableEdit, java.io.Serializable {
-        /**
-         * String returned by <code>getUndoPresentationName</code>;
-         * as of Java 2 platform v1.3.1 this field is no longer used. This value
-         * is now localized and comes from the defaults table with key
-         * <code>AbstractUndoableEdit.undoText</code>.
-         *
-         * @see javax.swing.UIDefaults
-         */
-        static UndoName: string;
-        /**
-         * String returned by <code>getRedoPresentationName</code>;
-         * as of Java 2 platform v1.3.1 this field is no longer used. This value
-         * is now localized and comes from the defaults table with key
-         * <code>AbstractUndoableEdit.redoText</code>.
-         *
-         * @see javax.swing.UIDefaults
-         */
-        static RedoName: string;
-        /**
-         * Defaults to true; becomes false if this edit is undone, true
-         * again if it is redone.
-         */
-        hasBeenDone: boolean;
-        /**
-         * True if this edit has not received <code>die</code>; defaults
-         * to <code>true</code>.
-         */
-        alive: boolean;
-        constructor();
-        /**
-         * Sets <code>alive</code> to false. Note that this
-         * is a one way operation; dead edits cannot be resurrected.
-         * Sending <code>undo</code> or <code>redo</code> to
-         * a dead edit results in an exception being thrown.
-         *
-         * <p>Typically an edit is killed when it is consolidated by
-         * another edit's <code>addEdit</code> or <code>replaceEdit</code>
-         * method, or when it is dequeued from an <code>UndoManager</code>.
-         */
-        die(): void;
-        /**
-         * Throws <code>CannotUndoException</code> if <code>canUndo</code>
-         * returns <code>false</code>. Sets <code>hasBeenDone</code>
-         * to <code>false</code>. Subclasses should override to undo the
-         * operation represented by this edit. Override should begin with
-         * a call to super.
-         *
-         * @exception CannotUndoException if <code>canUndo</code>
-         * returns <code>false</code>
-         * @see     #canUndo
-         */
-        undo(): void;
-        /**
-         * Returns true if this edit is <code>alive</code>
-         * and <code>hasBeenDone</code> is <code>true</code>.
-         *
-         * @return {boolean} true if this edit is <code>alive</code>
-         * and <code>hasBeenDone</code> is <code>true</code>
-         *
-         * @see     #die
-         * @see     #undo
-         * @see     #redo
-         */
-        canUndo(): boolean;
-        /**
-         * Throws <code>CannotRedoException</code> if <code>canRedo</code>
-         * returns false. Sets <code>hasBeenDone</code> to <code>true</code>.
-         * Subclasses should override to redo the operation represented by
-         * this edit. Override should begin with a call to super.
-         *
-         * @exception CannotRedoException if <code>canRedo</code>
-         * returns <code>false</code>
-         * @see     #canRedo
-         */
-        redo(): void;
-        /**
-         * Returns <code>true</code> if this edit is <code>alive</code>
-         * and <code>hasBeenDone</code> is <code>false</code>.
-         *
-         * @return {boolean} <code>true</code> if this edit is <code>alive</code>
-         * and <code>hasBeenDone</code> is <code>false</code>
-         * @see     #die
-         * @see     #undo
-         * @see     #redo
-         */
-        canRedo(): boolean;
-        /**
-         * This default implementation returns false.
-         *
-         * @param {*} anEdit the edit to be added
-         * @return {boolean} false
-         *
-         * @see UndoableEdit#addEdit
-         */
-        addEdit(anEdit: javax.swing.undo.UndoableEdit): boolean;
-        /**
-         * This default implementation returns false.
-         *
-         * @param {*} anEdit the edit to replace
-         * @return {boolean} false
-         *
-         * @see UndoableEdit#replaceEdit
-         */
-        replaceEdit(anEdit: javax.swing.undo.UndoableEdit): boolean;
-        /**
-         * This default implementation returns true.
-         *
-         * @return {boolean} true
-         * @see UndoableEdit#isSignificant
-         */
-        isSignificant(): boolean;
-        /**
-         * This default implementation returns "". Used by
-         * <code>getUndoPresentationName</code> and
-         * <code>getRedoPresentationName</code> to
-         * construct the strings they return. Subclasses should override to
-         * return an appropriate description of the operation this edit
-         * represents.
-         *
-         * @return {string} the empty string ""
-         *
-         * @see     #getUndoPresentationName
-         * @see     #getRedoPresentationName
-         */
-        getPresentationName(): string;
-        /**
-         * Retreives the value from the defaults table with key
-         * <code>AbstractUndoableEdit.undoText</code> and returns
-         * that value followed by a space, followed by
-         * <code>getPresentationName</code>.
-         * If <code>getPresentationName</code> returns "",
-         * then the defaults value is returned alone.
-         *
-         * @return {string} the value from the defaults table with key
-         * <code>AbstractUndoableEdit.undoText</code>, followed
-         * by a space, followed by <code>getPresentationName</code>
-         * unless <code>getPresentationName</code> is "" in which
-         * case, the defaults value is returned alone.
-         * @see #getPresentationName
-         */
-        getUndoPresentationName(): string;
-        /**
-         * Retreives the value from the defaults table with key
-         * <code>AbstractUndoableEdit.redoText</code> and returns
-         * that value followed by a space, followed by
-         * <code>getPresentationName</code>.
-         * If <code>getPresentationName</code> returns "",
-         * then the defaults value is returned alone.
-         *
-         * @return {string} the value from the defaults table with key
-         * <code>AbstractUndoableEdit.redoText</code>, followed
-         * by a space, followed by <code>getPresentationName</code>
-         * unless <code>getPresentationName</code> is "" in which
-         * case, the defaults value is returned alone.
-         * @see #getPresentationName
-         */
-        getRedoPresentationName(): string;
-        /**
-         * Returns a string that displays and identifies this
-         * object's properties.
-         *
-         * @return {string} a String representation of this object
-         */
-        toString(): string;
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * StateEditable defines the interface for objects that can have
-     * their state undone/redone by a StateEdit.
-     *
-     * @see StateEdit
-     * @class
-     */
-    interface StateEditable {
-        /**
-         * Upon receiving this message the receiver should place any relevant
-         * state into <EM>state</EM>.
-         * @param {java.util.Hashtable} state
-         */
-        storeState(state: java.util.Hashtable<any, any>): any;
-        /**
-         * Upon receiving this message the receiver should extract any relevant
-         * state out of <EM>state</EM>.
-         * @param {java.util.Hashtable} state
-         */
-        restoreState(state: java.util.Hashtable<any, any>): any;
-    }
-    namespace StateEditable {
-        /**
-         * Resource ID for this class.
-         */
-        const RCSID: string;
-    }
-}
-declare namespace javax.swing {
-    interface Icon {
-        paintIcon(c: java.awt.Component, g: java.awt.Graphics, x: number, y: number): any;
-        getIconWidth(): number;
-        getIconHeight(): number;
-        getInternalHTMLImageElement(): HTMLImageElement;
-    }
-}
-declare namespace javax.swing {
-    /**
      * This interface represents the current state of the
      * selection for any of the components that display a
      * list of values with stable indices.  The selection is
@@ -10528,192 +10424,733 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     /**
-     * Initializes value, extent, minimum and maximum. Adjusting is false.
-     * Throws an <code>IllegalArgumentException</code> if the following
-     * constraints aren't satisfied:
-     * <pre>
-     * min &lt;= value &lt;= value+extent &lt;= max
-     * </pre>
-     * @param {number} value
-     * @param {number} extent
-     * @param {number} min
-     * @param {number} max
+     * A package-private PropertyChangeListener which listens for property changes
+     * on an Action and updates the properties of an ActionEvent source.
+     * <p>
+     * Subclasses must override the actionPropertyChanged method, which is invoked
+     * from the propertyChange method as long as the target is still valid.
+     * </p>
+     * <p>
+     * WARNING WARNING WARNING WARNING WARNING WARNING:<br>
+     * Do NOT create an annonymous inner class that extends this! If you do a strong
+     * reference will be held to the containing class, which in most cases defeats
+     * the purpose of this class.
+     *
+     * @param T
+     * the type of JComponent the underlying Action is attached to
+     *
+     * @author Georges Saab
+     * @see AbstractButton
+     * @param {javax.swing.JComponent} c
+     * @param {*} a
      * @class
-     * @author David Kloba
      */
-    class DefaultBoundedRangeModel implements javax.swing.BoundedRangeModel, java.io.Serializable {
+    abstract class ActionPropertyChangeListener<T extends javax.swing.JComponent> implements java.beans.PropertyChangeListener, java.io.Serializable {
+        target: T;
+        action: javax.swing.Action;
+        constructor(c: T, a: javax.swing.Action);
+        propertyChange(e: java.beans.PropertyChangeEvent): void;
+        abstract actionPropertyChanged(target: T, action: javax.swing.Action, e: java.beans.PropertyChangeEvent): any;
+        setTarget(c: T): void;
+        getTarget(): T;
+        getAction(): javax.swing.Action;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Drop modes, used to determine the method by which a component
+     * tracks and indicates a drop location during drag and drop.
+     *
+     * @author Shannon Hickey
+     * @see JTable#setDropMode
+     * @see JList#setDropMode
+     * @see JTree#setDropMode
+     * @see javax.swing.text.JTextComponent#setDropMode
+     * @since 1.6
+     * @enum
+     * @property {javax.swing.DropMode} USE_SELECTION
+     * A component's own internal selection mechanism (or caret for text
+     * components) should be used to track the drop location.
+     * @property {javax.swing.DropMode} ON
+     * The drop location should be tracked in terms of the index of
+     * existing items. Useful for dropping on items in tables, lists,
+     * and trees.
+     * @property {javax.swing.DropMode} INSERT
+     * The drop location should be tracked in terms of the position
+     * where new data should be inserted. For components that manage
+     * a list of items (list and tree for example), the drop location
+     * should indicate the index where new data should be inserted.
+     * For text components the location should represent a position
+     * between characters. For components that manage tabular data
+     * (table for example), the drop location should indicate
+     * where to insert new rows, columns, or both, to accommodate
+     * the dropped data.
+     * @property {javax.swing.DropMode} INSERT_ROWS
+     * The drop location should be tracked in terms of the row index
+     * where new rows should be inserted to accommodate the dropped
+     * data. This is useful for components that manage tabular data.
+     * @property {javax.swing.DropMode} INSERT_COLS
+     * The drop location should be tracked in terms of the column index
+     * where new columns should be inserted to accommodate the dropped
+     * data. This is useful for components that manage tabular data.
+     * @property {javax.swing.DropMode} ON_OR_INSERT
+     * This mode is a combination of <code>ON</code>
+     * and <code>INSERT</code>, specifying that data can be
+     * dropped on existing items, or in insert locations
+     * as specified by <code>INSERT</code>.
+     * @property {javax.swing.DropMode} ON_OR_INSERT_ROWS
+     * This mode is a combination of <code>ON</code>
+     * and <code>INSERT_ROWS</code>, specifying that data can be
+     * dropped on existing items, or as insert rows
+     * as specified by <code>INSERT_ROWS</code>.
+     * @property {javax.swing.DropMode} ON_OR_INSERT_COLS
+     * This mode is a combination of <code>ON</code>
+     * and <code>INSERT_COLS</code>, specifying that data can be
+     * dropped on existing items, or as insert columns
+     * as specified by <code>INSERT_COLS</code>.
+     * @class
+     */
+    enum DropMode {
         /**
-         * Only one <code>ChangeEvent</code> is needed per model instance since the
-         * event's only (read-only) state is the source property.  The source
-         * of events generated here is always "this".
+         * A component's own internal selection mechanism (or caret for text
+         * components) should be used to track the drop location.
          */
-        changeEvent: javax.swing.event.ChangeEvent;
+        USE_SELECTION = 0,
         /**
-         * The listeners waiting for model changes.
+         * The drop location should be tracked in terms of the index of
+         * existing items. Useful for dropping on items in tables, lists,
+         * and trees.
          */
-        listenerList: javax.swing.event.EventListenerList;
-        value: number;
-        extent: number;
-        min: number;
-        max: number;
-        isAdjusting: boolean;
-        constructor(value?: any, extent?: any, min?: any, max?: any);
+        ON = 1,
         /**
-         * Returns the model's current value.
-         * @return {number} the model's current value
-         * @see #setValue
-         * @see BoundedRangeModel#getValue
+         * The drop location should be tracked in terms of the position
+         * where new data should be inserted. For components that manage
+         * a list of items (list and tree for example), the drop location
+         * should indicate the index where new data should be inserted.
+         * For text components the location should represent a position
+         * between characters. For components that manage tabular data
+         * (table for example), the drop location should indicate
+         * where to insert new rows, columns, or both, to accommodate
+         * the dropped data.
          */
-        getValue(): number;
+        INSERT = 2,
         /**
-         * Returns the model's extent.
-         * @return {number} the model's extent
-         * @see #setExtent
-         * @see BoundedRangeModel#getExtent
+         * The drop location should be tracked in terms of the row index
+         * where new rows should be inserted to accommodate the dropped
+         * data. This is useful for components that manage tabular data.
          */
-        getExtent(): number;
+        INSERT_ROWS = 3,
         /**
-         * Returns the model's minimum.
-         * @return {number} the model's minimum
+         * The drop location should be tracked in terms of the column index
+         * where new columns should be inserted to accommodate the dropped
+         * data. This is useful for components that manage tabular data.
+         */
+        INSERT_COLS = 4,
+        /**
+         * This mode is a combination of <code>ON</code>
+         * and <code>INSERT</code>, specifying that data can be
+         * dropped on existing items, or in insert locations
+         * as specified by <code>INSERT</code>.
+         */
+        ON_OR_INSERT = 5,
+        /**
+         * This mode is a combination of <code>ON</code>
+         * and <code>INSERT_ROWS</code>, specifying that data can be
+         * dropped on existing items, or as insert rows
+         * as specified by <code>INSERT_ROWS</code>.
+         */
+        ON_OR_INSERT_ROWS = 6,
+        /**
+         * This mode is a combination of <code>ON</code>
+         * and <code>INSERT_COLS</code>, specifying that data can be
+         * dropped on existing items, or as insert columns
+         * as specified by <code>INSERT_COLS</code>.
+         */
+        ON_OR_INSERT_COLS = 7
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Identifies components that can be used as "rubber stamps" to paint
+     * the cells in a JList.  For example, to use a JLabel as a
+     * ListCellRenderer, you would write something like this:
+     * <pre>
+     * {@code
+     * class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
+     * public MyCellRenderer() {
+     * setOpaque(true);
+     * }
+     *
+     * public Component getListCellRendererComponent(JList<?> list,
+     * Object value,
+     * int index,
+     * boolean isSelected,
+     * boolean cellHasFocus) {
+     *
+     * setText(value.toString());
+     *
+     * Color background;
+     * Color foreground;
+     *
+     * // check if this cell represents the current DnD drop location
+     * JList.DropLocation dropLocation = list.getDropLocation();
+     * if (dropLocation != null
+     * && !dropLocation.isInsert()
+     * && dropLocation.getIndex() == index) {
+     *
+     * background = Color.BLUE;
+     * foreground = Color.WHITE;
+     *
+     * // check if this cell is selected
+     * } else if (isSelected) {
+     * background = Color.RED;
+     * foreground = Color.WHITE;
+     *
+     * // unselected, and not the DnD drop location
+     * } else {
+     * background = Color.WHITE;
+     * foreground = Color.BLACK;
+     * };
+     *
+     * setBackground(background);
+     * setForeground(foreground);
+     *
+     * return this;
+     * }
+     * }
+     * }
+     * </pre>
+     *
+     * @param <E> the type of values this renderer can be used for
+     *
+     * @see JList
+     * @see DefaultListCellRenderer
+     *
+     * @author Hans Muller
+     * @class
+     */
+    interface ListCellRenderer<E> {
+        /**
+         * Return a component that has been configured to display the specified
+         * value. That component's <code>paint</code> method is then called to
+         * "render" the cell.  If it is necessary to compute the dimensions
+         * of a list because the list cells do not have a fixed size, this method
+         * is called to generate a component on which <code>getPreferredSize</code>
+         * can be invoked.
+         *
+         * @param {javax.swing.JList} list The JList we're painting.
+         * @param {*} value The value returned by list.getModel().getElementAt(index).
+         * @param {number} index The cells index.
+         * @param {boolean} isSelected True if the specified cell was selected.
+         * @param {boolean} cellHasFocus True if the specified cell has the focus.
+         * @return {java.awt.Component} A component whose paint() method will render the specified value.
+         *
+         * @see JList
+         * @see ListSelectionModel
+         * @see ListModel
+         */
+        getListCellRendererComponent(list: javax.swing.JList<any>, value: E, index: number, isSelected: boolean, cellHasFocus: boolean): java.awt.Component;
+    }
+}
+declare namespace javax.swing {
+    class ButtonGroup implements java.io.Serializable {
+        buttons: java.util.Vector<javax.swing.AbstractButton>;
+        selection: javax.swing.ButtonModel;
+        constructor();
+        add(b: javax.swing.AbstractButton): void;
+        remove(b: javax.swing.AbstractButton): void;
+        clearSelection(): void;
+        getElements(): java.util.Enumeration<javax.swing.AbstractButton>;
+        getSelection(): javax.swing.ButtonModel;
+        setSelected(m: javax.swing.ButtonModel, b: boolean): void;
+        isSelected(m: javax.swing.ButtonModel): boolean;
+        getButtonCount(): number;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * A collection of constants generally used for positioning and orienting
+     * components on the screen.
+     *
+     * @author Jeff Dinkins
+     * @author Ralph Kar (orientation support)
+     * @class
+     */
+    interface SwingConstants {
+    }
+    namespace SwingConstants {
+        /**
+         * The central position in an area. Used for
+         * both compass-direction constants (NORTH, etc.)
+         * and box-orientation constants (TOP, etc.).
+         */
+        const CENTER: number;
+        /**
+         * Box-orientation constant used to specify the top of a box.
+         */
+        const TOP: number;
+        /**
+         * Box-orientation constant used to specify the left side of a box.
+         */
+        const LEFT: number;
+        /**
+         * Box-orientation constant used to specify the bottom of a box.
+         */
+        const BOTTOM: number;
+        /**
+         * Box-orientation constant used to specify the right side of a box.
+         */
+        const RIGHT: number;
+        /**
+         * Compass-direction North (up).
+         */
+        const NORTH: number;
+        /**
+         * Compass-direction north-east (upper right).
+         */
+        const NORTH_EAST: number;
+        /**
+         * Compass-direction east (right).
+         */
+        const EAST: number;
+        /**
+         * Compass-direction south-east (lower right).
+         */
+        const SOUTH_EAST: number;
+        /**
+         * Compass-direction south (down).
+         */
+        const SOUTH: number;
+        /**
+         * Compass-direction south-west (lower left).
+         */
+        const SOUTH_WEST: number;
+        /**
+         * Compass-direction west (left).
+         */
+        const WEST: number;
+        /**
+         * Compass-direction north west (upper left).
+         */
+        const NORTH_WEST: number;
+        /**
+         * Horizontal orientation. Used for scrollbars and sliders.
+         */
+        const HORIZONTAL: number;
+        /**
+         * Vertical orientation. Used for scrollbars and sliders.
+         */
+        const VERTICAL: number;
+        /**
+         * Identifies the leading edge of text for use with left-to-right
+         * and right-to-left languages. Used by buttons and labels.
+         */
+        const LEADING: number;
+        /**
+         * Identifies the trailing edge of text for use with left-to-right
+         * and right-to-left languages. Used by buttons and labels.
+         */
+        const TRAILING: number;
+        /**
+         * Identifies the next direction in a sequence.
+         *
+         * @since 1.4
+         */
+        const NEXT: number;
+        /**
+         * Identifies the previous direction in a sequence.
+         *
+         * @since 1.4
+         */
+        const PREVIOUS: number;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * A data model for a combo box. This interface extends <code>ListDataModel</code>
+     * and adds the concept of a <i>selected item</i>. The selected item is generally
+     * the item which is visible in the combo box display area.
+     * <p>
+     * The selected item may not necessarily be managed by the underlying
+     * <code>ListModel</code>. This disjoint behavior allows for the temporary
+     * storage and retrieval of a selected item in the model.
+     *
+     * @param <E> the type of the elements of this model
+     *
+     * @author Arnaud Weber
+     * @class
+     */
+    interface ComboBoxModel<E> extends javax.swing.ListModel<E> {
+        /**
+         * Set the selected item. The implementation of this  method should notify
+         * all registered <code>ListDataListener</code>s that the contents
+         * have changed.
+         *
+         * @param {*} anItem the list object to select or <code>null</code>
+         * to clear the selection
+         */
+        setSelectedItem(anItem: any): any;
+        /**
+         * Returns the selected item
+         * @return {*} The selected item or <code>null</code> if there is no selection
+         */
+        getSelectedItem(): any;
+    }
+}
+declare namespace javax.swing {
+    interface ButtonModel extends java.awt.ItemSelectable {
+        isArmed(): boolean;
+        isSelected(): boolean;
+        isEnabled(): boolean;
+        isPressed(): boolean;
+        isRollover(): boolean;
+        setArmed(b: boolean): any;
+        setSelected(b: boolean): any;
+        setEnabled(b: boolean): any;
+        setPressed(b: boolean): any;
+        setRollover(b: boolean): any;
+        setMnemonic(key: number): any;
+        getMnemonic(): number;
+        setActionCommand(s: string): any;
+        getActionCommand(): string;
+        setGroup(group: javax.swing.ButtonGroup): any;
+        addActionListener(l: java.awt.event.ActionListener): any;
+        removeActionListener(l: java.awt.event.ActionListener): any;
+        addItemListener(l: java.awt.event.ItemListener): any;
+        removeItemListener(l: java.awt.event.ItemListener): any;
+        addChangeListener(l: javax.swing.event.ChangeListener): any;
+        removeChangeListener(l: javax.swing.event.ChangeListener): any;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Defines the data model used by components like <code>Slider</code>s
+     * and <code>ProgressBar</code>s.
+     * Defines four interrelated integer properties: minimum, maximum, extent
+     * and value.  These four integers define two nested ranges like this:
+     * <pre>
+     * minimum &lt;= value &lt;= value+extent &lt;= maximum
+     * </pre>
+     * The outer range is <code>minimum,maximum</code> and the inner
+     * range is <code>value,value+extent</code>.  The inner range
+     * must lie within the outer one, i.e. <code>value</code> must be
+     * less than or equal to <code>maximum</code> and <code>value+extent</code>
+     * must greater than or equal to <code>minimum</code>, and <code>maximum</code>
+     * must be greater than or equal to <code>minimum</code>.
+     * There are a few features of this model that one might find a little
+     * surprising.  These quirks exist for the convenience of the
+     * Swing BoundedRangeModel clients, such as <code>Slider</code> and
+     * <code>ScrollBar</code>.
+     * <ul>
+     * <li>
+     * The minimum and maximum set methods "correct" the other
+     * three properties to accommodate their new value argument.  For
+     * example setting the model's minimum may change its maximum, value,
+     * and extent properties (in that order), to maintain the constraints
+     * specified above.
+     *
+     * <li>
+     * The value and extent set methods "correct" their argument to
+     * fit within the limits defined by the other three properties.
+     * For example if <code>value == maximum</code>, <code>setExtent(10)</code>
+     * would change the extent (back) to zero.
+     *
+     * <li>
+     * The four BoundedRangeModel values are defined as Java Beans properties
+     * however Swing ChangeEvents are used to notify clients of changes rather
+     * than PropertyChangeEvents. This was done to keep the overhead of monitoring
+     * a BoundedRangeModel low. Changes are often reported at MouseDragged rates.
+     * </ul>
+     *
+     * <p>
+     *
+     * For an example of specifying custom bounded range models used by sliders,
+     * see <a
+     * href="http://www.oracle.com/technetwork/java/architecture-142923.html#separable">Separable model architecture</a>
+     * in <em>A Swing Architecture Overview.</em>
+     *
+     * @author Hans Muller
+     * @see DefaultBoundedRangeModel
+     * @class
+     */
+    interface BoundedRangeModel {
+        /**
+         * Returns the minimum acceptable value.
+         *
+         * @return {number} the value of the minimum property
          * @see #setMinimum
-         * @see BoundedRangeModel#getMinimum
          */
         getMinimum(): number;
         /**
-         * Returns the model's maximum.
-         * @return  {number} the model's maximum
-         * @see #setMaximum
-         * @see BoundedRangeModel#getMaximum
-         */
-        getMaximum(): number;
-        /**
-         * Sets the current value of the model. For a slider, that
-         * determines where the knob appears. Ensures that the new
-         * value, <I>n</I> falls within the model's constraints:
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         *
-         * @see BoundedRangeModel#setValue
-         * @param {number} n
-         */
-        setValue(n: number): void;
-        /**
-         * Sets the extent to <I>n</I> after ensuring that <I>n</I>
-         * is greater than or equal to zero and falls within the model's
-         * constraints:
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         * @see BoundedRangeModel#setExtent
-         * @param {number} n
-         */
-        setExtent(n: number): void;
-        /**
-         * Sets the minimum to <I>n</I> after ensuring that <I>n</I>
-         * that the other three properties obey the model's constraints:
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         * @see #getMinimum
-         * @see BoundedRangeModel#setMinimum
-         * @param {number} n
-         */
-        setMinimum(n: number): void;
-        /**
-         * Sets the maximum to <I>n</I> after ensuring that <I>n</I>
-         * that the other three properties obey the model's constraints:
-         * <pre>
-         * minimum &lt;= value &lt;= value+extent &lt;= maximum
-         * </pre>
-         * @see BoundedRangeModel#setMaximum
-         * @param {number} n
-         */
-        setMaximum(n: number): void;
-        /**
-         * Sets the <code>valueIsAdjusting</code> property.
-         *
-         * @see #getValueIsAdjusting
-         * @see #setValue
-         * @see BoundedRangeModel#setValueIsAdjusting
-         * @param {boolean} b
-         */
-        setValueIsAdjusting(b: boolean): void;
-        /**
-         * Returns true if the value is in the process of changing
-         * as a result of actions being taken by the user.
-         *
-         * @return {boolean} the value of the <code>valueIsAdjusting</code> property
-         * @see #setValue
-         * @see BoundedRangeModel#getValueIsAdjusting
-         */
-        getValueIsAdjusting(): boolean;
-        /**
-         * Sets all of the <code>BoundedRangeModel</code> properties after forcing
-         * the arguments to obey the usual constraints:
+         * Sets the model's minimum to <I>newMinimum</I>.   The
+         * other three properties may be changed as well, to ensure
+         * that:
          * <pre>
          * minimum &lt;= value &lt;= value+extent &lt;= maximum
          * </pre>
          * <p>
-         * At most, one <code>ChangeEvent</code> is generated.
+         * Notifies any listeners if the model changes.
          *
-         * @see BoundedRangeModel#setRangeProperties
+         * @param {number} newMinimum the model's new minimum
+         * @see #getMinimum
+         * @see #addChangeListener
+         */
+        setMinimum(newMinimum: number): any;
+        /**
+         * Returns the model's maximum.  Note that the upper
+         * limit on the model's value is (maximum - extent).
+         *
+         * @return {number} the value of the maximum property.
+         * @see #setMaximum
+         * @see #setExtent
+         */
+        getMaximum(): number;
+        /**
+         * Sets the model's maximum to <I>newMaximum</I>. The other
+         * three properties may be changed as well, to ensure that
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         * <p>
+         * Notifies any listeners if the model changes.
+         *
+         * @param {number} newMaximum the model's new maximum
+         * @see #getMaximum
+         * @see #addChangeListener
+         */
+        setMaximum(newMaximum: number): any;
+        /**
+         * Returns the model's current value.  Note that the upper
+         * limit on the model's value is <code>maximum - extent</code>
+         * and the lower limit is <code>minimum</code>.
+         *
+         * @return  {number} the model's value
+         * @see     #setValue
+         */
+        getValue(): number;
+        /**
+         * Sets the model's current value to <code>newValue</code> if <code>newValue</code>
+         * satisfies the model's constraints. Those constraints are:
+         * <pre>
+         * minimum &lt;= value &lt;= value+extent &lt;= maximum
+         * </pre>
+         * Otherwise, if <code>newValue</code> is less than <code>minimum</code>
+         * it's set to <code>minimum</code>, if its greater than
+         * <code>maximum</code> then it's set to <code>maximum</code>, and
+         * if it's greater than <code>value+extent</code> then it's set to
+         * <code>value+extent</code>.
+         * <p>
+         * When a BoundedRange model is used with a scrollbar the value
+         * specifies the origin of the scrollbar knob (aka the "thumb" or
+         * "elevator").  The value usually represents the origin of the
+         * visible part of the object being scrolled.
+         * <p>
+         * Notifies any listeners if the model changes.
+         *
+         * @param {number} newValue the model's new value
+         * @see #getValue
+         */
+        setValue(newValue: number): any;
+        /**
+         * This attribute indicates that any upcoming changes to the value
+         * of the model should be considered a single event. This attribute
+         * will be set to true at the start of a series of changes to the value,
+         * and will be set to false when the value has finished changing.  Normally
+         * this allows a listener to only take action when the final value change in
+         * committed, instead of having to do updates for all intermediate values.
+         * <p>
+         * Sliders and scrollbars use this property when a drag is underway.
+         *
+         * @param {boolean} b true if the upcoming changes to the value property are part of a series
+         */
+        setValueIsAdjusting(b: boolean): any;
+        /**
+         * Returns true if the current changes to the value property are part
+         * of a series of changes.
+         *
+         * @return {boolean} the valueIsAdjustingProperty.
+         * @see #setValueIsAdjusting
+         */
+        getValueIsAdjusting(): boolean;
+        /**
+         * Returns the model's extent, the length of the inner range that
+         * begins at the model's value.
+         *
+         * @return  {number} the value of the model's extent property
+         * @see     #setExtent
+         * @see     #setValue
+         */
+        getExtent(): number;
+        /**
+         * Sets the model's extent.  The <I>newExtent</I> is forced to
+         * be greater than or equal to zero and less than or equal to
+         * maximum - value.
+         * <p>
+         * When a BoundedRange model is used with a scrollbar the extent
+         * defines the length of the scrollbar knob (aka the "thumb" or
+         * "elevator").  The extent usually represents how much of the
+         * object being scrolled is visible. When used with a slider,
+         * the extent determines how much the value can "jump", for
+         * example when the user presses PgUp or PgDn.
+         * <p>
+         * Notifies any listeners if the model changes.
+         *
+         * @param  {number} newExtent the model's new extent
+         * @see #getExtent
+         * @see #setValue
+         */
+        setExtent(newExtent: number): any;
+        /**
+         * This method sets all of the model's data with a single method call.
+         * The method results in a single change event being generated. This is
+         * convenient when you need to adjust all the model data simultaneously and
+         * do not want individual change events to occur.
+         *
+         * @param {number} value  an int giving the current value
+         * @param {number} extent an int giving the amount by which the value can "jump"
+         * @param {number} min    an int giving the minimum value
+         * @param {number} max    an int giving the maximum value
+         * @param {boolean} adjusting a boolean, true if a series of changes are in
+         * progress
+         *
          * @see #setValue
          * @see #setExtent
          * @see #setMinimum
          * @see #setMaximum
          * @see #setValueIsAdjusting
-         * @param {number} newValue
-         * @param {number} newExtent
-         * @param {number} newMin
-         * @param {number} newMax
-         * @param {boolean} adjusting
          */
-        setRangeProperties(newValue: number, newExtent: number, newMin: number, newMax: number, adjusting: boolean): void;
+        setRangeProperties(value: number, extent: number, min: number, max: number, adjusting: boolean): any;
         /**
-         * Adds a <code>ChangeListener</code>.  The change listeners are run each
-         * time any one of the Bounded Range model properties changes.
+         * Adds a ChangeListener to the model's listener list.
          *
-         * @param {*} l the ChangeListener to add
+         * @param {*} x the ChangeListener to add
          * @see #removeChangeListener
-         * @see BoundedRangeModel#addChangeListener
          */
-        addChangeListener(l: javax.swing.event.ChangeListener): void;
+        addChangeListener(x: javax.swing.event.ChangeListener): any;
         /**
-         * Removes a <code>ChangeListener</code>.
+         * Removes a ChangeListener from the model's listener list.
          *
-         * @param {*} l the <code>ChangeListener</code> to remove
+         * @param {*} x the ChangeListener to remove
          * @see #addChangeListener
-         * @see BoundedRangeModel#removeChangeListener
          */
-        removeChangeListener(l: javax.swing.event.ChangeListener): void;
+        removeChangeListener(x: javax.swing.event.ChangeListener): any;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * A MenuSelectionManager owns the selection in menu hierarchy.
+     *
+     * @author Arnaud Weber
+     * @class
+     */
+    class MenuSelectionManager {
+    }
+}
+declare namespace javax.swing {
+    interface WindowConstants {
+    }
+    namespace WindowConstants {
+        const DO_NOTHING_ON_CLOSE: number;
+        const HIDE_ON_CLOSE: number;
+        const DISPOSE_ON_CLOSE: number;
+        const EXIT_ON_CLOSE: number;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * The abstract definition for the data model that provides
+     * a <code>List</code> with its contents.
+     * <p>
+     * <strong>Warning:</strong>
+     * Serialized objects of this class will not be compatible with
+     * future Swing releases. The current serialization support is
+     * appropriate for short term storage or RMI between applications running
+     * the same version of Swing.  As of 1.4, support for long term storage
+     * of all JavaBeans&trade;
+     * has been added to the <code>java.beans</code> package.
+     * Please see {@link java.beans.XMLEncoder}.
+     *
+     * @param <E> the type of the elements of this model
+     *
+     * @author Hans Muller
+     * @class
+     */
+    abstract class AbstractListModel<E> implements javax.swing.ListModel<E>, java.io.Serializable {
+        listenerList: javax.swing.event.EventListenerList;
         /**
-         * Returns an array of all the change listeners
-         * registered on this <code>DefaultBoundedRangeModel</code>.
+         * Adds a listener to the list that's notified each time a change
+         * to the data model occurs.
          *
-         * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s
-         * or an empty
-         * array if no change listeners are currently registered
+         * @param {*} l the <code>ListDataListener</code> to be added
+         */
+        addListDataListener(l: javax.swing.event.ListDataListener): void;
+        /**
+         * Removes a listener from the list that's notified each time a
+         * change to the data model occurs.
          *
-         * @see #addChangeListener
-         * @see #removeChangeListener
+         * @param {*} l the <code>ListDataListener</code> to be removed
+         */
+        removeListDataListener(l: javax.swing.event.ListDataListener): void;
+        /**
+         * Returns an array of all the list data listeners
+         * registered on this <code>AbstractListModel</code>.
+         *
+         * @return {javax.swing.event.ListDataListener[]} all of this model's <code>ListDataListener</code>s,
+         * or an empty array if no list data listeners
+         * are currently registered
+         *
+         * @see #addListDataListener
+         * @see #removeListDataListener
          *
          * @since 1.4
          */
-        getChangeListeners(): javax.swing.event.ChangeListener[];
+        getListDataListeners(): javax.swing.event.ListDataListener[];
         /**
-         * Runs each <code>ChangeListener</code>'s <code>stateChanged</code> method.
+         * <code>AbstractListModel</code> subclasses must call this method
+         * <b>after</b>
+         * one or more elements of the list change.  The changed elements
+         * are specified by the closed interval index0, index1 -- the endpoints
+         * are included.  Note that
+         * index0 need not be less than or equal to index1.
          *
-         * @see #setRangeProperties
+         * @param {*} source the <code>ListModel</code> that changed, typically "this"
+         * @param {number} index0 one end of the new interval
+         * @param {number} index1 the other end of the new interval
          * @see EventListenerList
+         * @see DefaultListModel
          */
-        fireStateChanged(): void;
+        fireContentsChanged(source: any, index0: number, index1: number): void;
         /**
-         * Returns a string that displays all of the
-         * <code>BoundedRangeModel</code> properties.
-         * @return {string}
+         * <code>AbstractListModel</code> subclasses must call this method
+         * <b>after</b>
+         * one or more elements are added to the model.  The new elements
+         * are specified by a closed interval index0, index1 -- the enpoints
+         * are included.  Note that
+         * index0 need not be less than or equal to index1.
+         *
+         * @param {*} source the <code>ListModel</code> that changed, typically "this"
+         * @param {number} index0 one end of the new interval
+         * @param {number} index1 the other end of the new interval
+         * @see EventListenerList
+         * @see DefaultListModel
          */
-        toString(): string;
+        fireIntervalAdded(source: any, index0: number, index1: number): void;
+        /**
+         * <code>AbstractListModel</code> subclasses must call this method
+         * <b>after</b> one or more elements are removed from the model.
+         * <code>index0</code> and <code>index1</code> are the end points
+         * of the interval that's been removed.  Note that <code>index0</code>
+         * need not be less than or equal to <code>index1</code>.
+         *
+         * @param {*} source the <code>ListModel</code> that changed, typically "this"
+         * @param {number} index0 one end of the removed interval,
+         * including <code>index0</code>
+         * @param {number} index1 the other end of the removed interval,
+         * including <code>index1</code>
+         * @see EventListenerList
+         * @see DefaultListModel
+         */
+        fireIntervalRemoved(source: any, index0: number, index1: number): void;
         /**
          * Returns an array of all the objects currently registered as
          * <code><em>Foo</em>Listener</code>s
@@ -10723,12 +11160,12 @@ declare namespace javax.swing {
          * <p>
          * You can specify the <code>listenerType</code> argument
          * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-         * For example, you can query a <code>DefaultBoundedRangeModel</code>
-         * instance <code>m</code>
-         * for its change listeners
+         * For example, you can query a list model
+         * <code>m</code>
+         * for its list data listeners
          * with the following code:
          *
-         * <pre>ChangeListener[] cls = (ChangeListener[])(m.getListeners(ChangeListener.class));</pre>
+         * <pre>ListDataListener[] ldls = (ListDataListener[])(m.getListeners(ListDataListener.class));</pre>
          *
          * If no such listeners exist,
          * this method returns an empty array.
@@ -10745,11 +11182,14 @@ declare namespace javax.swing {
          * specify a class or interface that implements
          * <code>java.util.EventListener</code>
          *
-         * @see #getChangeListeners
+         * @see #getListDataListeners
          *
          * @since 1.3
          */
         getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        abstract getElementAt(index?: any): any;
+        abstract getSize(): any;
+        constructor();
     }
 }
 declare namespace javax.swing {
@@ -10841,737 +11281,279 @@ declare namespace javax.swing {
         getContentPane(): java.awt.Container;
     }
 }
-declare namespace javax.swing {
-    class SwingUtilities implements javax.swing.SwingConstants {
-        constructor();
-        static invokeLater(doRun: () => void): void;
-        static invokeAndWait(doRun: () => void): void;
-    }
-}
-declare namespace javax.swing {
-    class ImageIcon implements javax.swing.Icon, java.io.Serializable {
-        filename: string;
-        location: java.net.URL;
-        image: java.awt.Image;
-        loadStatus: number;
-        imageObserver: java.awt.image.ImageObserver;
-        description: string;
-        width: number;
-        height: number;
-        /**
-         *
-         * @return {HTMLImageElement}
-         */
-        getInternalHTMLImageElement(): HTMLImageElement;
-        constructor(filename?: any, description?: any);
-        loadImage(image: java.awt.Image): void;
-        getImageLoadStatus(): number;
-        getImage(): java.awt.Image;
-        setImage(image: java.awt.Image): void;
-        getDescription(): string;
-        setDescription(description: string): void;
-        paintIcon(c: java.awt.Component, g: java.awt.Graphics, x: number, y: number): void;
-        getIconWidth(): number;
-        getIconHeight(): number;
-        setImageObserver(observer: java.awt.image.ImageObserver): void;
-        getImageObserver(): java.awt.image.ImageObserver;
-        toString(): string;
-    }
-}
-declare namespace javax.swing {
+declare namespace javax.swing.undo {
     /**
-     * A data model for a combo box. This interface extends <code>ListDataModel</code>
-     * and adds the concept of a <i>selected item</i>. The selected item is generally
-     * the item which is visible in the combo box display area.
-     * <p>
-     * The selected item may not necessarily be managed by the underlying
-     * <code>ListModel</code>. This disjoint behavior allows for the temporary
-     * storage and retrieval of a selected item in the model.
+     * Constructs an <code>UndoableEditSupport</code> object.
      *
-     * @param <E> the type of the elements of this model
-     *
-     * @author Arnaud Weber
+     * @param {*} r
+     * an <code>Object</code>
      * @class
+     * @author Ray Ryan
      */
-    interface ComboBoxModel<E> extends javax.swing.ListModel<E> {
+    class UndoableEditSupport {
+        updateLevel: number;
+        compoundEdit: javax.swing.undo.CompoundEdit;
+        listeners: java.util.Vector<javax.swing.event.UndoableEditListener>;
+        realSource: any;
+        constructor(r?: any);
         /**
-         * Set the selected item. The implementation of this  method should notify
-         * all registered <code>ListDataListener</code>s that the contents
-         * have changed.
+         * Registers an <code>UndoableEditListener</code>. The listener is notified
+         * whenever an edit occurs which can be undone.
          *
-         * @param {*} anItem the list object to select or <code>null</code>
-         * to clear the selection
+         * @param {*} l
+         * an <code>UndoableEditListener</code> object
+         * @see #removeUndoableEditListener
          */
-        setSelectedItem(anItem: any): any;
+        addUndoableEditListener(l: javax.swing.event.UndoableEditListener): void;
         /**
-         * Returns the selected item
-         * @return {*} The selected item or <code>null</code> if there is no selection
-         */
-        getSelectedItem(): any;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * A model that supports at most one indexed selection.
-     *
-     * @author Dave Moore
-     * @class
-     */
-    interface SingleSelectionModel {
-        /**
-         * Returns the model's selection.
+         * Removes an <code>UndoableEditListener</code>.
          *
-         * @return  {number} the model's selection, or -1 if there is no selection
-         * @see     #setSelectedIndex
+         * @param {*} l
+         * the <code>UndoableEditListener</code> object to be removed
+         * @see #addUndoableEditListener
          */
-        getSelectedIndex(): number;
+        removeUndoableEditListener(l: javax.swing.event.UndoableEditListener): void;
         /**
-         * Sets the model's selected index to <I>index</I>.
+         * Returns an array of all the <code>UndoableEditListener</code>s added to
+         * this UndoableEditSupport with addUndoableEditListener().
          *
-         * Notifies any listeners if the model changes
-         *
-         * @param {number} index an int specifying the model selection
-         * @see   #getSelectedIndex
-         * @see   #addChangeListener
-         */
-        setSelectedIndex(index: number): any;
-        /**
-         * Clears the selection (to -1).
-         */
-        clearSelection(): any;
-        /**
-         * Returns true if the selection model currently has a selected value.
-         * @return {boolean} true if a value is currently selected
-         */
-        isSelected(): boolean;
-        /**
-         * Adds <I>listener</I> as a listener to changes in the model.
-         * @param {*} listener the ChangeListener to add
-         */
-        addChangeListener(listener: javax.swing.event.ChangeListener): any;
-        /**
-         * Removes <I>listener</I> as a listener to changes in the model.
-         * @param {*} listener the ChangeListener to remove
-         */
-        removeChangeListener(listener: javax.swing.event.ChangeListener): any;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * A MenuSelectionManager owns the selection in menu hierarchy.
-     *
-     * @author Arnaud Weber
-     * @class
-     */
-    class MenuSelectionManager {
-    }
-}
-declare namespace javax.swing {
-    class DefaultButtonModel implements javax.swing.ButtonModel, java.io.Serializable {
-        stateMask: number;
-        actionCommand: string;
-        group: javax.swing.ButtonGroup;
-        mnemonic: number;
-        changeEvent: javax.swing.event.ChangeEvent;
-        listenerList: javax.swing.event.EventListenerList;
-        menuItem: boolean;
-        constructor();
-        static ARMED: number;
-        static SELECTED: number;
-        static PRESSED: number;
-        static ENABLED: number;
-        static ROLLOVER: number;
-        setActionCommand(actionCommand: string): void;
-        getActionCommand(): string;
-        isArmed(): boolean;
-        isSelected(): boolean;
-        isEnabled(): boolean;
-        isPressed(): boolean;
-        isRollover(): boolean;
-        setArmed(b: boolean): void;
-        setEnabled(b: boolean): void;
-        setSelected(b: boolean): void;
-        setPressed(b: boolean): void;
-        setRollover(b: boolean): void;
-        setMnemonic(key: number): void;
-        getMnemonic(): number;
-        addChangeListener(l: javax.swing.event.ChangeListener): void;
-        removeChangeListener(l: javax.swing.event.ChangeListener): void;
-        getChangeListeners(): javax.swing.event.ChangeListener[];
-        fireStateChanged(): void;
-        addActionListener(l: java.awt.event.ActionListener): void;
-        removeActionListener(l: java.awt.event.ActionListener): void;
-        getActionListeners(): java.awt.event.ActionListener[];
-        fireActionPerformed(e: java.awt.event.ActionEvent): void;
-        addItemListener(l: java.awt.event.ItemListener): void;
-        removeItemListener(l: java.awt.event.ItemListener): void;
-        getItemListeners(): java.awt.event.ItemListener[];
-        fireItemStateChanged(e: java.awt.event.ItemEvent): void;
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        getSelectedObjects(): any[];
-        setGroup(group: javax.swing.ButtonGroup): void;
-        getGroup(): javax.swing.ButtonGroup;
-        isMenuItem(): boolean;
-        setMenuItem(menuItem: boolean): void;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * A package-private PropertyChangeListener which listens for property changes
-     * on an Action and updates the properties of an ActionEvent source.
-     * <p>
-     * Subclasses must override the actionPropertyChanged method, which is invoked
-     * from the propertyChange method as long as the target is still valid.
-     * </p>
-     * <p>
-     * WARNING WARNING WARNING WARNING WARNING WARNING:<br>
-     * Do NOT create an annonymous inner class that extends this! If you do a strong
-     * reference will be held to the containing class, which in most cases defeats
-     * the purpose of this class.
-     *
-     * @param T
-     * the type of JComponent the underlying Action is attached to
-     *
-     * @author Georges Saab
-     * @see AbstractButton
-     * @param {javax.swing.JComponent} c
-     * @param {*} a
-     * @class
-     */
-    abstract class ActionPropertyChangeListener<T extends javax.swing.JComponent> implements java.beans.PropertyChangeListener, java.io.Serializable {
-        target: T;
-        action: javax.swing.Action;
-        constructor(c: T, a: javax.swing.Action);
-        propertyChange(e: java.beans.PropertyChangeEvent): void;
-        abstract actionPropertyChanged(target: T, action: javax.swing.Action, e: java.beans.PropertyChangeEvent): any;
-        setTarget(c: T): void;
-        getTarget(): T;
-        getAction(): javax.swing.Action;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Any component that can be placed into a menu should implement this interface.
-     * This interface is used by <code>MenuSelectionManager</code>
-     * to handle selection and navigation in menu hierarchies.
-     *
-     * @author Arnaud Weber
-     * @class
-     */
-    interface MenuElement {
-        /**
-         * Process a key event.
-         * @param {java.awt.event.KeyEvent} event
-         * @param {javax.swing.MenuElement[]} path
-         * @param {javax.swing.MenuSelectionManager} manager
-         */
-        processKeyEvent(event: java.awt.event.KeyEvent, path: MenuElement[], manager: javax.swing.MenuSelectionManager): any;
-        /**
-         * Call by the <code>MenuSelectionManager</code> when the
-         * <code>MenuElement</code> is added or remove from
-         * the menu selection.
-         * @param {boolean} isIncluded
-         */
-        menuSelectionChanged(isIncluded: boolean): any;
-        /**
-         * This method should return an array containing the sub-elements for the receiving menu element
-         *
-         * @return {javax.swing.MenuElement[]} an array of MenuElements
-         */
-        getSubElements(): MenuElement[];
-        /**
-         * This method should return the java.awt.Component used to paint the receiving element.
-         * The returned component will be used to convert events and detect if an event is inside
-         * a MenuElement's component.
-         *
-         * @return {java.awt.Component} the Component value
-         */
-        getComponent(): java.awt.Component;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Creates an {@code Action} with the specified name and small icon.
-     *
-     * @param {string} name
-     * the name ({@code Action.NAME}) for the action; a value of
-     * {@code null} is ignored
-     * @param {*} icon
-     * the small icon ({@code Action.SMALL_ICON}) for the action; a
-     * value of {@code null} is ignored
-     * @class
-     * @author Georges Saab
-     */
-    abstract class AbstractAction implements javax.swing.Action, java.lang.Cloneable, java.io.Serializable {
-        /**
-         * Whether or not actions should reconfigure all properties on null.
-         */
-        static RECONFIGURE_ON_NULL: boolean;
-        /**
-         * Specifies whether action is enabled; the default is true.
-         */
-        enabled: boolean;
-        /**
-         * Contains the array of key bindings.
-         */
-        arrayTable: java.util.Map<string, any>;
-        /**
-         * Sets the enabled state of a component from an Action.
-         *
-         * @param {javax.swing.JComponent} c
-         * the Component to set the enabled state on
-         * @param {*} a
-         * the Action to set the enabled state from, may be null
-         */
-        static setEnabledFromAction(c: javax.swing.JComponent, a: javax.swing.Action): void;
-        /**
-         * Sets the tooltip text of a component from an Action.
-         *
-         * @param {javax.swing.JComponent} c
-         * the Component to set the tooltip text on
-         * @param {*} a
-         * the Action to set the tooltip text from, may be null
-         */
-        static setToolTipTextFromAction(c: javax.swing.JComponent, a: javax.swing.Action): void;
-        static hasSelectedKey(a: javax.swing.Action): boolean;
-        static isSelected(a: javax.swing.Action): boolean;
-        constructor(name?: any, icon?: any);
-        /**
-         * Gets the <code>Object</code> associated with the specified key.
-         *
-         * @param {string} key
-         * a string containing the specified <code>key</code>
-         * @return {*} the binding <code>Object</code> stored with this key; if there
-         * are no keys, it will return <code>null</code>
-         * @see Action#getValue
-         */
-        getValue(key: string): any;
-        /**
-         * Sets the <code>Value</code> associated with the specified key.
-         *
-         * @param {string} key
-         * the <code>String</code> that identifies the stored object
-         * @param {*} newValue
-         * the <code>Object</code> to store using this key
-         * @see Action#putValue
-         */
-        putValue(key: string, newValue: any): void;
-        /**
-         * Returns true if the action is enabled.
-         *
-         * @return {boolean} true if the action is enabled, false otherwise
-         * @see Action#isEnabled
-         */
-        isEnabled(): boolean;
-        /**
-         * Sets whether the {@code Action} is enabled. The default is {@code true}.
-         *
-         * @param {boolean} newValue
-         * {@code true} to enable the action, {@code false} to disable it
-         * @see Action#setEnabled
-         */
-        setEnabled(newValue: boolean): void;
-        /**
-         * Returns an array of <code>Object</code>s which are keys for which values
-         * have been set for this <code>AbstractAction</code>, or <code>null</code>
-         * if no keys have values set.
-         *
-         * @return {java.lang.Object[]} an array of key objects, or <code>null</code> if no keys have
-         * values set
-         * @since 1.3
-         */
-        getKeys(): any[];
-        /**
-         * If any <code>PropertyChangeListeners</code> have been registered, the
-         * <code>changeSupport</code> field describes them.
-         */
-        changeSupport: javax.swing.event.SwingPropertyChangeSupport;
-        /**
-         * Supports reporting bound property changes. This method can be called when
-         * a bound property has changed and it will send the appropriate
-         * <code>PropertyChangeEvent</code> to any registered
-         * <code>PropertyChangeListeners</code>.
-         * @param {string} propertyName
-         * @param {*} oldValue
-         * @param {*} newValue
-         */
-        firePropertyChange(propertyName: string, oldValue: any, newValue: any): void;
-        /**
-         * Adds a <code>PropertyChangeListener</code> to the listener list. The
-         * listener is registered for all properties.
-         * <p>
-         * A <code>PropertyChangeEvent</code> will get fired in response to setting
-         * a bound property, e.g. <code>setFont</code>, <code>setBackground</code>,
-         * or <code>setForeground</code>. Note that if the current component is
-         * inheriting its foreground, background, or font from its container, then
-         * no event will be fired in response to a change in the inherited property.
-         *
-         * @param {*} listener
-         * The <code>PropertyChangeListener</code> to be added
-         *
-         * @see Action#addPropertyChangeListener
-         */
-        addPropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        /**
-         * Removes a <code>PropertyChangeListener</code> from the listener list.
-         * This removes a <code>PropertyChangeListener</code> that was registered
-         * for all properties.
-         *
-         * @param {*} listener
-         * the <code>PropertyChangeListener</code> to be removed
-         *
-         * @see Action#removePropertyChangeListener
-         */
-        removePropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        /**
-         * Returns an array of all the <code>PropertyChangeListener</code>s added to
-         * this AbstractAction with addPropertyChangeListener().
-         *
-         * @return {java.beans.PropertyChangeListener[]} all of the <code>PropertyChangeListener</code>s added or an empty
+         * @return {javax.swing.event.UndoableEditListener[]} all of the <code>UndoableEditListener</code>s added or an empty
          * array if no listeners have been added
          * @since 1.4
          */
-        getPropertyChangeListeners(): java.beans.PropertyChangeListener[];
+        getUndoableEditListeners(): javax.swing.event.UndoableEditListener[];
         /**
-         * Clones the abstract action. This gives the clone its own copy of the
-         * key/value list, which is not handled for you by
-         * <code>Object.clone()</code>.
-         * @return {*}
+         * Called only from <code>postEdit</code> and <code>endUpdate</code>. Calls
+         * <code>undoableEditHappened</code> in all listeners. No synchronization is
+         * performed here, since the two calling methods are synchronized.
+         * @param {*} e
          */
-        clone(): any;
-        abstract actionPerformed(ae?: any): any;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * This interface defines the methods components like JList use
-     * to get the value of each cell in a list and the length of the list.
-     * Logically the model is a vector, indices vary from 0 to
-     * ListDataModel.getSize() - 1.  Any change to the contents or
-     * length of the data model must be reported to all of the
-     * ListDataListeners.
-     *
-     * @param <E> the type of the elements of this model
-     *
-     * @author Hans Muller
-     * @see JList
-     * @class
-     */
-    interface ListModel<E> {
+        _postEdit(e: javax.swing.undo.UndoableEdit): void;
         /**
-         * Returns the length of the list.
-         * @return {number} the length of the list
+         * DEADLOCK WARNING: Calling this method may call
+         * <code>undoableEditHappened</code> in all listeners. It is unwise to call
+         * this method from one of its listeners.
+         * @param {*} e
          */
-        getSize(): number;
+        postEdit(e: javax.swing.undo.UndoableEdit): void;
         /**
-         * Returns the value at the specified index.
-         * @param {number} index the requested index
-         * @return {*} the value at <code>index</code>
-         */
-        getElementAt(index: number): E;
-        /**
-         * Adds a listener to the list that's notified each time a change
-         * to the data model occurs.
-         * @param {*} l the <code>ListDataListener</code> to be added
-         */
-        addListDataListener(l: javax.swing.event.ListDataListener): any;
-        /**
-         * Removes a listener from the list that's notified each time a
-         * change to the data model occurs.
-         * @param {*} l the <code>ListDataListener</code> to be removed
-         */
-        removeListDataListener(l: javax.swing.event.ListDataListener): any;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Identifies components that can be used as "rubber stamps" to paint
-     * the cells in a JList.  For example, to use a JLabel as a
-     * ListCellRenderer, you would write something like this:
-     * <pre>
-     * {@code
-     * class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
-     * public MyCellRenderer() {
-     * setOpaque(true);
-     * }
-     *
-     * public Component getListCellRendererComponent(JList<?> list,
-     * Object value,
-     * int index,
-     * boolean isSelected,
-     * boolean cellHasFocus) {
-     *
-     * setText(value.toString());
-     *
-     * Color background;
-     * Color foreground;
-     *
-     * // check if this cell represents the current DnD drop location
-     * JList.DropLocation dropLocation = list.getDropLocation();
-     * if (dropLocation != null
-     * && !dropLocation.isInsert()
-     * && dropLocation.getIndex() == index) {
-     *
-     * background = Color.BLUE;
-     * foreground = Color.WHITE;
-     *
-     * // check if this cell is selected
-     * } else if (isSelected) {
-     * background = Color.RED;
-     * foreground = Color.WHITE;
-     *
-     * // unselected, and not the DnD drop location
-     * } else {
-     * background = Color.WHITE;
-     * foreground = Color.BLACK;
-     * };
-     *
-     * setBackground(background);
-     * setForeground(foreground);
-     *
-     * return this;
-     * }
-     * }
-     * }
-     * </pre>
-     *
-     * @param <E> the type of values this renderer can be used for
-     *
-     * @see JList
-     * @see DefaultListCellRenderer
-     *
-     * @author Hans Muller
-     * @class
-     */
-    interface ListCellRenderer<E> {
-        /**
-         * Return a component that has been configured to display the specified
-         * value. That component's <code>paint</code> method is then called to
-         * "render" the cell.  If it is necessary to compute the dimensions
-         * of a list because the list cells do not have a fixed size, this method
-         * is called to generate a component on which <code>getPreferredSize</code>
-         * can be invoked.
+         * Returns the update level value.
          *
-         * @param {javax.swing.JList} list The JList we're painting.
-         * @param {*} value The value returned by list.getModel().getElementAt(index).
-         * @param {number} index The cells index.
-         * @param {boolean} isSelected True if the specified cell was selected.
-         * @param {boolean} cellHasFocus True if the specified cell has the focus.
-         * @return {java.awt.Component} A component whose paint() method will render the specified value.
-         *
-         * @see JList
-         * @see ListSelectionModel
-         * @see ListModel
+         * @return {number} an integer representing the update level
          */
-        getListCellRendererComponent(list: javax.swing.JList<any>, value: E, index: number, isSelected: boolean, cellHasFocus: boolean): java.awt.Component;
+        getUpdateLevel(): number;
+        /**
+         *
+         */
+        beginUpdate(): void;
+        /**
+         * Called only from <code>beginUpdate</code>. Exposed here for subclasses'
+         * use.
+         * @return {javax.swing.undo.CompoundEdit}
+         */
+        createCompoundEdit(): javax.swing.undo.CompoundEdit;
+        /**
+         * DEADLOCK WARNING: Calling this method may call
+         * <code>undoableEditHappened</code> in all listeners. It is unwise to call
+         * this method from one of its listeners.
+         */
+        endUpdate(): void;
+        /**
+         * Returns a string that displays and identifies this object's properties.
+         *
+         * @return {string} a <code>String</code> representation of this object
+         */
+        toString(): string;
     }
 }
-declare namespace javax.swing {
-    interface Action extends java.awt.event.ActionListener {
-        getValue(key: string): any;
-        putValue(key: string, value: any): any;
-        setEnabled(b: boolean): any;
-        isEnabled(): boolean;
-        addPropertyChangeListener(listener: java.beans.PropertyChangeListener): any;
-        removePropertyChangeListener(listener: java.beans.PropertyChangeListener): any;
-    }
-    namespace Action {
-        const DEFAULT: string;
-        const NAME: string;
-        const SHORT_DESCRIPTION: string;
-        const LONG_DESCRIPTION: string;
-        const SMALL_ICON: string;
-        const ACTION_COMMAND_KEY: string;
-        const ACCELERATOR_KEY: string;
-        const MNEMONIC_KEY: string;
-        const SELECTED_KEY: string;
-        const DISPLAYED_MNEMONIC_INDEX_KEY: string;
-        const LARGE_ICON_KEY: string;
-    }
-}
-declare namespace javax.swing.text {
+declare namespace javax.swing.undo {
     /**
-     * Represents a location within a document.  It is intended to abstract away
-     * implementation details of the document and enable specification of
-     * positions within the document that are capable of tracking of change as
-     * the document is edited.
+     * Thrown when an UndoableEdit is told to <code>redo()</code> and can't.
      * <p>
-     * A {@code Position} object points at a location between two characters.
-     * As the surrounding content is altered, the {@code Position} object
-     * adjusts its offset automatically to reflect the changes. If content is
-     * inserted or removed before the {@code Position} object's location, then the
-     * {@code Position} increments or decrements its offset, respectively,
-     * so as to point to the same location. If a portion of the document is removed
-     * that contains a {@code Position}'s offset, then the {@code Position}'s
-     * offset becomes that of the beginning of the removed region. For example, if
-     * a {@code Position} has an offset of 5 and the region 2-10 is removed, then
-     * the {@code Position}'s offset becomes 2.
-     * <p>
-     * {@code Position} with an offset of 0 is a special case. It never changes its
-     * offset while document content is altered.
+     * <strong>Warning:</strong>
+     * Serialized objects of this class will not be compatible with
+     * future Swing releases. The current serialization support is
+     * appropriate for short term storage or RMI between applications running
+     * the same version of Swing.  As of 1.4, support for long term storage
+     * of all JavaBeans&trade;
+     * has been added to the <code>java.beans</code> package.
+     * Please see {@link java.beans.XMLEncoder}.
      *
-     * @author  Timothy Prinzing
+     * @author Ray Ryan
      * @class
+     * @extends java.lang.RuntimeException
      */
-    interface Position {
-        /**
-         * Fetches the current offset within the document.
-         *
-         * @return {number} the offset &gt;= 0
-         */
-        getOffset(): number;
-    }
-    namespace Position {
-        /**
-         * A typesafe enumeration to indicate bias to a position
-         * in the model.  A position indicates a location between
-         * two characters.  The bias can be used to indicate an
-         * interest toward one of the two sides of the position
-         * in boundary conditions where a simple offset is
-         * ambiguous.
-         * @class
-         */
-        class Bias {
-            /**
-             * Indicates to bias toward the next character
-             * in the model.
-             */
-            static Forward: Position.Bias;
-            static Forward_$LI$(): Position.Bias;
-            /**
-             * Indicates a bias toward the previous character
-             * in the model.
-             */
-            static Backward: Position.Bias;
-            static Backward_$LI$(): Position.Bias;
-            /**
-             * string representation
-             * @return {string}
-             */
-            toString(): string;
-            constructor(name: string);
-            name: string;
-        }
-    }
-}
-declare namespace javax.swing {
-    class ButtonGroup implements java.io.Serializable {
-        buttons: java.util.Vector<javax.swing.AbstractButton>;
-        selection: javax.swing.ButtonModel;
+    class CannotRedoException extends java.lang.RuntimeException {
         constructor();
-        add(b: javax.swing.AbstractButton): void;
-        remove(b: javax.swing.AbstractButton): void;
-        clearSelection(): void;
-        getElements(): java.util.Enumeration<javax.swing.AbstractButton>;
-        getSelection(): javax.swing.ButtonModel;
-        setSelected(m: javax.swing.ButtonModel, b: boolean): void;
-        isSelected(m: javax.swing.ButtonModel): boolean;
-        getButtonCount(): number;
     }
 }
-declare namespace javax.swing {
-    class BoxLayout implements java.awt.LayoutManager2, java.io.Serializable {
-        static X_AXIS: number;
-        static Y_AXIS: number;
-        static LINE_AXIS: number;
-        static PAGE_AXIS: number;
-        table: HTMLTableElement;
-        constructor(target: java.awt.Container, axis: number);
-        getTarget(): java.awt.Container;
-        getAxis(): number;
-        invalidateLayout(target: java.awt.Container): void;
-        addLayoutComponent$java_lang_String$java_awt_Component(name: string, comp: java.awt.Component): void;
-        addLayoutComponent(name?: any, comp?: any): any;
-        removeLayoutComponent(comp: java.awt.Component): void;
-        addLayoutComponent$java_awt_Component$java_lang_Object(comp: java.awt.Component, constraints: any): void;
-        getLayoutAlignmentX(target: java.awt.Container): number;
-        getLayoutAlignmentY(target: java.awt.Container): number;
-        /**
-         *
-         * @param {java.awt.Container} target
-         */
-        layoutContainer(target: java.awt.Container): void;
-        axis: number;
-        target: java.awt.Container;
-    }
-}
-declare namespace javax.swing.event {
+declare namespace javax.swing.undo {
     /**
-     * Defines a listener for menu events.
-     *
-     * @author Georges Saab
+     * Creates an <code>AbstractUndoableEdit</code> which defaults
+     * <code>hasBeenDone</code> and <code>alive</code> to <code>true</code>.
      * @class
+     * @author Ray Ryan
      */
-    interface MenuListener extends java.util.EventListener {
+    class AbstractUndoableEdit implements javax.swing.undo.UndoableEdit, java.io.Serializable {
         /**
-         * Invoked when a menu is selected.
+         * String returned by <code>getUndoPresentationName</code>;
+         * as of Java 2 platform v1.3.1 this field is no longer used. This value
+         * is now localized and comes from the defaults table with key
+         * <code>AbstractUndoableEdit.undoText</code>.
          *
-         * @param {javax.swing.event.MenuEvent} e  a MenuEvent object
+         * @see javax.swing.UIDefaults
          */
-        menuSelected(e: javax.swing.event.MenuEvent): any;
+        static UndoName: string;
         /**
-         * Invoked when the menu is deselected.
+         * String returned by <code>getRedoPresentationName</code>;
+         * as of Java 2 platform v1.3.1 this field is no longer used. This value
+         * is now localized and comes from the defaults table with key
+         * <code>AbstractUndoableEdit.redoText</code>.
          *
-         * @param {javax.swing.event.MenuEvent} e  a MenuEvent object
+         * @see javax.swing.UIDefaults
          */
-        menuDeselected(e: javax.swing.event.MenuEvent): any;
+        static RedoName: string;
         /**
-         * Invoked when the menu is canceled.
+         * Defaults to true; becomes false if this edit is undone, true
+         * again if it is redone.
+         */
+        hasBeenDone: boolean;
+        /**
+         * True if this edit has not received <code>die</code>; defaults
+         * to <code>true</code>.
+         */
+        alive: boolean;
+        constructor();
+        /**
+         * Sets <code>alive</code> to false. Note that this
+         * is a one way operation; dead edits cannot be resurrected.
+         * Sending <code>undo</code> or <code>redo</code> to
+         * a dead edit results in an exception being thrown.
          *
-         * @param {javax.swing.event.MenuEvent} e  a MenuEvent object
+         * <p>Typically an edit is killed when it is consolidated by
+         * another edit's <code>addEdit</code> or <code>replaceEdit</code>
+         * method, or when it is dequeued from an <code>UndoManager</code>.
          */
-        menuCanceled(e: javax.swing.event.MenuEvent): any;
-    }
-}
-declare namespace javax.swing.event {
-    /**
-     * Represents a change in selection status between {@code firstIndex} and
-     * {@code lastIndex}, inclusive. {@code firstIndex} is less than or equal to
-     * {@code lastIndex}. The selection of at least one index within the range will
-     * have changed.
-     *
-     * @param {number} firstIndex the first index in the range, &lt;= lastIndex
-     * @param {number} lastIndex the last index in the range, &gt;= firstIndex
-     * @param {boolean} isAdjusting whether or not this is one in a series of
-     * multiple events, where changes are still being made
-     * @param {*} source
-     * @class
-     * @extends java.util.EventObject
-     * @author Hans Muller
-     */
-    class ListSelectionEvent extends java.util.EventObject {
-        firstIndex: number;
-        lastIndex: number;
-        isAdjusting: boolean;
-        constructor(source: any, firstIndex: number, lastIndex: number, isAdjusting: boolean);
+        die(): void;
         /**
-         * Returns the index of the first row whose selection may have changed.
-         * {@code getFirstIndex() &lt;= getLastIndex()}
+         * Throws <code>CannotUndoException</code> if <code>canUndo</code>
+         * returns <code>false</code>. Sets <code>hasBeenDone</code>
+         * to <code>false</code>. Subclasses should override to undo the
+         * operation represented by this edit. Override should begin with
+         * a call to super.
          *
-         * @return {number} the first row whose selection value may have changed,
-         * where zero is the first row
+         * @exception CannotUndoException if <code>canUndo</code>
+         * returns <code>false</code>
+         * @see     #canUndo
          */
-        getFirstIndex(): number;
+        undo(): void;
         /**
-         * Returns the index of the last row whose selection may have changed.
-         * {@code getLastIndex() &gt;= getFirstIndex()}
+         * Returns true if this edit is <code>alive</code>
+         * and <code>hasBeenDone</code> is <code>true</code>.
          *
-         * @return {number} the last row whose selection value may have changed,
-         * where zero is the first row
-         */
-        getLastIndex(): number;
-        /**
-         * Returns whether or not this is one in a series of multiple events,
-         * where changes are still being made. See the documentation for
-         * {@link javax.swing.ListSelectionModel#setValueIsAdjusting} for
-         * more details on how this is used.
+         * @return {boolean} true if this edit is <code>alive</code>
+         * and <code>hasBeenDone</code> is <code>true</code>
          *
-         * @return {boolean} {@code true} if this is one in a series of multiple events,
-         * where changes are still being made
+         * @see     #die
+         * @see     #undo
+         * @see     #redo
          */
-        getValueIsAdjusting(): boolean;
+        canUndo(): boolean;
         /**
-         * Returns a {@code String} that displays and identifies this
+         * Throws <code>CannotRedoException</code> if <code>canRedo</code>
+         * returns false. Sets <code>hasBeenDone</code> to <code>true</code>.
+         * Subclasses should override to redo the operation represented by
+         * this edit. Override should begin with a call to super.
+         *
+         * @exception CannotRedoException if <code>canRedo</code>
+         * returns <code>false</code>
+         * @see     #canRedo
+         */
+        redo(): void;
+        /**
+         * Returns <code>true</code> if this edit is <code>alive</code>
+         * and <code>hasBeenDone</code> is <code>false</code>.
+         *
+         * @return {boolean} <code>true</code> if this edit is <code>alive</code>
+         * and <code>hasBeenDone</code> is <code>false</code>
+         * @see     #die
+         * @see     #undo
+         * @see     #redo
+         */
+        canRedo(): boolean;
+        /**
+         * This default implementation returns false.
+         *
+         * @param {*} anEdit the edit to be added
+         * @return {boolean} false
+         *
+         * @see UndoableEdit#addEdit
+         */
+        addEdit(anEdit: javax.swing.undo.UndoableEdit): boolean;
+        /**
+         * This default implementation returns false.
+         *
+         * @param {*} anEdit the edit to replace
+         * @return {boolean} false
+         *
+         * @see UndoableEdit#replaceEdit
+         */
+        replaceEdit(anEdit: javax.swing.undo.UndoableEdit): boolean;
+        /**
+         * This default implementation returns true.
+         *
+         * @return {boolean} true
+         * @see UndoableEdit#isSignificant
+         */
+        isSignificant(): boolean;
+        /**
+         * This default implementation returns "". Used by
+         * <code>getUndoPresentationName</code> and
+         * <code>getRedoPresentationName</code> to
+         * construct the strings they return. Subclasses should override to
+         * return an appropriate description of the operation this edit
+         * represents.
+         *
+         * @return {string} the empty string ""
+         *
+         * @see     #getUndoPresentationName
+         * @see     #getRedoPresentationName
+         */
+        getPresentationName(): string;
+        /**
+         * Retreives the value from the defaults table with key
+         * <code>AbstractUndoableEdit.undoText</code> and returns
+         * that value followed by a space, followed by
+         * <code>getPresentationName</code>.
+         * If <code>getPresentationName</code> returns "",
+         * then the defaults value is returned alone.
+         *
+         * @return {string} the value from the defaults table with key
+         * <code>AbstractUndoableEdit.undoText</code>, followed
+         * by a space, followed by <code>getPresentationName</code>
+         * unless <code>getPresentationName</code> is "" in which
+         * case, the defaults value is returned alone.
+         * @see #getPresentationName
+         */
+        getUndoPresentationName(): string;
+        /**
+         * Retreives the value from the defaults table with key
+         * <code>AbstractUndoableEdit.redoText</code> and returns
+         * that value followed by a space, followed by
+         * <code>getPresentationName</code>.
+         * If <code>getPresentationName</code> returns "",
+         * then the defaults value is returned alone.
+         *
+         * @return {string} the value from the defaults table with key
+         * <code>AbstractUndoableEdit.redoText</code>, followed
+         * by a space, followed by <code>getPresentationName</code>
+         * unless <code>getPresentationName</code> is "" in which
+         * case, the defaults value is returned alone.
+         * @see #getPresentationName
+         */
+        getRedoPresentationName(): string;
+        /**
+         * Returns a string that displays and identifies this
          * object's properties.
          *
          * @return {string} a String representation of this object
@@ -11579,201 +11561,219 @@ declare namespace javax.swing.event {
         toString(): string;
     }
 }
-declare namespace javax.swing.event {
+declare namespace javax.swing.undo {
     /**
-     * The listener that's notified when a lists selection value
-     * changes.
-     *
-     * @see javax.swing.ListSelectionModel
-     *
-     * @author Hans Muller
-     * @class
-     */
-    interface ListSelectionListener extends java.util.EventListener {
-        /**
-         * Called whenever the value of the selection changes.
-         * @param {javax.swing.event.ListSelectionEvent} e the event that characterizes the change.
-         */
-        valueChanged(e: javax.swing.event.ListSelectionEvent): any;
-    }
-}
-declare namespace javax.swing.event {
-    /**
-     * Interface implemented by a class interested in hearing about
-     * undoable operations.
+     * An <code>UndoableEdit</code> represents an edit.  The edit may
+     * be undone, or if already undone the edit may be redone.
+     * <p>
+     * <code>UndoableEdit</code> is designed to be used with the
+     * <code>UndoManager</code>.  As <code>UndoableEdit</code>s are generated
+     * by an <code>UndoableEditListener</code> they are typically added to
+     * the <code>UndoManager</code>.  When an <code>UndoableEdit</code>
+     * is added to an <code>UndoManager</code> the following occurs (assuming
+     * <code>end</code> has not been called on the <code>UndoManager</code>):
+     * <ol>
+     * <li>If the <code>UndoManager</code> contains edits it will call
+     * <code>addEdit</code> on the current edit passing in the new edit
+     * as the argument.  If <code>addEdit</code> returns true the
+     * new edit is assumed to have been incorporated into the current edit and
+     * the new edit will not be added to the list of current edits.
+     * Edits can use <code>addEdit</code> as a way for smaller edits to
+     * be incorporated into a larger edit and treated as a single edit.
+     * <li>If <code>addEdit</code> returns false <code>replaceEdit</code>
+     * is called on the new edit with the current edit passed in as the
+     * argument. This is the inverse of <code>addEdit</code> &#151;
+     * if the new edit returns true from <code>replaceEdit</code>, the new
+     * edit replaces the current edit.
+     * </ol>
+     * The <code>UndoManager</code> makes use of
+     * <code>isSignificant</code> to determine how many edits should be
+     * undone or redone.  The <code>UndoManager</code> will undo or redo
+     * all insignificant edits (<code>isSignificant</code> returns false)
+     * between the current edit and the last or
+     * next significant edit.   <code>addEdit</code> and
+     * <code>replaceEdit</code> can be used to treat multiple edits as
+     * a single edit, returning false from <code>isSignificant</code>
+     * allows for treating can be used to
+     * have many smaller edits undone or redone at once.  Similar functionality
+     * can also be done using the <code>addEdit</code> method.
      *
      * @author Ray Ryan
      * @class
      */
-    interface UndoableEditListener extends java.util.EventListener {
+    interface UndoableEdit {
         /**
-         * An undoable edit happened
-         * @param {javax.swing.event.UndoableEditEvent} e
+         * Undo the edit.
+         *
+         * @throws CannotUndoException if this edit can not be undone
          */
-        undoableEditHappened(e: javax.swing.event.UndoableEditEvent): any;
+        undo(): any;
+        /**
+         * Returns true if this edit may be undone.
+         *
+         * @return {boolean} true if this edit may be undone
+         */
+        canUndo(): boolean;
+        /**
+         * Re-applies the edit.
+         *
+         * @throws CannotRedoException if this edit can not be redone
+         */
+        redo(): any;
+        /**
+         * Returns true if this edit may be redone.
+         *
+         * @return {boolean} true if this edit may be redone
+         */
+        canRedo(): boolean;
+        /**
+         * Informs the edit that it should no longer be used. Once an
+         * <code>UndoableEdit</code> has been marked as dead it can no longer
+         * be undone or redone.
+         * <p>
+         * This is a useful hook for cleaning up state no longer
+         * needed once undoing or redoing is impossible--for example,
+         * deleting file resources used by objects that can no longer be
+         * undeleted. <code>UndoManager</code> calls this before it dequeues edits.
+         * <p>
+         * Note that this is a one-way operation. There is no "un-die"
+         * method.
+         *
+         * @see CompoundEdit#die
+         */
+        die(): any;
+        /**
+         * Adds an <code>UndoableEdit</code> to this <code>UndoableEdit</code>.
+         * This method can be used to coalesce smaller edits into a larger
+         * compound edit.  For example, text editors typically allow
+         * undo operations to apply to words or sentences.  The text
+         * editor may choose to generate edits on each key event, but allow
+         * those edits to be coalesced into a more user-friendly unit, such as
+         * a word. In this case, the <code>UndoableEdit</code> would
+         * override <code>addEdit</code> to return true when the edits may
+         * be coalesced.
+         * <p>
+         * A return value of true indicates <code>anEdit</code> was incorporated
+         * into this edit.  A return value of false indicates <code>anEdit</code>
+         * may not be incorporated into this edit.
+         * <p>Typically the receiver is already in the queue of a
+         * <code>UndoManager</code> (or other <code>UndoableEditListener</code>),
+         * and is being given a chance to incorporate <code>anEdit</code>
+         * rather than letting it be added to the queue in turn.</p>
+         *
+         * <p>If true is returned, from now on <code>anEdit</code> must return
+         * false from <code>canUndo</code> and <code>canRedo</code>,
+         * and must throw the appropriate exception on <code>undo</code> or
+         * <code>redo</code>.</p>
+         *
+         * @param {*} anEdit the edit to be added
+         * @return {boolean} true if <code>anEdit</code> may be incorporated into this
+         * edit
+         */
+        addEdit(anEdit: UndoableEdit): boolean;
+        /**
+         * Returns true if this <code>UndoableEdit</code> should replace
+         * <code>anEdit</code>. This method is used by <code>CompoundEdit</code>
+         * and the <code>UndoManager</code>; it is called if
+         * <code>anEdit</code> could not be added to the current edit
+         * (<code>addEdit</code> returns false).
+         * <p>
+         * This method provides a way for an edit to replace an existing edit.
+         * <p>This message is the opposite of addEdit--anEdit has typically
+         * already been queued in an <code>UndoManager</code> (or other
+         * UndoableEditListener), and the receiver is being given a chance
+         * to take its place.</p>
+         *
+         * <p>If true is returned, from now on anEdit must return false from
+         * canUndo() and canRedo(), and must throw the appropriate
+         * exception on undo() or redo().</p>
+         *
+         * @param {*} anEdit the edit that replaces the current edit
+         * @return {boolean} true if this edit should replace <code>anEdit</code>
+         */
+        replaceEdit(anEdit: UndoableEdit): boolean;
+        /**
+         * Returns true if this edit is considered significant.  A significant
+         * edit is typically an edit that should be presented to the user, perhaps
+         * on a menu item or tooltip.  The <code>UndoManager</code> will undo,
+         * or redo, all insignificant edits to the next significant edit.
+         *
+         * @return {boolean} true if this edit is significant
+         */
+        isSignificant(): boolean;
+        /**
+         * Returns a localized, human-readable description of this edit, suitable
+         * for use in a change log, for example.
+         *
+         * @return {string} description of this edit
+         */
+        getPresentationName(): string;
+        /**
+         * Returns a localized, human-readable description of the undoable form of
+         * this edit, suitable for use as an Undo menu item, for example.
+         * This is typically derived from <code>getPresentationName</code>.
+         *
+         * @return {string} a description of the undoable form of this edit
+         */
+        getUndoPresentationName(): string;
+        /**
+         * Returns a localized, human-readable description of the redoable form of
+         * this edit, suitable for use as a Redo menu item, for example. This is
+         * typically derived from <code>getPresentationName</code>.
+         *
+         * @return {string} a description of the redoable form of this edit
+         */
+        getRedoPresentationName(): string;
     }
 }
-declare namespace javax.swing.event {
+declare namespace javax.swing.undo {
     /**
-     * A popup menu listener
+     * Thrown when an UndoableEdit is told to <code>undo()</code> and can't.
+     * <p>
+     * <strong>Warning:</strong>
+     * Serialized objects of this class will not be compatible with
+     * future Swing releases. The current serialization support is
+     * appropriate for short term storage or RMI between applications running
+     * the same version of Swing.  As of 1.4, support for long term storage
+     * of all JavaBeans&trade;
+     * has been added to the <code>java.beans</code> package.
+     * Please see {@link java.beans.XMLEncoder}.
      *
-     * @author Arnaud Weber
+     * @author Ray Ryan
      * @class
+     * @extends java.lang.RuntimeException
      */
-    interface PopupMenuListener extends java.util.EventListener {
-        /**
-         * This method is called before the popup menu becomes visible
-         * @param {javax.swing.event.PopupMenuEvent} e
-         */
-        popupMenuWillBecomeVisible(e: javax.swing.event.PopupMenuEvent): any;
-        /**
-         * This method is called before the popup menu becomes invisible
-         * Note that a JPopupMenu can become invisible any time
-         * @param {javax.swing.event.PopupMenuEvent} e
-         */
-        popupMenuWillBecomeInvisible(e: javax.swing.event.PopupMenuEvent): any;
-        /**
-         * This method is called when the popup menu is canceled
-         * @param {javax.swing.event.PopupMenuEvent} e
-         */
-        popupMenuCanceled(e: javax.swing.event.PopupMenuEvent): any;
-    }
-}
-declare namespace javax.swing.event {
-    /**
-     * Constructs a MenuEvent object.
-     *
-     * @param {*} source  the Object that originated the event
-     * (typically <code>this</code>)
-     * @class
-     * @extends java.util.EventObject
-     * @author Georges Saab
-     */
-    class MenuEvent extends java.util.EventObject {
-        constructor(source: any);
-    }
-}
-declare namespace javax.swing.event {
-    class ListDataEvent extends java.util.EventObject {
-        static CONTENTS_CHANGED: number;
-        static INTERVAL_ADDED: number;
-        static INTERVAL_REMOVED: number;
-        type: number;
-        index0: number;
-        index1: number;
-        getType(): number;
-        getIndex0(): number;
-        getIndex1(): number;
-        constructor(source: any, type: number, index0: number, index1: number);
-        toString(): string;
-    }
-}
-declare namespace javax.swing.event {
-    interface MouseInputListener extends java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-    }
-}
-declare namespace javax.swing.event {
-    interface ListDataListener extends java.util.EventListener {
-        intervalAdded(e: javax.swing.event.ListDataEvent): any;
-        intervalRemoved(e: javax.swing.event.ListDataEvent): any;
-        contentsChanged(e: javax.swing.event.ListDataEvent): any;
-    }
-}
-declare namespace javax.swing.event {
-    class EventListenerList implements java.io.Serializable {
-        static NULL_ARRAY: any[];
-        static NULL_ARRAY_$LI$(): any[];
-        listenerList: any[];
-        getListenerList(): any[];
-        getListeners$java_lang_Class<T extends java.util.EventListener>(t: any): T[];
-        getListeners<T0 = any>(t?: any): any;
-        getListeners$java_lang_String<T extends java.util.EventListener>(t: string): T[];
-        getListenerCount$(): number;
-        getListenerCount$java_lang_Class(t: any): number;
-        getListenerCount$java_lang_String(t: string): number;
-        getListenerCount$java_lang_Object_A$java_lang_Class(list: any[], t: any): number;
-        getListenerCount(list?: any, t?: any): number;
-        getListenerCount$java_lang_Object_A$java_lang_String(list: any[], t: string): number;
-        add<T extends java.util.EventListener>(t: any, l: T): void;
-        remove<T extends java.util.EventListener>(t: any, l: T): void;
-        /**
-         * Returns a string representation of the EventListenerList.
-         * @return {string}
-         */
-        toString(): string;
+    class CannotUndoException extends java.lang.RuntimeException {
         constructor();
     }
 }
-declare namespace javax.swing.event {
+declare namespace javax.swing.undo {
     /**
-     * Constructs a PopupMenuEvent object.
+     * StateEditable defines the interface for objects that can have
+     * their state undone/redone by a StateEdit.
      *
-     * @param {*} source  the Object that originated the event
-     * (typically <code>this</code>)
-     * @class
-     * @extends java.util.EventObject
-     * @author Arnaud Weber
-     */
-    class PopupMenuEvent extends java.util.EventObject {
-        constructor(source: any);
-    }
-}
-declare namespace javax.swing.event {
-    interface ChangeListener extends java.util.EventListener {
-        stateChanged(e: javax.swing.event.ChangeEvent): any;
-    }
-}
-declare namespace javax.swing.event {
-    class ChangeEvent extends java.util.EventObject {
-        constructor(source: any);
-    }
-}
-declare namespace javax.swing.event {
-    /**
-     * MenuKeyListener
-     *
-     * @author Georges Saab
+     * @see StateEdit
      * @class
      */
-    interface MenuKeyListener extends java.util.EventListener {
+    interface StateEditable {
         /**
-         * Invoked when a key has been typed.
-         * This event occurs when a key press is followed by a key release.
-         * @param {javax.swing.event.MenuKeyEvent} e
+         * Upon receiving this message the receiver should place any relevant
+         * state into <EM>state</EM>.
+         * @param {java.util.Hashtable} state
          */
-        menuKeyTyped(e: javax.swing.event.MenuKeyEvent): any;
+        storeState(state: java.util.Hashtable<any, any>): any;
         /**
-         * Invoked when a key has been pressed.
-         * @param {javax.swing.event.MenuKeyEvent} e
+         * Upon receiving this message the receiver should extract any relevant
+         * state out of <EM>state</EM>.
+         * @param {java.util.Hashtable} state
          */
-        menuKeyPressed(e: javax.swing.event.MenuKeyEvent): any;
-        /**
-         * Invoked when a key has been released.
-         * @param {javax.swing.event.MenuKeyEvent} e
-         */
-        menuKeyReleased(e: javax.swing.event.MenuKeyEvent): any;
+        restoreState(state: java.util.Hashtable<any, any>): any;
     }
-}
-declare namespace javax.swing.event {
-    /**
-     * Constructs an UndoableEditEvent object.
-     *
-     * @param {*} source  the Object that originated the event
-     * (typically <code>this</code>)
-     * @param {*} edit    an UndoableEdit object
-     * @class
-     * @extends java.util.EventObject
-     * @author Ray Ryan
-     */
-    class UndoableEditEvent extends java.util.EventObject {
-        myEdit: javax.swing.undo.UndoableEdit;
-        constructor(source: any, edit: javax.swing.undo.UndoableEdit);
+    namespace StateEditable {
         /**
-         * Returns the edit value.
-         *
-         * @return {*} the UndoableEdit object encapsulating the edit
+         * Resource ID for this class.
          */
-        getEdit(): javax.swing.undo.UndoableEdit;
+        const RCSID: string;
     }
 }
 declare namespace javax.imageio {
@@ -11781,263 +11781,9 @@ declare namespace javax.imageio {
         static read(input: java.io.File): java.awt.image.BufferedImage;
     }
 }
-declare namespace sun.awt.geom {
-    class Order2 extends sun.awt.geom.Curve {
-        x0: number;
-        y0: number;
-        cx0: number;
-        cy0: number;
-        x1: number;
-        y1: number;
-        xmin: number;
-        xmax: number;
-        xcoeff0: number;
-        xcoeff1: number;
-        xcoeff2: number;
-        ycoeff0: number;
-        ycoeff1: number;
-        ycoeff2: number;
-        static insert(curves: java.util.Vector<any>, tmp: number[], x0: number, y0: number, cx0: number, cy0: number, x1: number, y1: number, direction: number): void;
-        static addInstance(curves: java.util.Vector<any>, x0: number, y0: number, cx0: number, cy0: number, x1: number, y1: number, direction: number): void;
-        static getHorizontalParams(c0: number, cp: number, c1: number, ret: number[]): number;
-        static split(coords: number[], pos: number, t: number): void;
-        constructor(x0: number, y0: number, cx0: number, cy0: number, x1: number, y1: number, direction: number);
-        getOrder(): number;
-        getXTop(): number;
-        getYTop(): number;
-        getXBot(): number;
-        getYBot(): number;
-        getXMin(): number;
-        getXMax(): number;
-        getX0(): number;
-        getY0(): number;
-        getCX0(): number;
-        getCY0(): number;
-        getX1(): number;
-        getY1(): number;
-        XforY(y: number): number;
-        TforY(y: number): number;
-        static TforY(y: number, ycoeff0: number, ycoeff1: number, ycoeff2: number): number;
-        XforT(t: number): number;
-        YforT(t: number): number;
-        dXforT(t: number, deriv: number): number;
-        dYforT(t: number, deriv: number): number;
-        nextVertical(t0: number, t1: number): number;
-        enlarge(r: java.awt.geom.Rectangle2D): void;
-        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
-        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
-        getReversedCurve(): sun.awt.geom.Curve;
-        getSegment(coords: number[]): number;
-        controlPointString(): string;
-    }
-}
-declare namespace sun.awt.geom {
-    class Order3 extends sun.awt.geom.Curve {
-        x0: number;
-        y0: number;
-        cx0: number;
-        cy0: number;
-        cx1: number;
-        cy1: number;
-        x1: number;
-        y1: number;
-        xmin: number;
-        xmax: number;
-        xcoeff0: number;
-        xcoeff1: number;
-        xcoeff2: number;
-        xcoeff3: number;
-        ycoeff0: number;
-        ycoeff1: number;
-        ycoeff2: number;
-        ycoeff3: number;
-        static insert(curves: java.util.Vector<any>, tmp: number[], x0: number, y0: number, cx0: number, cy0: number, cx1: number, cy1: number, x1: number, y1: number, direction: number): void;
-        static addInstance(curves: java.util.Vector<any>, x0: number, y0: number, cx0: number, cy0: number, cx1: number, cy1: number, x1: number, y1: number, direction: number): void;
-        static getHorizontalParams(c0: number, cp0: number, cp1: number, c1: number, ret: number[]): number;
-        static split(coords: number[], pos: number, t: number): void;
-        constructor(x0: number, y0: number, cx0: number, cy0: number, cx1: number, cy1: number, x1: number, y1: number, direction: number);
-        getOrder(): number;
-        getXTop(): number;
-        getYTop(): number;
-        getXBot(): number;
-        getYBot(): number;
-        getXMin(): number;
-        getXMax(): number;
-        getX0(): number;
-        getY0(): number;
-        getCX0(): number;
-        getCY0(): number;
-        getCX1(): number;
-        getCY1(): number;
-        getX1(): number;
-        getY1(): number;
-        TforY1: number;
-        YforT1: number;
-        TforY2: number;
-        YforT2: number;
-        TforY3: number;
-        YforT3: number;
-        TforY(y: number): number;
-        refine(a: number, b: number, c: number, target: number, t: number): number;
-        XforY(y: number): number;
-        XforT(t: number): number;
-        YforT(t: number): number;
-        dXforT(t: number, deriv: number): number;
-        dYforT(t: number, deriv: number): number;
-        nextVertical(t0: number, t1: number): number;
-        enlarge(r: java.awt.geom.Rectangle2D): void;
-        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
-        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
-        getReversedCurve(): sun.awt.geom.Curve;
-        getSegment(coords: number[]): number;
-        controlPointString(): string;
-    }
-}
-declare namespace sun.awt.geom {
-    class Order0 extends sun.awt.geom.Curve {
-        x: number;
-        y: number;
-        constructor(x: number, y: number);
-        getOrder(): number;
-        getXTop(): number;
-        getYTop(): number;
-        getXBot(): number;
-        getYBot(): number;
-        getXMin(): number;
-        getXMax(): number;
-        getX0(): number;
-        getY0(): number;
-        getX1(): number;
-        getY1(): number;
-        XforY(y: number): number;
-        TforY(y: number): number;
-        XforT(t: number): number;
-        YforT(t: number): number;
-        dXforT(t: number, deriv: number): number;
-        dYforT(t: number, deriv: number): number;
-        nextVertical(t0: number, t1: number): number;
-        crossingsFor(x: number, y: number): number;
-        accumulateCrossings(c: sun.awt.geom.Crossings): boolean;
-        enlarge(r: java.awt.geom.Rectangle2D): void;
-        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
-        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
-        getReversedCurve(): sun.awt.geom.Curve;
-        getSegment(coords: number[]): number;
-    }
-}
-declare namespace sun.awt.geom {
-    class Order1 extends sun.awt.geom.Curve {
-        x0: number;
-        y0: number;
-        x1: number;
-        y1: number;
-        xmin: number;
-        xmax: number;
-        constructor(x0: number, y0: number, x1: number, y1: number, direction: number);
-        getOrder(): number;
-        getXTop(): number;
-        getYTop(): number;
-        getXBot(): number;
-        getYBot(): number;
-        getXMin(): number;
-        getXMax(): number;
-        getX0(): number;
-        getY0(): number;
-        getX1(): number;
-        getY1(): number;
-        XforY(y: number): number;
-        TforY(y: number): number;
-        XforT(t: number): number;
-        YforT(t: number): number;
-        dXforT(t: number, deriv: number): number;
-        dYforT(t: number, deriv: number): number;
-        nextVertical(t0: number, t1: number): number;
-        accumulateCrossings(c: sun.awt.geom.Crossings): boolean;
-        enlarge(r: java.awt.geom.Rectangle2D): void;
-        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
-        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
-        getReversedCurve(): sun.awt.geom.Curve;
-        compareTo(other: sun.awt.geom.Curve, yrange: number[]): number;
-        getSegment(coords: number[]): number;
-    }
-}
-declare namespace java.beans {
-    /**
-     * Constructs a new <code>IndexedPropertyChangeEvent</code> object.
-     *
-     * @param {*} source  The bean that fired the event.
-     * @param {string} propertyName  The programmatic name of the property that
-     * was changed.
-     * @param {*} oldValue      The old value of the property.
-     * @param {*} newValue      The new value of the property.
-     * @param {number} index index of the property element that was changed.
-     * @class
-     * @extends java.beans.PropertyChangeEvent
-     * @author Mark Davidson
-     */
-    class IndexedPropertyChangeEvent extends java.beans.PropertyChangeEvent {
-        static serialVersionUID: number;
-        index: number;
-        constructor(source: any, propertyName: string, oldValue: any, newValue: any, index: number);
-        /**
-         * Gets the index of the property that was changed.
-         *
-         * @return {number} The index specifying the property element that was
-         * changed.
-         */
-        getIndex(): number;
-        appendTo(sb: java.lang.StringBuilder): void;
-    }
-}
-declare namespace java.beans {
-    class PropertyChangeSupport implements java.io.Serializable {
-        map: PropertyChangeSupport.PropertyChangeListenerMap;
-        constructor(sourceBean: any);
-        addPropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        removePropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        getPropertyChangeListeners$(): java.beans.PropertyChangeListener[];
-        addPropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
-        addPropertyChangeListener(propertyName?: any, listener?: any): any;
-        removePropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
-        removePropertyChangeListener(propertyName?: any, listener?: any): any;
-        getPropertyChangeListeners$java_lang_String(propertyName: string): java.beans.PropertyChangeListener[];
-        getPropertyChangeListeners(propertyName?: any): java.beans.PropertyChangeListener[];
-        firePropertyChange$java_lang_String$java_lang_Object$java_lang_Object(propertyName: string, oldValue: any, newValue: any): void;
-        firePropertyChange$java_lang_String$int$int(propertyName: string, oldValue: number, newValue: number): void;
-        firePropertyChange(propertyName?: any, oldValue?: any, newValue?: any): any;
-        firePropertyChange$java_lang_String$boolean$boolean(propertyName: string, oldValue: boolean, newValue: boolean): void;
-        firePropertyChange$java_beans_PropertyChangeEvent(event: java.beans.PropertyChangeEvent): void;
-        static fire(listeners: java.beans.PropertyChangeListener[], event: java.beans.PropertyChangeEvent): void;
-        fireIndexedPropertyChange$java_lang_String$int$java_lang_Object$java_lang_Object(propertyName: string, index: number, oldValue: any, newValue: any): void;
-        fireIndexedPropertyChange$java_lang_String$int$int$int(propertyName: string, index: number, oldValue: number, newValue: number): void;
-        fireIndexedPropertyChange(propertyName?: any, index?: any, oldValue?: any, newValue?: any): any;
-        fireIndexedPropertyChange$java_lang_String$int$boolean$boolean(propertyName: string, index: number, oldValue: boolean, newValue: boolean): void;
-        hasListeners(propertyName: string): boolean;
-        source: any;
-        static serialVersionUID: number;
-    }
-    namespace PropertyChangeSupport {
-        class PropertyChangeListenerMap extends java.beans.ChangeListenerMap<java.beans.PropertyChangeListener> {
-            static EMPTY: java.beans.PropertyChangeListener[];
-            static EMPTY_$LI$(): java.beans.PropertyChangeListener[];
-            /**
-             *
-             * @param {number} length
-             * @return {java.beans.PropertyChangeListener[]}
-             */
-            newArray(length: number): java.beans.PropertyChangeListener[];
-            newProxy$java_lang_String$java_beans_PropertyChangeListener(name: string, listener: java.beans.PropertyChangeListener): java.beans.PropertyChangeListener;
-            /**
-             *
-             * @param {string} name
-             * @param {*} listener
-             * @return {*}
-             */
-            newProxy(name?: any, listener?: any): any;
-            extract$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): java.beans.PropertyChangeListener;
-            extract(listener?: any): any;
-            constructor();
-        }
+declare namespace java.awt {
+    class RenderedImage extends java.awt.Image {
+        constructor(src: string);
     }
 }
 declare namespace java.awt.image {
@@ -12050,481 +11796,101 @@ declare namespace java.awt.image {
     }
 }
 declare namespace java.awt {
-    class RenderedImage extends java.awt.Image {
-        constructor(src: string);
-    }
-}
-declare namespace java.awt {
-    class Label extends java.awt.Component {
-        static LEFT: number;
-        static CENTER: number;
-        static RIGHT: number;
-        text: string;
-        alignment: number;
-        static base: string;
-        static nameCounter: number;
-        static serialVersionUID: number;
-        constructor(text?: any, alignment?: any);
-        /**
-         * Construct a name for this component. Called by getName() when the name is
-         * <code>null</code>.
-         * @return {string}
-         */
-        constructComponentName(): string;
-        getAlignment(): number;
-        setAlignment(alignment: number): void;
-        getText(): string;
-        setText(text: string): void;
-        paramString(): string;
-        /**
-         *
-         * @return {HTMLLabelElement}
-         */
-        getHTMLElement(): HTMLLabelElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-    }
-}
-declare namespace java.awt {
-    class Choice extends java.awt.Component implements java.awt.ItemSelectable {
-        pItems: java.util.Vector<string>;
-        selectedIndex: number;
-        itemListeners: Array<java.awt.event.ItemListener>;
-        static base: string;
-        static nameCounter: number;
-        static serialVersionUID: number;
-        constructor();
-        createHTML(): void;
-        getHTMLElement(): HTMLSelectElement;
-        initHTML(): void;
-        constructComponentName(): string;
-        getItemCount(): number;
-        countItems(): number;
-        getItem(index: number): string;
-        getItemImpl(index: number): string;
-        add(item: string): void;
-        addItem(item: string): void;
-        insertNoInvalidate(item: string, index: number): void;
-        insert(item: string, index: number): void;
-        remove$java_lang_String(item: string): void;
-        remove(item?: any): any;
-        remove$int(position: number): void;
-        removeNoInvalidate(position: number): void;
-        removeAll(): void;
-        getSelectedItem(): string;
-        getSelectedObjects(): any[];
-        getSelectedIndex(): number;
-        select$int(pos: number): void;
-        select$java_lang_String(str: string): void;
-        select(str?: any): any;
-        addItemListener(l: java.awt.event.ItemListener): void;
-        removeItemListener(l: java.awt.event.ItemListener): void;
-        getItemListeners(): java.awt.event.ItemListener[];
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        processItemEvent(e: java.awt.event.ItemEvent): void;
-        paramString(): string;
-    }
-}
-declare namespace java.awt {
-    class Button extends java.awt.Component {
-        actionListener: java.awt.event.ActionListener;
-        actionCommand: string;
-        label: string;
-        background: java.awt.Color;
-        constructor(label: string);
-        /**
-         *
-         * @return {HTMLButtonElement}
-         */
-        getHTMLElement(): HTMLButtonElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        initActionListener(): void;
-        addActionListener(actionListener: java.awt.event.ActionListener): void;
-        setBackground(background: java.awt.Color): void;
-    }
-}
-declare namespace java.awt {
-    class Checkbox extends java.awt.Component implements java.awt.ItemSelectable {
-        label: string;
-        state: boolean;
-        group: java.awt.CheckboxGroup;
-        itemListeners: Array<java.awt.event.ItemListener>;
-        htmlCheckbox: HTMLInputElement;
-        htmlLabel: Text;
-        static base: string;
-        static nameCounter: number;
-        static serialVersionUID: number;
-        constructor(label?: any, group?: any, state?: any);
-        /**
-         *
-         * @return {HTMLLabelElement}
-         */
-        getHTMLElement(): HTMLLabelElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        constructComponentName(): string;
-        getLabel(): string;
-        setLabel(label: string): void;
-        getState(): boolean;
-        setStateInternal(state: boolean): void;
-        setState(state: boolean): void;
-        getSelectedObjects(): any[];
-        getCheckboxGroup(): java.awt.CheckboxGroup;
-        setCheckboxGroup(g: java.awt.CheckboxGroup): void;
-        addItemListener(l: java.awt.event.ItemListener): void;
-        removeItemListener(l: java.awt.event.ItemListener): void;
-        getItemListeners(): java.awt.event.ItemListener[];
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        processItemEvent(e: java.awt.event.ItemEvent): void;
-        paramString(): string;
-    }
-}
-declare namespace java.awt {
-    abstract class Container extends java.awt.Component {
-        layoutMgr: java.awt.LayoutManager;
-        components: java.awt.Component[];
-        insets: java.awt.Insets;
-        getLayout(): java.awt.LayoutManager;
-        setLayout(mgr: java.awt.LayoutManager): void;
-        doLayout(): void;
-        layout(): void;
-        add$java_awt_Component(component: java.awt.Component): java.awt.Component;
-        add$java_awt_Component$int(c: java.awt.Component, index: number): java.awt.Component;
-        add$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): java.awt.Component;
-        add$java_awt_Component$java_lang_Object(component: java.awt.Component, constraints: any): void;
-        add$java_awt_Component$java_lang_Object$int(component: java.awt.Component, constraints: any, index: number): void;
-        add(component?: any, constraints?: any, index?: any): any;
-        addImpl(component: java.awt.Component, constraints: any, index: number): void;
-        /**
-         *
-         */
-        doPaintInternal(): void;
-        getComponentCount(): number;
-        remove$int(index: number): void;
-        getComponent(n: number): java.awt.Component;
-        getComponents(): java.awt.Component[];
-        removeAll(): void;
-        remove$java_awt_Component(comp: java.awt.Component): void;
-        remove(comp?: any): any;
-        getInsets(): java.awt.Insets;
-        setInsets(insets: java.awt.Insets): void;
-        setComponentZOrder(component: java.awt.Component, zOrder: number): void;
-        constructor();
-    }
-}
-declare namespace java.awt {
-    class TextField extends java.awt.Component {
-        actionListener: java.awt.event.ActionListener;
-        constructor(cols: number);
-        /**
-         *
-         * @return {HTMLInputElement}
-         */
-        getHTMLElement(): HTMLInputElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        initActionListener(): void;
-        addActionListener(actionListener: java.awt.event.ActionListener): void;
-        setText(text: string): void;
-        getText(): string;
-    }
-}
-declare namespace java.awt.event {
     /**
-     * Constructs a <code>TextEvent</code> object.
-     * <p> This method throws an
-     * <code>IllegalArgumentException</code> if <code>source</code>
-     * is <code>null</code>.
+     * Constructs a <code>Dimension</code> and initializes
+     * it to the specified width and specified height.
      *
-     * @param {*} source The (<code>TextComponent</code>) object that
-     * originated the event
-     * @param {number} id     An integer that identifies the event type.
-     * For information on allowable values, see
-     * the class description for {@link TextEvent}
-     * @throws IllegalArgumentException if <code>source</code> is null
-     * @see #getSource()
-     * @see #getID()
+     * @param {number} width the specified width
+     * @param {number} height the specified height
      * @class
-     * @extends java.awt.AWTEvent
-     * @author Georges Saab
+     * @extends java.awt.geom.Dimension2D
+     * @author      Sami Shaio
      */
-    class TextEvent extends java.awt.AWTEvent {
+    class Dimension extends java.awt.geom.Dimension2D implements java.io.Serializable {
         /**
-         * The first number in the range of ids used for text events.
-         */
-        static TEXT_FIRST: number;
-        /**
-         * The last number in the range of ids used for text events.
-         */
-        static TEXT_LAST: number;
-        /**
-         * This event id indicates that object's text changed.
-         */
-        static TEXT_VALUE_CHANGED: number;
-        static TEXT_VALUE_CHANGED_$LI$(): number;
-        static __java_awt_event_TextEvent_serialVersionUID: number;
-        constructor(source: any, id: number);
-        /**
-         * Returns a parameter string identifying this text event.
-         * This method is useful for event-logging and for debugging.
-         *
-         * @return {string} a string identifying the event and its attributes
-         */
-        paramString(): string;
-    }
-}
-declare namespace java.awt.event {
-    class ItemEvent extends java.awt.AWTEvent {
-        static ITEM_FIRST: number;
-        static ITEM_LAST: number;
-        static ITEM_STATE_CHANGED: number;
-        static ITEM_STATE_CHANGED_$LI$(): number;
-        static SELECTED: number;
-        static DESELECTED: number;
-        item: any;
-        stateChange: number;
-        static __java_awt_event_ItemEvent_serialVersionUID: number;
-        constructor(source: java.awt.ItemSelectable, id: number, item: any, stateChange: number);
-        getItemSelectable(): java.awt.ItemSelectable;
-        getItem(): any;
-        getStateChange(): number;
-        paramString(): string;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * Constructs an <code>AdjustmentEvent</code> object with the
-     * specified Adjustable source, event type, adjustment type, and value.
-     * <p> This method throws an
-     * <code>IllegalArgumentException</code> if <code>source</code>
-     * is <code>null</code>.
-     *
-     * @param {*} source The <code>Adjustable</code> object where the
-     * event originated
-     * @param {number} id     An integer indicating the type of event.
-     * For information on allowable values, see
-     * the class description for {@link AdjustmentEvent}
-     * @param {number} type   An integer indicating the adjustment type.
-     * For information on allowable values, see
-     * the class description for {@link AdjustmentEvent}
-     * @param {number} value  The current value of the adjustment
-     * @param {boolean} isAdjusting A boolean that equals <code>true</code> if the event is one
-     * of a series of multiple adjusting events,
-     * otherwise <code>false</code>
-     * @throws IllegalArgumentException if <code>source</code> is null
-     * @since 1.4
-     * @see #getSource()
-     * @see #getID()
-     * @see #getAdjustmentType()
-     * @see #getValue()
-     * @see #getValueIsAdjusting()
-     * @class
-     * @extends java.awt.AWTEvent
-     * @author Amy Fowler
-     */
-    class AdjustmentEvent extends java.awt.AWTEvent {
-        /**
-         * Marks the first integer id for the range of adjustment event ids.
-         */
-        static ADJUSTMENT_FIRST: number;
-        /**
-         * Marks the last integer id for the range of adjustment event ids.
-         */
-        static ADJUSTMENT_LAST: number;
-        /**
-         * The adjustment value changed event.
-         */
-        static ADJUSTMENT_VALUE_CHANGED: number;
-        static ADJUSTMENT_VALUE_CHANGED_$LI$(): number;
-        /**
-         * The unit increment adjustment type.
-         */
-        static UNIT_INCREMENT: number;
-        /**
-         * The unit decrement adjustment type.
-         */
-        static UNIT_DECREMENT: number;
-        /**
-         * The block decrement adjustment type.
-         */
-        static BLOCK_DECREMENT: number;
-        /**
-         * The block increment adjustment type.
-         */
-        static BLOCK_INCREMENT: number;
-        /**
-         * The absolute tracking adjustment type.
-         */
-        static TRACK: number;
-        /**
-         * The adjustable object that fired the event.
+         * The width dimension; negative values can be used.
          *
          * @serial
-         * @see #getAdjustable
+         * @see #getSize
+         * @see #setSize
+         * @since 1.0
          */
-        adjustable: java.awt.Adjustable;
+        width: number;
         /**
-         * <code>value</code> will contain the new value of the
-         * adjustable object.  This value will always be  in a
-         * range associated adjustable object.
+         * The height dimension; negative values can be used.
          *
          * @serial
-         * @see #getValue
+         * @see #getSize
+         * @see #setSize
+         * @since 1.0
          */
-        value: number;
+        height: number;
+        static serialVersionUID: number;
+        constructor(width?: any, height?: any);
         /**
-         * The <code>adjustmentType</code> describes how the adjustable
-         * object value has changed.
-         * This value can be increased/decreased by a block or unit amount
-         * where the block is associated with page increments/decrements,
-         * and a unit is associated with line increments/decrements.
+         * {@inheritDoc}
+         * @since 1.2
+         * @return {number}
+         */
+        getWidth(): number;
+        /**
+         * {@inheritDoc}
+         * @since 1.2
+         * @return {number}
+         */
+        getHeight(): number;
+        setSize$double$double(width: number, height: number): void;
+        /**
+         * Gets the size of this <code>Dimension</code> object.
+         * This method is included for completeness, to parallel the
+         * <code>getSize</code> method defined by <code>Component</code>.
          *
-         * @serial
-         * @see #getAdjustmentType
+         * @return   {java.awt.Dimension} the size of this dimension, a new instance of
+         * <code>Dimension</code> with the same width and height
+         * @see      java.awt.Dimension#setSize
+         * @see      java.awt.Component#getSize
+         * @since    1.1
          */
-        adjustmentType: number;
+        getSize(): Dimension;
+        setSize$java_awt_Dimension(d: Dimension): void;
+        setSize$int$int(width: number, height: number): void;
         /**
-         * The <code>isAdjusting</code> is true if the event is one
-         * of the series of multiple adjustment events.
+         * Sets the size of this <code>Dimension</code> object
+         * to the specified width and height.
+         * This method is included for completeness, to parallel the
+         * <code>setSize</code> method defined by <code>Component</code>.
          *
-         * @since 1.4
-         * @serial
-         * @see #getValueIsAdjusting
+         * @param    {number} width   the new width for this <code>Dimension</code> object
+         * @param    {number} height  the new height for this <code>Dimension</code> object
+         * @see      java.awt.Dimension#getSize
+         * @see      java.awt.Component#setSize
+         * @since    1.1
          */
-        isAdjusting: boolean;
-        static __java_awt_event_AdjustmentEvent_serialVersionUID: number;
-        constructor(source?: any, id?: any, type?: any, value?: any, isAdjusting?: any);
+        setSize(width?: any, height?: any): any;
         /**
-         * Returns the <code>Adjustable</code> object where this event originated.
+         * Checks whether two dimension objects have equal values.
+         * @param {*} obj
+         * @return {boolean}
+         */
+        equals(obj: any): boolean;
+        /**
+         * Returns the hash code for this <code>Dimension</code>.
          *
-         * @return {*} the <code>Adjustable</code> object where this event originated
+         * @return    {number} a hash code for this <code>Dimension</code>
          */
-        getAdjustable(): java.awt.Adjustable;
+        hashCode(): number;
         /**
-         * Returns the current value in the adjustment event.
+         * Returns a string representation of the values of this
+         * <code>Dimension</code> object's <code>height</code> and
+         * <code>width</code> fields. This method is intended to be used only
+         * for debugging purposes, and the content and format of the returned
+         * string may vary between implementations. The returned string may be
+         * empty but may not be <code>null</code>.
          *
-         * @return {number} the current value in the adjustment event
+         * @return  {string} a string representation of this <code>Dimension</code>
+         * object
          */
-        getValue(): number;
-        /**
-         * Returns the type of adjustment which caused the value changed
-         * event.  It will have one of the following values:
-         * <ul>
-         * <li>{@link #UNIT_INCREMENT}
-         * <li>{@link #UNIT_DECREMENT}
-         * <li>{@link #BLOCK_INCREMENT}
-         * <li>{@link #BLOCK_DECREMENT}
-         * <li>{@link #TRACK}
-         * </ul>
-         * @return {number} one of the adjustment values listed above
-         */
-        getAdjustmentType(): number;
-        /**
-         * Returns <code>true</code> if this is one of multiple
-         * adjustment events.
-         *
-         * @return {boolean} <code>true</code> if this is one of multiple
-         * adjustment events, otherwise returns <code>false</code>
-         * @since 1.4
-         */
-        getValueIsAdjusting(): boolean;
-        paramString(): string;
-    }
-}
-declare namespace java.awt.event {
-    class ComponentEvent extends java.awt.AWTEvent {
-        static COMPONENT_FIRST: number;
-        static COMPONENT_LAST: number;
-        static COMPONENT_MOVED: number;
-        static COMPONENT_MOVED_$LI$(): number;
-        static COMPONENT_RESIZED: number;
-        static COMPONENT_RESIZED_$LI$(): number;
-        static COMPONENT_SHOWN: number;
-        static COMPONENT_SHOWN_$LI$(): number;
-        static COMPONENT_HIDDEN: number;
-        static COMPONENT_HIDDEN_$LI$(): number;
-        static __java_awt_event_ComponentEvent_serialVersionUID: number;
-        constructor(source: java.awt.Component, id: number);
-        getComponent(): java.awt.Component;
-        paramString(): string;
-    }
-}
-declare namespace java.awt.event {
-    class ActionEvent extends java.awt.AWTEvent {
-        static SHIFT_MASK: number;
-        static SHIFT_MASK_$LI$(): number;
-        static CTRL_MASK: number;
-        static CTRL_MASK_$LI$(): number;
-        static META_MASK: number;
-        static META_MASK_$LI$(): number;
-        static ALT_MASK: number;
-        static ALT_MASK_$LI$(): number;
-        static ACTION_FIRST: number;
-        static ACTION_LAST: number;
-        static ACTION_PERFORMED: number;
-        static ACTION_PERFORMED_$LI$(): number;
-        actionCommand: string;
-        when: number;
-        modifiers: number;
-        static __java_awt_event_ActionEvent_serialVersionUID: number;
-        constructor(source?: any, id?: any, command?: any, when?: any, modifiers?: any);
-        getActionCommand(): string;
-        getWhen(): number;
-        getModifiers(): number;
-        paramString(): string;
-    }
-}
-declare namespace java.awt {
-    abstract class Graphics2D extends java.awt.Graphics {
-        constructor();
-        draw3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
-        fill3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
-        abstract draw(s: java.awt.Shape): any;
-        drawImage$java_awt_Image$java_awt_geom_AffineTransform$java_awt_image_ImageObserver(img: java.awt.Image, xform: java.awt.geom.AffineTransform, obs: java.awt.image.ImageObserver): boolean;
-        drawString$java_lang_String$int$int(str: string, x: number, y: number): void;
-        drawString(str?: any, x?: any, y?: any): any;
-        drawString$java_lang_String$float$float(str: string, x: number, y: number): void;
-        abstract fill(s: java.awt.Shape): any;
-        abstract setPaint(paint: java.awt.Paint): any;
-        abstract setStroke(s: java.awt.Stroke): any;
-        abstract setRenderingHint(hintKey: any, hintValue: any): any;
-        abstract translate(tx: number, ty: number): any;
-        rotate$double(theta: number): void;
-        rotate$double$double$double(theta: number, x: number, y: number): void;
-        rotate(theta?: any, x?: any, y?: any): any;
-        abstract scale(sx: number, sy: number): any;
-        abstract shear(shx: number, shy: number): any;
-        abstract transform(Tx: java.awt.geom.AffineTransform): any;
-        abstract setTransform(Tx: java.awt.geom.AffineTransform): any;
-        abstract getTransform(): java.awt.geom.AffineTransform;
-        abstract getPaint(): java.awt.Paint;
-        abstract setBackground(color: java.awt.Color): any;
-        abstract getBackground(): java.awt.Color;
+        toString(): string;
     }
 }
 declare namespace java.awt {
@@ -12641,104 +12007,6 @@ declare namespace java.awt {
          * The returned string may be empty but may not be <code>null</code>.
          *
          * @return  {string} a string representation of this point
-         */
-        toString(): string;
-    }
-}
-declare namespace java.awt {
-    /**
-     * Constructs a <code>Dimension</code> and initializes
-     * it to the specified width and specified height.
-     *
-     * @param {number} width the specified width
-     * @param {number} height the specified height
-     * @class
-     * @extends java.awt.geom.Dimension2D
-     * @author      Sami Shaio
-     */
-    class Dimension extends java.awt.geom.Dimension2D implements java.io.Serializable {
-        /**
-         * The width dimension; negative values can be used.
-         *
-         * @serial
-         * @see #getSize
-         * @see #setSize
-         * @since 1.0
-         */
-        width: number;
-        /**
-         * The height dimension; negative values can be used.
-         *
-         * @serial
-         * @see #getSize
-         * @see #setSize
-         * @since 1.0
-         */
-        height: number;
-        static serialVersionUID: number;
-        constructor(width?: any, height?: any);
-        /**
-         * {@inheritDoc}
-         * @since 1.2
-         * @return {number}
-         */
-        getWidth(): number;
-        /**
-         * {@inheritDoc}
-         * @since 1.2
-         * @return {number}
-         */
-        getHeight(): number;
-        setSize$double$double(width: number, height: number): void;
-        /**
-         * Gets the size of this <code>Dimension</code> object.
-         * This method is included for completeness, to parallel the
-         * <code>getSize</code> method defined by <code>Component</code>.
-         *
-         * @return   {java.awt.Dimension} the size of this dimension, a new instance of
-         * <code>Dimension</code> with the same width and height
-         * @see      java.awt.Dimension#setSize
-         * @see      java.awt.Component#getSize
-         * @since    1.1
-         */
-        getSize(): Dimension;
-        setSize$java_awt_Dimension(d: Dimension): void;
-        setSize$int$int(width: number, height: number): void;
-        /**
-         * Sets the size of this <code>Dimension</code> object
-         * to the specified width and height.
-         * This method is included for completeness, to parallel the
-         * <code>setSize</code> method defined by <code>Component</code>.
-         *
-         * @param    {number} width   the new width for this <code>Dimension</code> object
-         * @param    {number} height  the new height for this <code>Dimension</code> object
-         * @see      java.awt.Dimension#getSize
-         * @see      java.awt.Component#setSize
-         * @since    1.1
-         */
-        setSize(width?: any, height?: any): any;
-        /**
-         * Checks whether two dimension objects have equal values.
-         * @param {*} obj
-         * @return {boolean}
-         */
-        equals(obj: any): boolean;
-        /**
-         * Returns the hash code for this <code>Dimension</code>.
-         *
-         * @return    {number} a hash code for this <code>Dimension</code>
-         */
-        hashCode(): number;
-        /**
-         * Returns a string representation of the values of this
-         * <code>Dimension</code> object's <code>height</code> and
-         * <code>width</code> fields. This method is intended to be used only
-         * for debugging purposes, and the content and format of the returned
-         * string may vary between implementations. The returned string may be
-         * empty but may not be <code>null</code>.
-         *
-         * @return  {string} a string representation of this <code>Dimension</code>
-         * object
          */
         toString(): string;
     }
@@ -13923,6 +13191,598 @@ declare namespace java.awt.geom {
 }
 declare namespace java.awt.geom {
     /**
+     * The <code>Rectangle2D</code> class describes a rectangle defined by a
+     * location {@code (x,y)} and dimension {@code (w x h)}.
+     * <p>
+     * This class is only the abstract superclass for all objects that store a 2D
+     * rectangle. The actual storage representation of the coordinates is left to
+     * the subclass.
+     *
+     * @author Jim Graham
+     * @since 1.2
+     * @extends java.awt.geom.RectangularShape
+     * @class
+     */
+    abstract class Rectangle2D extends java.awt.geom.RectangularShape {
+        /**
+         * The bitmask that indicates that a point lies to the left of this
+         * <code>Rectangle2D</code>.
+         *
+         * @since 1.2
+         */
+        static OUT_LEFT: number;
+        /**
+         * The bitmask that indicates that a point lies above this
+         * <code>Rectangle2D</code>.
+         *
+         * @since 1.2
+         */
+        static OUT_TOP: number;
+        /**
+         * The bitmask that indicates that a point lies to the right of this
+         * <code>Rectangle2D</code>.
+         *
+         * @since 1.2
+         */
+        static OUT_RIGHT: number;
+        /**
+         * The bitmask that indicates that a point lies below this
+         * <code>Rectangle2D</code>.
+         *
+         * @since 1.2
+         */
+        static OUT_BOTTOM: number;
+        constructor();
+        setRect$double$double$double$double(x: number, y: number, w: number, h: number): void;
+        /**
+         * Sets the location and size of this <code>Rectangle2D</code> to the
+         * specified <code>double</code> values.
+         *
+         * @param {number} x
+         * the X coordinate of the upper-left corner of this
+         * <code>Rectangle2D</code>
+         * @param {number} y
+         * the Y coordinate of the upper-left corner of this
+         * <code>Rectangle2D</code>
+         * @param {number} w
+         * the width of this <code>Rectangle2D</code>
+         * @param {number} h
+         * the height of this <code>Rectangle2D</code>
+         * @since 1.2
+         */
+        setRect(x?: any, y?: any, w?: any, h?: any): any;
+        setRect$java_awt_geom_Rectangle2D(r: Rectangle2D): void;
+        intersectsLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): boolean;
+        /**
+         * Tests if the specified line segment intersects the interior of this
+         * <code>Rectangle2D</code>.
+         *
+         * @param {number} x1
+         * the X coordinate of the start point of the specified line
+         * segment
+         * @param {number} y1
+         * the Y coordinate of the start point of the specified line
+         * segment
+         * @param {number} x2
+         * the X coordinate of the end point of the specified line
+         * segment
+         * @param {number} y2
+         * the Y coordinate of the end point of the specified line
+         * segment
+         * @return {boolean} <code>true</code> if the specified line segment intersects the
+         * interior of this <code>Rectangle2D</code>; <code>false</code>
+         * otherwise.
+         * @since 1.2
+         */
+        intersectsLine(x1?: any, y1?: any, x2?: any, y2?: any): boolean;
+        intersectsLine$java_awt_geom_Line2D(l: java.awt.geom.Line2D): boolean;
+        outcode$double$double(x: number, y: number): number;
+        /**
+         * Determines where the specified coordinates lie with respect to this
+         * <code>Rectangle2D</code>. This method computes a binary OR of the
+         * appropriate mask values indicating, for each side of this
+         * <code>Rectangle2D</code>, whether or not the specified coordinates are on
+         * the same side of the edge as the rest of this <code>Rectangle2D</code>.
+         *
+         * @param {number} x
+         * the specified X coordinate
+         * @param {number} y
+         * the specified Y coordinate
+         * @return {number} the logical OR of all appropriate out codes.
+         * @see #OUT_LEFT
+         * @see #OUT_TOP
+         * @see #OUT_RIGHT
+         * @see #OUT_BOTTOM
+         * @since 1.2
+         */
+        outcode(x?: any, y?: any): number;
+        outcode$java_awt_geom_Point2D(p: java.awt.geom.Point2D): number;
+        setFrame$double$double$double$double(x: number, y: number, w: number, h: number): void;
+        /**
+         * Sets the location and size of the outer bounds of this
+         * <code>Rectangle2D</code> to the specified rectangular values.
+         *
+         * @param {number} x
+         * the X coordinate of the upper-left corner of this
+         * <code>Rectangle2D</code>
+         * @param {number} y
+         * the Y coordinate of the upper-left corner of this
+         * <code>Rectangle2D</code>
+         * @param {number} w
+         * the width of this <code>Rectangle2D</code>
+         * @param {number} h
+         * the height of this <code>Rectangle2D</code>
+         * @since 1.2
+         */
+        setFrame(x?: any, y?: any, w?: any, h?: any): any;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @return {java.awt.geom.Rectangle2D}
+         */
+        getBounds2D(): Rectangle2D;
+        contains$double$double(x: number, y: number): boolean;
+        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
+        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.2
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @return {boolean}
+         */
+        contains(x?: any, y?: any, w?: any, h?: any): boolean;
+        /**
+         * Returns a new <code>Rectangle2D</code> object representing the
+         * intersection of this <code>Rectangle2D</code> with the specified
+         * <code>Rectangle2D</code>.
+         *
+         * @param {java.awt.geom.Rectangle2D} r
+         * the <code>Rectangle2D</code> to be intersected with this
+         * <code>Rectangle2D</code>
+         * @return {java.awt.geom.Rectangle2D} the largest <code>Rectangle2D</code> contained in both the
+         * specified <code>Rectangle2D</code> and in this
+         * <code>Rectangle2D</code>.
+         * @since 1.2
+         */
+        abstract createIntersection(r: Rectangle2D): Rectangle2D;
+        /**
+         * Intersects the pair of specified source <code>Rectangle2D</code> objects
+         * and puts the result into the specified destination
+         * <code>Rectangle2D</code> object. One of the source rectangles can also be
+         * the destination to avoid creating a third Rectangle2D object, but in this
+         * case the original points of this source rectangle will be overwritten by
+         * this method.
+         *
+         * @param {java.awt.geom.Rectangle2D} src1
+         * the first of a pair of <code>Rectangle2D</code> objects to be
+         * intersected with each other
+         * @param {java.awt.geom.Rectangle2D} src2
+         * the second of a pair of <code>Rectangle2D</code> objects to be
+         * intersected with each other
+         * @param {java.awt.geom.Rectangle2D} dest
+         * the <code>Rectangle2D</code> that holds the results of the
+         * intersection of <code>src1</code> and <code>src2</code>
+         * @since 1.2
+         */
+        static intersect(src1: Rectangle2D, src2: Rectangle2D, dest: Rectangle2D): void;
+        /**
+         * Returns a new <code>Rectangle2D</code> object representing the union of
+         * this <code>Rectangle2D</code> with the specified <code>Rectangle2D</code>
+         * .
+         *
+         * @param {java.awt.geom.Rectangle2D} r
+         * the <code>Rectangle2D</code> to be combined with this
+         * <code>Rectangle2D</code>
+         * @return {java.awt.geom.Rectangle2D} the smallest <code>Rectangle2D</code> containing both the
+         * specified <code>Rectangle2D</code> and this
+         * <code>Rectangle2D</code>.
+         * @since 1.2
+         */
+        abstract createUnion(r: Rectangle2D): Rectangle2D;
+        /**
+         * Unions the pair of source <code>Rectangle2D</code> objects and puts the
+         * result into the specified destination <code>Rectangle2D</code> object.
+         * One of the source rectangles can also be the destination to avoid
+         * creating a third Rectangle2D object, but in this case the original points
+         * of this source rectangle will be overwritten by this method.
+         *
+         * @param {java.awt.geom.Rectangle2D} src1
+         * the first of a pair of <code>Rectangle2D</code> objects to be
+         * combined with each other
+         * @param {java.awt.geom.Rectangle2D} src2
+         * the second of a pair of <code>Rectangle2D</code> objects to be
+         * combined with each other
+         * @param {java.awt.geom.Rectangle2D} dest
+         * the <code>Rectangle2D</code> that holds the results of the
+         * union of <code>src1</code> and <code>src2</code>
+         * @since 1.2
+         */
+        static union(src1: Rectangle2D, src2: Rectangle2D, dest: Rectangle2D): void;
+        add$double$double(newx: number, newy: number): void;
+        /**
+         * Adds a point, specified by the double precision arguments
+         * <code>newx</code> and <code>newy</code>, to this <code>Rectangle2D</code>
+         * . The resulting <code>Rectangle2D</code> is the smallest
+         * <code>Rectangle2D</code> that contains both the original
+         * <code>Rectangle2D</code> and the specified point.
+         * <p>
+         * After adding a point, a call to <code>contains</code> with the added
+         * point as an argument does not necessarily return <code>true</code>. The
+         * <code>contains</code> method does not return <code>true</code> for points
+         * on the right or bottom edges of a rectangle. Therefore, if the added
+         * point falls on the left or bottom edge of the enlarged rectangle,
+         * <code>contains</code> returns <code>false</code> for that point.
+         *
+         * @param {number} newx
+         * the X coordinate of the new point
+         * @param {number} newy
+         * the Y coordinate of the new point
+         * @since 1.2
+         */
+        add(newx?: any, newy?: any): any;
+        add$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): void;
+        add$java_awt_geom_Rectangle2D(r: Rectangle2D): void;
+        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
+        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
+        /**
+         * Returns an iteration object that defines the boundary of the flattened
+         * <code>Rectangle2D</code>. Since rectangles are already flat, the
+         * <code>flatness</code> parameter is ignored. The iterator for this class
+         * is multi-threaded safe, which means that this <code>Rectangle2D</code>
+         * class guarantees that modifications to the geometry of this
+         * <code>Rectangle2D</code> object do not affect any iterations of that
+         * geometry that are already in process.
+         *
+         * @param {java.awt.geom.AffineTransform} at
+         * an optional <code>AffineTransform</code> to be applied to the
+         * coordinates as they are returned in the iteration, or
+         * <code>null</code> if untransformed coordinates are desired
+         * @param {number} flatness
+         * the maximum distance that the line segments used to
+         * approximate the curved segments are allowed to deviate from
+         * any point on the original curve. Since rectangles are already
+         * flat, the <code>flatness</code> parameter is ignored.
+         * @return {*} the <code>PathIterator</code> object that returns the geometry of
+         * the outline of this <code>Rectangle2D</code>, one segment at a
+         * time.
+         * @since 1.2
+         */
+        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
+        /**
+         * Returns the hashcode for this <code>Rectangle2D</code>.
+         *
+         * @return {number} the hashcode for this <code>Rectangle2D</code>.
+         * @since 1.2
+         */
+        hashCode(): number;
+        /**
+         * Determines whether or not the specified <code>Object</code> is equal to
+         * this <code>Rectangle2D</code>. The specified <code>Object</code> is equal
+         * to this <code>Rectangle2D</code> if it is an instance of
+         * <code>Rectangle2D</code> and if its location and size are the same as
+         * this <code>Rectangle2D</code>.
+         *
+         * @param {*} obj
+         * an <code>Object</code> to be compared with this
+         * <code>Rectangle2D</code>.
+         * @return {boolean} <code>true</code> if <code>obj</code> is an instance of
+         * <code>Rectangle2D</code> and has the same values;
+         * <code>false</code> otherwise.
+         * @since 1.2
+         */
+        equals(obj: any): boolean;
+    }
+    namespace Rectangle2D {
+        /**
+         * Constructs and initializes a <code>Rectangle2D</code> from the
+         * specified <code>float</code> coordinates.
+         *
+         * @param {number} x
+         * the X coordinate of the upper-left corner of the newly
+         * constructed <code>Rectangle2D</code>
+         * @param {number} y
+         * the Y coordinate of the upper-left corner of the newly
+         * constructed <code>Rectangle2D</code>
+         * @param {number} w
+         * the width of the newly constructed
+         * <code>Rectangle2D</code>
+         * @param {number} h
+         * the height of the newly constructed
+         * <code>Rectangle2D</code>
+         * @since 1.2
+         * @class
+         * @extends java.awt.geom.Rectangle2D
+         */
+        class Float extends java.awt.geom.Rectangle2D implements java.io.Serializable {
+            /**
+             * The X coordinate of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x: number;
+            /**
+             * The Y coordinate of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y: number;
+            /**
+             * The width of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            width: number;
+            /**
+             * The height of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            height: number;
+            constructor(x?: any, y?: any, w?: any, h?: any);
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getWidth(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getHeight(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {boolean}
+             */
+            isEmpty(): boolean;
+            setRect$float$float$float$float(x: number, y: number, w: number, h: number): void;
+            /**
+             * Sets the location and size of this <code>Rectangle2D</code> to the
+             * specified <code>float</code> values.
+             *
+             * @param {number} x
+             * the X coordinate of the upper-left corner of this
+             * <code>Rectangle2D</code>
+             * @param {number} y
+             * the Y coordinate of the upper-left corner of this
+             * <code>Rectangle2D</code>
+             * @param {number} w
+             * the width of this <code>Rectangle2D</code>
+             * @param {number} h
+             * the height of this <code>Rectangle2D</code>
+             * @since 1.2
+             */
+            setRect(x?: any, y?: any, w?: any, h?: any): any;
+            setRect$double$double$double$double(x: number, y: number, w: number, h: number): void;
+            setRect$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): void;
+            outcode$double$double(x: number, y: number): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {number} x
+             * @param {number} y
+             * @return {number}
+             */
+            outcode(x?: any, y?: any): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            getBounds2D(): java.awt.geom.Rectangle2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {java.awt.geom.Rectangle2D} r
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            createIntersection(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {java.awt.geom.Rectangle2D} r
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            createUnion(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
+            /**
+             * Returns the <code>String</code> representation of this
+             * <code>Rectangle2D</code>.
+             *
+             * @return {string} a <code>String</code> representing this
+             * <code>Rectangle2D</code>.
+             * @since 1.2
+             */
+            toString(): string;
+            static serialVersionUID: number;
+        }
+        /**
+         * Constructs and initializes a <code>Rectangle2D</code> from the
+         * specified <code>double</code> coordinates.
+         *
+         * @param {number} x
+         * the X coordinate of the upper-left corner of the newly
+         * constructed <code>Rectangle2D</code>
+         * @param {number} y
+         * the Y coordinate of the upper-left corner of the newly
+         * constructed <code>Rectangle2D</code>
+         * @param {number} w
+         * the width of the newly constructed
+         * <code>Rectangle2D</code>
+         * @param {number} h
+         * the height of the newly constructed
+         * <code>Rectangle2D</code>
+         * @since 1.2
+         * @class
+         * @extends java.awt.geom.Rectangle2D
+         */
+        class Double extends java.awt.geom.Rectangle2D implements java.io.Serializable {
+            /**
+             * The X coordinate of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            x: number;
+            /**
+             * The Y coordinate of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            y: number;
+            /**
+             * The width of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            width: number;
+            /**
+             * The height of this <code>Rectangle2D</code>.
+             *
+             * @since 1.2
+             * @serial
+             */
+            height: number;
+            constructor(x?: any, y?: any, w?: any, h?: any);
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getX(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getY(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getWidth(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {number}
+             */
+            getHeight(): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {boolean}
+             */
+            isEmpty(): boolean;
+            setRect$double$double$double$double(x: number, y: number, w: number, h: number): void;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {number} x
+             * @param {number} y
+             * @param {number} w
+             * @param {number} h
+             */
+            setRect(x?: any, y?: any, w?: any, h?: any): any;
+            setRect$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): void;
+            outcode$double$double(x: number, y: number): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {number} x
+             * @param {number} y
+             * @return {number}
+             */
+            outcode(x?: any, y?: any): number;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            getBounds2D(): java.awt.geom.Rectangle2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {java.awt.geom.Rectangle2D} r
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            createIntersection(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
+            /**
+             * {@inheritDoc}
+             *
+             * @since 1.2
+             * @param {java.awt.geom.Rectangle2D} r
+             * @return {java.awt.geom.Rectangle2D}
+             */
+            createUnion(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
+            /**
+             * Returns the <code>String</code> representation of this
+             * <code>Rectangle2D</code>.
+             *
+             * @return {string} a <code>String</code> representing this
+             * <code>Rectangle2D</code>.
+             * @since 1.2
+             */
+            toString(): string;
+            static serialVersionUID: number;
+        }
+    }
+}
+declare namespace java.awt.geom {
+    /**
      * The <code>Ellipse2D</code> class describes an ellipse that is defined by a
      * framing rectangle.
      * <p>
@@ -14903,601 +14763,741 @@ declare namespace java.awt.geom {
         }
     }
 }
-declare namespace java.awt.geom {
-    /**
-     * The <code>Rectangle2D</code> class describes a rectangle defined by a
-     * location {@code (x,y)} and dimension {@code (w x h)}.
-     * <p>
-     * This class is only the abstract superclass for all objects that store a 2D
-     * rectangle. The actual storage representation of the coordinates is left to
-     * the subclass.
-     *
-     * @author Jim Graham
-     * @since 1.2
-     * @extends java.awt.geom.RectangularShape
-     * @class
-     */
-    abstract class Rectangle2D extends java.awt.geom.RectangularShape {
-        /**
-         * The bitmask that indicates that a point lies to the left of this
-         * <code>Rectangle2D</code>.
-         *
-         * @since 1.2
-         */
-        static OUT_LEFT: number;
-        /**
-         * The bitmask that indicates that a point lies above this
-         * <code>Rectangle2D</code>.
-         *
-         * @since 1.2
-         */
-        static OUT_TOP: number;
-        /**
-         * The bitmask that indicates that a point lies to the right of this
-         * <code>Rectangle2D</code>.
-         *
-         * @since 1.2
-         */
-        static OUT_RIGHT: number;
-        /**
-         * The bitmask that indicates that a point lies below this
-         * <code>Rectangle2D</code>.
-         *
-         * @since 1.2
-         */
-        static OUT_BOTTOM: number;
-        constructor();
-        setRect$double$double$double$double(x: number, y: number, w: number, h: number): void;
-        /**
-         * Sets the location and size of this <code>Rectangle2D</code> to the
-         * specified <code>double</code> values.
-         *
-         * @param {number} x
-         * the X coordinate of the upper-left corner of this
-         * <code>Rectangle2D</code>
-         * @param {number} y
-         * the Y coordinate of the upper-left corner of this
-         * <code>Rectangle2D</code>
-         * @param {number} w
-         * the width of this <code>Rectangle2D</code>
-         * @param {number} h
-         * the height of this <code>Rectangle2D</code>
-         * @since 1.2
-         */
-        setRect(x?: any, y?: any, w?: any, h?: any): any;
-        setRect$java_awt_geom_Rectangle2D(r: Rectangle2D): void;
-        intersectsLine$double$double$double$double(x1: number, y1: number, x2: number, y2: number): boolean;
-        /**
-         * Tests if the specified line segment intersects the interior of this
-         * <code>Rectangle2D</code>.
-         *
-         * @param {number} x1
-         * the X coordinate of the start point of the specified line
-         * segment
-         * @param {number} y1
-         * the Y coordinate of the start point of the specified line
-         * segment
-         * @param {number} x2
-         * the X coordinate of the end point of the specified line
-         * segment
-         * @param {number} y2
-         * the Y coordinate of the end point of the specified line
-         * segment
-         * @return {boolean} <code>true</code> if the specified line segment intersects the
-         * interior of this <code>Rectangle2D</code>; <code>false</code>
-         * otherwise.
-         * @since 1.2
-         */
-        intersectsLine(x1?: any, y1?: any, x2?: any, y2?: any): boolean;
-        intersectsLine$java_awt_geom_Line2D(l: java.awt.geom.Line2D): boolean;
-        outcode$double$double(x: number, y: number): number;
-        /**
-         * Determines where the specified coordinates lie with respect to this
-         * <code>Rectangle2D</code>. This method computes a binary OR of the
-         * appropriate mask values indicating, for each side of this
-         * <code>Rectangle2D</code>, whether or not the specified coordinates are on
-         * the same side of the edge as the rest of this <code>Rectangle2D</code>.
-         *
-         * @param {number} x
-         * the specified X coordinate
-         * @param {number} y
-         * the specified Y coordinate
-         * @return {number} the logical OR of all appropriate out codes.
-         * @see #OUT_LEFT
-         * @see #OUT_TOP
-         * @see #OUT_RIGHT
-         * @see #OUT_BOTTOM
-         * @since 1.2
-         */
-        outcode(x?: any, y?: any): number;
-        outcode$java_awt_geom_Point2D(p: java.awt.geom.Point2D): number;
-        setFrame$double$double$double$double(x: number, y: number, w: number, h: number): void;
-        /**
-         * Sets the location and size of the outer bounds of this
-         * <code>Rectangle2D</code> to the specified rectangular values.
-         *
-         * @param {number} x
-         * the X coordinate of the upper-left corner of this
-         * <code>Rectangle2D</code>
-         * @param {number} y
-         * the Y coordinate of the upper-left corner of this
-         * <code>Rectangle2D</code>
-         * @param {number} w
-         * the width of this <code>Rectangle2D</code>
-         * @param {number} h
-         * the height of this <code>Rectangle2D</code>
-         * @since 1.2
-         */
-        setFrame(x?: any, y?: any, w?: any, h?: any): any;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @return {java.awt.geom.Rectangle2D}
-         */
-        getBounds2D(): Rectangle2D;
-        contains$double$double(x: number, y: number): boolean;
-        intersects$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        intersects(x?: any, y?: any, w?: any, h?: any): boolean;
-        contains$double$double$double$double(x: number, y: number, w: number, h: number): boolean;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.2
-         * @param {number} x
-         * @param {number} y
-         * @param {number} w
-         * @param {number} h
-         * @return {boolean}
-         */
-        contains(x?: any, y?: any, w?: any, h?: any): boolean;
-        /**
-         * Returns a new <code>Rectangle2D</code> object representing the
-         * intersection of this <code>Rectangle2D</code> with the specified
-         * <code>Rectangle2D</code>.
-         *
-         * @param {java.awt.geom.Rectangle2D} r
-         * the <code>Rectangle2D</code> to be intersected with this
-         * <code>Rectangle2D</code>
-         * @return {java.awt.geom.Rectangle2D} the largest <code>Rectangle2D</code> contained in both the
-         * specified <code>Rectangle2D</code> and in this
-         * <code>Rectangle2D</code>.
-         * @since 1.2
-         */
-        abstract createIntersection(r: Rectangle2D): Rectangle2D;
-        /**
-         * Intersects the pair of specified source <code>Rectangle2D</code> objects
-         * and puts the result into the specified destination
-         * <code>Rectangle2D</code> object. One of the source rectangles can also be
-         * the destination to avoid creating a third Rectangle2D object, but in this
-         * case the original points of this source rectangle will be overwritten by
-         * this method.
-         *
-         * @param {java.awt.geom.Rectangle2D} src1
-         * the first of a pair of <code>Rectangle2D</code> objects to be
-         * intersected with each other
-         * @param {java.awt.geom.Rectangle2D} src2
-         * the second of a pair of <code>Rectangle2D</code> objects to be
-         * intersected with each other
-         * @param {java.awt.geom.Rectangle2D} dest
-         * the <code>Rectangle2D</code> that holds the results of the
-         * intersection of <code>src1</code> and <code>src2</code>
-         * @since 1.2
-         */
-        static intersect(src1: Rectangle2D, src2: Rectangle2D, dest: Rectangle2D): void;
-        /**
-         * Returns a new <code>Rectangle2D</code> object representing the union of
-         * this <code>Rectangle2D</code> with the specified <code>Rectangle2D</code>
-         * .
-         *
-         * @param {java.awt.geom.Rectangle2D} r
-         * the <code>Rectangle2D</code> to be combined with this
-         * <code>Rectangle2D</code>
-         * @return {java.awt.geom.Rectangle2D} the smallest <code>Rectangle2D</code> containing both the
-         * specified <code>Rectangle2D</code> and this
-         * <code>Rectangle2D</code>.
-         * @since 1.2
-         */
-        abstract createUnion(r: Rectangle2D): Rectangle2D;
-        /**
-         * Unions the pair of source <code>Rectangle2D</code> objects and puts the
-         * result into the specified destination <code>Rectangle2D</code> object.
-         * One of the source rectangles can also be the destination to avoid
-         * creating a third Rectangle2D object, but in this case the original points
-         * of this source rectangle will be overwritten by this method.
-         *
-         * @param {java.awt.geom.Rectangle2D} src1
-         * the first of a pair of <code>Rectangle2D</code> objects to be
-         * combined with each other
-         * @param {java.awt.geom.Rectangle2D} src2
-         * the second of a pair of <code>Rectangle2D</code> objects to be
-         * combined with each other
-         * @param {java.awt.geom.Rectangle2D} dest
-         * the <code>Rectangle2D</code> that holds the results of the
-         * union of <code>src1</code> and <code>src2</code>
-         * @since 1.2
-         */
-        static union(src1: Rectangle2D, src2: Rectangle2D, dest: Rectangle2D): void;
-        add$double$double(newx: number, newy: number): void;
-        /**
-         * Adds a point, specified by the double precision arguments
-         * <code>newx</code> and <code>newy</code>, to this <code>Rectangle2D</code>
-         * . The resulting <code>Rectangle2D</code> is the smallest
-         * <code>Rectangle2D</code> that contains both the original
-         * <code>Rectangle2D</code> and the specified point.
-         * <p>
-         * After adding a point, a call to <code>contains</code> with the added
-         * point as an argument does not necessarily return <code>true</code>. The
-         * <code>contains</code> method does not return <code>true</code> for points
-         * on the right or bottom edges of a rectangle. Therefore, if the added
-         * point falls on the left or bottom edge of the enlarged rectangle,
-         * <code>contains</code> returns <code>false</code> for that point.
-         *
-         * @param {number} newx
-         * the X coordinate of the new point
-         * @param {number} newy
-         * the Y coordinate of the new point
-         * @since 1.2
-         */
-        add(newx?: any, newy?: any): any;
-        add$java_awt_geom_Point2D(pt: java.awt.geom.Point2D): void;
-        add$java_awt_geom_Rectangle2D(r: Rectangle2D): void;
-        getPathIterator$java_awt_geom_AffineTransform(at: java.awt.geom.AffineTransform): java.awt.geom.PathIterator;
-        getPathIterator$java_awt_geom_AffineTransform$double(at: java.awt.geom.AffineTransform, flatness: number): java.awt.geom.PathIterator;
-        /**
-         * Returns an iteration object that defines the boundary of the flattened
-         * <code>Rectangle2D</code>. Since rectangles are already flat, the
-         * <code>flatness</code> parameter is ignored. The iterator for this class
-         * is multi-threaded safe, which means that this <code>Rectangle2D</code>
-         * class guarantees that modifications to the geometry of this
-         * <code>Rectangle2D</code> object do not affect any iterations of that
-         * geometry that are already in process.
-         *
-         * @param {java.awt.geom.AffineTransform} at
-         * an optional <code>AffineTransform</code> to be applied to the
-         * coordinates as they are returned in the iteration, or
-         * <code>null</code> if untransformed coordinates are desired
-         * @param {number} flatness
-         * the maximum distance that the line segments used to
-         * approximate the curved segments are allowed to deviate from
-         * any point on the original curve. Since rectangles are already
-         * flat, the <code>flatness</code> parameter is ignored.
-         * @return {*} the <code>PathIterator</code> object that returns the geometry of
-         * the outline of this <code>Rectangle2D</code>, one segment at a
-         * time.
-         * @since 1.2
-         */
-        getPathIterator(at?: any, flatness?: any): java.awt.geom.PathIterator;
-        /**
-         * Returns the hashcode for this <code>Rectangle2D</code>.
-         *
-         * @return {number} the hashcode for this <code>Rectangle2D</code>.
-         * @since 1.2
-         */
-        hashCode(): number;
-        /**
-         * Determines whether or not the specified <code>Object</code> is equal to
-         * this <code>Rectangle2D</code>. The specified <code>Object</code> is equal
-         * to this <code>Rectangle2D</code> if it is an instance of
-         * <code>Rectangle2D</code> and if its location and size are the same as
-         * this <code>Rectangle2D</code>.
-         *
-         * @param {*} obj
-         * an <code>Object</code> to be compared with this
-         * <code>Rectangle2D</code>.
-         * @return {boolean} <code>true</code> if <code>obj</code> is an instance of
-         * <code>Rectangle2D</code> and has the same values;
-         * <code>false</code> otherwise.
-         * @since 1.2
-         */
-        equals(obj: any): boolean;
-    }
-    namespace Rectangle2D {
-        /**
-         * Constructs and initializes a <code>Rectangle2D</code> from the
-         * specified <code>float</code> coordinates.
-         *
-         * @param {number} x
-         * the X coordinate of the upper-left corner of the newly
-         * constructed <code>Rectangle2D</code>
-         * @param {number} y
-         * the Y coordinate of the upper-left corner of the newly
-         * constructed <code>Rectangle2D</code>
-         * @param {number} w
-         * the width of the newly constructed
-         * <code>Rectangle2D</code>
-         * @param {number} h
-         * the height of the newly constructed
-         * <code>Rectangle2D</code>
-         * @since 1.2
-         * @class
-         * @extends java.awt.geom.Rectangle2D
-         */
-        class Float extends java.awt.geom.Rectangle2D implements java.io.Serializable {
-            /**
-             * The X coordinate of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x: number;
-            /**
-             * The Y coordinate of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y: number;
-            /**
-             * The width of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            width: number;
-            /**
-             * The height of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            height: number;
-            constructor(x?: any, y?: any, w?: any, h?: any);
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getWidth(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getHeight(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {boolean}
-             */
-            isEmpty(): boolean;
-            setRect$float$float$float$float(x: number, y: number, w: number, h: number): void;
-            /**
-             * Sets the location and size of this <code>Rectangle2D</code> to the
-             * specified <code>float</code> values.
-             *
-             * @param {number} x
-             * the X coordinate of the upper-left corner of this
-             * <code>Rectangle2D</code>
-             * @param {number} y
-             * the Y coordinate of the upper-left corner of this
-             * <code>Rectangle2D</code>
-             * @param {number} w
-             * the width of this <code>Rectangle2D</code>
-             * @param {number} h
-             * the height of this <code>Rectangle2D</code>
-             * @since 1.2
-             */
-            setRect(x?: any, y?: any, w?: any, h?: any): any;
-            setRect$double$double$double$double(x: number, y: number, w: number, h: number): void;
-            setRect$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): void;
-            outcode$double$double(x: number, y: number): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {number} x
-             * @param {number} y
-             * @return {number}
-             */
-            outcode(x?: any, y?: any): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            getBounds2D(): java.awt.geom.Rectangle2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {java.awt.geom.Rectangle2D} r
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            createIntersection(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {java.awt.geom.Rectangle2D} r
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            createUnion(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
-            /**
-             * Returns the <code>String</code> representation of this
-             * <code>Rectangle2D</code>.
-             *
-             * @return {string} a <code>String</code> representing this
-             * <code>Rectangle2D</code>.
-             * @since 1.2
-             */
-            toString(): string;
-            static serialVersionUID: number;
-        }
-        /**
-         * Constructs and initializes a <code>Rectangle2D</code> from the
-         * specified <code>double</code> coordinates.
-         *
-         * @param {number} x
-         * the X coordinate of the upper-left corner of the newly
-         * constructed <code>Rectangle2D</code>
-         * @param {number} y
-         * the Y coordinate of the upper-left corner of the newly
-         * constructed <code>Rectangle2D</code>
-         * @param {number} w
-         * the width of the newly constructed
-         * <code>Rectangle2D</code>
-         * @param {number} h
-         * the height of the newly constructed
-         * <code>Rectangle2D</code>
-         * @since 1.2
-         * @class
-         * @extends java.awt.geom.Rectangle2D
-         */
-        class Double extends java.awt.geom.Rectangle2D implements java.io.Serializable {
-            /**
-             * The X coordinate of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            x: number;
-            /**
-             * The Y coordinate of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            y: number;
-            /**
-             * The width of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            width: number;
-            /**
-             * The height of this <code>Rectangle2D</code>.
-             *
-             * @since 1.2
-             * @serial
-             */
-            height: number;
-            constructor(x?: any, y?: any, w?: any, h?: any);
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getX(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getY(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getWidth(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {number}
-             */
-            getHeight(): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {boolean}
-             */
-            isEmpty(): boolean;
-            setRect$double$double$double$double(x: number, y: number, w: number, h: number): void;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {number} x
-             * @param {number} y
-             * @param {number} w
-             * @param {number} h
-             */
-            setRect(x?: any, y?: any, w?: any, h?: any): any;
-            setRect$java_awt_geom_Rectangle2D(r: java.awt.geom.Rectangle2D): void;
-            outcode$double$double(x: number, y: number): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {number} x
-             * @param {number} y
-             * @return {number}
-             */
-            outcode(x?: any, y?: any): number;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            getBounds2D(): java.awt.geom.Rectangle2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {java.awt.geom.Rectangle2D} r
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            createIntersection(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
-            /**
-             * {@inheritDoc}
-             *
-             * @since 1.2
-             * @param {java.awt.geom.Rectangle2D} r
-             * @return {java.awt.geom.Rectangle2D}
-             */
-            createUnion(r: java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D;
-            /**
-             * Returns the <code>String</code> representation of this
-             * <code>Rectangle2D</code>.
-             *
-             * @return {string} a <code>String</code> representing this
-             * <code>Rectangle2D</code>.
-             * @since 1.2
-             */
-            toString(): string;
-            static serialVersionUID: number;
-        }
-    }
-}
 declare namespace javax.swing.event {
     abstract class MouseInputAdapter extends java.awt.event.MouseAdapter implements javax.swing.event.MouseInputListener {
         constructor();
+    }
+}
+declare namespace java.awt {
+    abstract class Graphics2D extends java.awt.Graphics {
+        constructor();
+        draw3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
+        fill3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
+        abstract draw(s: java.awt.Shape): any;
+        drawImage$java_awt_Image$java_awt_geom_AffineTransform$java_awt_image_ImageObserver(img: java.awt.Image, xform: java.awt.geom.AffineTransform, obs: java.awt.image.ImageObserver): boolean;
+        drawString$java_lang_String$int$int(str: string, x: number, y: number): void;
+        drawString(str?: any, x?: any, y?: any): any;
+        drawString$java_lang_String$float$float(str: string, x: number, y: number): void;
+        abstract fill(s: java.awt.Shape): any;
+        abstract setPaint(paint: java.awt.Paint): any;
+        abstract setStroke(s: java.awt.Stroke): any;
+        abstract setRenderingHint(hintKey: any, hintValue: any): any;
+        abstract translate(tx: number, ty: number): any;
+        rotate$double(theta: number): void;
+        rotate$double$double$double(theta: number, x: number, y: number): void;
+        rotate(theta?: any, x?: any, y?: any): any;
+        abstract scale(sx: number, sy: number): any;
+        abstract shear(shx: number, shy: number): any;
+        abstract transform(Tx: java.awt.geom.AffineTransform): any;
+        abstract setTransform(Tx: java.awt.geom.AffineTransform): any;
+        abstract getTransform(): java.awt.geom.AffineTransform;
+        abstract getPaint(): java.awt.Paint;
+        abstract setBackground(color: java.awt.Color): any;
+        abstract getBackground(): java.awt.Color;
+    }
+}
+declare namespace java.awt.event {
+    class ItemEvent extends java.awt.AWTEvent {
+        static ITEM_FIRST: number;
+        static ITEM_LAST: number;
+        static ITEM_STATE_CHANGED: number;
+        static ITEM_STATE_CHANGED_$LI$(): number;
+        static SELECTED: number;
+        static DESELECTED: number;
+        item: any;
+        stateChange: number;
+        static __java_awt_event_ItemEvent_serialVersionUID: number;
+        constructor(source: java.awt.ItemSelectable, id: number, item: any, stateChange: number);
+        getItemSelectable(): java.awt.ItemSelectable;
+        getItem(): any;
+        getStateChange(): number;
+        paramString(): string;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * Constructs a <code>TextEvent</code> object.
+     * <p> This method throws an
+     * <code>IllegalArgumentException</code> if <code>source</code>
+     * is <code>null</code>.
+     *
+     * @param {*} source The (<code>TextComponent</code>) object that
+     * originated the event
+     * @param {number} id     An integer that identifies the event type.
+     * For information on allowable values, see
+     * the class description for {@link TextEvent}
+     * @throws IllegalArgumentException if <code>source</code> is null
+     * @see #getSource()
+     * @see #getID()
+     * @class
+     * @extends java.awt.AWTEvent
+     * @author Georges Saab
+     */
+    class TextEvent extends java.awt.AWTEvent {
+        /**
+         * The first number in the range of ids used for text events.
+         */
+        static TEXT_FIRST: number;
+        /**
+         * The last number in the range of ids used for text events.
+         */
+        static TEXT_LAST: number;
+        /**
+         * This event id indicates that object's text changed.
+         */
+        static TEXT_VALUE_CHANGED: number;
+        static TEXT_VALUE_CHANGED_$LI$(): number;
+        static __java_awt_event_TextEvent_serialVersionUID: number;
+        constructor(source: any, id: number);
+        /**
+         * Returns a parameter string identifying this text event.
+         * This method is useful for event-logging and for debugging.
+         *
+         * @return {string} a string identifying the event and its attributes
+         */
+        paramString(): string;
+    }
+}
+declare namespace java.awt.event {
+    class ActionEvent extends java.awt.AWTEvent {
+        static SHIFT_MASK: number;
+        static SHIFT_MASK_$LI$(): number;
+        static CTRL_MASK: number;
+        static CTRL_MASK_$LI$(): number;
+        static META_MASK: number;
+        static META_MASK_$LI$(): number;
+        static ALT_MASK: number;
+        static ALT_MASK_$LI$(): number;
+        static ACTION_FIRST: number;
+        static ACTION_LAST: number;
+        static ACTION_PERFORMED: number;
+        static ACTION_PERFORMED_$LI$(): number;
+        actionCommand: string;
+        when: number;
+        modifiers: number;
+        static __java_awt_event_ActionEvent_serialVersionUID: number;
+        constructor(source?: any, id?: any, command?: any, when?: any, modifiers?: any);
+        getActionCommand(): string;
+        getWhen(): number;
+        getModifiers(): number;
+        paramString(): string;
+    }
+}
+declare namespace java.awt.event {
+    class ComponentEvent extends java.awt.AWTEvent {
+        static COMPONENT_FIRST: number;
+        static COMPONENT_LAST: number;
+        static COMPONENT_MOVED: number;
+        static COMPONENT_MOVED_$LI$(): number;
+        static COMPONENT_RESIZED: number;
+        static COMPONENT_RESIZED_$LI$(): number;
+        static COMPONENT_SHOWN: number;
+        static COMPONENT_SHOWN_$LI$(): number;
+        static COMPONENT_HIDDEN: number;
+        static COMPONENT_HIDDEN_$LI$(): number;
+        static __java_awt_event_ComponentEvent_serialVersionUID: number;
+        constructor(source: java.awt.Component, id: number);
+        getComponent(): java.awt.Component;
+        paramString(): string;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * Constructs an <code>AdjustmentEvent</code> object with the
+     * specified Adjustable source, event type, adjustment type, and value.
+     * <p> This method throws an
+     * <code>IllegalArgumentException</code> if <code>source</code>
+     * is <code>null</code>.
+     *
+     * @param {*} source The <code>Adjustable</code> object where the
+     * event originated
+     * @param {number} id     An integer indicating the type of event.
+     * For information on allowable values, see
+     * the class description for {@link AdjustmentEvent}
+     * @param {number} type   An integer indicating the adjustment type.
+     * For information on allowable values, see
+     * the class description for {@link AdjustmentEvent}
+     * @param {number} value  The current value of the adjustment
+     * @param {boolean} isAdjusting A boolean that equals <code>true</code> if the event is one
+     * of a series of multiple adjusting events,
+     * otherwise <code>false</code>
+     * @throws IllegalArgumentException if <code>source</code> is null
+     * @since 1.4
+     * @see #getSource()
+     * @see #getID()
+     * @see #getAdjustmentType()
+     * @see #getValue()
+     * @see #getValueIsAdjusting()
+     * @class
+     * @extends java.awt.AWTEvent
+     * @author Amy Fowler
+     */
+    class AdjustmentEvent extends java.awt.AWTEvent {
+        /**
+         * Marks the first integer id for the range of adjustment event ids.
+         */
+        static ADJUSTMENT_FIRST: number;
+        /**
+         * Marks the last integer id for the range of adjustment event ids.
+         */
+        static ADJUSTMENT_LAST: number;
+        /**
+         * The adjustment value changed event.
+         */
+        static ADJUSTMENT_VALUE_CHANGED: number;
+        static ADJUSTMENT_VALUE_CHANGED_$LI$(): number;
+        /**
+         * The unit increment adjustment type.
+         */
+        static UNIT_INCREMENT: number;
+        /**
+         * The unit decrement adjustment type.
+         */
+        static UNIT_DECREMENT: number;
+        /**
+         * The block decrement adjustment type.
+         */
+        static BLOCK_DECREMENT: number;
+        /**
+         * The block increment adjustment type.
+         */
+        static BLOCK_INCREMENT: number;
+        /**
+         * The absolute tracking adjustment type.
+         */
+        static TRACK: number;
+        /**
+         * The adjustable object that fired the event.
+         *
+         * @serial
+         * @see #getAdjustable
+         */
+        adjustable: java.awt.Adjustable;
+        /**
+         * <code>value</code> will contain the new value of the
+         * adjustable object.  This value will always be  in a
+         * range associated adjustable object.
+         *
+         * @serial
+         * @see #getValue
+         */
+        value: number;
+        /**
+         * The <code>adjustmentType</code> describes how the adjustable
+         * object value has changed.
+         * This value can be increased/decreased by a block or unit amount
+         * where the block is associated with page increments/decrements,
+         * and a unit is associated with line increments/decrements.
+         *
+         * @serial
+         * @see #getAdjustmentType
+         */
+        adjustmentType: number;
+        /**
+         * The <code>isAdjusting</code> is true if the event is one
+         * of the series of multiple adjustment events.
+         *
+         * @since 1.4
+         * @serial
+         * @see #getValueIsAdjusting
+         */
+        isAdjusting: boolean;
+        static __java_awt_event_AdjustmentEvent_serialVersionUID: number;
+        constructor(source?: any, id?: any, type?: any, value?: any, isAdjusting?: any);
+        /**
+         * Returns the <code>Adjustable</code> object where this event originated.
+         *
+         * @return {*} the <code>Adjustable</code> object where this event originated
+         */
+        getAdjustable(): java.awt.Adjustable;
+        /**
+         * Returns the current value in the adjustment event.
+         *
+         * @return {number} the current value in the adjustment event
+         */
+        getValue(): number;
+        /**
+         * Returns the type of adjustment which caused the value changed
+         * event.  It will have one of the following values:
+         * <ul>
+         * <li>{@link #UNIT_INCREMENT}
+         * <li>{@link #UNIT_DECREMENT}
+         * <li>{@link #BLOCK_INCREMENT}
+         * <li>{@link #BLOCK_DECREMENT}
+         * <li>{@link #TRACK}
+         * </ul>
+         * @return {number} one of the adjustment values listed above
+         */
+        getAdjustmentType(): number;
+        /**
+         * Returns <code>true</code> if this is one of multiple
+         * adjustment events.
+         *
+         * @return {boolean} <code>true</code> if this is one of multiple
+         * adjustment events, otherwise returns <code>false</code>
+         * @since 1.4
+         */
+        getValueIsAdjusting(): boolean;
+        paramString(): string;
+    }
+}
+declare namespace java.awt {
+    abstract class Container extends java.awt.Component {
+        layoutMgr: java.awt.LayoutManager;
+        components: java.awt.Component[];
+        insets: java.awt.Insets;
+        getLayout(): java.awt.LayoutManager;
+        setLayout(mgr: java.awt.LayoutManager): void;
+        doLayout(): void;
+        layout(): void;
+        add$java_awt_Component(component: java.awt.Component): java.awt.Component;
+        add$java_awt_Component$int(c: java.awt.Component, index: number): java.awt.Component;
+        add$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): java.awt.Component;
+        add$java_awt_Component$java_lang_Object(component: java.awt.Component, constraints: any): void;
+        add$java_awt_Component$java_lang_Object$int(component: java.awt.Component, constraints: any, index: number): void;
+        add(component?: any, constraints?: any, index?: any): any;
+        addImpl(component: java.awt.Component, constraints: any, index: number): void;
+        /**
+         *
+         */
+        doPaintInternal(): void;
+        getComponentCount(): number;
+        remove$int(index: number): void;
+        getComponent(n: number): java.awt.Component;
+        getComponents(): java.awt.Component[];
+        removeAll(): void;
+        remove$java_awt_Component(comp: java.awt.Component): void;
+        remove(comp?: any): any;
+        getInsets(): java.awt.Insets;
+        setInsets(insets: java.awt.Insets): void;
+        setComponentZOrder(component: java.awt.Component, zOrder: number): void;
+        constructor();
+    }
+}
+declare namespace java.awt {
+    class Choice extends java.awt.Component implements java.awt.ItemSelectable {
+        pItems: java.util.Vector<string>;
+        selectedIndex: number;
+        itemListeners: Array<java.awt.event.ItemListener>;
+        static base: string;
+        static nameCounter: number;
+        static serialVersionUID: number;
+        constructor();
+        createHTML(): void;
+        getHTMLElement(): HTMLSelectElement;
+        initHTML(): void;
+        constructComponentName(): string;
+        getItemCount(): number;
+        countItems(): number;
+        getItem(index: number): string;
+        getItemImpl(index: number): string;
+        add(item: string): void;
+        addItem(item: string): void;
+        insertNoInvalidate(item: string, index: number): void;
+        insert(item: string, index: number): void;
+        remove$java_lang_String(item: string): void;
+        remove(item?: any): any;
+        remove$int(position: number): void;
+        removeNoInvalidate(position: number): void;
+        removeAll(): void;
+        getSelectedItem(): string;
+        getSelectedObjects(): any[];
+        getSelectedIndex(): number;
+        select$int(pos: number): void;
+        select$java_lang_String(str: string): void;
+        select(str?: any): any;
+        addItemListener(l: java.awt.event.ItemListener): void;
+        removeItemListener(l: java.awt.event.ItemListener): void;
+        getItemListeners(): java.awt.event.ItemListener[];
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        processItemEvent(e: java.awt.event.ItemEvent): void;
+        paramString(): string;
+    }
+}
+declare namespace java.awt {
+    class Checkbox extends java.awt.Component implements java.awt.ItemSelectable {
+        label: string;
+        state: boolean;
+        group: java.awt.CheckboxGroup;
+        itemListeners: Array<java.awt.event.ItemListener>;
+        htmlCheckbox: HTMLInputElement;
+        htmlLabel: Text;
+        static base: string;
+        static nameCounter: number;
+        static serialVersionUID: number;
+        constructor(label?: any, group?: any, state?: any);
+        /**
+         *
+         * @return {HTMLLabelElement}
+         */
+        getHTMLElement(): HTMLLabelElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        constructComponentName(): string;
+        getLabel(): string;
+        setLabel(label: string): void;
+        getState(): boolean;
+        setStateInternal(state: boolean): void;
+        setState(state: boolean): void;
+        getSelectedObjects(): any[];
+        getCheckboxGroup(): java.awt.CheckboxGroup;
+        setCheckboxGroup(g: java.awt.CheckboxGroup): void;
+        addItemListener(l: java.awt.event.ItemListener): void;
+        removeItemListener(l: java.awt.event.ItemListener): void;
+        getItemListeners(): java.awt.event.ItemListener[];
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        processItemEvent(e: java.awt.event.ItemEvent): void;
+        paramString(): string;
+    }
+}
+declare namespace java.awt {
+    class TextField extends java.awt.Component {
+        actionListener: java.awt.event.ActionListener;
+        constructor(cols: number);
+        /**
+         *
+         * @return {HTMLInputElement}
+         */
+        getHTMLElement(): HTMLInputElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        initActionListener(): void;
+        addActionListener(actionListener: java.awt.event.ActionListener): void;
+        setText(text: string): void;
+        getText(): string;
+    }
+}
+declare namespace java.awt {
+    class Label extends java.awt.Component {
+        static LEFT: number;
+        static CENTER: number;
+        static RIGHT: number;
+        text: string;
+        alignment: number;
+        static base: string;
+        static nameCounter: number;
+        static serialVersionUID: number;
+        constructor(text?: any, alignment?: any);
+        /**
+         * Construct a name for this component. Called by getName() when the name is
+         * <code>null</code>.
+         * @return {string}
+         */
+        constructComponentName(): string;
+        getAlignment(): number;
+        setAlignment(alignment: number): void;
+        getText(): string;
+        setText(text: string): void;
+        paramString(): string;
+        /**
+         *
+         * @return {HTMLLabelElement}
+         */
+        getHTMLElement(): HTMLLabelElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+    }
+}
+declare namespace java.awt {
+    class Button extends java.awt.Component {
+        actionListener: java.awt.event.ActionListener;
+        actionCommand: string;
+        label: string;
+        background: java.awt.Color;
+        constructor(label: string);
+        /**
+         *
+         * @return {HTMLButtonElement}
+         */
+        getHTMLElement(): HTMLButtonElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        initActionListener(): void;
+        addActionListener(actionListener: java.awt.event.ActionListener): void;
+        setBackground(background: java.awt.Color): void;
+    }
+}
+declare namespace java.beans {
+    class PropertyChangeSupport implements java.io.Serializable {
+        map: PropertyChangeSupport.PropertyChangeListenerMap;
+        constructor(sourceBean: any);
+        addPropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        removePropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        getPropertyChangeListeners$(): java.beans.PropertyChangeListener[];
+        addPropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
+        addPropertyChangeListener(propertyName?: any, listener?: any): any;
+        removePropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
+        removePropertyChangeListener(propertyName?: any, listener?: any): any;
+        getPropertyChangeListeners$java_lang_String(propertyName: string): java.beans.PropertyChangeListener[];
+        getPropertyChangeListeners(propertyName?: any): java.beans.PropertyChangeListener[];
+        firePropertyChange$java_lang_String$java_lang_Object$java_lang_Object(propertyName: string, oldValue: any, newValue: any): void;
+        firePropertyChange$java_lang_String$int$int(propertyName: string, oldValue: number, newValue: number): void;
+        firePropertyChange(propertyName?: any, oldValue?: any, newValue?: any): any;
+        firePropertyChange$java_lang_String$boolean$boolean(propertyName: string, oldValue: boolean, newValue: boolean): void;
+        firePropertyChange$java_beans_PropertyChangeEvent(event: java.beans.PropertyChangeEvent): void;
+        static fire(listeners: java.beans.PropertyChangeListener[], event: java.beans.PropertyChangeEvent): void;
+        fireIndexedPropertyChange$java_lang_String$int$java_lang_Object$java_lang_Object(propertyName: string, index: number, oldValue: any, newValue: any): void;
+        fireIndexedPropertyChange$java_lang_String$int$int$int(propertyName: string, index: number, oldValue: number, newValue: number): void;
+        fireIndexedPropertyChange(propertyName?: any, index?: any, oldValue?: any, newValue?: any): any;
+        fireIndexedPropertyChange$java_lang_String$int$boolean$boolean(propertyName: string, index: number, oldValue: boolean, newValue: boolean): void;
+        hasListeners(propertyName: string): boolean;
+        source: any;
+        static serialVersionUID: number;
+    }
+    namespace PropertyChangeSupport {
+        class PropertyChangeListenerMap extends java.beans.ChangeListenerMap<java.beans.PropertyChangeListener> {
+            static EMPTY: java.beans.PropertyChangeListener[];
+            static EMPTY_$LI$(): java.beans.PropertyChangeListener[];
+            /**
+             *
+             * @param {number} length
+             * @return {java.beans.PropertyChangeListener[]}
+             */
+            newArray(length: number): java.beans.PropertyChangeListener[];
+            newProxy$java_lang_String$java_beans_PropertyChangeListener(name: string, listener: java.beans.PropertyChangeListener): java.beans.PropertyChangeListener;
+            /**
+             *
+             * @param {string} name
+             * @param {*} listener
+             * @return {*}
+             */
+            newProxy(name?: any, listener?: any): any;
+            extract$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): java.beans.PropertyChangeListener;
+            extract(listener?: any): any;
+            constructor();
+        }
+    }
+}
+declare namespace java.beans {
+    /**
+     * Constructs a new <code>IndexedPropertyChangeEvent</code> object.
+     *
+     * @param {*} source  The bean that fired the event.
+     * @param {string} propertyName  The programmatic name of the property that
+     * was changed.
+     * @param {*} oldValue      The old value of the property.
+     * @param {*} newValue      The new value of the property.
+     * @param {number} index index of the property element that was changed.
+     * @class
+     * @extends java.beans.PropertyChangeEvent
+     * @author Mark Davidson
+     */
+    class IndexedPropertyChangeEvent extends java.beans.PropertyChangeEvent {
+        static __java_beans_IndexedPropertyChangeEvent_serialVersionUID: number;
+        index: number;
+        constructor(source: any, propertyName: string, oldValue: any, newValue: any, index: number);
+        /**
+         * Gets the index of the property that was changed.
+         *
+         * @return {number} The index specifying the property element that was
+         * changed.
+         */
+        getIndex(): number;
+        appendTo(sb: java.lang.StringBuilder): void;
+    }
+}
+declare namespace sun.awt.geom {
+    class Order2 extends sun.awt.geom.Curve {
+        x0: number;
+        y0: number;
+        cx0: number;
+        cy0: number;
+        x1: number;
+        y1: number;
+        xmin: number;
+        xmax: number;
+        xcoeff0: number;
+        xcoeff1: number;
+        xcoeff2: number;
+        ycoeff0: number;
+        ycoeff1: number;
+        ycoeff2: number;
+        static insert(curves: java.util.Vector<any>, tmp: number[], x0: number, y0: number, cx0: number, cy0: number, x1: number, y1: number, direction: number): void;
+        static addInstance(curves: java.util.Vector<any>, x0: number, y0: number, cx0: number, cy0: number, x1: number, y1: number, direction: number): void;
+        static getHorizontalParams(c0: number, cp: number, c1: number, ret: number[]): number;
+        static split(coords: number[], pos: number, t: number): void;
+        constructor(x0: number, y0: number, cx0: number, cy0: number, x1: number, y1: number, direction: number);
+        getOrder(): number;
+        getXTop(): number;
+        getYTop(): number;
+        getXBot(): number;
+        getYBot(): number;
+        getXMin(): number;
+        getXMax(): number;
+        getX0(): number;
+        getY0(): number;
+        getCX0(): number;
+        getCY0(): number;
+        getX1(): number;
+        getY1(): number;
+        XforY(y: number): number;
+        TforY(y: number): number;
+        static TforY(y: number, ycoeff0: number, ycoeff1: number, ycoeff2: number): number;
+        XforT(t: number): number;
+        YforT(t: number): number;
+        dXforT(t: number, deriv: number): number;
+        dYforT(t: number, deriv: number): number;
+        nextVertical(t0: number, t1: number): number;
+        enlarge(r: java.awt.geom.Rectangle2D): void;
+        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
+        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
+        getReversedCurve(): sun.awt.geom.Curve;
+        getSegment(coords: number[]): number;
+        controlPointString(): string;
+    }
+}
+declare namespace sun.awt.geom {
+    class Order0 extends sun.awt.geom.Curve {
+        x: number;
+        y: number;
+        constructor(x: number, y: number);
+        getOrder(): number;
+        getXTop(): number;
+        getYTop(): number;
+        getXBot(): number;
+        getYBot(): number;
+        getXMin(): number;
+        getXMax(): number;
+        getX0(): number;
+        getY0(): number;
+        getX1(): number;
+        getY1(): number;
+        XforY(y: number): number;
+        TforY(y: number): number;
+        XforT(t: number): number;
+        YforT(t: number): number;
+        dXforT(t: number, deriv: number): number;
+        dYforT(t: number, deriv: number): number;
+        nextVertical(t0: number, t1: number): number;
+        crossingsFor(x: number, y: number): number;
+        accumulateCrossings(c: sun.awt.geom.Crossings): boolean;
+        enlarge(r: java.awt.geom.Rectangle2D): void;
+        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
+        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
+        getReversedCurve(): sun.awt.geom.Curve;
+        getSegment(coords: number[]): number;
+    }
+}
+declare namespace sun.awt.geom {
+    class Order1 extends sun.awt.geom.Curve {
+        x0: number;
+        y0: number;
+        x1: number;
+        y1: number;
+        xmin: number;
+        xmax: number;
+        constructor(x0: number, y0: number, x1: number, y1: number, direction: number);
+        getOrder(): number;
+        getXTop(): number;
+        getYTop(): number;
+        getXBot(): number;
+        getYBot(): number;
+        getXMin(): number;
+        getXMax(): number;
+        getX0(): number;
+        getY0(): number;
+        getX1(): number;
+        getY1(): number;
+        XforY(y: number): number;
+        TforY(y: number): number;
+        XforT(t: number): number;
+        YforT(t: number): number;
+        dXforT(t: number, deriv: number): number;
+        dYforT(t: number, deriv: number): number;
+        nextVertical(t0: number, t1: number): number;
+        accumulateCrossings(c: sun.awt.geom.Crossings): boolean;
+        enlarge(r: java.awt.geom.Rectangle2D): void;
+        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
+        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
+        getReversedCurve(): sun.awt.geom.Curve;
+        compareTo(other: sun.awt.geom.Curve, yrange: number[]): number;
+        getSegment(coords: number[]): number;
+    }
+}
+declare namespace sun.awt.geom {
+    class Order3 extends sun.awt.geom.Curve {
+        x0: number;
+        y0: number;
+        cx0: number;
+        cy0: number;
+        cx1: number;
+        cy1: number;
+        x1: number;
+        y1: number;
+        xmin: number;
+        xmax: number;
+        xcoeff0: number;
+        xcoeff1: number;
+        xcoeff2: number;
+        xcoeff3: number;
+        ycoeff0: number;
+        ycoeff1: number;
+        ycoeff2: number;
+        ycoeff3: number;
+        static insert(curves: java.util.Vector<any>, tmp: number[], x0: number, y0: number, cx0: number, cy0: number, cx1: number, cy1: number, x1: number, y1: number, direction: number): void;
+        static addInstance(curves: java.util.Vector<any>, x0: number, y0: number, cx0: number, cy0: number, cx1: number, cy1: number, x1: number, y1: number, direction: number): void;
+        static getHorizontalParams(c0: number, cp0: number, cp1: number, c1: number, ret: number[]): number;
+        static split(coords: number[], pos: number, t: number): void;
+        constructor(x0: number, y0: number, cx0: number, cy0: number, cx1: number, cy1: number, x1: number, y1: number, direction: number);
+        getOrder(): number;
+        getXTop(): number;
+        getYTop(): number;
+        getXBot(): number;
+        getYBot(): number;
+        getXMin(): number;
+        getXMax(): number;
+        getX0(): number;
+        getY0(): number;
+        getCX0(): number;
+        getCY0(): number;
+        getCX1(): number;
+        getCY1(): number;
+        getX1(): number;
+        getY1(): number;
+        TforY1: number;
+        YforT1: number;
+        TforY2: number;
+        YforT2: number;
+        TforY3: number;
+        YforT3: number;
+        TforY(y: number): number;
+        refine(a: number, b: number, c: number, target: number, t: number): number;
+        XforY(y: number): number;
+        XforT(t: number): number;
+        YforT(t: number): number;
+        dXforT(t: number, deriv: number): number;
+        dYforT(t: number, deriv: number): number;
+        nextVertical(t0: number, t1: number): number;
+        enlarge(r: java.awt.geom.Rectangle2D): void;
+        getSubCurve$double$double$int(ystart: number, yend: number, dir: number): sun.awt.geom.Curve;
+        getSubCurve(ystart?: any, yend?: any, dir?: any): sun.awt.geom.Curve;
+        getReversedCurve(): sun.awt.geom.Curve;
+        getSegment(coords: number[]): number;
+        controlPointString(): string;
     }
 }
 declare namespace javax.swing {
@@ -15539,6 +15539,62 @@ declare namespace javax.swing {
          * Empties the list.
          */
         removeAllElements(): void;
+    }
+}
+declare namespace javax.swing.undo {
+    /**
+     * Create and return a new StateEdit with a presentation name.
+     *
+     * @param {*} anObject The object to watch for changing state
+     * @param {string} name The presentation name to be used for this edit
+     *
+     * @see StateEdit
+     * @class
+     * @extends javax.swing.undo.AbstractUndoableEdit
+     * @author Ray Ryan
+     */
+    class StateEdit extends javax.swing.undo.AbstractUndoableEdit {
+        static RCSID: string;
+        /**
+         * The object being edited
+         */
+        object: javax.swing.undo.StateEditable;
+        /**
+         * The state information prior to the edit
+         */
+        preState: java.util.Hashtable<any, any>;
+        /**
+         * The state information after the edit
+         */
+        postState: java.util.Hashtable<any, any>;
+        /**
+         * The undo/redo presentation name
+         */
+        undoRedoName: string;
+        constructor(anObject?: any, name?: any);
+        init(anObject: javax.swing.undo.StateEditable, name: string): void;
+        /**
+         * Gets the post-edit state of the StateEditable object and
+         * ends the edit.
+         */
+        end(): void;
+        /**
+         * Tells the edited object to apply the state prior to the edit
+         */
+        undo(): void;
+        /**
+         * Tells the edited object to apply the state after the edit
+         */
+        redo(): void;
+        /**
+         * Gets the presentation name for this edit
+         * @return {string}
+         */
+        getPresentationName(): string;
+        /**
+         * Remove redundant key/values in state hashtables.
+         */
+        removeRedundantState(): void;
     }
 }
 declare namespace javax.swing.undo {
@@ -15671,1029 +15727,6 @@ declare namespace javax.swing.undo {
          * @return {string} a String representation of this object
          */
         toString(): string;
-    }
-}
-declare namespace javax.swing.undo {
-    /**
-     * Create and return a new StateEdit with a presentation name.
-     *
-     * @param {*} anObject The object to watch for changing state
-     * @param {string} name The presentation name to be used for this edit
-     *
-     * @see StateEdit
-     * @class
-     * @extends javax.swing.undo.AbstractUndoableEdit
-     * @author Ray Ryan
-     */
-    class StateEdit extends javax.swing.undo.AbstractUndoableEdit {
-        static RCSID: string;
-        /**
-         * The object being edited
-         */
-        object: javax.swing.undo.StateEditable;
-        /**
-         * The state information prior to the edit
-         */
-        preState: java.util.Hashtable<any, any>;
-        /**
-         * The state information after the edit
-         */
-        postState: java.util.Hashtable<any, any>;
-        /**
-         * The undo/redo presentation name
-         */
-        undoRedoName: string;
-        constructor(anObject?: any, name?: any);
-        init(anObject: javax.swing.undo.StateEditable, name: string): void;
-        /**
-         * Gets the post-edit state of the StateEditable object and
-         * ends the edit.
-         */
-        end(): void;
-        /**
-         * Tells the edited object to apply the state prior to the edit
-         */
-        undo(): void;
-        /**
-         * Tells the edited object to apply the state after the edit
-         */
-        redo(): void;
-        /**
-         * Gets the presentation name for this edit
-         * @return {string}
-         */
-        getPresentationName(): string;
-        /**
-         * Remove redundant key/values in state hashtables.
-         */
-        removeRedundantState(): void;
-    }
-}
-declare namespace javax.swing.event {
-    /**
-     * Constructs a SwingPropertyChangeSupport object.
-     *
-     * @param {*} sourceBean
-     * the bean to be given as the source for any events
-     * @param {boolean} notifyOnEDT
-     * whether to notify listeners on the <i>Event Dispatch
-     * Thread</i> only
-     *
-     * @throws NullPointerException
-     * if {@code sourceBean} is {@code null}
-     * @since 1.6
-     * @class
-     * @extends java.beans.PropertyChangeSupport
-     * @author Igor Kushnirskiy
-     */
-    class SwingPropertyChangeSupport extends java.beans.PropertyChangeSupport {
-        constructor(sourceBean?: any, notifyOnEDT?: any);
-        firePropertyChange(propertyName?: any, oldValue?: any, newValue?: any): any;
-        firePropertyChange$java_beans_PropertyChangeEvent(evt: java.beans.PropertyChangeEvent): void;
-        /**
-         * Returns {@code notifyOnEDT} property.
-         *
-         * @return {boolean} {@code notifyOnEDT} property
-         * @see #SwingPropertyChangeSupport(Object sourceBean, boolean notifyOnEDT)
-         * @since 1.6
-         */
-        isNotifyOnEDT(): boolean;
-        static serialVersionUID: number;
-        /**
-         * whether to notify listeners on EDT
-         *
-         * @serial
-         * @since 1.6
-         */
-        notifyOnEDT: boolean;
-    }
-}
-declare namespace java.awt {
-    class Window extends java.awt.Container {
-        static loaded: boolean;
-        getElement(): HTMLDivElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        /**
-         * This represents the warning message that is to be displayed in a non
-         * secure window. ie : a window that has a security manager installed that
-         * denies {@code AWTPermission("showWindowWithoutWarningBanner")}. This
-         * message can be displayed anywhere in the window.
-         *
-         * @serial
-         * @see #getWarningString
-         */
-        warningString: string;
-        /**
-         * {@code icons} is the graphical way we can represent the frames and
-         * dialogs. {@code Window} can't display icon but it's being inherited by
-         * owned {@code Dialog}s.
-         *
-         * @serial
-         * @see #getIconImages
-         * @see #setIconImages
-         */
-        icons: java.util.List<java.awt.Image>;
-        static OPENED: number;
-        state: number;
-        alwaysOnTop: boolean;
-        focusableWindowState: boolean;
-        autoRequestFocus: boolean;
-        isInShow: boolean;
-        opacity: number;
-        shape: java.awt.Shape;
-        static base: string;
-        static nameCounter: number;
-        isTrayIconWindow: boolean;
-        constructor(owner?: any);
-        ownedInit(owner: Window): void;
-        constructComponentName(): string;
-        getIconImages(): java.util.List<java.awt.Image>;
-        setIconImages(icons: java.util.List<any>): void;
-        setIconImage(image: java.awt.Image): void;
-        pack(): void;
-        setMinimumSize(minimumSize: java.awt.Dimension): void;
-        /**
-         *
-         * @param {boolean} visible
-         */
-        setVisible(visible: boolean): void;
-        dispose(): void;
-        toFront(): void;
-        toBack(): void;
-        getToolkit(): java.awt.Toolkit;
-        getWarningString(): string;
-        setCursor(cursor: java.awt.Cursor): void;
-        windowListeners: Array<java.awt.event.WindowListener>;
-        windowStateListeners: Array<java.awt.event.WindowStateListener>;
-        windowFocusListeners: Array<java.awt.event.WindowFocusListener>;
-        addWindowListener(l: java.awt.event.WindowListener): void;
-        addWindowStateListener(l: java.awt.event.WindowStateListener): void;
-        addWindowFocusListener(l: java.awt.event.WindowFocusListener): void;
-        removeWindowListener(l: java.awt.event.WindowListener): void;
-        removeWindowStateListener(l: java.awt.event.WindowStateListener): void;
-        removeWindowFocusListener(l: java.awt.event.WindowFocusListener): void;
-        getWindowListeners(): java.awt.event.WindowListener[];
-        getWindowFocusListeners(): java.awt.event.WindowFocusListener[];
-        getWindowStateListeners(): java.awt.event.WindowStateListener[];
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        processWindowEvent(e: java.awt.event.WindowEvent): void;
-        processWindowFocusEvent(e: java.awt.event.WindowEvent): void;
-        processWindowStateEvent(e: java.awt.event.WindowEvent): void;
-        setAlwaysOnTop(alwaysOnTop: boolean): void;
-        isAlwaysOnTopSupported(): boolean;
-        isAlwaysOnTop(): boolean;
-        isActive(): boolean;
-        isFocused(): boolean;
-        setFocusCycleRoot(focusCycleRoot: boolean): void;
-        isFocusCycleRoot(): boolean;
-        getFocusCycleRootAncestor(): java.awt.Container;
-        isFocusableWindow(): boolean;
-        getFocusableWindowState(): boolean;
-        setFocusableWindowState(focusableWindowState: boolean): void;
-        setAutoRequestFocus(autoRequestFocus: boolean): void;
-        isAutoRequestFocus(): boolean;
-        addPropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
-        addPropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
-        addPropertyChangeListener(propertyName?: any, listener?: any): any;
-        isShowing(): boolean;
-        /**
-         * Window type.
-         *
-         * Synchronization: ObjectLock
-         */
-        type: Window.Type;
-        setType(type: Window.Type): void;
-        getType(): Window.Type;
-        getOpacity(): number;
-        setOpacity(opacity: number): void;
-        getShape(): java.awt.Shape;
-        setShape(shape: java.awt.Shape): void;
-    }
-    namespace Window {
-        enum Type {
-            /**
-             * Represents a <i>normal</i> window.
-             *
-             * This is the default type for objects of the {@code Window} class or
-             * its descendants. Use this type for regular top-level windows.
-             */
-            NORMAL = 0,
-            /**
-             * Represents a <i>utility</i> window.
-             *
-             * A utility window is usually a small window such as a toolbar or a
-             * palette. The native system may render the window with smaller
-             * title-bar if the window is either a {@code Frame} or a {@code
-             * Dialog} object, and if it has its decorations enabled.
-             */
-            UTILITY = 1,
-            /**
-             * Represents a <i>popup</i> window.
-             *
-             * A popup window is a temporary window such as a drop-down menu or a
-             * tooltip. On some platforms, windows of that type may be forcibly made
-             * undecorated even if they are instances of the {@code Frame} or
-             * {@code Dialog} class, and have decorations enabled.
-             */
-            POPUP = 2
-        }
-    }
-}
-declare namespace java.awt {
-    class Panel extends java.awt.Container {
-        htmlCanvas: HTMLCanvasElement;
-        constructor(layout?: any);
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         * @return {java.awt.Graphics}
-         */
-        getGraphics(): java.awt.Graphics;
-        /**
-         *
-         * @param {java.awt.Color} background
-         */
-        setBackground(background: java.awt.Color): void;
-        /**
-         *
-         */
-        doPaintInternal(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-    }
-}
-declare namespace javax.swing {
-    abstract class JComponent extends java.awt.Container implements java.io.Serializable {
-        listenerList: javax.swing.event.EventListenerList;
-        constructor();
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * Constructs a <code>WindowEvent</code> object.
-     * <p>This method throws an
-     * <code>IllegalArgumentException</code> if <code>source</code>
-     * is <code>null</code>.
-     *
-     * @param {java.awt.Window} source    The <code>Window</code> object
-     * that originated the event
-     * @param {number} id        An integer indicating the type of event.
-     * For information on allowable values, see
-     * the class description for {@link WindowEvent}
-     * @param {java.awt.Window} opposite  The other window involved in the focus or activation
-     * change, or <code>null</code>
-     * @param {number} oldState  Previous state of the window for window state change event.
-     * See {@code #getOldState()} for allowable values
-     * @param {number} newState  New state of the window for window state change event.
-     * See {@code #getNewState()} for allowable values
-     * @throws IllegalArgumentException if <code>source</code> is null
-     * @see #getWindow()
-     * @see #getID()
-     * @see #getOppositeWindow()
-     * @see #getOldState()
-     * @see #getNewState()
-     * @since 1.4
-     * @class
-     * @extends java.awt.event.ComponentEvent
-     * @author Carl Quinn
-     */
-    class WindowEvent extends java.awt.event.ComponentEvent {
-        /**
-         * The first number in the range of ids used for window events.
-         */
-        static WINDOW_FIRST: number;
-        /**
-         * The window opened event.  This event is delivered only
-         * the first time a window is made visible.
-         */
-        static WINDOW_OPENED: number;
-        static WINDOW_OPENED_$LI$(): number;
-        /**
-         * The "window is closing" event. This event is delivered when
-         * the user attempts to close the window from the window's system menu.
-         * If the program does not explicitly hide or dispose the window
-         * while processing this event, the window close operation will be
-         * cancelled.
-         */
-        static WINDOW_CLOSING: number;
-        static WINDOW_CLOSING_$LI$(): number;
-        /**
-         * The window closed event. This event is delivered after the displayable
-         * window has been closed as the result of a call to dispose.
-         * @see java.awt.Component#isDisplayable
-         * @see Window#dispose
-         */
-        static WINDOW_CLOSED: number;
-        static WINDOW_CLOSED_$LI$(): number;
-        /**
-         * The window iconified event. This event is delivered when
-         * the window has been changed from a normal to a minimized state.
-         * For many platforms, a minimized window is displayed as
-         * the icon specified in the window's iconImage property.
-         * @see java.awt.Frame#setIconImage
-         */
-        static WINDOW_ICONIFIED: number;
-        static WINDOW_ICONIFIED_$LI$(): number;
-        /**
-         * The window deiconified event type. This event is delivered when
-         * the window has been changed from a minimized to a normal state.
-         */
-        static WINDOW_DEICONIFIED: number;
-        static WINDOW_DEICONIFIED_$LI$(): number;
-        /**
-         * The window-activated event type. This event is delivered when the Window
-         * becomes the active Window. Only a Frame or a Dialog can be the active
-         * Window. The native windowing system may denote the active Window or its
-         * children with special decorations, such as a highlighted title bar. The
-         * active Window is always either the focused Window, or the first Frame or
-         * Dialog that is an owner of the focused Window.
-         */
-        static WINDOW_ACTIVATED: number;
-        static WINDOW_ACTIVATED_$LI$(): number;
-        /**
-         * The window-deactivated event type. This event is delivered when the
-         * Window is no longer the active Window. Only a Frame or a Dialog can be
-         * the active Window. The native windowing system may denote the active
-         * Window or its children with special decorations, such as a highlighted
-         * title bar. The active Window is always either the focused Window, or the
-         * first Frame or Dialog that is an owner of the focused Window.
-         */
-        static WINDOW_DEACTIVATED: number;
-        static WINDOW_DEACTIVATED_$LI$(): number;
-        /**
-         * The window-gained-focus event type. This event is delivered when the
-         * Window becomes the focused Window, which means that the Window, or one
-         * of its subcomponents, will receive keyboard events.
-         */
-        static WINDOW_GAINED_FOCUS: number;
-        static WINDOW_GAINED_FOCUS_$LI$(): number;
-        /**
-         * The window-lost-focus event type. This event is delivered when a Window
-         * is no longer the focused Window, which means keyboard events will no
-         * longer be delivered to the Window or any of its subcomponents.
-         */
-        static WINDOW_LOST_FOCUS: number;
-        static WINDOW_LOST_FOCUS_$LI$(): number;
-        /**
-         * The window-state-changed event type.  This event is delivered
-         * when a Window's state is changed by virtue of it being
-         * iconified, maximized etc.
-         * @since 1.4
-         */
-        static WINDOW_STATE_CHANGED: number;
-        static WINDOW_STATE_CHANGED_$LI$(): number;
-        /**
-         * The last number in the range of ids used for window events.
-         */
-        static WINDOW_LAST: number;
-        static WINDOW_LAST_$LI$(): number;
-        /**
-         * The other Window involved in this focus or activation change. For a
-         * WINDOW_ACTIVATED or WINDOW_GAINED_FOCUS event, this is the Window that
-         * lost activation or focus. For a WINDOW_DEACTIVATED or WINDOW_LOST_FOCUS
-         * event, this is the Window that gained activation or focus. For any other
-         * type of WindowEvent, or if the focus or activation change occurs with a
-         * native application, a Java application in a different VM, or with no
-         * other Window, null is returned.
-         *
-         * @see #getOppositeWindow
-         * @since 1.4
-         */
-        opposite: java.awt.Window;
-        /**
-         * TBS
-         */
-        oldState: number;
-        newState: number;
-        static __java_awt_event_WindowEvent_serialVersionUID: number;
-        constructor(source?: any, id?: any, opposite?: any, oldState?: any, newState?: any);
-        /**
-         * Returns the originator of the event.
-         *
-         * @return {java.awt.Window} the Window object that originated the event
-         */
-        getWindow(): java.awt.Window;
-        /**
-         * Returns the other Window involved in this focus or activation change.
-         * For a WINDOW_ACTIVATED or WINDOW_GAINED_FOCUS event, this is the Window
-         * that lost activation or focus. For a WINDOW_DEACTIVATED or
-         * WINDOW_LOST_FOCUS event, this is the Window that gained activation or
-         * focus. For any other type of WindowEvent, or if the focus or activation
-         * change occurs with a native application, with a Java application in a
-         * different VM or context, or with no other Window, null is returned.
-         *
-         * @return {java.awt.Window} the other Window involved in the focus or activation change, or
-         * null
-         * @since 1.4
-         */
-        getOppositeWindow(): java.awt.Window;
-        /**
-         * For <code>WINDOW_STATE_CHANGED</code> events returns the
-         * previous state of the window. The state is
-         * represented as a bitwise mask.
-         * <ul>
-         * <li><code>NORMAL</code>
-         * <br>Indicates that no state bits are set.
-         * <li><code>ICONIFIED</code>
-         * <li><code>MAXIMIZED_HORIZ</code>
-         * <li><code>MAXIMIZED_VERT</code>
-         * <li><code>MAXIMIZED_BOTH</code>
-         * <br>Concatenates <code>MAXIMIZED_HORIZ</code>
-         * and <code>MAXIMIZED_VERT</code>.
-         * </ul>
-         *
-         * @return {number} a bitwise mask of the previous window state
-         * @see java.awt.Frame#getExtendedState()
-         * @since 1.4
-         */
-        getOldState(): number;
-        /**
-         * For <code>WINDOW_STATE_CHANGED</code> events returns the
-         * new state of the window. The state is
-         * represented as a bitwise mask.
-         * <ul>
-         * <li><code>NORMAL</code>
-         * <br>Indicates that no state bits are set.
-         * <li><code>ICONIFIED</code>
-         * <li><code>MAXIMIZED_HORIZ</code>
-         * <li><code>MAXIMIZED_VERT</code>
-         * <li><code>MAXIMIZED_BOTH</code>
-         * <br>Concatenates <code>MAXIMIZED_HORIZ</code>
-         * and <code>MAXIMIZED_VERT</code>.
-         * </ul>
-         *
-         * @return {number} a bitwise mask of the new window state
-         * @see java.awt.Frame#getExtendedState()
-         * @since 1.4
-         */
-        getNewState(): number;
-        /**
-         * Returns a parameter string identifying this event.
-         * This method is useful for event-logging and for debugging.
-         *
-         * @return {string} a string identifying the event and its attributes
-         */
-        paramString(): string;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * Constructs a <code>ContainerEvent</code> object.
-     * <p> This method throws an
-     * <code>IllegalArgumentException</code> if <code>source</code>
-     * is <code>null</code>.
-     *
-     * @param {java.awt.Component} source The <code>Component</code> object (container)
-     * that originated the event
-     * @param {number} id     An integer indicating the type of event.
-     * For information on allowable values, see
-     * the class description for {@link ContainerEvent}
-     * @param {java.awt.Component} child  the component that was added or removed
-     * @throws IllegalArgumentException if <code>source</code> is null
-     * @see #getContainer()
-     * @see #getID()
-     * @see #getChild()
-     * @class
-     * @extends java.awt.event.ComponentEvent
-     * @author Tim Prinzing
-     */
-    class ContainerEvent extends java.awt.event.ComponentEvent {
-        /**
-         * The first number in the range of ids used for container events.
-         */
-        static CONTAINER_FIRST: number;
-        /**
-         * The last number in the range of ids used for container events.
-         */
-        static CONTAINER_LAST: number;
-        /**
-         * This event indicates that a component was added to the container.
-         */
-        static COMPONENT_ADDED: number;
-        static COMPONENT_ADDED_$LI$(): number;
-        /**
-         * This event indicates that a component was removed from the container.
-         */
-        static COMPONENT_REMOVED: number;
-        static COMPONENT_REMOVED_$LI$(): number;
-        /**
-         * The non-null component that is being added or
-         * removed from the Container.
-         *
-         * @serial
-         * @see #getChild()
-         */
-        child: java.awt.Component;
-        static __java_awt_event_ContainerEvent_serialVersionUID: number;
-        constructor(source: java.awt.Component, id: number, child: java.awt.Component);
-        /**
-         * Returns the originator of the event.
-         *
-         * @return {java.awt.Container} the <code>Container</code> object that originated
-         * the event, or <code>null</code> if the object is not a
-         * <code>Container</code>.
-         */
-        getContainer(): java.awt.Container;
-        /**
-         * Returns the component that was affected by the event.
-         *
-         * @return {java.awt.Component} the Component object that was added or removed
-         */
-        getChild(): java.awt.Component;
-        /**
-         * Returns a parameter string identifying this event.
-         * This method is useful for event-logging and for debugging.
-         *
-         * @return {string} a string identifying the event and its attributes
-         */
-        paramString(): string;
-    }
-}
-declare namespace java.awt.event {
-    abstract class InputEvent extends java.awt.event.ComponentEvent {
-        static SHIFT_MASK: number;
-        static SHIFT_MASK_$LI$(): number;
-        static CTRL_MASK: number;
-        static CTRL_MASK_$LI$(): number;
-        static META_MASK: number;
-        static META_MASK_$LI$(): number;
-        static ALT_MASK: number;
-        static ALT_MASK_$LI$(): number;
-        static ALT_GRAPH_MASK: number;
-        static BUTTON1_MASK: number;
-        static BUTTON2_MASK: number;
-        static BUTTON2_MASK_$LI$(): number;
-        static BUTTON3_MASK: number;
-        static BUTTON3_MASK_$LI$(): number;
-        static SHIFT_DOWN_MASK: number;
-        static CTRL_DOWN_MASK: number;
-        static META_DOWN_MASK: number;
-        static ALT_DOWN_MASK: number;
-        static BUTTON1_DOWN_MASK: number;
-        static BUTTON2_DOWN_MASK: number;
-        static BUTTON3_DOWN_MASK: number;
-        static ALT_GRAPH_DOWN_MASK: number;
-        static BUTTON_DOWN_MASK: number[];
-        static BUTTON_DOWN_MASK_$LI$(): number[];
-        static getMaskForButton(button: number): number;
-        static FIRST_HIGH_BIT: number;
-        static JDK_1_3_MODIFIERS: number;
-        static JDK_1_3_MODIFIERS_$LI$(): number;
-        static HIGH_MODIFIERS: number;
-        static HIGH_MODIFIERS_$LI$(): number;
-        when: number;
-        modifiers: number;
-        constructor(source: java.awt.Component, id: number, when: number, modifiers: number);
-        isShiftDown(): boolean;
-        isControlDown(): boolean;
-        isMetaDown(): boolean;
-        isAltDown(): boolean;
-        isAltGraphDown(): boolean;
-        getWhen(): number;
-        getModifiers(): number;
-        getModifiersEx(): number;
-        consume(): void;
-        isConsumed(): boolean;
-        static __java_awt_event_InputEvent_serialVersionUID: number;
-        static getModifiersExText(modifiers: number): string;
-    }
-}
-declare namespace java.awt.event {
-    /**
-     * Constructs a <code>FocusEvent</code> object with the
-     * specified temporary state and opposite <code>Component</code>.
-     * The opposite <code>Component</code> is the other
-     * <code>Component</code> involved in this focus change.
-     * For a <code>FOCUS_GAINED</code> event, this is the
-     * <code>Component</code> that lost focus. For a
-     * <code>FOCUS_LOST</code> event, this is the <code>Component</code>
-     * that gained focus. If this focus change occurs with a native
-     * application, with a Java application in a different VM,
-     * or with no other <code>Component</code>, then the opposite
-     * <code>Component</code> is <code>null</code>.
-     * <p> This method throws an
-     * <code>IllegalArgumentException</code> if <code>source</code>
-     * is <code>null</code>.
-     *
-     * @param {java.awt.Component} source     The <code>Component</code> that originated the event
-     * @param {number} id         An integer indicating the type of event.
-     * For information on allowable values, see
-     * the class description for {@link FocusEvent}
-     * @param {boolean} temporary  Equals <code>true</code> if the focus change is temporary;
-     * <code>false</code> otherwise
-     * @param {java.awt.Component} opposite   The other Component involved in the focus change,
-     * or <code>null</code>
-     * @throws IllegalArgumentException if <code>source</code> equals {@code null}
-     * @see #getSource()
-     * @see #getID()
-     * @see #isTemporary()
-     * @see #getOppositeComponent()
-     * @since 1.4
-     * @class
-     * @extends java.awt.event.ComponentEvent
-     * @author Carl Quinn
-     */
-    class FocusEvent extends java.awt.event.ComponentEvent {
-        /**
-         * The first number in the range of ids used for focus events.
-         */
-        static FOCUS_FIRST: number;
-        /**
-         * The last number in the range of ids used for focus events.
-         */
-        static FOCUS_LAST: number;
-        /**
-         * This event indicates that the Component is now the focus owner.
-         */
-        static FOCUS_GAINED: number;
-        static FOCUS_GAINED_$LI$(): number;
-        /**
-         * This event indicates that the Component is no longer the focus owner.
-         */
-        static FOCUS_LOST: number;
-        static FOCUS_LOST_$LI$(): number;
-        /**
-         * A focus event can have two different levels, permanent and temporary.
-         * It will be set to true if some operation takes away the focus
-         * temporarily and intends on getting it back once the event is completed.
-         * Otherwise it will be set to false.
-         *
-         * @serial
-         * @see #isTemporary
-         */
-        temporary: boolean;
-        /**
-         * The other Component involved in this focus change. For a FOCUS_GAINED
-         * event, this is the Component that lost focus. For a FOCUS_LOST event,
-         * this is the Component that gained focus. If this focus change occurs
-         * with a native application, a Java application in a different VM, or with
-         * no other Component, then the opposite Component is null.
-         *
-         * @see #getOppositeComponent
-         * @since 1.4
-         */
-        opposite: java.awt.Component;
-        static __java_awt_event_FocusEvent_serialVersionUID: number;
-        constructor(source?: any, id?: any, temporary?: any, opposite?: any);
-        /**
-         * Identifies the focus change event as temporary or permanent.
-         *
-         * @return {boolean} <code>true</code> if the focus change is temporary;
-         * <code>false</code> otherwise
-         */
-        isTemporary(): boolean;
-        /**
-         * Returns the other Component involved in this focus change. For a
-         * FOCUS_GAINED event, this is the Component that lost focus. For a
-         * FOCUS_LOST event, this is the Component that gained focus. If this
-         * focus change occurs with a native application, with a Java application
-         * in a different VM or context, or with no other Component, then null is
-         * returned.
-         *
-         * @return {java.awt.Component} the other Component involved in the focus change, or null
-         * @since 1.4
-         */
-        getOppositeComponent(): java.awt.Component;
-        /**
-         * Returns a parameter string identifying this event.
-         * This method is useful for event-logging and for debugging.
-         *
-         * @return {string} a string identifying the event and its attributes
-         */
-        paramString(): string;
-    }
-}
-declare namespace java.awt {
-    class WebGraphics2D extends java.awt.Graphics2D {
-        context: CanvasRenderingContext2D;
-        constructor(canvas: HTMLCanvasElement);
-        drawString$java_lang_String$int$int(s: string, x: number, y: number): void;
-        /**
-         *
-         * @param {string} s
-         * @param {number} x
-         * @param {number} y
-         */
-        drawString(s?: any, x?: any, y?: any): any;
-        getContext(): CanvasRenderingContext2D;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        clearRect(x: number, y: number, width: number, height: number): void;
-        create(x?: any, y?: any, width?: any, height?: any): java.awt.Graphics;
-        create$(): java.awt.Graphics;
-        /**
-         *
-         * @param {*} hintKey
-         * @param {*} hintValue
-         */
-        setRenderingHint(hintKey: any, hintValue: any): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         * @param {number} startAngle
-         * @param {number} arcAngle
-         */
-        drawArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): void;
-        /**
-         *
-         * @param {number} x1
-         * @param {number} y1
-         * @param {number} x2
-         * @param {number} y2
-         */
-        drawLine(x1: number, y1: number, x2: number, y2: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        drawOval(x: number, y: number, width: number, height: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         * @param {number} arcWidth
-         * @param {number} arcHeight
-         */
-        drawRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        drawRect(x: number, y: number, width: number, height: number): void;
-        drawPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
-        /**
-         *
-         * @param {int[]} xPoints
-         * @param {int[]} yPoints
-         * @param {number} nPoints
-         */
-        drawPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
-        drawPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
-        fillPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
-        getClipBounds$java_awt_Rectangle(r: java.awt.Rectangle): java.awt.Rectangle;
-        /**
-         *
-         * @param {java.awt.Rectangle} r
-         * @return {java.awt.Rectangle}
-         */
-        getClipBounds(r?: any): java.awt.Rectangle;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         * @param {boolean} raised
-         */
-        draw3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         * @return {boolean}
-         */
-        hitClip(x: number, y: number, width: number, height: number): boolean;
-        /**
-         *
-         * @param {int[]} xPoints
-         * @param {int[]} yPoints
-         * @param {number} nPoints
-         */
-        drawPolyline(xPoints: number[], yPoints: number[], nPoints: number): void;
-        /**
-         *
-         * @param {*} s
-         */
-        draw(s: java.awt.Shape): void;
-        /**
-         *
-         * @param {*} s
-         */
-        fill(s: java.awt.Shape): void;
-        drawImage$java_awt_Image$java_awt_geom_AffineTransform$java_awt_image_ImageObserver(img: java.awt.Image, xform: java.awt.geom.AffineTransform, obs: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
-        /**
-         *
-         * @param {java.awt.Image} img
-         * @param {number} dx1
-         * @param {number} dy1
-         * @param {number} dx2
-         * @param {number} dy2
-         * @param {number} sx1
-         * @param {number} sy1
-         * @param {number} sx2
-         * @param {number} sy2
-         * @param {java.awt.Color} bgcolor
-         * @param {*} observer
-         * @return {boolean}
-         */
-        drawImage(img?: any, dx1?: any, dy1?: any, dx2?: any, dy2?: any, sx1?: any, sy1?: any, sx2?: any, sy2?: any, bgcolor?: any, observer?: any): boolean;
-        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
-        drawImage$java_awt_Image$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, observer: java.awt.image.ImageObserver): boolean;
-        fillPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
-        /**
-         *
-         * @param {int[]} xPoints
-         * @param {int[]} yPoints
-         * @param {number} nPoints
-         */
-        fillPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
-        clip: java.awt.Shape;
-        /**
-         *
-         * @return {*}
-         */
-        getClip(): java.awt.Shape;
-        setClip$java_awt_Shape(clip: java.awt.Shape): void;
-        setClip$int$int$int$int(x: number, y: number, width: number, height: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        setClip(x?: any, y?: any, width?: any, height?: any): any;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        clipRect(x: number, y: number, width: number, height: number): void;
-        getClipBounds$(): java.awt.Rectangle;
-        translate$int$int(x: number, y: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         */
-        translate(x?: any, y?: any): any;
-        drawString$java_lang_String$float$float(str: string, x: number, y: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         * @param {number} startAngle
-         * @param {number} arcAngle
-         */
-        fillArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        fillOval(x: number, y: number, width: number, height: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         */
-        fillRect(x: number, y: number, width: number, height: number): void;
-        /**
-         *
-         * @param {number} x
-         * @param {number} y
-         * @param {number} width
-         * @param {number} height
-         * @param {number} arcWidth
-         * @param {number} arcHeight
-         */
-        fillRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): void;
-        color: java.awt.Color;
-        /**
-         *
-         * @param {java.awt.Color} c
-         */
-        setColor(c: java.awt.Color): void;
-        /**
-         *
-         * @return {java.awt.Color}
-         */
-        getColor(): java.awt.Color;
-        translate$double$double(tx: number, ty: number): void;
-        rotate$double(theta: number): void;
-        rotate$double$double$double(theta: number, x: number, y: number): void;
-        /**
-         *
-         * @param {number} theta
-         * @param {number} x
-         * @param {number} y
-         */
-        rotate(theta?: any, x?: any, y?: any): any;
-        /**
-         *
-         * @param {number} sx
-         * @param {number} sy
-         */
-        scale(sx: number, sy: number): void;
-        /**
-         *
-         * @param {number} shx
-         * @param {number} shy
-         */
-        shear(shx: number, shy: number): void;
-        /**
-         *
-         */
-        dispose(): void;
-        font: java.awt.Font;
-        /**
-         *
-         * @param {java.awt.Font} font
-         */
-        setFont(font: java.awt.Font): void;
-        /**
-         *
-         * @return {java.awt.Font}
-         */
-        getFont(): java.awt.Font;
-        background: java.awt.Color;
-        /**
-         *
-         * @param {java.awt.Color} color
-         */
-        setBackground(color: java.awt.Color): void;
-        /**
-         *
-         * @return {java.awt.Color}
-         */
-        getBackground(): java.awt.Color;
-        __transform: java.awt.geom.AffineTransform;
-        /**
-         *
-         * @param {java.awt.geom.AffineTransform} transform
-         */
-        setTransform(transform: java.awt.geom.AffineTransform): void;
-        /**
-         *
-         * @return {java.awt.geom.AffineTransform}
-         */
-        getTransform(): java.awt.geom.AffineTransform;
-        /**
-         *
-         * @param {java.awt.geom.AffineTransform} Tx
-         */
-        transform(Tx: java.awt.geom.AffineTransform): void;
-        /**
-         *
-         */
-        setPaintMode(): void;
-        /**
-         *
-         * @return {*}
-         */
-        getPaint(): java.awt.Paint;
-        /**
-         *
-         * @param {*} paint
-         */
-        setPaint(paint: java.awt.Paint): void;
-        /**
-         *
-         * @param {*} s
-         */
-        setStroke(s: java.awt.Stroke): void;
     }
 }
 declare namespace java.awt.geom {
@@ -17149,6 +16182,973 @@ declare namespace java.awt {
         toString(): string;
     }
 }
+declare namespace java.awt {
+    class WebGraphics2D extends java.awt.Graphics2D {
+        context: CanvasRenderingContext2D;
+        constructor(canvas: HTMLCanvasElement);
+        drawString$java_lang_String$int$int(s: string, x: number, y: number): void;
+        /**
+         *
+         * @param {string} s
+         * @param {number} x
+         * @param {number} y
+         */
+        drawString(s?: any, x?: any, y?: any): any;
+        getContext(): CanvasRenderingContext2D;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        clearRect(x: number, y: number, width: number, height: number): void;
+        create(x?: any, y?: any, width?: any, height?: any): java.awt.Graphics;
+        create$(): java.awt.Graphics;
+        /**
+         *
+         * @param {*} hintKey
+         * @param {*} hintValue
+         */
+        setRenderingHint(hintKey: any, hintValue: any): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @param {number} startAngle
+         * @param {number} arcAngle
+         */
+        drawArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): void;
+        /**
+         *
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         */
+        drawLine(x1: number, y1: number, x2: number, y2: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        drawOval(x: number, y: number, width: number, height: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @param {number} arcWidth
+         * @param {number} arcHeight
+         */
+        drawRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        drawRect(x: number, y: number, width: number, height: number): void;
+        drawPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
+        /**
+         *
+         * @param {int[]} xPoints
+         * @param {int[]} yPoints
+         * @param {number} nPoints
+         */
+        drawPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
+        drawPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
+        fillPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
+        getClipBounds$java_awt_Rectangle(r: java.awt.Rectangle): java.awt.Rectangle;
+        /**
+         *
+         * @param {java.awt.Rectangle} r
+         * @return {java.awt.Rectangle}
+         */
+        getClipBounds(r?: any): java.awt.Rectangle;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @param {boolean} raised
+         */
+        draw3DRect(x: number, y: number, width: number, height: number, raised: boolean): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @return {boolean}
+         */
+        hitClip(x: number, y: number, width: number, height: number): boolean;
+        /**
+         *
+         * @param {int[]} xPoints
+         * @param {int[]} yPoints
+         * @param {number} nPoints
+         */
+        drawPolyline(xPoints: number[], yPoints: number[], nPoints: number): void;
+        /**
+         *
+         * @param {*} s
+         */
+        draw(s: java.awt.Shape): void;
+        /**
+         *
+         * @param {*} s
+         */
+        fill(s: java.awt.Shape): void;
+        drawImage$java_awt_Image$java_awt_geom_AffineTransform$java_awt_image_ImageObserver(img: java.awt.Image, xform: java.awt.geom.AffineTransform, obs: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
+        /**
+         *
+         * @param {java.awt.Image} img
+         * @param {number} dx1
+         * @param {number} dy1
+         * @param {number} dx2
+         * @param {number} dy2
+         * @param {number} sx1
+         * @param {number} sy1
+         * @param {number} sx2
+         * @param {number} sy2
+         * @param {java.awt.Color} bgcolor
+         * @param {*} observer
+         * @return {boolean}
+         */
+        drawImage(img?: any, dx1?: any, dy1?: any, dx2?: any, dy2?: any, sx1?: any, sy1?: any, sx2?: any, sy2?: any, bgcolor?: any, observer?: any): boolean;
+        drawImage$java_awt_Image$int$int$int$int$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, dx1: number, dy1: number, dx2: number, dy2: number, sx1: number, sy1: number, sx2: number, sy2: number, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
+        drawImage$java_awt_Image$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, observer: java.awt.image.ImageObserver): boolean;
+        fillPolygon$int_A$int_A$int(xPoints: number[], yPoints: number[], nPoints: number): void;
+        /**
+         *
+         * @param {int[]} xPoints
+         * @param {int[]} yPoints
+         * @param {number} nPoints
+         */
+        fillPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
+        clip: java.awt.Shape;
+        /**
+         *
+         * @return {*}
+         */
+        getClip(): java.awt.Shape;
+        setClip$java_awt_Shape(clip: java.awt.Shape): void;
+        setClip$int$int$int$int(x: number, y: number, width: number, height: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        setClip(x?: any, y?: any, width?: any, height?: any): any;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        clipRect(x: number, y: number, width: number, height: number): void;
+        getClipBounds$(): java.awt.Rectangle;
+        translate$int$int(x: number, y: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         */
+        translate(x?: any, y?: any): any;
+        drawString$java_lang_String$float$float(str: string, x: number, y: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @param {number} startAngle
+         * @param {number} arcAngle
+         */
+        fillArc(x: number, y: number, width: number, height: number, startAngle: number, arcAngle: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        fillOval(x: number, y: number, width: number, height: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        fillRect(x: number, y: number, width: number, height: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @param {number} arcWidth
+         * @param {number} arcHeight
+         */
+        fillRoundRect(x: number, y: number, width: number, height: number, arcWidth: number, arcHeight: number): void;
+        color: java.awt.Color;
+        /**
+         *
+         * @param {java.awt.Color} c
+         */
+        setColor(c: java.awt.Color): void;
+        /**
+         *
+         * @return {java.awt.Color}
+         */
+        getColor(): java.awt.Color;
+        translate$double$double(tx: number, ty: number): void;
+        rotate$double(theta: number): void;
+        rotate$double$double$double(theta: number, x: number, y: number): void;
+        /**
+         *
+         * @param {number} theta
+         * @param {number} x
+         * @param {number} y
+         */
+        rotate(theta?: any, x?: any, y?: any): any;
+        /**
+         *
+         * @param {number} sx
+         * @param {number} sy
+         */
+        scale(sx: number, sy: number): void;
+        /**
+         *
+         * @param {number} shx
+         * @param {number} shy
+         */
+        shear(shx: number, shy: number): void;
+        /**
+         *
+         */
+        dispose(): void;
+        font: java.awt.Font;
+        /**
+         *
+         * @param {java.awt.Font} font
+         */
+        setFont(font: java.awt.Font): void;
+        /**
+         *
+         * @return {java.awt.Font}
+         */
+        getFont(): java.awt.Font;
+        background: java.awt.Color;
+        /**
+         *
+         * @param {java.awt.Color} color
+         */
+        setBackground(color: java.awt.Color): void;
+        /**
+         *
+         * @return {java.awt.Color}
+         */
+        getBackground(): java.awt.Color;
+        __transform: java.awt.geom.AffineTransform;
+        /**
+         *
+         * @param {java.awt.geom.AffineTransform} transform
+         */
+        setTransform(transform: java.awt.geom.AffineTransform): void;
+        /**
+         *
+         * @return {java.awt.geom.AffineTransform}
+         */
+        getTransform(): java.awt.geom.AffineTransform;
+        /**
+         *
+         * @param {java.awt.geom.AffineTransform} Tx
+         */
+        transform(Tx: java.awt.geom.AffineTransform): void;
+        /**
+         *
+         */
+        setPaintMode(): void;
+        /**
+         *
+         * @return {*}
+         */
+        getPaint(): java.awt.Paint;
+        /**
+         *
+         * @param {*} paint
+         */
+        setPaint(paint: java.awt.Paint): void;
+        /**
+         *
+         * @param {*} s
+         */
+        setStroke(s: java.awt.Stroke): void;
+    }
+}
+declare namespace java.awt.event {
+    abstract class InputEvent extends java.awt.event.ComponentEvent {
+        static SHIFT_MASK: number;
+        static SHIFT_MASK_$LI$(): number;
+        static CTRL_MASK: number;
+        static CTRL_MASK_$LI$(): number;
+        static META_MASK: number;
+        static META_MASK_$LI$(): number;
+        static ALT_MASK: number;
+        static ALT_MASK_$LI$(): number;
+        static ALT_GRAPH_MASK: number;
+        static BUTTON1_MASK: number;
+        static BUTTON2_MASK: number;
+        static BUTTON2_MASK_$LI$(): number;
+        static BUTTON3_MASK: number;
+        static BUTTON3_MASK_$LI$(): number;
+        static SHIFT_DOWN_MASK: number;
+        static CTRL_DOWN_MASK: number;
+        static META_DOWN_MASK: number;
+        static ALT_DOWN_MASK: number;
+        static BUTTON1_DOWN_MASK: number;
+        static BUTTON2_DOWN_MASK: number;
+        static BUTTON3_DOWN_MASK: number;
+        static ALT_GRAPH_DOWN_MASK: number;
+        static BUTTON_DOWN_MASK: number[];
+        static BUTTON_DOWN_MASK_$LI$(): number[];
+        static getMaskForButton(button: number): number;
+        static FIRST_HIGH_BIT: number;
+        static JDK_1_3_MODIFIERS: number;
+        static JDK_1_3_MODIFIERS_$LI$(): number;
+        static HIGH_MODIFIERS: number;
+        static HIGH_MODIFIERS_$LI$(): number;
+        when: number;
+        modifiers: number;
+        constructor(source: java.awt.Component, id: number, when: number, modifiers: number);
+        isShiftDown(): boolean;
+        isControlDown(): boolean;
+        isMetaDown(): boolean;
+        isAltDown(): boolean;
+        isAltGraphDown(): boolean;
+        getWhen(): number;
+        getModifiers(): number;
+        getModifiersEx(): number;
+        consume(): void;
+        isConsumed(): boolean;
+        static __java_awt_event_InputEvent_serialVersionUID: number;
+        static getModifiersExText(modifiers: number): string;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * Constructs a <code>WindowEvent</code> object.
+     * <p>This method throws an
+     * <code>IllegalArgumentException</code> if <code>source</code>
+     * is <code>null</code>.
+     *
+     * @param {java.awt.Window} source    The <code>Window</code> object
+     * that originated the event
+     * @param {number} id        An integer indicating the type of event.
+     * For information on allowable values, see
+     * the class description for {@link WindowEvent}
+     * @param {java.awt.Window} opposite  The other window involved in the focus or activation
+     * change, or <code>null</code>
+     * @param {number} oldState  Previous state of the window for window state change event.
+     * See {@code #getOldState()} for allowable values
+     * @param {number} newState  New state of the window for window state change event.
+     * See {@code #getNewState()} for allowable values
+     * @throws IllegalArgumentException if <code>source</code> is null
+     * @see #getWindow()
+     * @see #getID()
+     * @see #getOppositeWindow()
+     * @see #getOldState()
+     * @see #getNewState()
+     * @since 1.4
+     * @class
+     * @extends java.awt.event.ComponentEvent
+     * @author Carl Quinn
+     */
+    class WindowEvent extends java.awt.event.ComponentEvent {
+        /**
+         * The first number in the range of ids used for window events.
+         */
+        static WINDOW_FIRST: number;
+        /**
+         * The window opened event.  This event is delivered only
+         * the first time a window is made visible.
+         */
+        static WINDOW_OPENED: number;
+        static WINDOW_OPENED_$LI$(): number;
+        /**
+         * The "window is closing" event. This event is delivered when
+         * the user attempts to close the window from the window's system menu.
+         * If the program does not explicitly hide or dispose the window
+         * while processing this event, the window close operation will be
+         * cancelled.
+         */
+        static WINDOW_CLOSING: number;
+        static WINDOW_CLOSING_$LI$(): number;
+        /**
+         * The window closed event. This event is delivered after the displayable
+         * window has been closed as the result of a call to dispose.
+         * @see java.awt.Component#isDisplayable
+         * @see Window#dispose
+         */
+        static WINDOW_CLOSED: number;
+        static WINDOW_CLOSED_$LI$(): number;
+        /**
+         * The window iconified event. This event is delivered when
+         * the window has been changed from a normal to a minimized state.
+         * For many platforms, a minimized window is displayed as
+         * the icon specified in the window's iconImage property.
+         * @see java.awt.Frame#setIconImage
+         */
+        static WINDOW_ICONIFIED: number;
+        static WINDOW_ICONIFIED_$LI$(): number;
+        /**
+         * The window deiconified event type. This event is delivered when
+         * the window has been changed from a minimized to a normal state.
+         */
+        static WINDOW_DEICONIFIED: number;
+        static WINDOW_DEICONIFIED_$LI$(): number;
+        /**
+         * The window-activated event type. This event is delivered when the Window
+         * becomes the active Window. Only a Frame or a Dialog can be the active
+         * Window. The native windowing system may denote the active Window or its
+         * children with special decorations, such as a highlighted title bar. The
+         * active Window is always either the focused Window, or the first Frame or
+         * Dialog that is an owner of the focused Window.
+         */
+        static WINDOW_ACTIVATED: number;
+        static WINDOW_ACTIVATED_$LI$(): number;
+        /**
+         * The window-deactivated event type. This event is delivered when the
+         * Window is no longer the active Window. Only a Frame or a Dialog can be
+         * the active Window. The native windowing system may denote the active
+         * Window or its children with special decorations, such as a highlighted
+         * title bar. The active Window is always either the focused Window, or the
+         * first Frame or Dialog that is an owner of the focused Window.
+         */
+        static WINDOW_DEACTIVATED: number;
+        static WINDOW_DEACTIVATED_$LI$(): number;
+        /**
+         * The window-gained-focus event type. This event is delivered when the
+         * Window becomes the focused Window, which means that the Window, or one
+         * of its subcomponents, will receive keyboard events.
+         */
+        static WINDOW_GAINED_FOCUS: number;
+        static WINDOW_GAINED_FOCUS_$LI$(): number;
+        /**
+         * The window-lost-focus event type. This event is delivered when a Window
+         * is no longer the focused Window, which means keyboard events will no
+         * longer be delivered to the Window or any of its subcomponents.
+         */
+        static WINDOW_LOST_FOCUS: number;
+        static WINDOW_LOST_FOCUS_$LI$(): number;
+        /**
+         * The window-state-changed event type.  This event is delivered
+         * when a Window's state is changed by virtue of it being
+         * iconified, maximized etc.
+         * @since 1.4
+         */
+        static WINDOW_STATE_CHANGED: number;
+        static WINDOW_STATE_CHANGED_$LI$(): number;
+        /**
+         * The last number in the range of ids used for window events.
+         */
+        static WINDOW_LAST: number;
+        static WINDOW_LAST_$LI$(): number;
+        /**
+         * The other Window involved in this focus or activation change. For a
+         * WINDOW_ACTIVATED or WINDOW_GAINED_FOCUS event, this is the Window that
+         * lost activation or focus. For a WINDOW_DEACTIVATED or WINDOW_LOST_FOCUS
+         * event, this is the Window that gained activation or focus. For any other
+         * type of WindowEvent, or if the focus or activation change occurs with a
+         * native application, a Java application in a different VM, or with no
+         * other Window, null is returned.
+         *
+         * @see #getOppositeWindow
+         * @since 1.4
+         */
+        opposite: java.awt.Window;
+        /**
+         * TBS
+         */
+        oldState: number;
+        newState: number;
+        static serialVersionUID: number;
+        constructor(source?: any, id?: any, opposite?: any, oldState?: any, newState?: any);
+        /**
+         * Returns the originator of the event.
+         *
+         * @return {java.awt.Window} the Window object that originated the event
+         */
+        getWindow(): java.awt.Window;
+        /**
+         * Returns the other Window involved in this focus or activation change.
+         * For a WINDOW_ACTIVATED or WINDOW_GAINED_FOCUS event, this is the Window
+         * that lost activation or focus. For a WINDOW_DEACTIVATED or
+         * WINDOW_LOST_FOCUS event, this is the Window that gained activation or
+         * focus. For any other type of WindowEvent, or if the focus or activation
+         * change occurs with a native application, with a Java application in a
+         * different VM or context, or with no other Window, null is returned.
+         *
+         * @return {java.awt.Window} the other Window involved in the focus or activation change, or
+         * null
+         * @since 1.4
+         */
+        getOppositeWindow(): java.awt.Window;
+        /**
+         * For <code>WINDOW_STATE_CHANGED</code> events returns the
+         * previous state of the window. The state is
+         * represented as a bitwise mask.
+         * <ul>
+         * <li><code>NORMAL</code>
+         * <br>Indicates that no state bits are set.
+         * <li><code>ICONIFIED</code>
+         * <li><code>MAXIMIZED_HORIZ</code>
+         * <li><code>MAXIMIZED_VERT</code>
+         * <li><code>MAXIMIZED_BOTH</code>
+         * <br>Concatenates <code>MAXIMIZED_HORIZ</code>
+         * and <code>MAXIMIZED_VERT</code>.
+         * </ul>
+         *
+         * @return {number} a bitwise mask of the previous window state
+         * @see java.awt.Frame#getExtendedState()
+         * @since 1.4
+         */
+        getOldState(): number;
+        /**
+         * For <code>WINDOW_STATE_CHANGED</code> events returns the
+         * new state of the window. The state is
+         * represented as a bitwise mask.
+         * <ul>
+         * <li><code>NORMAL</code>
+         * <br>Indicates that no state bits are set.
+         * <li><code>ICONIFIED</code>
+         * <li><code>MAXIMIZED_HORIZ</code>
+         * <li><code>MAXIMIZED_VERT</code>
+         * <li><code>MAXIMIZED_BOTH</code>
+         * <br>Concatenates <code>MAXIMIZED_HORIZ</code>
+         * and <code>MAXIMIZED_VERT</code>.
+         * </ul>
+         *
+         * @return {number} a bitwise mask of the new window state
+         * @see java.awt.Frame#getExtendedState()
+         * @since 1.4
+         */
+        getNewState(): number;
+        /**
+         * Returns a parameter string identifying this event.
+         * This method is useful for event-logging and for debugging.
+         *
+         * @return {string} a string identifying the event and its attributes
+         */
+        paramString(): string;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * Constructs a <code>FocusEvent</code> object with the
+     * specified temporary state and opposite <code>Component</code>.
+     * The opposite <code>Component</code> is the other
+     * <code>Component</code> involved in this focus change.
+     * For a <code>FOCUS_GAINED</code> event, this is the
+     * <code>Component</code> that lost focus. For a
+     * <code>FOCUS_LOST</code> event, this is the <code>Component</code>
+     * that gained focus. If this focus change occurs with a native
+     * application, with a Java application in a different VM,
+     * or with no other <code>Component</code>, then the opposite
+     * <code>Component</code> is <code>null</code>.
+     * <p> This method throws an
+     * <code>IllegalArgumentException</code> if <code>source</code>
+     * is <code>null</code>.
+     *
+     * @param {java.awt.Component} source     The <code>Component</code> that originated the event
+     * @param {number} id         An integer indicating the type of event.
+     * For information on allowable values, see
+     * the class description for {@link FocusEvent}
+     * @param {boolean} temporary  Equals <code>true</code> if the focus change is temporary;
+     * <code>false</code> otherwise
+     * @param {java.awt.Component} opposite   The other Component involved in the focus change,
+     * or <code>null</code>
+     * @throws IllegalArgumentException if <code>source</code> equals {@code null}
+     * @see #getSource()
+     * @see #getID()
+     * @see #isTemporary()
+     * @see #getOppositeComponent()
+     * @since 1.4
+     * @class
+     * @extends java.awt.event.ComponentEvent
+     * @author Carl Quinn
+     */
+    class FocusEvent extends java.awt.event.ComponentEvent {
+        /**
+         * The first number in the range of ids used for focus events.
+         */
+        static FOCUS_FIRST: number;
+        /**
+         * The last number in the range of ids used for focus events.
+         */
+        static FOCUS_LAST: number;
+        /**
+         * This event indicates that the Component is now the focus owner.
+         */
+        static FOCUS_GAINED: number;
+        static FOCUS_GAINED_$LI$(): number;
+        /**
+         * This event indicates that the Component is no longer the focus owner.
+         */
+        static FOCUS_LOST: number;
+        static FOCUS_LOST_$LI$(): number;
+        /**
+         * A focus event can have two different levels, permanent and temporary.
+         * It will be set to true if some operation takes away the focus
+         * temporarily and intends on getting it back once the event is completed.
+         * Otherwise it will be set to false.
+         *
+         * @serial
+         * @see #isTemporary
+         */
+        temporary: boolean;
+        /**
+         * The other Component involved in this focus change. For a FOCUS_GAINED
+         * event, this is the Component that lost focus. For a FOCUS_LOST event,
+         * this is the Component that gained focus. If this focus change occurs
+         * with a native application, a Java application in a different VM, or with
+         * no other Component, then the opposite Component is null.
+         *
+         * @see #getOppositeComponent
+         * @since 1.4
+         */
+        opposite: java.awt.Component;
+        static serialVersionUID: number;
+        constructor(source?: any, id?: any, temporary?: any, opposite?: any);
+        /**
+         * Identifies the focus change event as temporary or permanent.
+         *
+         * @return {boolean} <code>true</code> if the focus change is temporary;
+         * <code>false</code> otherwise
+         */
+        isTemporary(): boolean;
+        /**
+         * Returns the other Component involved in this focus change. For a
+         * FOCUS_GAINED event, this is the Component that lost focus. For a
+         * FOCUS_LOST event, this is the Component that gained focus. If this
+         * focus change occurs with a native application, with a Java application
+         * in a different VM or context, or with no other Component, then null is
+         * returned.
+         *
+         * @return {java.awt.Component} the other Component involved in the focus change, or null
+         * @since 1.4
+         */
+        getOppositeComponent(): java.awt.Component;
+        /**
+         * Returns a parameter string identifying this event.
+         * This method is useful for event-logging and for debugging.
+         *
+         * @return {string} a string identifying the event and its attributes
+         */
+        paramString(): string;
+    }
+}
+declare namespace java.awt.event {
+    /**
+     * Constructs a <code>ContainerEvent</code> object.
+     * <p> This method throws an
+     * <code>IllegalArgumentException</code> if <code>source</code>
+     * is <code>null</code>.
+     *
+     * @param {java.awt.Component} source The <code>Component</code> object (container)
+     * that originated the event
+     * @param {number} id     An integer indicating the type of event.
+     * For information on allowable values, see
+     * the class description for {@link ContainerEvent}
+     * @param {java.awt.Component} child  the component that was added or removed
+     * @throws IllegalArgumentException if <code>source</code> is null
+     * @see #getContainer()
+     * @see #getID()
+     * @see #getChild()
+     * @class
+     * @extends java.awt.event.ComponentEvent
+     * @author Tim Prinzing
+     */
+    class ContainerEvent extends java.awt.event.ComponentEvent {
+        /**
+         * The first number in the range of ids used for container events.
+         */
+        static CONTAINER_FIRST: number;
+        /**
+         * The last number in the range of ids used for container events.
+         */
+        static CONTAINER_LAST: number;
+        /**
+         * This event indicates that a component was added to the container.
+         */
+        static COMPONENT_ADDED: number;
+        static COMPONENT_ADDED_$LI$(): number;
+        /**
+         * This event indicates that a component was removed from the container.
+         */
+        static COMPONENT_REMOVED: number;
+        static COMPONENT_REMOVED_$LI$(): number;
+        /**
+         * The non-null component that is being added or
+         * removed from the Container.
+         *
+         * @serial
+         * @see #getChild()
+         */
+        child: java.awt.Component;
+        static serialVersionUID: number;
+        constructor(source: java.awt.Component, id: number, child: java.awt.Component);
+        /**
+         * Returns the originator of the event.
+         *
+         * @return {java.awt.Container} the <code>Container</code> object that originated
+         * the event, or <code>null</code> if the object is not a
+         * <code>Container</code>.
+         */
+        getContainer(): java.awt.Container;
+        /**
+         * Returns the component that was affected by the event.
+         *
+         * @return {java.awt.Component} the Component object that was added or removed
+         */
+        getChild(): java.awt.Component;
+        /**
+         * Returns a parameter string identifying this event.
+         * This method is useful for event-logging and for debugging.
+         *
+         * @return {string} a string identifying the event and its attributes
+         */
+        paramString(): string;
+    }
+}
+declare namespace java.awt {
+    class Panel extends java.awt.Container {
+        htmlCanvas: HTMLCanvasElement;
+        constructor(layout?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @return {java.awt.Graphics}
+         */
+        getGraphics(): java.awt.Graphics;
+        /**
+         *
+         * @param {java.awt.Color} background
+         */
+        setBackground(background: java.awt.Color): void;
+        /**
+         *
+         */
+        doPaintInternal(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+    }
+}
+declare namespace java.awt {
+    class Window extends java.awt.Container {
+        static loaded: boolean;
+        getElement(): HTMLDivElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        /**
+         * This represents the warning message that is to be displayed in a non
+         * secure window. ie : a window that has a security manager installed that
+         * denies {@code AWTPermission("showWindowWithoutWarningBanner")}. This
+         * message can be displayed anywhere in the window.
+         *
+         * @serial
+         * @see #getWarningString
+         */
+        warningString: string;
+        /**
+         * {@code icons} is the graphical way we can represent the frames and
+         * dialogs. {@code Window} can't display icon but it's being inherited by
+         * owned {@code Dialog}s.
+         *
+         * @serial
+         * @see #getIconImages
+         * @see #setIconImages
+         */
+        icons: java.util.List<java.awt.Image>;
+        static OPENED: number;
+        state: number;
+        alwaysOnTop: boolean;
+        focusableWindowState: boolean;
+        autoRequestFocus: boolean;
+        isInShow: boolean;
+        opacity: number;
+        shape: java.awt.Shape;
+        static base: string;
+        static nameCounter: number;
+        isTrayIconWindow: boolean;
+        constructor(owner?: any);
+        ownedInit(owner: Window): void;
+        constructComponentName(): string;
+        getIconImages(): java.util.List<java.awt.Image>;
+        setIconImages(icons: java.util.List<any>): void;
+        setIconImage(image: java.awt.Image): void;
+        pack(): void;
+        setMinimumSize(minimumSize: java.awt.Dimension): void;
+        /**
+         *
+         * @param {boolean} visible
+         */
+        setVisible(visible: boolean): void;
+        dispose(): void;
+        toFront(): void;
+        toBack(): void;
+        getToolkit(): java.awt.Toolkit;
+        getWarningString(): string;
+        setCursor(cursor: java.awt.Cursor): void;
+        windowListeners: Array<java.awt.event.WindowListener>;
+        windowStateListeners: Array<java.awt.event.WindowStateListener>;
+        windowFocusListeners: Array<java.awt.event.WindowFocusListener>;
+        addWindowListener(l: java.awt.event.WindowListener): void;
+        addWindowStateListener(l: java.awt.event.WindowStateListener): void;
+        addWindowFocusListener(l: java.awt.event.WindowFocusListener): void;
+        removeWindowListener(l: java.awt.event.WindowListener): void;
+        removeWindowStateListener(l: java.awt.event.WindowStateListener): void;
+        removeWindowFocusListener(l: java.awt.event.WindowFocusListener): void;
+        getWindowListeners(): java.awt.event.WindowListener[];
+        getWindowFocusListeners(): java.awt.event.WindowFocusListener[];
+        getWindowStateListeners(): java.awt.event.WindowStateListener[];
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        processWindowEvent(e: java.awt.event.WindowEvent): void;
+        processWindowFocusEvent(e: java.awt.event.WindowEvent): void;
+        processWindowStateEvent(e: java.awt.event.WindowEvent): void;
+        setAlwaysOnTop(alwaysOnTop: boolean): void;
+        isAlwaysOnTopSupported(): boolean;
+        isAlwaysOnTop(): boolean;
+        isActive(): boolean;
+        isFocused(): boolean;
+        setFocusCycleRoot(focusCycleRoot: boolean): void;
+        isFocusCycleRoot(): boolean;
+        getFocusCycleRootAncestor(): java.awt.Container;
+        isFocusableWindow(): boolean;
+        getFocusableWindowState(): boolean;
+        setFocusableWindowState(focusableWindowState: boolean): void;
+        setAutoRequestFocus(autoRequestFocus: boolean): void;
+        isAutoRequestFocus(): boolean;
+        addPropertyChangeListener$java_beans_PropertyChangeListener(listener: java.beans.PropertyChangeListener): void;
+        addPropertyChangeListener$java_lang_String$java_beans_PropertyChangeListener(propertyName: string, listener: java.beans.PropertyChangeListener): void;
+        addPropertyChangeListener(propertyName?: any, listener?: any): any;
+        isShowing(): boolean;
+        /**
+         * Window type.
+         *
+         * Synchronization: ObjectLock
+         */
+        type: Window.Type;
+        setType(type: Window.Type): void;
+        getType(): Window.Type;
+        getOpacity(): number;
+        setOpacity(opacity: number): void;
+        getShape(): java.awt.Shape;
+        setShape(shape: java.awt.Shape): void;
+    }
+    namespace Window {
+        enum Type {
+            /**
+             * Represents a <i>normal</i> window.
+             *
+             * This is the default type for objects of the {@code Window} class or
+             * its descendants. Use this type for regular top-level windows.
+             */
+            NORMAL = 0,
+            /**
+             * Represents a <i>utility</i> window.
+             *
+             * A utility window is usually a small window such as a toolbar or a
+             * palette. The native system may render the window with smaller
+             * title-bar if the window is either a {@code Frame} or a {@code
+             * Dialog} object, and if it has its decorations enabled.
+             */
+            UTILITY = 1,
+            /**
+             * Represents a <i>popup</i> window.
+             *
+             * A popup window is a temporary window such as a drop-down menu or a
+             * tooltip. On some platforms, windows of that type may be forcibly made
+             * undecorated even if they are instances of the {@code Frame} or
+             * {@code Dialog} class, and have decorations enabled.
+             */
+            POPUP = 2
+        }
+    }
+}
+declare namespace javax.swing {
+    abstract class JComponent extends java.awt.Container implements java.io.Serializable {
+        listenerList: javax.swing.event.EventListenerList;
+        constructor();
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * Constructs a SwingPropertyChangeSupport object.
+     *
+     * @param {*} sourceBean
+     * the bean to be given as the source for any events
+     * @param {boolean} notifyOnEDT
+     * whether to notify listeners on the <i>Event Dispatch
+     * Thread</i> only
+     *
+     * @throws NullPointerException
+     * if {@code sourceBean} is {@code null}
+     * @since 1.6
+     * @class
+     * @extends java.beans.PropertyChangeSupport
+     * @author Igor Kushnirskiy
+     */
+    class SwingPropertyChangeSupport extends java.beans.PropertyChangeSupport {
+        constructor(sourceBean?: any, notifyOnEDT?: any);
+        firePropertyChange(propertyName?: any, oldValue?: any, newValue?: any): any;
+        firePropertyChange$java_beans_PropertyChangeEvent(evt: java.beans.PropertyChangeEvent): void;
+        /**
+         * Returns {@code notifyOnEDT} property.
+         *
+         * @return {boolean} {@code notifyOnEDT} property
+         * @see #SwingPropertyChangeSupport(Object sourceBean, boolean notifyOnEDT)
+         * @since 1.6
+         */
+        isNotifyOnEDT(): boolean;
+        static serialVersionUID: number;
+        /**
+         * whether to notify listeners on EDT
+         *
+         * @serial
+         * @since 1.6
+         */
+        notifyOnEDT: boolean;
+    }
+}
 declare namespace javax.swing.undo {
     /**
      * Creates a new <code>UndoManager</code>.
@@ -17397,6 +17397,320 @@ declare namespace javax.swing.undo {
         toString(): string;
     }
 }
+declare namespace java.awt.event {
+    class MouseEvent extends java.awt.event.InputEvent {
+        static MOUSE_FIRST: number;
+        static MOUSE_LAST: number;
+        static MOUSE_CLICKED: number;
+        static MOUSE_CLICKED_$LI$(): number;
+        static MOUSE_PRESSED: number;
+        static MOUSE_PRESSED_$LI$(): number;
+        static MOUSE_RELEASED: number;
+        static MOUSE_RELEASED_$LI$(): number;
+        static MOUSE_MOVED: number;
+        static MOUSE_MOVED_$LI$(): number;
+        static MOUSE_ENTERED: number;
+        static MOUSE_ENTERED_$LI$(): number;
+        static MOUSE_EXITED: number;
+        static MOUSE_EXITED_$LI$(): number;
+        static MOUSE_DRAGGED: number;
+        static MOUSE_DRAGGED_$LI$(): number;
+        static MOUSE_WHEEL: number;
+        static MOUSE_WHEEL_$LI$(): number;
+        static NOBUTTON: number;
+        static BUTTON1: number;
+        static BUTTON2: number;
+        static BUTTON3: number;
+        x: number;
+        y: number;
+        xAbs: number;
+        yAbs: number;
+        clickCount: number;
+        button: number;
+        popupTrigger: boolean;
+        static serialVersionUID: number;
+        static cachedNumberOfButtons: number;
+        getLocationOnScreen(): java.awt.Point;
+        getXOnScreen(): number;
+        getYOnScreen(): number;
+        shouldExcludeButtonFromExtModifiers: boolean;
+        getModifiersEx(): number;
+        constructor(source?: any, id?: any, when?: any, modifiers?: any, x?: any, y?: any, xAbs?: any, yAbs?: any, clickCount?: any, popupTrigger?: any, button?: any);
+        getX(): number;
+        getY(): number;
+        getPoint(): java.awt.Point;
+        translatePoint(x: number, y: number): void;
+        getClickCount(): number;
+        getButton(): number;
+        isPopupTrigger(): boolean;
+        static getMouseModifiersText(modifiers: number): string;
+        paramString(): string;
+        setNewModifiers(): void;
+        setOldModifiers(): void;
+    }
+}
+declare namespace java.awt.event {
+    class KeyEvent extends java.awt.event.InputEvent {
+        isProxyActive: boolean;
+        static KEY_FIRST: number;
+        static KEY_LAST: number;
+        static KEY_TYPED: number;
+        static KEY_TYPED_$LI$(): number;
+        static KEY_PRESSED: number;
+        static KEY_PRESSED_$LI$(): number;
+        static KEY_RELEASED: number;
+        static KEY_RELEASED_$LI$(): number;
+        static VK_ENTER: number;
+        static VK_BACK_SPACE: number;
+        static VK_TAB: number;
+        static VK_CANCEL: number;
+        static VK_CLEAR: number;
+        static VK_SHIFT: number;
+        static VK_CONTROL: number;
+        static VK_ALT: number;
+        static VK_PAUSE: number;
+        static VK_CAPS_LOCK: number;
+        static VK_ESCAPE: number;
+        static VK_SPACE: number;
+        static VK_PAGE_UP: number;
+        static VK_PAGE_DOWN: number;
+        static VK_END: number;
+        static VK_HOME: number;
+        static VK_LEFT: number;
+        static VK_UP: number;
+        static VK_RIGHT: number;
+        static VK_DOWN: number;
+        static VK_COMMA: number;
+        static VK_MINUS: number;
+        static VK_PERIOD: number;
+        static VK_SLASH: number;
+        /**
+         * VK_0 thru VK_9 are the same as ASCII '0' thru '9' (0x30 - 0x39)
+         */
+        static VK_0: number;
+        static VK_1: number;
+        static VK_2: number;
+        static VK_3: number;
+        static VK_4: number;
+        static VK_5: number;
+        static VK_6: number;
+        static VK_7: number;
+        static VK_8: number;
+        static VK_9: number;
+        static VK_SEMICOLON: number;
+        static VK_EQUALS: number;
+        /**
+         * VK_A thru VK_Z are the same as ASCII 'A' thru 'Z' (0x41 - 0x5A)
+         */
+        static VK_A: number;
+        static VK_B: number;
+        static VK_C: number;
+        static VK_D: number;
+        static VK_E: number;
+        static VK_F: number;
+        static VK_G: number;
+        static VK_H: number;
+        static VK_I: number;
+        static VK_J: number;
+        static VK_K: number;
+        static VK_L: number;
+        static VK_M: number;
+        static VK_N: number;
+        static VK_O: number;
+        static VK_P: number;
+        static VK_Q: number;
+        static VK_R: number;
+        static VK_S: number;
+        static VK_T: number;
+        static VK_U: number;
+        static VK_V: number;
+        static VK_W: number;
+        static VK_X: number;
+        static VK_Y: number;
+        static VK_Z: number;
+        static VK_OPEN_BRACKET: number;
+        static VK_BACK_SLASH: number;
+        static VK_CLOSE_BRACKET: number;
+        static VK_NUMPAD0: number;
+        static VK_NUMPAD1: number;
+        static VK_NUMPAD2: number;
+        static VK_NUMPAD3: number;
+        static VK_NUMPAD4: number;
+        static VK_NUMPAD5: number;
+        static VK_NUMPAD6: number;
+        static VK_NUMPAD7: number;
+        static VK_NUMPAD8: number;
+        static VK_NUMPAD9: number;
+        static VK_MULTIPLY: number;
+        static VK_ADD: number;
+        static VK_SEPARATER: number;
+        static VK_SEPARATOR: number;
+        static VK_SEPARATOR_$LI$(): number;
+        static VK_SUBTRACT: number;
+        static VK_DECIMAL: number;
+        static VK_DIVIDE: number;
+        static VK_DELETE: number;
+        static VK_NUM_LOCK: number;
+        static VK_SCROLL_LOCK: number;
+        static VK_F1: number;
+        static VK_F2: number;
+        static VK_F3: number;
+        static VK_F4: number;
+        static VK_F5: number;
+        static VK_F6: number;
+        static VK_F7: number;
+        static VK_F8: number;
+        static VK_F9: number;
+        static VK_F10: number;
+        static VK_F11: number;
+        static VK_F12: number;
+        static VK_F13: number;
+        static VK_F14: number;
+        static VK_F15: number;
+        static VK_F16: number;
+        static VK_F17: number;
+        static VK_F18: number;
+        static VK_F19: number;
+        static VK_F20: number;
+        static VK_F21: number;
+        static VK_F22: number;
+        static VK_F23: number;
+        static VK_F24: number;
+        static VK_PRINTSCREEN: number;
+        static VK_INSERT: number;
+        static VK_HELP: number;
+        static VK_META: number;
+        static VK_BACK_QUOTE: number;
+        static VK_QUOTE: number;
+        static VK_KP_UP: number;
+        static VK_KP_DOWN: number;
+        static VK_KP_LEFT: number;
+        static VK_KP_RIGHT: number;
+        static VK_DEAD_GRAVE: number;
+        static VK_DEAD_ACUTE: number;
+        static VK_DEAD_CIRCUMFLEX: number;
+        static VK_DEAD_TILDE: number;
+        static VK_DEAD_MACRON: number;
+        static VK_DEAD_BREVE: number;
+        static VK_DEAD_ABOVEDOT: number;
+        static VK_DEAD_DIAERESIS: number;
+        static VK_DEAD_ABOVERING: number;
+        static VK_DEAD_DOUBLEACUTE: number;
+        static VK_DEAD_CARON: number;
+        static VK_DEAD_CEDILLA: number;
+        static VK_DEAD_OGONEK: number;
+        static VK_DEAD_IOTA: number;
+        static VK_DEAD_VOICED_SOUND: number;
+        static VK_DEAD_SEMIVOICED_SOUND: number;
+        static VK_AMPERSAND: number;
+        static VK_ASTERISK: number;
+        static VK_QUOTEDBL: number;
+        static VK_LESS: number;
+        static VK_GREATER: number;
+        static VK_BRACELEFT: number;
+        static VK_BRACERIGHT: number;
+        static VK_AT: number;
+        static VK_COLON: number;
+        static VK_CIRCUMFLEX: number;
+        static VK_DOLLAR: number;
+        static VK_EURO_SIGN: number;
+        static VK_EXCLAMATION_MARK: number;
+        static VK_INVERTED_EXCLAMATION_MARK: number;
+        static VK_LEFT_PARENTHESIS: number;
+        static VK_NUMBER_SIGN: number;
+        static VK_PLUS: number;
+        static VK_RIGHT_PARENTHESIS: number;
+        static VK_UNDERSCORE: number;
+        static VK_WINDOWS: number;
+        static VK_CONTEXT_MENU: number;
+        static VK_FINAL: number;
+        static VK_CONVERT: number;
+        static VK_NONCONVERT: number;
+        static VK_ACCEPT: number;
+        static VK_MODECHANGE: number;
+        static VK_KANA: number;
+        static VK_KANJI: number;
+        static VK_ALPHANUMERIC: number;
+        static VK_KATAKANA: number;
+        static VK_HIRAGANA: number;
+        static VK_FULL_WIDTH: number;
+        static VK_HALF_WIDTH: number;
+        static VK_ROMAN_CHARACTERS: number;
+        static VK_ALL_CANDIDATES: number;
+        static VK_PREVIOUS_CANDIDATE: number;
+        static VK_CODE_INPUT: number;
+        static VK_JAPANESE_KATAKANA: number;
+        static VK_JAPANESE_HIRAGANA: number;
+        static VK_JAPANESE_ROMAN: number;
+        static VK_KANA_LOCK: number;
+        static VK_INPUT_METHOD_ON_OFF: number;
+        static VK_CUT: number;
+        static VK_COPY: number;
+        static VK_PASTE: number;
+        static VK_UNDO: number;
+        static VK_AGAIN: number;
+        static VK_FIND: number;
+        static VK_PROPS: number;
+        static VK_STOP: number;
+        static VK_COMPOSE: number;
+        static VK_ALT_GRAPH: number;
+        static VK_BEGIN: number;
+        static VK_UNDEFINED: number;
+        static CHAR_UNDEFINED: string;
+        static KEY_LOCATION_UNKNOWN: number;
+        static KEY_LOCATION_STANDARD: number;
+        static KEY_LOCATION_LEFT: number;
+        static KEY_LOCATION_RIGHT: number;
+        static KEY_LOCATION_NUMPAD: number;
+        keyCode: number;
+        keyChar: string;
+        keyLocation: number;
+        static serialVersionUID: number;
+        originalSource: java.awt.Component;
+        constructor(source?: any, id?: any, when?: any, modifiers?: any, keyCode?: any, keyChar?: any, keyLocation?: any, isProxyActive?: any);
+        getKeyCode(): number;
+        setKeyCode(keyCode: number): void;
+        getKeyChar(): string;
+        setKeyChar(keyChar: string): void;
+        setModifiers(modifiers: number): void;
+        getKeyLocation(): number;
+        static getKeyText(keyCode: number): string;
+        static getKeyModifiersText(modifiers: number): string;
+        isActionKey(): boolean;
+        paramString(): string;
+        getExtendedKeyCode(): number;
+        /**
+         * Returns an extended key code for a unicode character.
+         *
+         * @return {number} for a unicode character with a corresponding {@code VK_} constant
+         * -- this {@code VK_} constant; for a character appearing on the
+         * primary level of a known keyboard layout -- a unique integer. If
+         * a character does not appear on the primary level of a known
+         * keyboard, {@code VK_UNDEFINED} is returned.
+         *
+         * @since 1.7
+         * @param {number} c
+         */
+        static getExtendedKeyCodeForChar(c: number): number;
+        /**
+         * Sets new modifiers by the old ones. The key modifiers override overlaping
+         * mouse modifiers.
+         * @private
+         */
+        setNewModifiers(): void;
+        setOldModifiers(): void;
+    }
+}
+declare namespace java.applet {
+    class Applet extends java.awt.Panel {
+        static __static_initialized: boolean;
+        static __static_initialize(): void;
+        static __static_initializer_0(): void;
+        constructor();
+        init(): void;
+        getParameter(param: string): string;
+    }
+}
 declare namespace java.awt {
     class Frame extends java.awt.Window {
         /**
@@ -17598,883 +17912,6 @@ declare namespace java.awt {
          * @return {string} the parameter string of this frame
          */
         paramString(): string;
-    }
-}
-declare namespace java.applet {
-    class Applet extends java.awt.Panel {
-        static __static_initialized: boolean;
-        static __static_initialize(): void;
-        static __static_initializer_0(): void;
-        constructor();
-        init(): void;
-        getParameter(param: string): string;
-    }
-}
-declare namespace javax.swing {
-    class JSlider extends javax.swing.JComponent implements javax.swing.SwingConstants {
-        /**
-         *
-         * @return {HTMLInputElement}
-         */
-        getHTMLElement(): HTMLInputElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        /**
-         * @see #getUIClassID
-         * @see #readObject
-         */
-        static uiClassID: string;
-        paintTicks: boolean;
-        paintTrack: boolean;
-        paintLabels: boolean;
-        isInverted: boolean;
-        sliderModel: javax.swing.BoundedRangeModel;
-        majorTickSpacing: number;
-        minorTickSpacing: number;
-        snapToTicks: boolean;
-        snapToValue: boolean;
-        orientation: number;
-        changeListener: javax.swing.event.ChangeListener;
-        changeEvent: javax.swing.event.ChangeEvent;
-        checkOrientation(orientation: number): void;
-        constructor(orientation?: any, min?: any, max?: any, value?: any);
-        getUIClassID(): string;
-        createChangeListener(): javax.swing.event.ChangeListener;
-        addChangeListener(l: javax.swing.event.ChangeListener): void;
-        removeChangeListener(l: javax.swing.event.ChangeListener): void;
-        getChangeListeners(): javax.swing.event.ChangeListener[];
-        fireStateChanged(): void;
-        getModel(): javax.swing.BoundedRangeModel;
-        setModel(newModel: javax.swing.BoundedRangeModel): void;
-        getValue(): number;
-        setValue(n: number): void;
-        getMinimum(): number;
-        setMinimum(minimum: number): void;
-        getMaximum(): number;
-        setMaximum(maximum: number): void;
-        getValueIsAdjusting(): boolean;
-        setValueIsAdjusting(b: boolean): void;
-        getExtent(): number;
-        setExtent(extent: number): void;
-        /**
-         * Return this slider's vertical or horizontal orientation.
-         *
-         * @return {number} {@code SwingConstants.VERTICAL} or
-         * {@code SwingConstants.HORIZONTAL}
-         * @see #setOrientation
-         */
-        getOrientation(): number;
-        setOrientation(orientation: number): void;
-        /**
-         * {@inheritDoc}
-         *
-         * @since 1.6
-         * @param {java.awt.Font} font
-         */
-        setFont(font: java.awt.Font): void;
-        /**
-         * Returns a string representation of this JSlider. This method is intended
-         * to be used only for debugging purposes, and the content and format of the
-         * returned string may vary between implementations. The returned string may
-         * be empty but may not be <code>null</code>.
-         *
-         * @return {string} a string representation of this JSlider.
-         */
-        paramString(): string;
-    }
-    namespace JSlider {
-        class ModelListener implements javax.swing.event.ChangeListener, java.io.Serializable {
-            __parent: any;
-            stateChanged(e: javax.swing.event.ChangeEvent): void;
-            constructor(__parent: any);
-        }
-    }
-}
-declare namespace javax.swing {
-    abstract class AbstractButton extends javax.swing.JComponent implements java.awt.ItemSelectable, javax.swing.SwingConstants {
-        /**
-         * Identifies a change in the button's margins.
-         */
-        static MARGIN_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change in the button's vertical alignment.
-         */
-        static VERTICAL_ALIGNMENT_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change in the button's horizontal alignment.
-         */
-        static HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change in the button's vertical text position.
-         */
-        static VERTICAL_TEXT_POSITION_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change in the button's horizontal text position.
-         */
-        static HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to having the border drawn, or having it not drawn.
-         */
-        static BORDER_PAINTED_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to having the border highlighted when focused, or
-         * not.
-         */
-        static FOCUS_PAINTED_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change from rollover enabled to disabled or back to enabled.
-         */
-        static ROLLOVER_ENABLED_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to having the button paint the content area.
-         */
-        static CONTENT_AREA_FILLED_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon that represents the button.
-         */
-        static ICON_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon used when the button has been pressed.
-         */
-        static PRESSED_ICON_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon used when the button has been selected.
-         */
-        static SELECTED_ICON_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon used when the cursor is over the button.
-         */
-        static ROLLOVER_ICON_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon used when the cursor is over the button
-         * and it has been selected.
-         */
-        static ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon used when the button has been disabled.
-         */
-        static DISABLED_ICON_CHANGED_PROPERTY: string;
-        /**
-         * Identifies a change to the icon used when the button has been disabled
-         * and selected.
-         */
-        static DISABLED_SELECTED_ICON_CHANGED_PROPERTY: string;
-        text: string;
-        margin: java.awt.Insets;
-        defaultMargin: java.awt.Insets;
-        defaultIcon: javax.swing.Icon;
-        pressedIcon: javax.swing.Icon;
-        disabledIcon: javax.swing.Icon;
-        selectedIcon: javax.swing.Icon;
-        disabledSelectedIcon: javax.swing.Icon;
-        rolloverIcon: javax.swing.Icon;
-        rolloverSelectedIcon: javax.swing.Icon;
-        paintBorder: boolean;
-        paintFocus: boolean;
-        rolloverEnabled: boolean;
-        contentAreaFilled: boolean;
-        verticalAlignment: number;
-        horizontalAlignment: number;
-        verticalTextPosition: number;
-        horizontalTextPosition: number;
-        iconTextGap: number;
-        mnemonic: number;
-        mnemonicIndex: number;
-        multiClickThreshhold: number;
-        borderPaintedSet: boolean;
-        rolloverEnabledSet: boolean;
-        iconTextGapSet: boolean;
-        contentAreaFilledSet: boolean;
-        __setLayout: boolean;
-        defaultCapable: boolean;
-        /**
-         * Combined listeners: ActionListener, ChangeListener, ItemListener.
-         */
-        handler: AbstractButton.Handler;
-        /**
-         * The button model's <code>changeListener</code>.
-         */
-        changeListener: javax.swing.event.ChangeListener;
-        /**
-         * The button model's <code>ActionListener</code>.
-         */
-        actionListener: java.awt.event.ActionListener;
-        /**
-         * The button model's <code>ItemListener</code>.
-         */
-        itemListener: java.awt.event.ItemListener;
-        /**
-         * Only one <code>ChangeEvent</code> is needed per button instance since the
-         * event's only state is the source property. The source of events generated
-         * is always "this".
-         */
-        changeEvent: javax.swing.event.ChangeEvent;
-        hideActionText: boolean;
-        /**
-         * Returns the button's text.
-         *
-         * @return {string} the buttons text
-         * @see #setText
-         */
-        getText(): string;
-        setText(text: string): void;
-        isSelected(): boolean;
-        setSelected(b: boolean): void;
-        doClick(): void;
-        setMargin(m: java.awt.Insets): void;
-        /**
-         * Returns the margin between the button's border and the label.
-         *
-         * @return {java.awt.Insets} an <code>Insets</code> object specifying the margin between the
-         * botton's border and the label
-         * @see #setMargin
-         */
-        getMargin(): java.awt.Insets;
-        /**
-         * Returns the default icon.
-         *
-         * @return {*} the default <code>Icon</code>
-         * @see #setIcon
-         */
-        getIcon(): javax.swing.Icon;
-        setIcon(defaultIcon: javax.swing.Icon): void;
-        getPressedIcon(): javax.swing.Icon;
-        setPressedIcon(pressedIcon: javax.swing.Icon): void;
-        getSelectedIcon(): javax.swing.Icon;
-        setSelectedIcon(selectedIcon: javax.swing.Icon): void;
-        getRolloverIcon(): javax.swing.Icon;
-        setRolloverIcon(rolloverIcon: javax.swing.Icon): void;
-        getRolloverSelectedIcon(): javax.swing.Icon;
-        setRolloverSelectedIcon(rolloverSelectedIcon: javax.swing.Icon): void;
-        getDisabledIcon(): javax.swing.Icon;
-        setDisabledIcon(disabledIcon: javax.swing.Icon): void;
-        getDisabledSelectedIcon(): javax.swing.Icon;
-        setDisabledSelectedIcon(disabledSelectedIcon: javax.swing.Icon): void;
-        getVerticalAlignment(): number;
-        setVerticalAlignment(alignment: number): void;
-        getHorizontalAlignment(): number;
-        setHorizontalAlignment(alignment: number): void;
-        getVerticalTextPosition(): number;
-        setVerticalTextPosition(textPosition: number): void;
-        getHorizontalTextPosition(): number;
-        setHorizontalTextPosition(textPosition: number): void;
-        getIconTextGap(): number;
-        setIconTextGap(iconTextGap: number): void;
-        checkHorizontalKey(key: number, exception: string): number;
-        checkVerticalKey(key: number, exception: string): number;
-        setActionCommand(actionCommand: string): void;
-        getActionCommand(): string;
-        action: javax.swing.Action;
-        setAction(a: javax.swing.Action): void;
-        getAction(): javax.swing.Action;
-        isBorderPainted(): boolean;
-        setBorderPainted(b: boolean): void;
-        isFocusPainted(): boolean;
-        setFocusPainted(b: boolean): void;
-        isContentAreaFilled(): boolean;
-        setContentAreaFilled(b: boolean): void;
-        isRolloverEnabled(): boolean;
-        setRolloverEnabled(b: boolean): void;
-        getMnemonic(): number;
-        setMnemonic(mnemonic: number): void;
-        setDisplayedMnemonicIndex(index: number): void;
-        getDisplayedMnemonicIndex(): number;
-        setMultiClickThreshhold(threshhold: number): void;
-        getMultiClickThreshhold(): number;
-        /**
-         * Adds a <code>ChangeListener</code> to the button.
-         *
-         * @param {*} l
-         * the listener to be added
-         */
-        addChangeListener(l: javax.swing.event.ChangeListener): void;
-        /**
-         * Removes a ChangeListener from the button.
-         *
-         * @param {*} l
-         * the listener to be removed
-         */
-        removeChangeListener(l: javax.swing.event.ChangeListener): void;
-        /**
-         * Returns an array of all the <code>ChangeListener</code>s added to this
-         * AbstractButton with addChangeListener().
-         *
-         * @return {javax.swing.event.ChangeListener[]} all of the <code>ChangeListener</code>s added or an empty array
-         * if no listeners have been added
-         * @since 1.4
-         */
-        getChangeListeners(): javax.swing.event.ChangeListener[];
-        /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is lazily created.
-         *
-         * @see EventListenerList
-         */
-        fireStateChanged(): void;
-        /**
-         * Adds an <code>ActionListener</code> to the button.
-         *
-         * @param {*} l
-         * the <code>ActionListener</code> to be added
-         */
-        addActionListener(l: java.awt.event.ActionListener): void;
-        /**
-         * Removes an <code>ActionListener</code> from the button. If the listener
-         * is the currently set <code>Action</code> for the button, then the
-         * <code>Action</code> is set to <code>null</code>.
-         *
-         * @param {*} l
-         * the listener to be removed
-         */
-        removeActionListener(l: java.awt.event.ActionListener): void;
-        /**
-         * Returns an array of all the <code>ActionListener</code>s added to this
-         * AbstractButton with addActionListener().
-         *
-         * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array
-         * if no listeners have been added
-         * @since 1.4
-         */
-        getActionListeners(): java.awt.event.ActionListener[];
-        /**
-         * Subclasses that want to handle <code>ChangeEvents</code> differently can
-         * override this to return another <code>ChangeListener</code>
-         * implementation.
-         *
-         * @return {*} the new <code>ChangeListener</code>
-         */
-        createChangeListener(): javax.swing.event.ChangeListener;
-        /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is lazily created using the
-         * <code>event</code> parameter.
-         *
-         * @param {java.awt.event.ActionEvent} event
-         * the <code>ActionEvent</code> object
-         * @see EventListenerList
-         */
-        fireActionPerformed(event: java.awt.event.ActionEvent): void;
-        /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is lazily created using the
-         * <code>event</code> parameter.
-         *
-         * @param {java.awt.event.ItemEvent} event
-         * the <code>ItemEvent</code> object
-         * @see EventListenerList
-         */
-        fireItemStateChanged(event: java.awt.event.ItemEvent): void;
-        createActionListener(): java.awt.event.ActionListener;
-        createItemListener(): java.awt.event.ItemListener;
-        /**
-         * Enables (or disables) the button.
-         *
-         * @param {boolean} b
-         * true to enable the button, otherwise false
-         */
-        setEnabled(b: boolean): void;
-        /**
-         * Returns the label text.
-         *
-         * @return {string} a <code>String</code> containing the label
-         * @deprecated - Replaced by <code>getText</code>
-         */
-        getLabel(): string;
-        /**
-         * Sets the label text.
-         *
-         * @param {string} label
-         * a <code>String</code> containing the text
-         * @deprecated - Replaced by <code>setText(text)</code>
-         * @beaninfo bound: true description: Replace by setText(text)
-         */
-        setLabel(label: string): void;
-        /**
-         * Adds an <code>ItemListener</code> to the <code>checkbox</code>.
-         *
-         * @param {*} l
-         * the <code>ItemListener</code> to be added
-         */
-        addItemListener(l: java.awt.event.ItemListener): void;
-        /**
-         * Removes an <code>ItemListener</code> from the button.
-         *
-         * @param {*} l
-         * the <code>ItemListener</code> to be removed
-         */
-        removeItemListener(l: java.awt.event.ItemListener): void;
-        /**
-         * Returns an array of all the <code>ItemListener</code>s added to this
-         * AbstractButton with addItemListener().
-         *
-         * @return {java.awt.event.ItemListener[]} all of the <code>ItemListener</code>s added or an empty array if
-         * no listeners have been added
-         * @since 1.4
-         */
-        getItemListeners(): java.awt.event.ItemListener[];
-        /**
-         * Returns an array (length 1) containing the label or <code>null</code> if
-         * the button is not selected.
-         *
-         * @return {java.lang.Object[]} an array containing 1 Object: the text of the button, if the item
-         * is selected; otherwise <code>null</code>
-         */
-        getSelectedObjects(): any[];
-        init(text: string, icon: javax.swing.Icon): void;
-        imageUpdate(img: java.awt.Image, infoflags: number, x: number, y: number, w: number, h: number): boolean;
-        getHandler(): AbstractButton.Handler;
-        model: javax.swing.ButtonModel;
-        getModel(): javax.swing.ButtonModel;
-        setModel(newModel: javax.swing.ButtonModel): void;
-        constructor();
-    }
-    namespace AbstractButton {
-        /**
-         * Extends <code>ChangeListener</code> to be serializable.
-         * <p>
-         * <strong>Warning:</strong> Serialized objects of this class will not be
-         * compatible with future Swing releases. The current serialization support
-         * is appropriate for short term storage or RMI between applications running
-         * the same version of Swing. As of 1.4, support for long term storage of
-         * all JavaBeans&trade; has been added to the <code>java.beans</code>
-         * package. Please see {@link java.beans.XMLEncoder}.
-         * @class
-         */
-        class ButtonChangeListener implements javax.swing.event.ChangeListener, java.io.Serializable {
-            __parent: any;
-            constructor(__parent: any);
-            stateChanged(e: javax.swing.event.ChangeEvent): void;
-        }
-        class Handler implements java.awt.event.ActionListener, javax.swing.event.ChangeListener, java.awt.event.ItemListener, java.io.Serializable {
-            __parent: any;
-            stateChanged(e: javax.swing.event.ChangeEvent): void;
-            actionPerformed(event: java.awt.event.ActionEvent): void;
-            itemStateChanged(event: java.awt.event.ItemEvent): void;
-            constructor(__parent: any);
-        }
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Creates a <code>JRootPane</code>, setting up its <code>glassPane</code>,
-     * <code>layeredPane</code>, and <code>contentPane</code>.
-     * @class
-     * @extends javax.swing.JComponent
-     */
-    class JRootPane extends javax.swing.JComponent {
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        static uiClassID: string;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should not provide any sort of Window decorations.
-         *
-         * @since 1.4
-         */
-        static NONE: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Frame.
-         *
-         * @since 1.4
-         */
-        static FRAME: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog.
-         *
-         * @since 1.4
-         */
-        static PLAIN_DIALOG: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog used to display an informational message.
-         *
-         * @since 1.4
-         */
-        static INFORMATION_DIALOG: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog used to display an error message.
-         *
-         * @since 1.4
-         */
-        static ERROR_DIALOG: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog used to display a <code>JColorChooser</code>.
-         *
-         * @since 1.4
-         */
-        static COLOR_CHOOSER_DIALOG: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog used to display a <code>JFileChooser</code>.
-         *
-         * @since 1.4
-         */
-        static FILE_CHOOSER_DIALOG: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog used to present a question to the user.
-         *
-         * @since 1.4
-         */
-        static QUESTION_DIALOG: number;
-        /**
-         * Constant used for the windowDecorationStyle property. Indicates that the
-         * <code>JRootPane</code> should provide decorations appropriate for a
-         * Dialog used to display a warning message.
-         *
-         * @since 1.4
-         */
-        static WARNING_DIALOG: number;
-        windowDecorationStyle: number;
-        /**
-         * The content pane.
-         */
-        contentPane: java.awt.Container;
-        glassPane: java.awt.Container;
-        /**
-         * The button that gets activated when the pane has the focus and a
-         * UI-specific action like pressing the <b>Enter</b> key occurs.
-         */
-        defaultButton: javax.swing.JButton;
-        constructor();
-        setGlassPane(glassPane: java.awt.Container): void;
-        getGlassPane(): java.awt.Container;
-        createGlassPane(): java.awt.Container;
-        /**
-         * Returns a constant identifying the type of Window decorations the
-         * <code>JRootPane</code> is providing.
-         *
-         * @return {number} One of <code>NONE</code>, <code>FRAME</code>,
-         * <code>PLAIN_DIALOG</code>, <code>INFORMATION_DIALOG</code>,
-         * <code>ERROR_DIALOG</code>, <code>COLOR_CHOOSER_DIALOG</code>,
-         * <code>FILE_CHOOSER_DIALOG</code>, <code>QUESTION_DIALOG</code> or
-         * <code>WARNING_DIALOG</code>.
-         * @see #setWindowDecorationStyle
-         * @since 1.4
-         */
-        getWindowDecorationStyle(): number;
-        setWindowDecorationStyle(windowDecorationStyle: number): void;
-        /**
-         * Returns a string that specifies the name of the L&amp;F class that
-         * renders this component.
-         *
-         * @return {string} the string "RootPaneUI"
-         *
-         * @see JComponent#getUIClassID
-         * @see UIDefaults#getUI
-         */
-        getUIClassID(): string;
-        createContentPane(): java.awt.Container;
-        /**
-         * Sets the content pane -- the container that holds the components parented
-         * by the root pane.
-         * <p>
-         * Swing's painting architecture requires an opaque <code>JComponent</code>
-         * in the containment hierarchy. This is typically provided by the content
-         * pane. If you replace the content pane it is recommended you replace it
-         * with an opaque <code>JComponent</code>.
-         *
-         * @param {java.awt.Container} content
-         * the <code>Container</code> to use for component-contents
-         * @exception java.awt.IllegalComponentStateException
-         * (a runtime exception) if the content pane parameter is
-         * <code>null</code>
-         */
-        setContentPane(content: java.awt.Container): void;
-        /**
-         * Returns the content pane -- the container that holds the components
-         * parented by the root pane.
-         *
-         * @return {java.awt.Container} the <code>Container</code> that holds the component-contents
-         */
-        getContentPane(): java.awt.Container;
-        /**
-         * Sets the <code>defaultButton</code> property, which determines the
-         * current default button for this <code>JRootPane</code>. The default
-         * button is the button which will be activated when a UI-defined activation
-         * event (typically the <b>Enter</b> key) occurs in the root pane regardless
-         * of whether or not the button has keyboard focus (unless there is another
-         * component within the root pane which consumes the activation event, such
-         * as a <code>JTextPane</code>). For default activation to work, the button
-         * must be an enabled descendent of the root pane when activation occurs. To
-         * remove a default button from this root pane, set this property to
-         * <code>null</code>.
-         *
-         * @see JButton#isDefaultButton
-         * @param {javax.swing.JButton} defaultButton
-         * the <code>JButton</code> which is to be the default button
-         *
-         * @beaninfo description: The button activated by default in this root pane
-         */
-        setDefaultButton(defaultButton: javax.swing.JButton): void;
-        /**
-         * Returns the value of the <code>defaultButton</code> property.
-         *
-         * @return {javax.swing.JButton} the <code>JButton</code> which is currently the default button
-         * @see #setDefaultButton
-         */
-        getDefaultButton(): javax.swing.JButton;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Creates a new JPanel with the specified layout manager and buffering
-     * strategy.
-     *
-     * @param {*} layout
-     * the LayoutManager to use
-     * @param {boolean} isDoubleBuffered
-     * a boolean, true for double-buffering, which uses additional
-     * memory space to achieve fast, flicker-free updates
-     * @class
-     * @extends javax.swing.JComponent
-     */
-    class JPanel extends javax.swing.JComponent {
-        htmlCanvas: HTMLCanvasElement;
-        /**
-         *
-         * @return {java.awt.Graphics}
-         */
-        getGraphics(): java.awt.Graphics;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         * @param {java.awt.Color} background
-         */
-        setBackground(background: java.awt.Color): void;
-        /**
-         *
-         */
-        doPaintInternal(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        /**
-         * @see #getUIClassID
-         * @see #readObject
-         */
-        static uiClassID: string;
-        constructor(layout?: any, isDoubleBuffered?: any);
-        /**
-         * Returns a string that specifies the name of the L&amp;F class that
-         * renders this component.
-         *
-         * @return {string} "PanelUI"
-         * @see JComponent#getUIClassID
-         * @see UIDefaults#getUI
-         * @beaninfo expert: true description: A string that specifies the name of
-         * the L&amp;F class.
-         */
-        getUIClassID(): string;
-        paramString(): string;
-        setSize$int$int(width: number, height: number): void;
-        /**
-         *
-         * @param {number} width
-         * @param {number} height
-         */
-        setSize(width?: any, height?: any): any;
-    }
-}
-declare namespace javax.swing {
-    class JComboBox<E> extends javax.swing.JComponent implements java.awt.ItemSelectable, javax.swing.event.ListDataListener, java.awt.event.ActionListener {
-        lastSelected: number;
-        createHTML(): void;
-        getHTMLElement(): HTMLSelectElement;
-        initHTML(): void;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #getModel
-         * @see #setModel
-         */
-        dataModel: javax.swing.ComboBoxModel<E>;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #getRenderer
-         * @see #setRenderer
-         */
-        renderer: javax.swing.ListCellRenderer<any>;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #getEditor
-         * @see #setEditor
-         */
-        editor: javax.swing.ComboBoxEditor;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #getMaximumRowCount
-         * @see #setMaximumRowCount
-         */
-        maximumRowCount: number;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #isEditable
-         * @see #setEditable
-         */
-        __isEditable: boolean;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #setKeySelectionManager
-         * @see #getKeySelectionManager
-         */
-        keySelectionManager: JComboBox.KeySelectionManager;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override. Use the accessor methods instead.
-         *
-         * @see #setActionCommand
-         * @see #getActionCommand
-         */
-        actionCommand: string;
-        /**
-         * This protected field is implementation specific. Do not access directly
-         * or override.
-         */
-        selectedItemReminder: any;
-        prototypeDisplayValue: E;
-        firingActionEvent: boolean;
-        selectingItem: boolean;
-        constructor(aModel?: any);
-        init(): void;
-        setModel(aModel: javax.swing.ComboBoxModel<E>): void;
-        /**
-         * Returns the data model currently used by the <code>JComboBox</code>.
-         *
-         * @return {*} the <code>ComboBoxModel</code> that provides the displayed list
-         * of items
-         */
-        getModel(): javax.swing.ComboBoxModel<E>;
-        setLightWeightPopupEnabled(aFlag: boolean): void;
-        setEditable(aFlag: boolean): void;
-        isEditable(): boolean;
-        setMaximumRowCount(count: number): void;
-        getMaximumRowCount(): number;
-        setRenderer(aRenderer: javax.swing.ListCellRenderer<any>): void;
-        getRenderer(): javax.swing.ListCellRenderer<any>;
-        setEditor(anEditor: javax.swing.ComboBoxEditor): void;
-        getEditor(): javax.swing.ComboBoxEditor;
-        setSelectedItem(anObject: any): void;
-        getSelectedItem(): any;
-        setSelectedIndex(anIndex: number): void;
-        getSelectedIndex(): number;
-        getPrototypeDisplayValue(): E;
-        setPrototypeDisplayValue(prototypeDisplayValue: E): void;
-        addItem(item: E): void;
-        insertItemAt(item: E, index: number): void;
-        removeItem(anObject: any): void;
-        removeItemAt(anIndex: number): void;
-        removeAllItems(): void;
-        checkMutableComboBoxModel(): void;
-        showPopup(): void;
-        hidePopup(): void;
-        setPopupVisible(v: boolean): void;
-        isPopupVisible(): boolean;
-        addItemListener(aListener: java.awt.event.ItemListener): void;
-        removeItemListener(aListener: java.awt.event.ItemListener): void;
-        getItemListeners(): java.awt.event.ItemListener[];
-        addActionListener(l: java.awt.event.ActionListener): void;
-        removeActionListener(l: java.awt.event.ActionListener): void;
-        getActionListeners(): java.awt.event.ActionListener[];
-        addPopupMenuListener(l: javax.swing.event.PopupMenuListener): void;
-        removePopupMenuListener(l: javax.swing.event.PopupMenuListener): void;
-        getPopupMenuListeners(): javax.swing.event.PopupMenuListener[];
-        firePopupMenuWillBecomeVisible(): void;
-        firePopupMenuWillBecomeInvisible(): void;
-        firePopupMenuCanceled(): void;
-        setActionCommand(aCommand: string): void;
-        getActionCommand(): string;
-        action: javax.swing.Action;
-        actionPropertyChangeListener: java.beans.PropertyChangeListener;
-        setAction(a: javax.swing.Action): void;
-        isListener(c: any, a: java.awt.event.ActionListener): boolean;
-        getAction(): javax.swing.Action;
-        configurePropertiesFromAction(a: javax.swing.Action): void;
-        createActionPropertyChangeListener(a: javax.swing.Action): java.beans.PropertyChangeListener;
-        actionPropertyChanged(action: javax.swing.Action, propertyName: string): void;
-        setActionCommandFromAction(a: javax.swing.Action): void;
-        fireItemStateChanged(e: java.awt.event.ItemEvent): void;
-        fireActionEvent(): void;
-        selectedItemChanged(): void;
-        getSelectedObjects(): any[];
-        actionPerformed(e: java.awt.event.ActionEvent): void;
-        contentsChanged(e: javax.swing.event.ListDataEvent): void;
-        intervalAdded(e: javax.swing.event.ListDataEvent): void;
-        intervalRemoved(e: javax.swing.event.ListDataEvent): void;
-        selectWithKeyChar(keyChar: string): boolean;
-        setEnabled(b: boolean): void;
-        configureEditor(anEditor: javax.swing.ComboBoxEditor, anItem: any): void;
-        processKeyEvent(e: java.awt.event.KeyEvent): void;
-        setKeySelectionManager(aManager: JComboBox.KeySelectionManager): void;
-        getKeySelectionManager(): JComboBox.KeySelectionManager;
-        getItemCount(): number;
-        getItemAt(index: number): E;
-        createDefaultKeySelectionManager(): JComboBox.KeySelectionManager;
-        paramString(): string;
-    }
-    namespace JComboBox {
-        class ComboBoxActionPropertyChangeListener extends javax.swing.ActionPropertyChangeListener<javax.swing.JComboBox<any>> {
-            constructor(b: javax.swing.JComboBox<any>, a: javax.swing.Action);
-            actionPropertyChanged$javax_swing_JComboBox$javax_swing_Action$java_beans_PropertyChangeEvent(cb: javax.swing.JComboBox<any>, action: javax.swing.Action, e: java.beans.PropertyChangeEvent): void;
-            actionPropertyChanged(cb?: any, action?: any, e?: any): any;
-        }
-        interface KeySelectionManager {
-            selectionForKey(aKey: string, aModel: javax.swing.ComboBoxModel<any>): number;
-        }
-        class DefaultKeySelectionManager implements JComboBox.KeySelectionManager, java.io.Serializable {
-            __parent: any;
-            selectionForKey(aKey: string, aModel: javax.swing.ComboBoxModel<any>): number;
-            constructor(__parent: any);
-        }
-    }
-}
-declare namespace javax.swing.text {
-    abstract class JTextComponent extends javax.swing.JComponent {
-        text: string;
-        editable: boolean;
-        getText(): string;
-        setText(text: string): void;
-        isEditable(): boolean;
-        setEditable(editable: boolean): void;
-        constructor();
     }
 }
 declare namespace javax.swing {
@@ -19531,59 +18968,6 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
-    class JLabel extends javax.swing.JComponent implements javax.swing.SwingConstants {
-        mnemonic: number;
-        mnemonicIndex: number;
-        text: string;
-        defaultIcon: javax.swing.Icon;
-        disabledIcon: javax.swing.Icon;
-        disabledIconSet: boolean;
-        verticalAlignment: number;
-        horizontalAlignment: number;
-        verticalTextPosition: number;
-        horizontalTextPosition: number;
-        iconTextGap: number;
-        labelFor: java.awt.Component;
-        static LABELED_BY_PROPERTY: string;
-        constructor(text?: any, icon?: any, horizontalAlignment?: any);
-        htmlLabelElement: HTMLLabelElement;
-        htmlImageElement: HTMLImageElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        getText(): string;
-        setText(text: string): void;
-        getIcon(): javax.swing.Icon;
-        setIcon(icon: javax.swing.Icon): void;
-        getDisabledIcon(): javax.swing.Icon;
-        setDisabledIcon(disabledIcon: javax.swing.Icon): void;
-        setDisplayedMnemonic$int(key: number): void;
-        setDisplayedMnemonic$char(aChar: string): void;
-        setDisplayedMnemonic(aChar?: any): any;
-        getDisplayedMnemonic(): number;
-        setDisplayedMnemonicIndex(index: number): void;
-        getDisplayedMnemonicIndex(): number;
-        checkHorizontalKey(key: number, message: string): number;
-        checkVerticalKey(key: number, message: string): number;
-        getIconTextGap(): number;
-        setIconTextGap(iconTextGap: number): void;
-        getVerticalAlignment(): number;
-        setVerticalAlignment(alignment: number): void;
-        getHorizontalAlignment(): number;
-        setHorizontalAlignment(alignment: number): void;
-        getVerticalTextPosition(): number;
-        setVerticalTextPosition(textPosition: number): void;
-        getHorizontalTextPosition(): number;
-        setHorizontalTextPosition(textPosition: number): void;
-        paramString(): string;
-    }
-}
-declare namespace javax.swing {
     /**
      * Creates a new separator with the specified horizontal or
      * vertical orientation.
@@ -19664,714 +19048,187 @@ declare namespace javax.swing {
         paramString(): string;
     }
 }
-declare namespace java.awt.event {
-    class MouseEvent extends java.awt.event.InputEvent {
-        static MOUSE_FIRST: number;
-        static MOUSE_LAST: number;
-        static MOUSE_CLICKED: number;
-        static MOUSE_CLICKED_$LI$(): number;
-        static MOUSE_PRESSED: number;
-        static MOUSE_PRESSED_$LI$(): number;
-        static MOUSE_RELEASED: number;
-        static MOUSE_RELEASED_$LI$(): number;
-        static MOUSE_MOVED: number;
-        static MOUSE_MOVED_$LI$(): number;
-        static MOUSE_ENTERED: number;
-        static MOUSE_ENTERED_$LI$(): number;
-        static MOUSE_EXITED: number;
-        static MOUSE_EXITED_$LI$(): number;
-        static MOUSE_DRAGGED: number;
-        static MOUSE_DRAGGED_$LI$(): number;
-        static MOUSE_WHEEL: number;
-        static MOUSE_WHEEL_$LI$(): number;
-        static NOBUTTON: number;
-        static BUTTON1: number;
-        static BUTTON2: number;
-        static BUTTON3: number;
-        x: number;
-        y: number;
-        xAbs: number;
-        yAbs: number;
-        clickCount: number;
-        button: number;
-        popupTrigger: boolean;
-        static serialVersionUID: number;
-        static cachedNumberOfButtons: number;
-        getLocationOnScreen(): java.awt.Point;
-        getXOnScreen(): number;
-        getYOnScreen(): number;
-        shouldExcludeButtonFromExtModifiers: boolean;
-        getModifiersEx(): number;
-        constructor(source?: any, id?: any, when?: any, modifiers?: any, x?: any, y?: any, xAbs?: any, yAbs?: any, clickCount?: any, popupTrigger?: any, button?: any);
-        getX(): number;
-        getY(): number;
-        getPoint(): java.awt.Point;
-        translatePoint(x: number, y: number): void;
-        getClickCount(): number;
-        getButton(): number;
-        isPopupTrigger(): boolean;
-        static getMouseModifiersText(modifiers: number): string;
-        paramString(): string;
-        setNewModifiers(): void;
-        setOldModifiers(): void;
-    }
-}
-declare namespace java.awt.event {
-    class KeyEvent extends java.awt.event.InputEvent {
-        isProxyActive: boolean;
-        static KEY_FIRST: number;
-        static KEY_LAST: number;
-        static KEY_TYPED: number;
-        static KEY_TYPED_$LI$(): number;
-        static KEY_PRESSED: number;
-        static KEY_PRESSED_$LI$(): number;
-        static KEY_RELEASED: number;
-        static KEY_RELEASED_$LI$(): number;
-        static VK_ENTER: number;
-        static VK_BACK_SPACE: number;
-        static VK_TAB: number;
-        static VK_CANCEL: number;
-        static VK_CLEAR: number;
-        static VK_SHIFT: number;
-        static VK_CONTROL: number;
-        static VK_ALT: number;
-        static VK_PAUSE: number;
-        static VK_CAPS_LOCK: number;
-        static VK_ESCAPE: number;
-        static VK_SPACE: number;
-        static VK_PAGE_UP: number;
-        static VK_PAGE_DOWN: number;
-        static VK_END: number;
-        static VK_HOME: number;
-        static VK_LEFT: number;
-        static VK_UP: number;
-        static VK_RIGHT: number;
-        static VK_DOWN: number;
-        static VK_COMMA: number;
-        static VK_MINUS: number;
-        static VK_PERIOD: number;
-        static VK_SLASH: number;
-        /**
-         * VK_0 thru VK_9 are the same as ASCII '0' thru '9' (0x30 - 0x39)
-         */
-        static VK_0: number;
-        static VK_1: number;
-        static VK_2: number;
-        static VK_3: number;
-        static VK_4: number;
-        static VK_5: number;
-        static VK_6: number;
-        static VK_7: number;
-        static VK_8: number;
-        static VK_9: number;
-        static VK_SEMICOLON: number;
-        static VK_EQUALS: number;
-        /**
-         * VK_A thru VK_Z are the same as ASCII 'A' thru 'Z' (0x41 - 0x5A)
-         */
-        static VK_A: number;
-        static VK_B: number;
-        static VK_C: number;
-        static VK_D: number;
-        static VK_E: number;
-        static VK_F: number;
-        static VK_G: number;
-        static VK_H: number;
-        static VK_I: number;
-        static VK_J: number;
-        static VK_K: number;
-        static VK_L: number;
-        static VK_M: number;
-        static VK_N: number;
-        static VK_O: number;
-        static VK_P: number;
-        static VK_Q: number;
-        static VK_R: number;
-        static VK_S: number;
-        static VK_T: number;
-        static VK_U: number;
-        static VK_V: number;
-        static VK_W: number;
-        static VK_X: number;
-        static VK_Y: number;
-        static VK_Z: number;
-        static VK_OPEN_BRACKET: number;
-        static VK_BACK_SLASH: number;
-        static VK_CLOSE_BRACKET: number;
-        static VK_NUMPAD0: number;
-        static VK_NUMPAD1: number;
-        static VK_NUMPAD2: number;
-        static VK_NUMPAD3: number;
-        static VK_NUMPAD4: number;
-        static VK_NUMPAD5: number;
-        static VK_NUMPAD6: number;
-        static VK_NUMPAD7: number;
-        static VK_NUMPAD8: number;
-        static VK_NUMPAD9: number;
-        static VK_MULTIPLY: number;
-        static VK_ADD: number;
-        static VK_SEPARATER: number;
-        static VK_SEPARATOR: number;
-        static VK_SEPARATOR_$LI$(): number;
-        static VK_SUBTRACT: number;
-        static VK_DECIMAL: number;
-        static VK_DIVIDE: number;
-        static VK_DELETE: number;
-        static VK_NUM_LOCK: number;
-        static VK_SCROLL_LOCK: number;
-        static VK_F1: number;
-        static VK_F2: number;
-        static VK_F3: number;
-        static VK_F4: number;
-        static VK_F5: number;
-        static VK_F6: number;
-        static VK_F7: number;
-        static VK_F8: number;
-        static VK_F9: number;
-        static VK_F10: number;
-        static VK_F11: number;
-        static VK_F12: number;
-        static VK_F13: number;
-        static VK_F14: number;
-        static VK_F15: number;
-        static VK_F16: number;
-        static VK_F17: number;
-        static VK_F18: number;
-        static VK_F19: number;
-        static VK_F20: number;
-        static VK_F21: number;
-        static VK_F22: number;
-        static VK_F23: number;
-        static VK_F24: number;
-        static VK_PRINTSCREEN: number;
-        static VK_INSERT: number;
-        static VK_HELP: number;
-        static VK_META: number;
-        static VK_BACK_QUOTE: number;
-        static VK_QUOTE: number;
-        static VK_KP_UP: number;
-        static VK_KP_DOWN: number;
-        static VK_KP_LEFT: number;
-        static VK_KP_RIGHT: number;
-        static VK_DEAD_GRAVE: number;
-        static VK_DEAD_ACUTE: number;
-        static VK_DEAD_CIRCUMFLEX: number;
-        static VK_DEAD_TILDE: number;
-        static VK_DEAD_MACRON: number;
-        static VK_DEAD_BREVE: number;
-        static VK_DEAD_ABOVEDOT: number;
-        static VK_DEAD_DIAERESIS: number;
-        static VK_DEAD_ABOVERING: number;
-        static VK_DEAD_DOUBLEACUTE: number;
-        static VK_DEAD_CARON: number;
-        static VK_DEAD_CEDILLA: number;
-        static VK_DEAD_OGONEK: number;
-        static VK_DEAD_IOTA: number;
-        static VK_DEAD_VOICED_SOUND: number;
-        static VK_DEAD_SEMIVOICED_SOUND: number;
-        static VK_AMPERSAND: number;
-        static VK_ASTERISK: number;
-        static VK_QUOTEDBL: number;
-        static VK_LESS: number;
-        static VK_GREATER: number;
-        static VK_BRACELEFT: number;
-        static VK_BRACERIGHT: number;
-        static VK_AT: number;
-        static VK_COLON: number;
-        static VK_CIRCUMFLEX: number;
-        static VK_DOLLAR: number;
-        static VK_EURO_SIGN: number;
-        static VK_EXCLAMATION_MARK: number;
-        static VK_INVERTED_EXCLAMATION_MARK: number;
-        static VK_LEFT_PARENTHESIS: number;
-        static VK_NUMBER_SIGN: number;
-        static VK_PLUS: number;
-        static VK_RIGHT_PARENTHESIS: number;
-        static VK_UNDERSCORE: number;
-        static VK_WINDOWS: number;
-        static VK_CONTEXT_MENU: number;
-        static VK_FINAL: number;
-        static VK_CONVERT: number;
-        static VK_NONCONVERT: number;
-        static VK_ACCEPT: number;
-        static VK_MODECHANGE: number;
-        static VK_KANA: number;
-        static VK_KANJI: number;
-        static VK_ALPHANUMERIC: number;
-        static VK_KATAKANA: number;
-        static VK_HIRAGANA: number;
-        static VK_FULL_WIDTH: number;
-        static VK_HALF_WIDTH: number;
-        static VK_ROMAN_CHARACTERS: number;
-        static VK_ALL_CANDIDATES: number;
-        static VK_PREVIOUS_CANDIDATE: number;
-        static VK_CODE_INPUT: number;
-        static VK_JAPANESE_KATAKANA: number;
-        static VK_JAPANESE_HIRAGANA: number;
-        static VK_JAPANESE_ROMAN: number;
-        static VK_KANA_LOCK: number;
-        static VK_INPUT_METHOD_ON_OFF: number;
-        static VK_CUT: number;
-        static VK_COPY: number;
-        static VK_PASTE: number;
-        static VK_UNDO: number;
-        static VK_AGAIN: number;
-        static VK_FIND: number;
-        static VK_PROPS: number;
-        static VK_STOP: number;
-        static VK_COMPOSE: number;
-        static VK_ALT_GRAPH: number;
-        static VK_BEGIN: number;
-        static VK_UNDEFINED: number;
-        static CHAR_UNDEFINED: string;
-        static KEY_LOCATION_UNKNOWN: number;
-        static KEY_LOCATION_STANDARD: number;
-        static KEY_LOCATION_LEFT: number;
-        static KEY_LOCATION_RIGHT: number;
-        static KEY_LOCATION_NUMPAD: number;
-        keyCode: number;
-        keyChar: string;
-        keyLocation: number;
-        static serialVersionUID: number;
-        originalSource: java.awt.Component;
-        constructor(source?: any, id?: any, when?: any, modifiers?: any, keyCode?: any, keyChar?: any, keyLocation?: any, isProxyActive?: any);
-        getKeyCode(): number;
-        setKeyCode(keyCode: number): void;
-        getKeyChar(): string;
-        setKeyChar(keyChar: string): void;
-        setModifiers(modifiers: number): void;
-        getKeyLocation(): number;
-        static getKeyText(keyCode: number): string;
-        static getKeyModifiersText(modifiers: number): string;
-        isActionKey(): boolean;
-        paramString(): string;
-        getExtendedKeyCode(): number;
-        /**
-         * Returns an extended key code for a unicode character.
-         *
-         * @return {number} for a unicode character with a corresponding {@code VK_} constant
-         * -- this {@code VK_} constant; for a character appearing on the
-         * primary level of a known keyboard layout -- a unique integer. If
-         * a character does not appear on the primary level of a known
-         * keyboard, {@code VK_UNDEFINED} is returned.
-         *
-         * @since 1.7
-         * @param {number} c
-         */
-        static getExtendedKeyCodeForChar(c: number): number;
-        /**
-         * Sets new modifiers by the old ones. The key modifiers override overlaping
-         * mouse modifiers.
-         * @private
-         */
-        setNewModifiers(): void;
-        setOldModifiers(): void;
-    }
-}
-declare namespace javax.swing {
-    class JFrame extends java.awt.Frame implements javax.swing.RootPaneContainer, javax.swing.WindowConstants {
-        static EXIT_ON_CLOSE: number;
-        defaultCloseOperation: number;
-        rootPane: javax.swing.JRootPane;
-        rootPaneCheckingEnabled: boolean;
-        constructor(title?: any);
-        frameInit(): void;
-        createRootPane(): javax.swing.JRootPane;
-        setRootPane(root: javax.swing.JRootPane): void;
-        /**
-         *
-         * @return {java.awt.Container}
-         */
-        getContentPane(): java.awt.Container;
-        /**
-         *
-         * @return {javax.swing.JRootPane}
-         */
-        getRootPane(): javax.swing.JRootPane;
-        /**
-         *
-         * @param {java.awt.Container} contentPane
-         */
-        setContentPane(contentPane: java.awt.Container): void;
-        setGlassPane(glassPane: java.awt.Container): void;
-        getGlassPane(): java.awt.Component;
-        setDefaultCloseOperation(operation: number): void;
-    }
-}
 declare namespace javax.swing {
     /**
-     * Creates a swing applet instance.
-     * <p>
-     * This constructor sets the component's locale property to the value
-     * returned by <code>JComponent.getDefaultLocale</code>.
-     *
-     * @exception java.awt.HeadlessException
-     * if GraphicsEnvironment.isHeadless() returns true.
-     * @see java.awt.GraphicsEnvironment#isHeadless
-     * @see JComponent#getDefaultLocale
+     * Creates a <code>JRootPane</code>, setting up its <code>glassPane</code>,
+     * <code>layeredPane</code>, and <code>contentPane</code>.
      * @class
-     * @extends java.applet.Applet
+     * @extends javax.swing.JComponent
      */
-    class JApplet extends java.applet.Applet implements javax.swing.RootPaneContainer {
-        /**
-         * @see #getRootPane
-         * @see #setRootPane
-         */
-        rootPane: javax.swing.JRootPane;
-        /**
-         * If true then calls to <code>add</code> and <code>setLayout</code> will be
-         * forwarded to the <code>contentPane</code>. This is initially false, but
-         * is set to true when the <code>JApplet</code> is constructed.
-         *
-         * @see #isRootPaneCheckingEnabled
-         * @see #setRootPaneCheckingEnabled
-         * @see javax.swing.RootPaneContainer
-         */
-        rootPaneCheckingEnabled: boolean;
-        constructor();
-        /**
-         * Called by the constructor methods to create the default rootPane.
-         * @return {javax.swing.JRootPane}
-         */
-        createRootPane(): javax.swing.JRootPane;
-        addImpl(comp: java.awt.Component, constraints: any, index: number): void;
-        /**
-         * Just calls <code>paint(g)</code>. This method was overridden to prevent
-         * an unnecessary call to clear the background.
-         * @param {java.awt.Graphics} g
-         */
-        update(g: java.awt.Graphics): void;
-        remove$java_awt_Component(comp: java.awt.Component): void;
-        /**
-         * Removes the specified component from the container. If <code>comp</code>
-         * is not the <code>rootPane</code>, this will forward the call to the
-         * <code>contentPane</code>. This will do nothing if <code>comp</code> is
-         * not a child of the <code>JFrame</code> or <code>contentPane</code>.
-         *
-         * @param {java.awt.Component} comp
-         * the component to be removed
-         * @throws NullPointerException
-         * if <code>comp</code> is null
-         * @see #add
-         * @see javax.swing.RootPaneContainer
-         */
-        remove(comp?: any): any;
-        /**
-         * Sets the <code>LayoutManager</code>. Overridden to conditionally forward
-         * the call to the <code>contentPane</code>. Refer to
-         * {@link javax.swing.RootPaneContainer} for more information.
-         *
-         * @param {*} manager
-         * the <code>LayoutManager</code>
-         * @see #setRootPaneCheckingEnabled
-         * @see javax.swing.RootPaneContainer
-         */
-        setLayout(manager: java.awt.LayoutManager): void;
-        /**
-         * Returns the rootPane object for this applet.
-         *
-         * @see #setRootPane
-         * @see RootPaneContainer#getRootPane
-         * @return {javax.swing.JRootPane}
-         */
-        getRootPane(): javax.swing.JRootPane;
-        /**
-         * Sets the rootPane property. This method is called by the constructor.
-         *
-         * @param {javax.swing.JRootPane} root
-         * the rootPane object for this applet
-         *
-         * @see #getRootPane
-         *
-         * @beaninfo hidden: true description: the RootPane object for this applet.
-         */
-        setRootPane(root: javax.swing.JRootPane): void;
-        /**
-         * Returns the contentPane object for this applet.
-         *
-         * @see #setContentPane
-         * @see RootPaneContainer#getContentPane
-         * @return {java.awt.Container}
-         */
-        getContentPane(): java.awt.Container;
-        /**
-         * Sets the contentPane property. This method is called by the constructor.
-         *
-         * @param {java.awt.Container} contentPane
-         * the contentPane object for this applet
-         *
-         * @exception java.awt.IllegalComponentStateException
-         * (a runtime exception) if the content pane parameter is
-         * null
-         * @see #getContentPane
-         * @see RootPaneContainer#setContentPane
-         *
-         * @beaninfo hidden: true description: The client area of the applet where
-         * child components are normally inserted.
-         */
-        setContentPane(contentPane: java.awt.Container): void;
-        /**
-         * Returns a string representation of this JApplet. This method is intended
-         * to be used only for debugging purposes, and the content and format of the
-         * returned string may vary between implementations. The returned string may
-         * be empty but may not be <code>null</code>.
-         *
-         * @return {string} a string representation of this JApplet.
-         */
-        paramString(): string;
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Creates a <code>JMenuItem</code> with the specified text and icon.
-     *
-     * @param {string} text the text of the <code>JMenuItem</code>
-     * @param {*} icon the icon of the <code>JMenuItem</code>
-     * @class
-     * @extends javax.swing.AbstractButton
-     * @author Georges Saab
-     */
-    class JMenuItem extends javax.swing.AbstractButton implements javax.swing.MenuElement {
+    class JRootPane extends javax.swing.JComponent {
         /**
          *
          */
         createHTML(): void;
         /**
-         * @see #getUIClassID
-         * @see #readObject
+         *
          */
+        initHTML(): void;
         static uiClassID: string;
-        static TRACE: boolean;
-        static VERBOSE: boolean;
-        static DEBUG: boolean;
-        isMouseDragged: boolean;
-        constructor(text?: any, icon?: any);
         /**
-         * {@inheritDoc}
-         * @param {*} newModel
-         */
-        setModel(newModel: javax.swing.ButtonModel): void;
-        /**
-         * Initializes the menu item with the specified text and icon.
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should not provide any sort of Window decorations.
          *
-         * @param {string} text the text of the <code>JMenuItem</code>
-         * @param {*} icon the icon of the <code>JMenuItem</code>
+         * @since 1.4
          */
-        init(text: string, icon: javax.swing.Icon): void;
+        static NONE: number;
         /**
-         * Returns the suffix used to construct the name of the L&amp;F class used to
-         * render this component.
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Frame.
          *
-         * @return {string} the string "MenuItemUI"
+         * @since 1.4
+         */
+        static FRAME: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog.
+         *
+         * @since 1.4
+         */
+        static PLAIN_DIALOG: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog used to display an informational message.
+         *
+         * @since 1.4
+         */
+        static INFORMATION_DIALOG: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog used to display an error message.
+         *
+         * @since 1.4
+         */
+        static ERROR_DIALOG: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog used to display a <code>JColorChooser</code>.
+         *
+         * @since 1.4
+         */
+        static COLOR_CHOOSER_DIALOG: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog used to display a <code>JFileChooser</code>.
+         *
+         * @since 1.4
+         */
+        static FILE_CHOOSER_DIALOG: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog used to present a question to the user.
+         *
+         * @since 1.4
+         */
+        static QUESTION_DIALOG: number;
+        /**
+         * Constant used for the windowDecorationStyle property. Indicates that the
+         * <code>JRootPane</code> should provide decorations appropriate for a
+         * Dialog used to display a warning message.
+         *
+         * @since 1.4
+         */
+        static WARNING_DIALOG: number;
+        windowDecorationStyle: number;
+        /**
+         * The content pane.
+         */
+        contentPane: java.awt.Container;
+        glassPane: java.awt.Container;
+        /**
+         * The button that gets activated when the pane has the focus and a
+         * UI-specific action like pressing the <b>Enter</b> key occurs.
+         */
+        defaultButton: javax.swing.JButton;
+        constructor();
+        setGlassPane(glassPane: java.awt.Container): void;
+        getGlassPane(): java.awt.Container;
+        createGlassPane(): java.awt.Container;
+        /**
+         * Returns a constant identifying the type of Window decorations the
+         * <code>JRootPane</code> is providing.
+         *
+         * @return {number} One of <code>NONE</code>, <code>FRAME</code>,
+         * <code>PLAIN_DIALOG</code>, <code>INFORMATION_DIALOG</code>,
+         * <code>ERROR_DIALOG</code>, <code>COLOR_CHOOSER_DIALOG</code>,
+         * <code>FILE_CHOOSER_DIALOG</code>, <code>QUESTION_DIALOG</code> or
+         * <code>WARNING_DIALOG</code>.
+         * @see #setWindowDecorationStyle
+         * @since 1.4
+         */
+        getWindowDecorationStyle(): number;
+        setWindowDecorationStyle(windowDecorationStyle: number): void;
+        /**
+         * Returns a string that specifies the name of the L&amp;F class that
+         * renders this component.
+         *
+         * @return {string} the string "RootPaneUI"
+         *
          * @see JComponent#getUIClassID
          * @see UIDefaults#getUI
          */
         getUIClassID(): string;
+        createContentPane(): java.awt.Container;
         /**
-         * Identifies the menu item as "armed". If the mouse button is
-         * released while it is over this item, the menu's action event
-         * will fire. If the mouse button is released elsewhere, the
-         * event will not fire and the menu item will be disarmed.
-         *
-         * @param {boolean} b true to arm the menu item so it can be selected
-         * @beaninfo
-         * description: Mouse release will fire an action event
-         * hidden: true
-         */
-        setArmed(b: boolean): void;
-        /**
-         * Returns whether the menu item is "armed".
-         *
-         * @return {boolean} true if the menu item is armed, and it can be selected
-         * @see #setArmed
-         */
-        isArmed(): boolean;
-        /**
-         * Returns the <code>KeyStroke</code> which serves as an accelerator
-         * for the menu item.
-         * @return {void} a <code>KeyStroke</code> object identifying the
-         * accelerator key
-         * @param {*} a
-         */
-        setIconFromAction(a: javax.swing.Action): void;
-        largeIconChanged(a: javax.swing.Action): void;
-        smallIconChanged(a: javax.swing.Action): void;
-        /**
-         * Processes a key event forwarded from the
-         * <code>MenuSelectionManager</code> and changes the menu selection,
-         * if necessary, by using <code>MenuSelectionManager</code>'s API.
+         * Sets the content pane -- the container that holds the components parented
+         * by the root pane.
          * <p>
-         * Note: you do not have to forward the event to sub-components.
-         * This is done automatically by the <code>MenuSelectionManager</code>.
+         * Swing's painting architecture requires an opaque <code>JComponent</code>
+         * in the containment hierarchy. This is typically provided by the content
+         * pane. If you replace the content pane it is recommended you replace it
+         * with an opaque <code>JComponent</code>.
          *
-         * @param {java.awt.event.KeyEvent} e  a <code>KeyEvent</code>
-         * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
-         * @param {javax.swing.MenuSelectionManager} manager   the <code>MenuSelectionManager</code>
+         * @param {java.awt.Container} content
+         * the <code>Container</code> to use for component-contents
+         * @exception java.awt.IllegalComponentStateException
+         * (a runtime exception) if the content pane parameter is
+         * <code>null</code>
          */
-        processKeyEvent(e: java.awt.event.KeyEvent, path: javax.swing.MenuElement[], manager: javax.swing.MenuSelectionManager): void;
+        setContentPane(content: java.awt.Container): void;
         /**
-         * Handles a keystroke in a menu.
+         * Returns the content pane -- the container that holds the components
+         * parented by the root pane.
          *
-         * @param {javax.swing.event.MenuKeyEvent} e  a <code>MenuKeyEvent</code> object
+         * @return {java.awt.Container} the <code>Container</code> that holds the component-contents
          */
-        processMenuKeyEvent(e: javax.swing.event.MenuKeyEvent): void;
+        getContentPane(): java.awt.Container;
         /**
-         * Notifies all listeners that have registered interest for
-         * notification on this event type.
+         * Sets the <code>defaultButton</code> property, which determines the
+         * current default button for this <code>JRootPane</code>. The default
+         * button is the button which will be activated when a UI-defined activation
+         * event (typically the <b>Enter</b> key) occurs in the root pane regardless
+         * of whether or not the button has keyboard focus (unless there is another
+         * component within the root pane which consumes the activation event, such
+         * as a <code>JTextPane</code>). For default activation to work, the button
+         * must be an enabled descendent of the root pane when activation occurs. To
+         * remove a default button from this root pane, set this property to
+         * <code>null</code>.
          *
-         * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
-         * @see EventListenerList
+         * @see JButton#isDefaultButton
+         * @param {javax.swing.JButton} defaultButton
+         * the <code>JButton</code> which is to be the default button
+         *
+         * @beaninfo description: The button activated by default in this root pane
          */
-        fireMenuKeyPressed(event: javax.swing.event.MenuKeyEvent): void;
+        setDefaultButton(defaultButton: javax.swing.JButton): void;
         /**
-         * Notifies all listeners that have registered interest for
-         * notification on this event type.
+         * Returns the value of the <code>defaultButton</code> property.
          *
-         * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
-         * @see EventListenerList
+         * @return {javax.swing.JButton} the <code>JButton</code> which is currently the default button
+         * @see #setDefaultButton
          */
-        fireMenuKeyReleased(event: javax.swing.event.MenuKeyEvent): void;
-        /**
-         * Notifies all listeners that have registered interest for
-         * notification on this event type.
-         *
-         * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
-         * @see EventListenerList
-         */
-        fireMenuKeyTyped(event: javax.swing.event.MenuKeyEvent): void;
-        /**
-         * Called by the <code>MenuSelectionManager</code> when the
-         * <code>MenuElement</code> is selected or unselected.
-         *
-         * @param {boolean} isIncluded  true if this menu item is on the part of the menu
-         * path that changed, false if this menu is part of the
-         * a menu path that changed, but this particular part of
-         * that path is still the same
-         * @see MenuSelectionManager#setSelectedPath(MenuElement[])
-         */
-        menuSelectionChanged(isIncluded: boolean): void;
-        /**
-         * This method returns an array containing the sub-menu
-         * components for this menu component.
-         *
-         * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code>s
-         */
-        getSubElements(): javax.swing.MenuElement[];
-        getComponent(n?: any): java.awt.Component;
-        getComponent$(): java.awt.Component;
-        /**
-         * Adds a <code>MenuKeyListener</code> to the menu item.
-         *
-         * @param {*} l the <code>MenuKeyListener</code> to be added
-         */
-        addMenuKeyListener(l: javax.swing.event.MenuKeyListener): void;
-        /**
-         * Removes a <code>MenuKeyListener</code> from the menu item.
-         *
-         * @param {*} l the <code>MenuKeyListener</code> to be removed
-         */
-        removeMenuKeyListener(l: javax.swing.event.MenuKeyListener): void;
-        /**
-         * Returns an array of all the <code>MenuKeyListener</code>s added
-         * to this JMenuItem with addMenuKeyListener().
-         *
-         * @return {javax.swing.event.MenuKeyListener[]} all of the <code>MenuKeyListener</code>s added or an empty
-         * array if no listeners have been added
-         * @since 1.4
-         */
-        getMenuKeyListeners(): javax.swing.event.MenuKeyListener[];
-        /**
-         * Returns a string representation of this <code>JMenuItem</code>.
-         * This method is intended to be used only for debugging purposes,
-         * and the content and format of the returned string may vary between
-         * implementations. The returned string may be empty but may not
-         * be <code>null</code>.
-         *
-         * @return  {string} a string representation of this <code>JMenuItem</code>
-         */
-        paramString(): string;
-    }
-    namespace JMenuItem {
-        class MenuItemFocusListener implements java.awt.event.FocusListener, java.io.Serializable {
-            focusGained(event: java.awt.event.FocusEvent): void;
-            focusLost(event: java.awt.event.FocusEvent): void;
-            constructor();
-        }
+        getDefaultButton(): javax.swing.JButton;
     }
 }
 declare namespace javax.swing {
-    class JButton extends javax.swing.AbstractButton {
-        actionListeners: Array<java.awt.event.ActionListener>;
-        actionCommand: string;
-        label: string;
-        background: java.awt.Color;
-        icon: javax.swing.ImageIcon;
-        constructor(label?: any, icon?: any);
-        /**
-         *
-         * @return {HTMLButtonElement}
-         */
-        getHTMLElement(): HTMLButtonElement;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        initActionListener(): void;
-        addActionListener(actionListener: java.awt.event.ActionListener): void;
-        removeActionListener(actionListener: java.awt.event.ActionListener): void;
-        setBackground(background: java.awt.Color): void;
-    }
-}
-declare namespace javax.swing {
-    class JToggleButton extends javax.swing.AbstractButton {
-        static serialVersionUID: number;
-        constructor(text?: any, icon?: any, selected?: any);
-        paramString(): string;
-        buttonCreated: boolean;
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-    }
-    namespace JToggleButton {
-        /**
-         * Creates a new ToggleButton Model
-         * @class
-         * @extends javax.swing.DefaultButtonModel
-         */
-        class ToggleButtonModel extends javax.swing.DefaultButtonModel {
-            constructor();
-            /**
-             * Checks if the button is selected.
-             * @return {boolean}
-             */
-            isSelected(): boolean;
-            /**
-             * Sets the selected state of the button.
-             *
-             * @param {boolean} b
-             * true selects the toggle button, false deselects the toggle
-             * button.
-             */
-            setSelected(b: boolean): void;
-            /**
-             * Sets the pressed state of the toggle button.
-             * @param {boolean} b
-             */
-            setPressed(b: boolean): void;
-        }
-    }
-}
-declare namespace javax.swing {
-    class JTextField extends javax.swing.text.JTextComponent implements javax.swing.SwingConstants {
+    class JSlider extends javax.swing.JComponent implements javax.swing.SwingConstants {
         /**
          *
          * @return {HTMLInputElement}
@@ -20385,93 +19242,392 @@ declare namespace javax.swing {
          *
          */
         initHTML(): void;
-        initActionListeners(): void;
-        constructor(doc?: any, text?: any, columns?: any);
         /**
-         *
-         * @param {string} text
+         * @see #getUIClassID
+         * @see #readObject
          */
+        static uiClassID: string;
+        paintTicks: boolean;
+        paintTrack: boolean;
+        paintLabels: boolean;
+        isInverted: boolean;
+        sliderModel: javax.swing.BoundedRangeModel;
+        majorTickSpacing: number;
+        minorTickSpacing: number;
+        snapToTicks: boolean;
+        snapToValue: boolean;
+        orientation: number;
+        changeListener: javax.swing.event.ChangeListener;
+        changeEvent: javax.swing.event.ChangeEvent;
+        checkOrientation(orientation: number): void;
+        constructor(orientation?: any, min?: any, max?: any, value?: any);
+        getUIClassID(): string;
+        createChangeListener(): javax.swing.event.ChangeListener;
+        addChangeListener(l: javax.swing.event.ChangeListener): void;
+        removeChangeListener(l: javax.swing.event.ChangeListener): void;
+        getChangeListeners(): javax.swing.event.ChangeListener[];
+        fireStateChanged(): void;
+        getModel(): javax.swing.BoundedRangeModel;
+        setModel(newModel: javax.swing.BoundedRangeModel): void;
+        getValue(): number;
+        setValue(n: number): void;
+        getMinimum(): number;
+        setMinimum(minimum: number): void;
+        getMaximum(): number;
+        setMaximum(maximum: number): void;
+        getValueIsAdjusting(): boolean;
+        setValueIsAdjusting(b: boolean): void;
+        getExtent(): number;
+        setExtent(extent: number): void;
+        /**
+         * Return this slider's vertical or horizontal orientation.
+         *
+         * @return {number} {@code SwingConstants.VERTICAL} or
+         * {@code SwingConstants.HORIZONTAL}
+         * @see #setOrientation
+         */
+        getOrientation(): number;
+        setOrientation(orientation: number): void;
+        /**
+         * {@inheritDoc}
+         *
+         * @since 1.6
+         * @param {java.awt.Font} font
+         */
+        setFont(font: java.awt.Font): void;
+        /**
+         * Returns a string representation of this JSlider. This method is intended
+         * to be used only for debugging purposes, and the content and format of the
+         * returned string may vary between implementations. The returned string may
+         * be empty but may not be <code>null</code>.
+         *
+         * @return {string} a string representation of this JSlider.
+         */
+        paramString(): string;
+    }
+    namespace JSlider {
+        class ModelListener implements javax.swing.event.ChangeListener, java.io.Serializable {
+            __parent: any;
+            stateChanged(e: javax.swing.event.ChangeEvent): void;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace javax.swing.text {
+    abstract class JTextComponent extends javax.swing.JComponent {
+        text: string;
+        editable: boolean;
+        getText(): string;
         setText(text: string): void;
-        /**
-         *
-         * @param {boolean} editable
-         */
+        isEditable(): boolean;
         setEditable(editable: boolean): void;
+        constructor();
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Creates a new JPanel with the specified layout manager and buffering
+     * strategy.
+     *
+     * @param {*} layout
+     * the LayoutManager to use
+     * @param {boolean} isDoubleBuffered
+     * a boolean, true for double-buffering, which uses additional
+     * memory space to achieve fast, flicker-free updates
+     * @class
+     * @extends javax.swing.JComponent
+     */
+    class JPanel extends javax.swing.JComponent {
+        htmlCanvas: HTMLCanvasElement;
         /**
-         * Gets the class ID for a UI.
          *
-         * @return {string} the string "TextFieldUI"
+         * @return {java.awt.Graphics}
+         */
+        getGraphics(): java.awt.Graphics;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @param {java.awt.Color} background
+         */
+        setBackground(background: java.awt.Color): void;
+        /**
+         *
+         */
+        doPaintInternal(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        /**
+         * @see #getUIClassID
+         * @see #readObject
+         */
+        static uiClassID: string;
+        constructor(layout?: any, isDoubleBuffered?: any);
+        /**
+         * Returns a string that specifies the name of the L&amp;F class that
+         * renders this component.
+         *
+         * @return {string} "PanelUI"
          * @see JComponent#getUIClassID
          * @see UIDefaults#getUI
+         * @beaninfo expert: true description: A string that specifies the name of
+         * the L&amp;F class.
          */
         getUIClassID(): string;
+        paramString(): string;
+        setSize$int$int(width: number, height: number): void;
         /**
-         * Returns the horizontal alignment of the text. Valid keys are:
-         * <ul>
-         * <li><code>JTextField.LEFT</code>
-         * <li><code>JTextField.CENTER</code>
-         * <li><code>JTextField.RIGHT</code>
-         * <li><code>JTextField.LEADING</code>
-         * <li><code>JTextField.TRAILING</code>
-         * </ul>
          *
-         * @return {number} the horizontal alignment
+         * @param {number} width
+         * @param {number} height
          */
+        setSize(width?: any, height?: any): any;
+    }
+}
+declare namespace javax.swing {
+    abstract class AbstractButton extends javax.swing.JComponent implements java.awt.ItemSelectable, javax.swing.SwingConstants {
+        /**
+         * Identifies a change in the button's margins.
+         */
+        static MARGIN_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change in the button's vertical alignment.
+         */
+        static VERTICAL_ALIGNMENT_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change in the button's horizontal alignment.
+         */
+        static HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change in the button's vertical text position.
+         */
+        static VERTICAL_TEXT_POSITION_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change in the button's horizontal text position.
+         */
+        static HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to having the border drawn, or having it not drawn.
+         */
+        static BORDER_PAINTED_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to having the border highlighted when focused, or
+         * not.
+         */
+        static FOCUS_PAINTED_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change from rollover enabled to disabled or back to enabled.
+         */
+        static ROLLOVER_ENABLED_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to having the button paint the content area.
+         */
+        static CONTENT_AREA_FILLED_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon that represents the button.
+         */
+        static ICON_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon used when the button has been pressed.
+         */
+        static PRESSED_ICON_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon used when the button has been selected.
+         */
+        static SELECTED_ICON_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon used when the cursor is over the button.
+         */
+        static ROLLOVER_ICON_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon used when the cursor is over the button
+         * and it has been selected.
+         */
+        static ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon used when the button has been disabled.
+         */
+        static DISABLED_ICON_CHANGED_PROPERTY: string;
+        /**
+         * Identifies a change to the icon used when the button has been disabled
+         * and selected.
+         */
+        static DISABLED_SELECTED_ICON_CHANGED_PROPERTY: string;
+        text: string;
+        margin: java.awt.Insets;
+        defaultMargin: java.awt.Insets;
+        defaultIcon: javax.swing.Icon;
+        pressedIcon: javax.swing.Icon;
+        disabledIcon: javax.swing.Icon;
+        selectedIcon: javax.swing.Icon;
+        disabledSelectedIcon: javax.swing.Icon;
+        rolloverIcon: javax.swing.Icon;
+        rolloverSelectedIcon: javax.swing.Icon;
+        paintBorder: boolean;
+        paintFocus: boolean;
+        rolloverEnabled: boolean;
+        contentAreaFilled: boolean;
+        verticalAlignment: number;
+        horizontalAlignment: number;
+        verticalTextPosition: number;
+        horizontalTextPosition: number;
+        iconTextGap: number;
+        mnemonic: number;
+        mnemonicIndex: number;
+        multiClickThreshhold: number;
+        borderPaintedSet: boolean;
+        rolloverEnabledSet: boolean;
+        iconTextGapSet: boolean;
+        contentAreaFilledSet: boolean;
+        __setLayout: boolean;
+        defaultCapable: boolean;
+        /**
+         * Combined listeners: ActionListener, ChangeListener, ItemListener.
+         */
+        handler: AbstractButton.Handler;
+        /**
+         * The button model's <code>changeListener</code>.
+         */
+        changeListener: javax.swing.event.ChangeListener;
+        /**
+         * The button model's <code>ActionListener</code>.
+         */
+        actionListener: java.awt.event.ActionListener;
+        /**
+         * The button model's <code>ItemListener</code>.
+         */
+        itemListener: java.awt.event.ItemListener;
+        /**
+         * Only one <code>ChangeEvent</code> is needed per button instance since the
+         * event's only state is the source property. The source of events generated
+         * is always "this".
+         */
+        changeEvent: javax.swing.event.ChangeEvent;
+        hideActionText: boolean;
+        /**
+         * Returns the button's text.
+         *
+         * @return {string} the buttons text
+         * @see #setText
+         */
+        getText(): string;
+        setText(text: string): void;
+        isSelected(): boolean;
+        setSelected(b: boolean): void;
+        doClick(): void;
+        setMargin(m: java.awt.Insets): void;
+        /**
+         * Returns the margin between the button's border and the label.
+         *
+         * @return {java.awt.Insets} an <code>Insets</code> object specifying the margin between the
+         * botton's border and the label
+         * @see #setMargin
+         */
+        getMargin(): java.awt.Insets;
+        /**
+         * Returns the default icon.
+         *
+         * @return {*} the default <code>Icon</code>
+         * @see #setIcon
+         */
+        getIcon(): javax.swing.Icon;
+        setIcon(defaultIcon: javax.swing.Icon): void;
+        getPressedIcon(): javax.swing.Icon;
+        setPressedIcon(pressedIcon: javax.swing.Icon): void;
+        getSelectedIcon(): javax.swing.Icon;
+        setSelectedIcon(selectedIcon: javax.swing.Icon): void;
+        getRolloverIcon(): javax.swing.Icon;
+        setRolloverIcon(rolloverIcon: javax.swing.Icon): void;
+        getRolloverSelectedIcon(): javax.swing.Icon;
+        setRolloverSelectedIcon(rolloverSelectedIcon: javax.swing.Icon): void;
+        getDisabledIcon(): javax.swing.Icon;
+        setDisabledIcon(disabledIcon: javax.swing.Icon): void;
+        getDisabledSelectedIcon(): javax.swing.Icon;
+        setDisabledSelectedIcon(disabledSelectedIcon: javax.swing.Icon): void;
+        getVerticalAlignment(): number;
+        setVerticalAlignment(alignment: number): void;
         getHorizontalAlignment(): number;
         setHorizontalAlignment(alignment: number): void;
+        getVerticalTextPosition(): number;
+        setVerticalTextPosition(textPosition: number): void;
+        getHorizontalTextPosition(): number;
+        setHorizontalTextPosition(textPosition: number): void;
+        getIconTextGap(): number;
+        setIconTextGap(iconTextGap: number): void;
+        checkHorizontalKey(key: number, exception: string): number;
+        checkVerticalKey(key: number, exception: string): number;
+        setActionCommand(actionCommand: string): void;
+        getActionCommand(): string;
+        action: javax.swing.Action;
+        setAction(a: javax.swing.Action): void;
+        getAction(): javax.swing.Action;
+        isBorderPainted(): boolean;
+        setBorderPainted(b: boolean): void;
+        isFocusPainted(): boolean;
+        setFocusPainted(b: boolean): void;
+        isContentAreaFilled(): boolean;
+        setContentAreaFilled(b: boolean): void;
+        isRolloverEnabled(): boolean;
+        setRolloverEnabled(b: boolean): void;
+        getMnemonic(): number;
+        setMnemonic(mnemonic: number): void;
+        setDisplayedMnemonicIndex(index: number): void;
+        getDisplayedMnemonicIndex(): number;
+        setMultiClickThreshhold(threshhold: number): void;
+        getMultiClickThreshhold(): number;
         /**
-         * Returns the number of columns in this <code>TextField</code>.
-         *
-         * @return {number} the number of columns &gt;= 0
-         */
-        getColumns(): number;
-        /**
-         * Sets the number of columns in this <code>TextField</code>, and then
-         * invalidate the layout.
-         *
-         * @param {number} columns
-         * the number of columns &gt;= 0
-         * @exception IllegalArgumentException
-         * if <code>columns</code> is less than 0
-         * @beaninfo description: the number of columns preferred for display
-         */
-        setColumns(columns: number): void;
-        /**
-         * Returns the preferred size <code>Dimensions</code> needed for this
-         * <code>TextField</code>. If a non-zero number of columns has been set, the
-         * width is set to the columns multiplied by the column width.
-         *
-         * @return {java.awt.Dimension} the dimension of this textfield
-         */
-        getPreferredSize(): java.awt.Dimension;
-        /**
-         * Sets the current font. This removes cached row height and column width so
-         * the new font will be reflected. <code>revalidate</code> is called after
-         * setting the font.
-         *
-         * @param {java.awt.Font} f
-         * the new font
-         */
-        setFont(f: java.awt.Font): void;
-        /**
-         * Adds the specified action listener to receive action events from this
-         * textfield.
+         * Adds a <code>ChangeListener</code> to the button.
          *
          * @param {*} l
-         * the action listener to be added
+         * the listener to be added
+         */
+        addChangeListener(l: javax.swing.event.ChangeListener): void;
+        /**
+         * Removes a ChangeListener from the button.
+         *
+         * @param {*} l
+         * the listener to be removed
+         */
+        removeChangeListener(l: javax.swing.event.ChangeListener): void;
+        /**
+         * Returns an array of all the <code>ChangeListener</code>s added to this
+         * AbstractButton with addChangeListener().
+         *
+         * @return {javax.swing.event.ChangeListener[]} all of the <code>ChangeListener</code>s added or an empty array
+         * if no listeners have been added
+         * @since 1.4
+         */
+        getChangeListeners(): javax.swing.event.ChangeListener[];
+        /**
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is lazily created.
+         *
+         * @see EventListenerList
+         */
+        fireStateChanged(): void;
+        /**
+         * Adds an <code>ActionListener</code> to the button.
+         *
+         * @param {*} l
+         * the <code>ActionListener</code> to be added
          */
         addActionListener(l: java.awt.event.ActionListener): void;
         /**
-         * Removes the specified action listener so that it no longer receives
-         * action events from this textfield.
+         * Removes an <code>ActionListener</code> from the button. If the listener
+         * is the currently set <code>Action</code> for the button, then the
+         * <code>Action</code> is set to <code>null</code>.
          *
          * @param {*} l
-         * the action listener to be removed
+         * the listener to be removed
          */
         removeActionListener(l: java.awt.event.ActionListener): void;
         /**
          * Returns an array of all the <code>ActionListener</code>s added to this
-         * JTextField with addActionListener().
+         * AbstractButton with addActionListener().
          *
          * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array
          * if no listeners have been added
@@ -20479,94 +19635,304 @@ declare namespace javax.swing {
          */
         getActionListeners(): java.awt.event.ActionListener[];
         /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is lazily created. The listener list
-         * is processed in last to first order.
+         * Subclasses that want to handle <code>ChangeEvents</code> differently can
+         * override this to return another <code>ChangeListener</code>
+         * implementation.
          *
+         * @return {*} the new <code>ChangeListener</code>
+         */
+        createChangeListener(): javax.swing.event.ChangeListener;
+        /**
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is lazily created using the
+         * <code>event</code> parameter.
+         *
+         * @param {java.awt.event.ActionEvent} event
+         * the <code>ActionEvent</code> object
          * @see EventListenerList
          */
-        fireActionPerformed(): void;
-        setActionCommand(command: string): void;
-        action: javax.swing.Action;
-        actionPropertyChangeListener: java.beans.PropertyChangeListener;
-        setAction(a: javax.swing.Action): void;
-        isListener$java_lang_Class$java_awt_event_ActionListener(c: any, a: java.awt.event.ActionListener): boolean;
-        isListener(c?: any, a?: any): boolean;
-        isListener$java_lang_String$java_awt_event_ActionListener(c: string, a: java.awt.event.ActionListener): boolean;
-        getAction(): javax.swing.Action;
-        configurePropertiesFromAction(a: javax.swing.Action): void;
-        actionPropertyChanged(action: javax.swing.Action, propertyName: string): void;
-        setActionCommandFromAction(action: javax.swing.Action): void;
-        createActionPropertyChangeListener(a: javax.swing.Action): java.beans.PropertyChangeListener;
+        fireActionPerformed(event: java.awt.event.ActionEvent): void;
         /**
-         * Fetches the command list for the editor. This is the list of commands
-         * supported by the plugged-in UI augmented by the collection of commands
-         * that the editor itself supports. These are useful for binding to events,
-         * such as in a keymap.
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is lazily created using the
+         * <code>event</code> parameter.
          *
-         * @return {javax.swing.Action[]} the command list
+         * @param {java.awt.event.ItemEvent} event
+         * the <code>ItemEvent</code> object
+         * @see EventListenerList
          */
-        getActions(): javax.swing.Action[];
+        fireItemStateChanged(event: java.awt.event.ItemEvent): void;
+        createActionListener(): java.awt.event.ActionListener;
+        createItemListener(): java.awt.event.ItemListener;
         /**
-         * Processes action events occurring on this textfield by dispatching them
-         * to any registered <code>ActionListener</code> objects. This is normally
-         * called by the controller registered with textfield.
-         */
-        postActionEvent(): void;
-        /**
-         * Returns true if the receiver has an <code>ActionListener</code>
-         * installed.
-         * @return {boolean}
-         */
-        hasActionListener(): boolean;
-        /**
-         * Name of the action to send notification that the contents of the field
-         * have been accepted. Typically this is bound to a carriage-return.
-         */
-        static notifyAction: string;
-        horizontalAlignment: number;
-        columns: number;
-        columnWidth: number;
-        command: string;
-        static defaultActions: javax.swing.Action[];
-        static defaultActions_$LI$(): javax.swing.Action[];
-        /**
-         * @see #getUIClassID
-         * @see #readObject
-         */
-        static uiClassID: string;
-        /**
-         * Returns a string representation of this <code>JTextField</code>. This
-         * method is intended to be used only for debugging purposes, and the
-         * content and format of the returned string may vary between
-         * implementations. The returned string may be empty but may not be
-         * <code>null</code>.
+         * Enables (or disables) the button.
          *
-         * @return {string} a string representation of this <code>JTextField</code>
+         * @param {boolean} b
+         * true to enable the button, otherwise false
          */
-        paramString(): string;
+        setEnabled(b: boolean): void;
+        /**
+         * Returns the label text.
+         *
+         * @return {string} a <code>String</code> containing the label
+         * @deprecated - Replaced by <code>getText</code>
+         */
+        getLabel(): string;
+        /**
+         * Sets the label text.
+         *
+         * @param {string} label
+         * a <code>String</code> containing the text
+         * @deprecated - Replaced by <code>setText(text)</code>
+         * @beaninfo bound: true description: Replace by setText(text)
+         */
+        setLabel(label: string): void;
+        /**
+         * Adds an <code>ItemListener</code> to the <code>checkbox</code>.
+         *
+         * @param {*} l
+         * the <code>ItemListener</code> to be added
+         */
+        addItemListener(l: java.awt.event.ItemListener): void;
+        /**
+         * Removes an <code>ItemListener</code> from the button.
+         *
+         * @param {*} l
+         * the <code>ItemListener</code> to be removed
+         */
+        removeItemListener(l: java.awt.event.ItemListener): void;
+        /**
+         * Returns an array of all the <code>ItemListener</code>s added to this
+         * AbstractButton with addItemListener().
+         *
+         * @return {java.awt.event.ItemListener[]} all of the <code>ItemListener</code>s added or an empty array if
+         * no listeners have been added
+         * @since 1.4
+         */
+        getItemListeners(): java.awt.event.ItemListener[];
+        /**
+         * Returns an array (length 1) containing the label or <code>null</code> if
+         * the button is not selected.
+         *
+         * @return {java.lang.Object[]} an array containing 1 Object: the text of the button, if the item
+         * is selected; otherwise <code>null</code>
+         */
+        getSelectedObjects(): any[];
+        init(text: string, icon: javax.swing.Icon): void;
+        imageUpdate(img: java.awt.Image, infoflags: number, x: number, y: number, w: number, h: number): boolean;
+        getHandler(): AbstractButton.Handler;
+        model: javax.swing.ButtonModel;
+        getModel(): javax.swing.ButtonModel;
+        setModel(newModel: javax.swing.ButtonModel): void;
+        constructor();
     }
-    namespace JTextField {
-        class TextFieldActionPropertyChangeListener extends javax.swing.ActionPropertyChangeListener<javax.swing.JTextField> {
-            constructor(tf: javax.swing.JTextField, a: javax.swing.Action);
-            actionPropertyChanged$javax_swing_JTextField$javax_swing_Action$java_beans_PropertyChangeEvent(textField: javax.swing.JTextField, action: javax.swing.Action, e: java.beans.PropertyChangeEvent): void;
-            actionPropertyChanged(textField?: any, action?: any, e?: any): any;
+    namespace AbstractButton {
+        /**
+         * Extends <code>ChangeListener</code> to be serializable.
+         * <p>
+         * <strong>Warning:</strong> Serialized objects of this class will not be
+         * compatible with future Swing releases. The current serialization support
+         * is appropriate for short term storage or RMI between applications running
+         * the same version of Swing. As of 1.4, support for long term storage of
+         * all JavaBeans&trade; has been added to the <code>java.beans</code>
+         * package. Please see {@link java.beans.XMLEncoder}.
+         * @class
+         */
+        class ButtonChangeListener implements javax.swing.event.ChangeListener, java.io.Serializable {
+            __parent: any;
+            constructor(__parent: any);
+            stateChanged(e: javax.swing.event.ChangeEvent): void;
+        }
+        class Handler implements java.awt.event.ActionListener, javax.swing.event.ChangeListener, java.awt.event.ItemListener, java.io.Serializable {
+            __parent: any;
+            stateChanged(e: javax.swing.event.ChangeEvent): void;
+            actionPerformed(event: java.awt.event.ActionEvent): void;
+            itemStateChanged(event: java.awt.event.ItemEvent): void;
+            constructor(__parent: any);
         }
     }
 }
 declare namespace javax.swing {
-    class JTextArea extends javax.swing.text.JTextComponent {
-        rows: number;
-        columns: number;
-        columnWidth: number;
-        rowHeight: number;
-        wrap: boolean;
-        word: boolean;
+    class JComboBox<E> extends javax.swing.JComponent implements java.awt.ItemSelectable, javax.swing.event.ListDataListener, java.awt.event.ActionListener {
+        lastSelected: number;
+        createHTML(): void;
+        getHTMLElement(): HTMLSelectElement;
+        initHTML(): void;
         /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
          *
-         * @return {HTMLDivElement}
+         * @see #getModel
+         * @see #setModel
          */
-        getHTMLElement(): HTMLDivElement;
+        dataModel: javax.swing.ComboBoxModel<E>;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
+         *
+         * @see #getRenderer
+         * @see #setRenderer
+         */
+        renderer: javax.swing.ListCellRenderer<any>;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
+         *
+         * @see #getEditor
+         * @see #setEditor
+         */
+        editor: javax.swing.ComboBoxEditor;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
+         *
+         * @see #getMaximumRowCount
+         * @see #setMaximumRowCount
+         */
+        maximumRowCount: number;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
+         *
+         * @see #isEditable
+         * @see #setEditable
+         */
+        __isEditable: boolean;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
+         *
+         * @see #setKeySelectionManager
+         * @see #getKeySelectionManager
+         */
+        keySelectionManager: JComboBox.KeySelectionManager;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override. Use the accessor methods instead.
+         *
+         * @see #setActionCommand
+         * @see #getActionCommand
+         */
+        actionCommand: string;
+        /**
+         * This protected field is implementation specific. Do not access directly
+         * or override.
+         */
+        selectedItemReminder: any;
+        prototypeDisplayValue: E;
+        firingActionEvent: boolean;
+        selectingItem: boolean;
+        constructor(aModel?: any);
+        init(): void;
+        setModel(aModel: javax.swing.ComboBoxModel<E>): void;
+        /**
+         * Returns the data model currently used by the <code>JComboBox</code>.
+         *
+         * @return {*} the <code>ComboBoxModel</code> that provides the displayed list
+         * of items
+         */
+        getModel(): javax.swing.ComboBoxModel<E>;
+        setLightWeightPopupEnabled(aFlag: boolean): void;
+        setEditable(aFlag: boolean): void;
+        isEditable(): boolean;
+        setMaximumRowCount(count: number): void;
+        getMaximumRowCount(): number;
+        setRenderer(aRenderer: javax.swing.ListCellRenderer<any>): void;
+        getRenderer(): javax.swing.ListCellRenderer<any>;
+        setEditor(anEditor: javax.swing.ComboBoxEditor): void;
+        getEditor(): javax.swing.ComboBoxEditor;
+        setSelectedItem(anObject: any): void;
+        getSelectedItem(): any;
+        setSelectedIndex(anIndex: number): void;
+        getSelectedIndex(): number;
+        getPrototypeDisplayValue(): E;
+        setPrototypeDisplayValue(prototypeDisplayValue: E): void;
+        addItem(item: E): void;
+        insertItemAt(item: E, index: number): void;
+        removeItem(anObject: any): void;
+        removeItemAt(anIndex: number): void;
+        removeAllItems(): void;
+        checkMutableComboBoxModel(): void;
+        showPopup(): void;
+        hidePopup(): void;
+        setPopupVisible(v: boolean): void;
+        isPopupVisible(): boolean;
+        addItemListener(aListener: java.awt.event.ItemListener): void;
+        removeItemListener(aListener: java.awt.event.ItemListener): void;
+        getItemListeners(): java.awt.event.ItemListener[];
+        addActionListener(l: java.awt.event.ActionListener): void;
+        removeActionListener(l: java.awt.event.ActionListener): void;
+        getActionListeners(): java.awt.event.ActionListener[];
+        addPopupMenuListener(l: javax.swing.event.PopupMenuListener): void;
+        removePopupMenuListener(l: javax.swing.event.PopupMenuListener): void;
+        getPopupMenuListeners(): javax.swing.event.PopupMenuListener[];
+        firePopupMenuWillBecomeVisible(): void;
+        firePopupMenuWillBecomeInvisible(): void;
+        firePopupMenuCanceled(): void;
+        setActionCommand(aCommand: string): void;
+        getActionCommand(): string;
+        action: javax.swing.Action;
+        actionPropertyChangeListener: java.beans.PropertyChangeListener;
+        setAction(a: javax.swing.Action): void;
+        isListener(c: any, a: java.awt.event.ActionListener): boolean;
+        getAction(): javax.swing.Action;
+        configurePropertiesFromAction(a: javax.swing.Action): void;
+        createActionPropertyChangeListener(a: javax.swing.Action): java.beans.PropertyChangeListener;
+        actionPropertyChanged(action: javax.swing.Action, propertyName: string): void;
+        setActionCommandFromAction(a: javax.swing.Action): void;
+        fireItemStateChanged(e: java.awt.event.ItemEvent): void;
+        fireActionEvent(): void;
+        selectedItemChanged(): void;
+        getSelectedObjects(): any[];
+        actionPerformed(e: java.awt.event.ActionEvent): void;
+        contentsChanged(e: javax.swing.event.ListDataEvent): void;
+        intervalAdded(e: javax.swing.event.ListDataEvent): void;
+        intervalRemoved(e: javax.swing.event.ListDataEvent): void;
+        selectWithKeyChar(keyChar: string): boolean;
+        setEnabled(b: boolean): void;
+        configureEditor(anEditor: javax.swing.ComboBoxEditor, anItem: any): void;
+        processKeyEvent(e: java.awt.event.KeyEvent): void;
+        setKeySelectionManager(aManager: JComboBox.KeySelectionManager): void;
+        getKeySelectionManager(): JComboBox.KeySelectionManager;
+        getItemCount(): number;
+        getItemAt(index: number): E;
+        createDefaultKeySelectionManager(): JComboBox.KeySelectionManager;
+        paramString(): string;
+    }
+    namespace JComboBox {
+        class ComboBoxActionPropertyChangeListener extends javax.swing.ActionPropertyChangeListener<javax.swing.JComboBox<any>> {
+            constructor(b: javax.swing.JComboBox<any>, a: javax.swing.Action);
+            actionPropertyChanged$javax_swing_JComboBox$javax_swing_Action$java_beans_PropertyChangeEvent(cb: javax.swing.JComboBox<any>, action: javax.swing.Action, e: java.beans.PropertyChangeEvent): void;
+            actionPropertyChanged(cb?: any, action?: any, e?: any): any;
+        }
+        interface KeySelectionManager {
+            selectionForKey(aKey: string, aModel: javax.swing.ComboBoxModel<any>): number;
+        }
+        class DefaultKeySelectionManager implements JComboBox.KeySelectionManager, java.io.Serializable {
+            __parent: any;
+            selectionForKey(aKey: string, aModel: javax.swing.ComboBoxModel<any>): number;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace javax.swing {
+    class JLabel extends javax.swing.JComponent implements javax.swing.SwingConstants {
+        mnemonic: number;
+        mnemonicIndex: number;
+        text: string;
+        defaultIcon: javax.swing.Icon;
+        disabledIcon: javax.swing.Icon;
+        disabledIconSet: boolean;
+        verticalAlignment: number;
+        horizontalAlignment: number;
+        verticalTextPosition: number;
+        horizontalTextPosition: number;
+        iconTextGap: number;
+        labelFor: java.awt.Component;
+        static LABELED_BY_PROPERTY: string;
+        constructor(text?: any, icon?: any, horizontalAlignment?: any);
+        htmlLabelElement: HTMLLabelElement;
+        htmlImageElement: HTMLImageElement;
         /**
          *
          */
@@ -20575,26 +19941,30 @@ declare namespace javax.swing {
          *
          */
         initHTML(): void;
-        static uiClassID: string;
-        constructor(doc?: any, text?: any, rows?: any, columns?: any);
-        getUIClassID(): string;
-        setLineWrap(wrap: boolean): void;
-        getLineWrap(): boolean;
-        setWrapStyleWord(word: boolean): void;
-        getWrapStyleWord(): boolean;
-        insert(str: string, pos: number): void;
-        append(str: string): void;
+        getText(): string;
         setText(text: string): void;
-        /**
-         *
-         * @param {boolean} editable
-         */
-        setEditable(editable: boolean): void;
-        replaceRange(str: string, start: number, end: number): void;
-        getRows(): number;
-        setRows(rows: number): void;
-        getColumns(): number;
-        setColumns(columns: number): void;
+        getIcon(): javax.swing.Icon;
+        setIcon(icon: javax.swing.Icon): void;
+        getDisabledIcon(): javax.swing.Icon;
+        setDisabledIcon(disabledIcon: javax.swing.Icon): void;
+        setDisplayedMnemonic$int(key: number): void;
+        setDisplayedMnemonic$char(aChar: string): void;
+        setDisplayedMnemonic(aChar?: any): any;
+        getDisplayedMnemonic(): number;
+        setDisplayedMnemonicIndex(index: number): void;
+        getDisplayedMnemonicIndex(): number;
+        checkHorizontalKey(key: number, message: string): number;
+        checkVerticalKey(key: number, message: string): number;
+        getIconTextGap(): number;
+        setIconTextGap(iconTextGap: number): void;
+        getVerticalAlignment(): number;
+        setVerticalAlignment(alignment: number): void;
+        getHorizontalAlignment(): number;
+        setHorizontalAlignment(alignment: number): void;
+        getVerticalTextPosition(): number;
+        setVerticalTextPosition(textPosition: number): void;
+        getHorizontalTextPosition(): number;
+        setHorizontalTextPosition(textPosition: number): void;
         paramString(): string;
     }
 }
@@ -20858,6 +20228,1067 @@ declare namespace javax.swing.event {
          * @return {javax.swing.MenuSelectionManager} a MenuSelectionManager object
          */
         getMenuSelectionManager(): javax.swing.MenuSelectionManager;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Creates a swing applet instance.
+     * <p>
+     * This constructor sets the component's locale property to the value
+     * returned by <code>JComponent.getDefaultLocale</code>.
+     *
+     * @exception java.awt.HeadlessException
+     * if GraphicsEnvironment.isHeadless() returns true.
+     * @see java.awt.GraphicsEnvironment#isHeadless
+     * @see JComponent#getDefaultLocale
+     * @class
+     * @extends java.applet.Applet
+     */
+    class JApplet extends java.applet.Applet implements javax.swing.RootPaneContainer {
+        /**
+         * @see #getRootPane
+         * @see #setRootPane
+         */
+        rootPane: javax.swing.JRootPane;
+        /**
+         * If true then calls to <code>add</code> and <code>setLayout</code> will be
+         * forwarded to the <code>contentPane</code>. This is initially false, but
+         * is set to true when the <code>JApplet</code> is constructed.
+         *
+         * @see #isRootPaneCheckingEnabled
+         * @see #setRootPaneCheckingEnabled
+         * @see javax.swing.RootPaneContainer
+         */
+        rootPaneCheckingEnabled: boolean;
+        constructor();
+        /**
+         * Called by the constructor methods to create the default rootPane.
+         * @return {javax.swing.JRootPane}
+         */
+        createRootPane(): javax.swing.JRootPane;
+        addImpl(comp: java.awt.Component, constraints: any, index: number): void;
+        /**
+         * Just calls <code>paint(g)</code>. This method was overridden to prevent
+         * an unnecessary call to clear the background.
+         * @param {java.awt.Graphics} g
+         */
+        update(g: java.awt.Graphics): void;
+        remove$java_awt_Component(comp: java.awt.Component): void;
+        /**
+         * Removes the specified component from the container. If <code>comp</code>
+         * is not the <code>rootPane</code>, this will forward the call to the
+         * <code>contentPane</code>. This will do nothing if <code>comp</code> is
+         * not a child of the <code>JFrame</code> or <code>contentPane</code>.
+         *
+         * @param {java.awt.Component} comp
+         * the component to be removed
+         * @throws NullPointerException
+         * if <code>comp</code> is null
+         * @see #add
+         * @see javax.swing.RootPaneContainer
+         */
+        remove(comp?: any): any;
+        /**
+         * Sets the <code>LayoutManager</code>. Overridden to conditionally forward
+         * the call to the <code>contentPane</code>. Refer to
+         * {@link javax.swing.RootPaneContainer} for more information.
+         *
+         * @param {*} manager
+         * the <code>LayoutManager</code>
+         * @see #setRootPaneCheckingEnabled
+         * @see javax.swing.RootPaneContainer
+         */
+        setLayout(manager: java.awt.LayoutManager): void;
+        /**
+         * Returns the rootPane object for this applet.
+         *
+         * @see #setRootPane
+         * @see RootPaneContainer#getRootPane
+         * @return {javax.swing.JRootPane}
+         */
+        getRootPane(): javax.swing.JRootPane;
+        /**
+         * Sets the rootPane property. This method is called by the constructor.
+         *
+         * @param {javax.swing.JRootPane} root
+         * the rootPane object for this applet
+         *
+         * @see #getRootPane
+         *
+         * @beaninfo hidden: true description: the RootPane object for this applet.
+         */
+        setRootPane(root: javax.swing.JRootPane): void;
+        /**
+         * Returns the contentPane object for this applet.
+         *
+         * @see #setContentPane
+         * @see RootPaneContainer#getContentPane
+         * @return {java.awt.Container}
+         */
+        getContentPane(): java.awt.Container;
+        /**
+         * Sets the contentPane property. This method is called by the constructor.
+         *
+         * @param {java.awt.Container} contentPane
+         * the contentPane object for this applet
+         *
+         * @exception java.awt.IllegalComponentStateException
+         * (a runtime exception) if the content pane parameter is
+         * null
+         * @see #getContentPane
+         * @see RootPaneContainer#setContentPane
+         *
+         * @beaninfo hidden: true description: The client area of the applet where
+         * child components are normally inserted.
+         */
+        setContentPane(contentPane: java.awt.Container): void;
+        /**
+         * Returns a string representation of this JApplet. This method is intended
+         * to be used only for debugging purposes, and the content and format of the
+         * returned string may vary between implementations. The returned string may
+         * be empty but may not be <code>null</code>.
+         *
+         * @return {string} a string representation of this JApplet.
+         */
+        paramString(): string;
+    }
+}
+declare namespace javax.swing {
+    class JFrame extends java.awt.Frame implements javax.swing.RootPaneContainer, javax.swing.WindowConstants {
+        static EXIT_ON_CLOSE: number;
+        defaultCloseOperation: number;
+        rootPane: javax.swing.JRootPane;
+        rootPaneCheckingEnabled: boolean;
+        constructor(title?: any);
+        frameInit(): void;
+        createRootPane(): javax.swing.JRootPane;
+        setRootPane(root: javax.swing.JRootPane): void;
+        /**
+         *
+         * @return {java.awt.Container}
+         */
+        getContentPane(): java.awt.Container;
+        /**
+         *
+         * @return {javax.swing.JRootPane}
+         */
+        getRootPane(): javax.swing.JRootPane;
+        /**
+         *
+         * @param {java.awt.Container} contentPane
+         */
+        setContentPane(contentPane: java.awt.Container): void;
+        setGlassPane(glassPane: java.awt.Container): void;
+        getGlassPane(): java.awt.Component;
+        setDefaultCloseOperation(operation: number): void;
+    }
+}
+declare namespace javax.swing {
+    class JTextArea extends javax.swing.text.JTextComponent {
+        rows: number;
+        columns: number;
+        columnWidth: number;
+        rowHeight: number;
+        wrap: boolean;
+        word: boolean;
+        /**
+         *
+         * @return {HTMLDivElement}
+         */
+        getHTMLElement(): HTMLDivElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        static uiClassID: string;
+        constructor(doc?: any, text?: any, rows?: any, columns?: any);
+        getUIClassID(): string;
+        setLineWrap(wrap: boolean): void;
+        getLineWrap(): boolean;
+        setWrapStyleWord(word: boolean): void;
+        getWrapStyleWord(): boolean;
+        insert(str: string, pos: number): void;
+        append(str: string): void;
+        setText(text: string): void;
+        /**
+         *
+         * @param {boolean} editable
+         */
+        setEditable(editable: boolean): void;
+        replaceRange(str: string, start: number, end: number): void;
+        getRows(): number;
+        setRows(rows: number): void;
+        getColumns(): number;
+        setColumns(columns: number): void;
+        paramString(): string;
+    }
+}
+declare namespace javax.swing {
+    class JTextField extends javax.swing.text.JTextComponent implements javax.swing.SwingConstants {
+        /**
+         *
+         * @return {HTMLInputElement}
+         */
+        getHTMLElement(): HTMLInputElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        initActionListeners(): void;
+        constructor(doc?: any, text?: any, columns?: any);
+        /**
+         *
+         * @param {string} text
+         */
+        setText(text: string): void;
+        /**
+         *
+         * @param {boolean} editable
+         */
+        setEditable(editable: boolean): void;
+        /**
+         * Gets the class ID for a UI.
+         *
+         * @return {string} the string "TextFieldUI"
+         * @see JComponent#getUIClassID
+         * @see UIDefaults#getUI
+         */
+        getUIClassID(): string;
+        /**
+         * Returns the horizontal alignment of the text. Valid keys are:
+         * <ul>
+         * <li><code>JTextField.LEFT</code>
+         * <li><code>JTextField.CENTER</code>
+         * <li><code>JTextField.RIGHT</code>
+         * <li><code>JTextField.LEADING</code>
+         * <li><code>JTextField.TRAILING</code>
+         * </ul>
+         *
+         * @return {number} the horizontal alignment
+         */
+        getHorizontalAlignment(): number;
+        setHorizontalAlignment(alignment: number): void;
+        /**
+         * Returns the number of columns in this <code>TextField</code>.
+         *
+         * @return {number} the number of columns &gt;= 0
+         */
+        getColumns(): number;
+        /**
+         * Sets the number of columns in this <code>TextField</code>, and then
+         * invalidate the layout.
+         *
+         * @param {number} columns
+         * the number of columns &gt;= 0
+         * @exception IllegalArgumentException
+         * if <code>columns</code> is less than 0
+         * @beaninfo description: the number of columns preferred for display
+         */
+        setColumns(columns: number): void;
+        /**
+         * Returns the preferred size <code>Dimensions</code> needed for this
+         * <code>TextField</code>. If a non-zero number of columns has been set, the
+         * width is set to the columns multiplied by the column width.
+         *
+         * @return {java.awt.Dimension} the dimension of this textfield
+         */
+        getPreferredSize(): java.awt.Dimension;
+        /**
+         * Sets the current font. This removes cached row height and column width so
+         * the new font will be reflected. <code>revalidate</code> is called after
+         * setting the font.
+         *
+         * @param {java.awt.Font} f
+         * the new font
+         */
+        setFont(f: java.awt.Font): void;
+        /**
+         * Adds the specified action listener to receive action events from this
+         * textfield.
+         *
+         * @param {*} l
+         * the action listener to be added
+         */
+        addActionListener(l: java.awt.event.ActionListener): void;
+        /**
+         * Removes the specified action listener so that it no longer receives
+         * action events from this textfield.
+         *
+         * @param {*} l
+         * the action listener to be removed
+         */
+        removeActionListener(l: java.awt.event.ActionListener): void;
+        /**
+         * Returns an array of all the <code>ActionListener</code>s added to this
+         * JTextField with addActionListener().
+         *
+         * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array
+         * if no listeners have been added
+         * @since 1.4
+         */
+        getActionListeners(): java.awt.event.ActionListener[];
+        /**
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is lazily created. The listener list
+         * is processed in last to first order.
+         *
+         * @see EventListenerList
+         */
+        fireActionPerformed(): void;
+        setActionCommand(command: string): void;
+        action: javax.swing.Action;
+        actionPropertyChangeListener: java.beans.PropertyChangeListener;
+        setAction(a: javax.swing.Action): void;
+        isListener$java_lang_Class$java_awt_event_ActionListener(c: any, a: java.awt.event.ActionListener): boolean;
+        isListener(c?: any, a?: any): boolean;
+        isListener$java_lang_String$java_awt_event_ActionListener(c: string, a: java.awt.event.ActionListener): boolean;
+        getAction(): javax.swing.Action;
+        configurePropertiesFromAction(a: javax.swing.Action): void;
+        actionPropertyChanged(action: javax.swing.Action, propertyName: string): void;
+        setActionCommandFromAction(action: javax.swing.Action): void;
+        createActionPropertyChangeListener(a: javax.swing.Action): java.beans.PropertyChangeListener;
+        /**
+         * Fetches the command list for the editor. This is the list of commands
+         * supported by the plugged-in UI augmented by the collection of commands
+         * that the editor itself supports. These are useful for binding to events,
+         * such as in a keymap.
+         *
+         * @return {javax.swing.Action[]} the command list
+         */
+        getActions(): javax.swing.Action[];
+        /**
+         * Processes action events occurring on this textfield by dispatching them
+         * to any registered <code>ActionListener</code> objects. This is normally
+         * called by the controller registered with textfield.
+         */
+        postActionEvent(): void;
+        /**
+         * Returns true if the receiver has an <code>ActionListener</code>
+         * installed.
+         * @return {boolean}
+         */
+        hasActionListener(): boolean;
+        /**
+         * Name of the action to send notification that the contents of the field
+         * have been accepted. Typically this is bound to a carriage-return.
+         */
+        static notifyAction: string;
+        horizontalAlignment: number;
+        columns: number;
+        columnWidth: number;
+        command: string;
+        static defaultActions: javax.swing.Action[];
+        static defaultActions_$LI$(): javax.swing.Action[];
+        /**
+         * @see #getUIClassID
+         * @see #readObject
+         */
+        static uiClassID: string;
+        /**
+         * Returns a string representation of this <code>JTextField</code>. This
+         * method is intended to be used only for debugging purposes, and the
+         * content and format of the returned string may vary between
+         * implementations. The returned string may be empty but may not be
+         * <code>null</code>.
+         *
+         * @return {string} a string representation of this <code>JTextField</code>
+         */
+        paramString(): string;
+    }
+    namespace JTextField {
+        class TextFieldActionPropertyChangeListener extends javax.swing.ActionPropertyChangeListener<javax.swing.JTextField> {
+            constructor(tf: javax.swing.JTextField, a: javax.swing.Action);
+            actionPropertyChanged$javax_swing_JTextField$javax_swing_Action$java_beans_PropertyChangeEvent(textField: javax.swing.JTextField, action: javax.swing.Action, e: java.beans.PropertyChangeEvent): void;
+            actionPropertyChanged(textField?: any, action?: any, e?: any): any;
+        }
+    }
+}
+declare namespace javax.swing {
+    class JToggleButton extends javax.swing.AbstractButton {
+        static serialVersionUID: number;
+        constructor(text?: any, icon?: any, selected?: any);
+        paramString(): string;
+        buttonCreated: boolean;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+    }
+    namespace JToggleButton {
+        /**
+         * Creates a new ToggleButton Model
+         * @class
+         * @extends javax.swing.DefaultButtonModel
+         */
+        class ToggleButtonModel extends javax.swing.DefaultButtonModel {
+            constructor();
+            /**
+             * Checks if the button is selected.
+             * @return {boolean}
+             */
+            isSelected(): boolean;
+            /**
+             * Sets the selected state of the button.
+             *
+             * @param {boolean} b
+             * true selects the toggle button, false deselects the toggle
+             * button.
+             */
+            setSelected(b: boolean): void;
+            /**
+             * Sets the pressed state of the toggle button.
+             * @param {boolean} b
+             */
+            setPressed(b: boolean): void;
+        }
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Creates a <code>JMenuItem</code> with the specified text and icon.
+     *
+     * @param {string} text the text of the <code>JMenuItem</code>
+     * @param {*} icon the icon of the <code>JMenuItem</code>
+     * @class
+     * @extends javax.swing.AbstractButton
+     * @author Georges Saab
+     */
+    class JMenuItem extends javax.swing.AbstractButton implements javax.swing.MenuElement {
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         * @see #getUIClassID
+         * @see #readObject
+         */
+        static uiClassID: string;
+        static TRACE: boolean;
+        static VERBOSE: boolean;
+        static DEBUG: boolean;
+        isMouseDragged: boolean;
+        constructor(text?: any, icon?: any);
+        /**
+         * {@inheritDoc}
+         * @param {*} newModel
+         */
+        setModel(newModel: javax.swing.ButtonModel): void;
+        /**
+         * Initializes the menu item with the specified text and icon.
+         *
+         * @param {string} text the text of the <code>JMenuItem</code>
+         * @param {*} icon the icon of the <code>JMenuItem</code>
+         */
+        init(text: string, icon: javax.swing.Icon): void;
+        /**
+         * Returns the suffix used to construct the name of the L&amp;F class used to
+         * render this component.
+         *
+         * @return {string} the string "MenuItemUI"
+         * @see JComponent#getUIClassID
+         * @see UIDefaults#getUI
+         */
+        getUIClassID(): string;
+        /**
+         * Identifies the menu item as "armed". If the mouse button is
+         * released while it is over this item, the menu's action event
+         * will fire. If the mouse button is released elsewhere, the
+         * event will not fire and the menu item will be disarmed.
+         *
+         * @param {boolean} b true to arm the menu item so it can be selected
+         * @beaninfo
+         * description: Mouse release will fire an action event
+         * hidden: true
+         */
+        setArmed(b: boolean): void;
+        /**
+         * Returns whether the menu item is "armed".
+         *
+         * @return {boolean} true if the menu item is armed, and it can be selected
+         * @see #setArmed
+         */
+        isArmed(): boolean;
+        /**
+         * Returns the <code>KeyStroke</code> which serves as an accelerator
+         * for the menu item.
+         * @return {void} a <code>KeyStroke</code> object identifying the
+         * accelerator key
+         * @param {*} a
+         */
+        setIconFromAction(a: javax.swing.Action): void;
+        largeIconChanged(a: javax.swing.Action): void;
+        smallIconChanged(a: javax.swing.Action): void;
+        /**
+         * Processes a key event forwarded from the
+         * <code>MenuSelectionManager</code> and changes the menu selection,
+         * if necessary, by using <code>MenuSelectionManager</code>'s API.
+         * <p>
+         * Note: you do not have to forward the event to sub-components.
+         * This is done automatically by the <code>MenuSelectionManager</code>.
+         *
+         * @param {java.awt.event.KeyEvent} e  a <code>KeyEvent</code>
+         * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
+         * @param {javax.swing.MenuSelectionManager} manager   the <code>MenuSelectionManager</code>
+         */
+        processKeyEvent(e: java.awt.event.KeyEvent, path: javax.swing.MenuElement[], manager: javax.swing.MenuSelectionManager): void;
+        /**
+         * Handles a keystroke in a menu.
+         *
+         * @param {javax.swing.event.MenuKeyEvent} e  a <code>MenuKeyEvent</code> object
+         */
+        processMenuKeyEvent(e: javax.swing.event.MenuKeyEvent): void;
+        /**
+         * Notifies all listeners that have registered interest for
+         * notification on this event type.
+         *
+         * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
+         * @see EventListenerList
+         */
+        fireMenuKeyPressed(event: javax.swing.event.MenuKeyEvent): void;
+        /**
+         * Notifies all listeners that have registered interest for
+         * notification on this event type.
+         *
+         * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
+         * @see EventListenerList
+         */
+        fireMenuKeyReleased(event: javax.swing.event.MenuKeyEvent): void;
+        /**
+         * Notifies all listeners that have registered interest for
+         * notification on this event type.
+         *
+         * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
+         * @see EventListenerList
+         */
+        fireMenuKeyTyped(event: javax.swing.event.MenuKeyEvent): void;
+        /**
+         * Called by the <code>MenuSelectionManager</code> when the
+         * <code>MenuElement</code> is selected or unselected.
+         *
+         * @param {boolean} isIncluded  true if this menu item is on the part of the menu
+         * path that changed, false if this menu is part of the
+         * a menu path that changed, but this particular part of
+         * that path is still the same
+         * @see MenuSelectionManager#setSelectedPath(MenuElement[])
+         */
+        menuSelectionChanged(isIncluded: boolean): void;
+        /**
+         * This method returns an array containing the sub-menu
+         * components for this menu component.
+         *
+         * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code>s
+         */
+        getSubElements(): javax.swing.MenuElement[];
+        getComponent(n?: any): java.awt.Component;
+        getComponent$(): java.awt.Component;
+        /**
+         * Adds a <code>MenuKeyListener</code> to the menu item.
+         *
+         * @param {*} l the <code>MenuKeyListener</code> to be added
+         */
+        addMenuKeyListener(l: javax.swing.event.MenuKeyListener): void;
+        /**
+         * Removes a <code>MenuKeyListener</code> from the menu item.
+         *
+         * @param {*} l the <code>MenuKeyListener</code> to be removed
+         */
+        removeMenuKeyListener(l: javax.swing.event.MenuKeyListener): void;
+        /**
+         * Returns an array of all the <code>MenuKeyListener</code>s added
+         * to this JMenuItem with addMenuKeyListener().
+         *
+         * @return {javax.swing.event.MenuKeyListener[]} all of the <code>MenuKeyListener</code>s added or an empty
+         * array if no listeners have been added
+         * @since 1.4
+         */
+        getMenuKeyListeners(): javax.swing.event.MenuKeyListener[];
+        /**
+         * Returns a string representation of this <code>JMenuItem</code>.
+         * This method is intended to be used only for debugging purposes,
+         * and the content and format of the returned string may vary between
+         * implementations. The returned string may be empty but may not
+         * be <code>null</code>.
+         *
+         * @return  {string} a string representation of this <code>JMenuItem</code>
+         */
+        paramString(): string;
+    }
+    namespace JMenuItem {
+        class MenuItemFocusListener implements java.awt.event.FocusListener, java.io.Serializable {
+            focusGained(event: java.awt.event.FocusEvent): void;
+            focusLost(event: java.awt.event.FocusEvent): void;
+            constructor();
+        }
+    }
+}
+declare namespace javax.swing {
+    class JButton extends javax.swing.AbstractButton {
+        actionListeners: Array<java.awt.event.ActionListener>;
+        actionCommand: string;
+        label: string;
+        background: java.awt.Color;
+        icon: javax.swing.ImageIcon;
+        constructor(label?: any, icon?: any);
+        /**
+         *
+         * @return {HTMLButtonElement}
+         */
+        getHTMLElement(): HTMLButtonElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        initActionListener(): void;
+        addActionListener(actionListener: java.awt.event.ActionListener): void;
+        removeActionListener(actionListener: java.awt.event.ActionListener): void;
+        setBackground(background: java.awt.Color): void;
+    }
+}
+declare namespace javax.swing {
+    class JCheckBox extends javax.swing.JToggleButton implements java.awt.ItemSelectable {
+        label: string;
+        state: boolean;
+        itemListeners: Array<java.awt.event.ItemListener>;
+        htmlCheckbox: HTMLInputElement;
+        htmlLabel: Text;
+        static base: string;
+        static nameCounter: number;
+        static __javax_swing_JCheckBox_serialVersionUID: number;
+        constructor(label?: any, state?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        constructComponentName(): string;
+        getLabel(): string;
+        setLabel(label: string): void;
+        getState(): boolean;
+        setStateInternal(state: boolean): void;
+        setState(state: boolean): void;
+        getSelectedObjects(): any[];
+        addItemListener(l: java.awt.event.ItemListener): void;
+        removeItemListener(l: java.awt.event.ItemListener): void;
+        getItemListeners(): java.awt.event.ItemListener[];
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        processItemEvent(e: java.awt.event.ItemEvent): void;
+        paramString(): string;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Constructs a new <code>JMenu</code> with the supplied string as its text
+     * and specified as a tear-off menu or not.
+     *
+     * @param {string} s
+     * the text for the menu label
+     * @param {boolean} b
+     * can the menu be torn off (not yet implemented)
+     * @class
+     * @extends javax.swing.JMenuItem
+     * @author Georges Saab
+     */
+    class JMenu extends javax.swing.JMenuItem implements javax.swing.MenuElement {
+        /**
+         * @see #getUIClassID
+         * @see #readObject
+         */
+        static __javax_swing_JMenu_uiClassID: string;
+        popupMenu: javax.swing.JPopupMenu;
+        menuChangeListener: javax.swing.event.ChangeListener;
+        menuEvent: javax.swing.event.MenuEvent;
+        delay: number;
+        static __javax_swing_JMenu_DEBUG: boolean;
+        constructor(s?: any, b?: any);
+        /**
+         * Overriden to do nothing. We want JMenu to be focusable, but
+         * <code>JMenuItem</code> doesn't want to be, thus we override this do
+         * nothing. We don't invoke <code>setFocusable(true)</code> after super's
+         * constructor has completed as this has the side effect that
+         * <code>JMenu</code> will be considered traversable via the keyboard, which
+         * we don't want. Making a Component traversable by the keyboard after
+         * invoking <code>setFocusable(true)</code> is OK, as
+         * <code>setFocusable</code> is new API and is speced as such, but
+         * internally we don't want to use it like this else we change the keyboard
+         * traversability.
+         */
+        initFocusability(): void;
+        /**
+         * Returns the name of the L&amp;F class that renders this component.
+         *
+         * @return {string} the string "MenuUI"
+         * @see JComponent#getUIClassID
+         * @see UIDefaults#getUI
+         */
+        getUIClassID(): string;
+        /**
+         * Sets the data model for the "menu button" -- the label that the user
+         * clicks to open or close the menu.
+         *
+         * @param {*} newModel
+         * the <code>ButtonModel</code>
+         * @see #getModel
+         * @beaninfo description: The menu's model bound: true expert: true hidden:
+         * true
+         */
+        setModel(newModel: javax.swing.ButtonModel): void;
+        /**
+         * Returns true if the menu is currently selected (highlighted).
+         *
+         * @return {boolean} true if the menu is selected, else false
+         */
+        isSelected(): boolean;
+        /**
+         * Sets the selection status of the menu.
+         *
+         * @param {boolean} b
+         * true to select (highlight) the menu; false to de-select the
+         * menu
+         * @beaninfo description: When the menu is selected, its popup child is
+         * shown. expert: true hidden: true
+         */
+        setSelected(b: boolean): void;
+        /**
+         * Returns true if the menu's popup window is visible.
+         *
+         * @return {boolean} true if the menu is visible, else false
+         */
+        isPopupMenuVisible(): boolean;
+        /**
+         * Sets the visibility of the menu's popup. If the menu is not enabled, this
+         * method will have no effect.
+         *
+         * @param {boolean} b
+         * a boolean value -- true to make the menu visible, false to
+         * hide it
+         * @beaninfo description: The popup menu's visibility expert: true hidden:
+         * true
+         */
+        setPopupMenuVisible(b: boolean): void;
+        /**
+         * Computes the origin for the <code>JMenu</code>'s popup menu. This method
+         * uses Look and Feel properties named <code>Menu.menuPopupOffsetX</code>,
+         * <code>Menu.menuPopupOffsetY</code>, <code>Menu.submenuPopupOffsetX</code>
+         * , and <code>Menu.submenuPopupOffsetY</code> to adjust the exact location
+         * of popup.
+         *
+         * @return {java.awt.Point} a <code>Point</code> in the coordinate space of the menu which
+         * should be used as the origin of the <code>JMenu</code>'s popup
+         * menu
+         *
+         * @since 1.3
+         */
+        getPopupMenuOrigin(): java.awt.Point;
+        /**
+         * Returns the suggested delay, in milliseconds, before submenus are popped
+         * up or down. Each look and feel (L&amp;F) may determine its own policy for
+         * observing the <code>delay</code> property. In most cases, the delay is
+         * not observed for top level menus or while dragging. The default for
+         * <code>delay</code> is 0. This method is a property of the look and feel
+         * code and is used to manage the idiosyncrasies of the various UI
+         * implementations.
+         *
+         *
+         * @return {number} the <code>delay</code> property
+         */
+        getDelay(): number;
+        /**
+         * Sets the suggested delay before the menu's <code>PopupMenu</code> is
+         * popped up or down. Each look and feel (L&amp;F) may determine it's own
+         * policy for observing the delay property. In most cases, the delay is not
+         * observed for top level menus or while dragging. This method is a property
+         * of the look and feel code and is used to manage the idiosyncrasies of the
+         * various UI implementations.
+         *
+         * @param {number} d
+         * the number of milliseconds to delay
+         * @exception IllegalArgumentException
+         * if <code>d</code> is less than 0
+         * @beaninfo description: The delay between menu selection and making the
+         * popup menu visible expert: true
+         */
+        setDelay(d: number): void;
+        ensurePopupMenuCreated(): void;
+        /**
+         * Sets the location of the popup component.
+         *
+         * @param {number} x
+         * the x coordinate of the popup's new position
+         * @param {number} y
+         * the y coordinate of the popup's new position
+         */
+        setMenuLocation(x: number, y: number): void;
+        add(component?: any, constraints?: any, index?: any): any;
+        add$javax_swing_JMenuItem(menuItem: javax.swing.JMenuItem): javax.swing.JMenuItem;
+        add$java_awt_Component(c: java.awt.Component): java.awt.Component;
+        add$java_awt_Component$int(c: java.awt.Component, index: number): java.awt.Component;
+        add$java_lang_String(s: string): javax.swing.JMenuItem;
+        add$javax_swing_Action(a: javax.swing.Action): javax.swing.JMenuItem;
+        /**
+         * Factory method which creates the <code>JMenuItem</code> for
+         * <code>Action</code>s added to the <code>JMenu</code>.
+         *
+         * @param {*} a
+         * the <code>Action</code> for the menu item to be added
+         * @return {javax.swing.JMenuItem} the new menu item
+         * @see Action
+         *
+         * @since 1.3
+         */
+        createActionComponent(a: javax.swing.Action): javax.swing.JMenuItem;
+        /**
+         * Appends a new separator to the end of the menu.
+         */
+        addSeparator(): void;
+        insert$java_lang_String$int(s: string, pos: number): void;
+        /**
+         * Inserts a new menu item with the specified text at a given position.
+         *
+         * @param {string} s
+         * the text for the menu item to add
+         * @param {number} pos
+         * an integer specifying the position at which to add the new
+         * menu item
+         * @exception IllegalArgumentException
+         * when the value of <code>pos</code> &lt; 0
+         */
+        insert(s?: any, pos?: any): any;
+        insert$javax_swing_JMenuItem$int(mi: javax.swing.JMenuItem, pos: number): javax.swing.JMenuItem;
+        insert$javax_swing_Action$int(a: javax.swing.Action, pos: number): javax.swing.JMenuItem;
+        /**
+         * Inserts a separator at the specified position.
+         *
+         * @param {number} index
+         * an integer specifying the position at which to insert the menu
+         * separator
+         * @exception IllegalArgumentException
+         * if the value of <code>index</code> &lt; 0
+         */
+        insertSeparator(index: number): void;
+        /**
+         * Returns the <code>JMenuItem</code> at the specified position. If the
+         * component at <code>pos</code> is not a menu item, <code>null</code> is
+         * returned. This method is included for AWT compatibility.
+         *
+         * @param {number} pos
+         * an integer specifying the position
+         * @exception IllegalArgumentException
+         * if the value of <code>pos</code> &lt; 0
+         * @return {javax.swing.JMenuItem} the menu item at the specified position; or <code>null</code> if
+         * the item as the specified position is not a menu item
+         */
+        getItem(pos: number): javax.swing.JMenuItem;
+        /**
+         * Returns the number of items on the menu, including separators. This
+         * method is included for AWT compatibility.
+         *
+         * @return {number} an integer equal to the number of items on the menu
+         * @see #getMenuComponentCount
+         */
+        getItemCount(): number;
+        /**
+         * Returns true if the menu can be torn off. This method is not yet
+         * implemented.
+         *
+         * @return {boolean} true if the menu can be torn off, else false
+         * @exception Error
+         * if invoked -- this method is not yet implemented
+         */
+        isTearOff(): boolean;
+        remove$javax_swing_JMenuItem(item: javax.swing.JMenuItem): void;
+        /**
+         * Removes the specified menu item from this menu. If there is no popup
+         * menu, this method will have no effect.
+         *
+         * @param {javax.swing.JMenuItem} item
+         * the <code>JMenuItem</code> to be removed from the menu
+         */
+        remove(item?: any): any;
+        remove$int(pos: number): void;
+        remove$java_awt_Component(c: java.awt.Component): void;
+        /**
+         * Removes all menu items from this menu.
+         */
+        removeAll(): void;
+        /**
+         * Returns the number of components on the menu.
+         *
+         * @return {number} an integer containing the number of components on the menu
+         */
+        getMenuComponentCount(): number;
+        /**
+         * Returns the component at position <code>n</code>.
+         *
+         * @param {number} n
+         * the position of the component to be returned
+         * @return {java.awt.Component} the component requested, or <code>null</code> if there is no
+         * popup menu
+         */
+        getMenuComponent(n: number): java.awt.Component;
+        /**
+         * Returns an array of <code>Component</code>s of the menu's subcomponents.
+         * Note that this returns all <code>Component</code>s in the popup menu,
+         * including separators.
+         *
+         * @return {java.awt.Component[]} an array of <code>Component</code>s or an empty array if there is
+         * no popup menu
+         */
+        getMenuComponents(): java.awt.Component[];
+        /**
+         * Returns true if the menu is a 'top-level menu', that is, if it is the
+         * direct child of a menubar.
+         *
+         * @return {boolean} true if the menu is activated from the menu bar; false if the
+         * menu is activated from a menu item on another menu
+         */
+        isTopLevelMenu(): boolean;
+        /**
+         * Returns true if the specified component exists in the submenu hierarchy.
+         *
+         * @param {java.awt.Component} c
+         * the <code>Component</code> to be tested
+         * @return {boolean} true if the <code>Component</code> exists, false otherwise
+         */
+        isMenuComponent(c: java.awt.Component): boolean;
+        /**
+         * Returns the popupmenu associated with this menu. If there is no
+         * popupmenu, it will create one.
+         * @return {javax.swing.JPopupMenu}
+         */
+        getPopupMenu(): javax.swing.JPopupMenu;
+        /**
+         * Adds a listener for menu events.
+         *
+         * @param {*} l
+         * the listener to be added
+         */
+        addMenuListener(l: javax.swing.event.MenuListener): void;
+        /**
+         * Removes a listener for menu events.
+         *
+         * @param {*} l
+         * the listener to be removed
+         */
+        removeMenuListener(l: javax.swing.event.MenuListener): void;
+        /**
+         * Returns an array of all the <code>MenuListener</code>s added to this
+         * JMenu with addMenuListener().
+         *
+         * @return {javax.swing.event.MenuListener[]} all of the <code>MenuListener</code>s added or an empty array if
+         * no listeners have been added
+         * @since 1.4
+         */
+        getMenuListeners(): javax.swing.event.MenuListener[];
+        /**
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is created lazily.
+         *
+         * @exception Error
+         * if there is a <code>null</code> listener
+         * @see EventListenerList
+         */
+        fireMenuSelected(): void;
+        /**
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is created lazily.
+         *
+         * @exception Error
+         * if there is a <code>null</code> listener
+         * @see EventListenerList
+         */
+        fireMenuDeselected(): void;
+        /**
+         * Notifies all listeners that have registered interest for notification on
+         * this event type. The event instance is created lazily.
+         *
+         * @exception Error
+         * if there is a <code>null</code> listener
+         * @see EventListenerList
+         */
+        fireMenuCanceled(): void;
+        configureAcceleratorFromAction(a: javax.swing.Action): void;
+        createMenuChangeListener(): javax.swing.event.ChangeListener;
+        /**
+         * Messaged when the menubar selection changes to activate or deactivate
+         * this menu. Overrides <code>JMenuItem.menuSelectionChanged</code>.
+         *
+         * @param {boolean} isIncluded
+         * true if this menu is active, false if it is not
+         */
+        menuSelectionChanged(isIncluded: boolean): void;
+        /**
+         * Returns an array of <code>MenuElement</code>s containing the submenu for
+         * this menu component. If popup menu is <code>null</code> returns an empty
+         * array. This method is required to conform to the <code>MenuElement</code>
+         * interface. Note that since <code>JSeparator</code>s do not conform to the
+         * <code>MenuElement</code> interface, this array will only contain
+         * <code>JMenuItem</code>s.
+         *
+         * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code> objects
+         */
+        getSubElements(): javax.swing.MenuElement[];
+        getComponent(n?: any): java.awt.Component;
+        getComponent$(): java.awt.Component;
+        /**
+         * Processes a key event forwarded from the
+         * <code>MenuSelectionManager</code> and changes the menu selection,
+         * if necessary, by using <code>MenuSelectionManager</code>'s API.
+         * <p>
+         * Note: you do not have to forward the event to sub-components.
+         * This is done automatically by the <code>MenuSelectionManager</code>.
+         *
+         * @param {java.awt.event.KeyEvent} e  a <code>KeyEvent</code>
+         * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
+         * @param {javax.swing.MenuSelectionManager} manager   the <code>MenuSelectionManager</code>
+         */
+        processKeyEvent(e?: any, path?: any, manager?: any): any;
+        processKeyEvent$java_awt_event_KeyEvent(evt: java.awt.event.KeyEvent): void;
+        doClick$int(pressTime: number): void;
+        /**
+         * Programmatically performs a "click". This overrides the method
+         * <code>AbstractButton.doClick</code> in order to make the menu pop up.
+         *
+         * @param {number} pressTime
+         * indicates the number of milliseconds the button was pressed
+         * for
+         */
+        doClick(pressTime?: any): any;
+        /**
+         * Returns a string representation of this <code>JMenu</code>. This method
+         * is intended to be used only for debugging purposes, and the content and
+         * format of the returned string may vary between implementations. The
+         * returned string may be empty but may not be <code>null</code>.
+         *
+         * @return {string} a string representation of this JMenu.
+         */
+        paramString(): string;
+    }
+    namespace JMenu {
+        class MenuChangeListener implements javax.swing.event.ChangeListener, java.io.Serializable {
+            __parent: any;
+            isSelected: boolean;
+            stateChanged(e: javax.swing.event.ChangeEvent): void;
+            constructor(__parent: any);
+        }
     }
 }
 declare namespace javax.swing {
@@ -21269,436 +21700,5 @@ declare namespace javax.swing {
              */
             getUIClassID(): string;
         }
-    }
-}
-declare namespace javax.swing {
-    /**
-     * Constructs a new <code>JMenu</code> with the supplied string as its text
-     * and specified as a tear-off menu or not.
-     *
-     * @param {string} s
-     * the text for the menu label
-     * @param {boolean} b
-     * can the menu be torn off (not yet implemented)
-     * @class
-     * @extends javax.swing.JMenuItem
-     * @author Georges Saab
-     */
-    class JMenu extends javax.swing.JMenuItem implements javax.swing.MenuElement {
-        /**
-         * @see #getUIClassID
-         * @see #readObject
-         */
-        static __javax_swing_JMenu_uiClassID: string;
-        popupMenu: javax.swing.JPopupMenu;
-        menuChangeListener: javax.swing.event.ChangeListener;
-        menuEvent: javax.swing.event.MenuEvent;
-        delay: number;
-        static __javax_swing_JMenu_DEBUG: boolean;
-        constructor(s?: any, b?: any);
-        /**
-         * Overriden to do nothing. We want JMenu to be focusable, but
-         * <code>JMenuItem</code> doesn't want to be, thus we override this do
-         * nothing. We don't invoke <code>setFocusable(true)</code> after super's
-         * constructor has completed as this has the side effect that
-         * <code>JMenu</code> will be considered traversable via the keyboard, which
-         * we don't want. Making a Component traversable by the keyboard after
-         * invoking <code>setFocusable(true)</code> is OK, as
-         * <code>setFocusable</code> is new API and is speced as such, but
-         * internally we don't want to use it like this else we change the keyboard
-         * traversability.
-         */
-        initFocusability(): void;
-        /**
-         * Returns the name of the L&amp;F class that renders this component.
-         *
-         * @return {string} the string "MenuUI"
-         * @see JComponent#getUIClassID
-         * @see UIDefaults#getUI
-         */
-        getUIClassID(): string;
-        /**
-         * Sets the data model for the "menu button" -- the label that the user
-         * clicks to open or close the menu.
-         *
-         * @param {*} newModel
-         * the <code>ButtonModel</code>
-         * @see #getModel
-         * @beaninfo description: The menu's model bound: true expert: true hidden:
-         * true
-         */
-        setModel(newModel: javax.swing.ButtonModel): void;
-        /**
-         * Returns true if the menu is currently selected (highlighted).
-         *
-         * @return {boolean} true if the menu is selected, else false
-         */
-        isSelected(): boolean;
-        /**
-         * Sets the selection status of the menu.
-         *
-         * @param {boolean} b
-         * true to select (highlight) the menu; false to de-select the
-         * menu
-         * @beaninfo description: When the menu is selected, its popup child is
-         * shown. expert: true hidden: true
-         */
-        setSelected(b: boolean): void;
-        /**
-         * Returns true if the menu's popup window is visible.
-         *
-         * @return {boolean} true if the menu is visible, else false
-         */
-        isPopupMenuVisible(): boolean;
-        /**
-         * Sets the visibility of the menu's popup. If the menu is not enabled, this
-         * method will have no effect.
-         *
-         * @param {boolean} b
-         * a boolean value -- true to make the menu visible, false to
-         * hide it
-         * @beaninfo description: The popup menu's visibility expert: true hidden:
-         * true
-         */
-        setPopupMenuVisible(b: boolean): void;
-        /**
-         * Computes the origin for the <code>JMenu</code>'s popup menu. This method
-         * uses Look and Feel properties named <code>Menu.menuPopupOffsetX</code>,
-         * <code>Menu.menuPopupOffsetY</code>, <code>Menu.submenuPopupOffsetX</code>
-         * , and <code>Menu.submenuPopupOffsetY</code> to adjust the exact location
-         * of popup.
-         *
-         * @return {java.awt.Point} a <code>Point</code> in the coordinate space of the menu which
-         * should be used as the origin of the <code>JMenu</code>'s popup
-         * menu
-         *
-         * @since 1.3
-         */
-        getPopupMenuOrigin(): java.awt.Point;
-        /**
-         * Returns the suggested delay, in milliseconds, before submenus are popped
-         * up or down. Each look and feel (L&amp;F) may determine its own policy for
-         * observing the <code>delay</code> property. In most cases, the delay is
-         * not observed for top level menus or while dragging. The default for
-         * <code>delay</code> is 0. This method is a property of the look and feel
-         * code and is used to manage the idiosyncrasies of the various UI
-         * implementations.
-         *
-         *
-         * @return {number} the <code>delay</code> property
-         */
-        getDelay(): number;
-        /**
-         * Sets the suggested delay before the menu's <code>PopupMenu</code> is
-         * popped up or down. Each look and feel (L&amp;F) may determine it's own
-         * policy for observing the delay property. In most cases, the delay is not
-         * observed for top level menus or while dragging. This method is a property
-         * of the look and feel code and is used to manage the idiosyncrasies of the
-         * various UI implementations.
-         *
-         * @param {number} d
-         * the number of milliseconds to delay
-         * @exception IllegalArgumentException
-         * if <code>d</code> is less than 0
-         * @beaninfo description: The delay between menu selection and making the
-         * popup menu visible expert: true
-         */
-        setDelay(d: number): void;
-        ensurePopupMenuCreated(): void;
-        /**
-         * Sets the location of the popup component.
-         *
-         * @param {number} x
-         * the x coordinate of the popup's new position
-         * @param {number} y
-         * the y coordinate of the popup's new position
-         */
-        setMenuLocation(x: number, y: number): void;
-        add(component?: any, constraints?: any, index?: any): any;
-        add$javax_swing_JMenuItem(menuItem: javax.swing.JMenuItem): javax.swing.JMenuItem;
-        add$java_awt_Component(c: java.awt.Component): java.awt.Component;
-        add$java_awt_Component$int(c: java.awt.Component, index: number): java.awt.Component;
-        add$java_lang_String(s: string): javax.swing.JMenuItem;
-        add$javax_swing_Action(a: javax.swing.Action): javax.swing.JMenuItem;
-        /**
-         * Factory method which creates the <code>JMenuItem</code> for
-         * <code>Action</code>s added to the <code>JMenu</code>.
-         *
-         * @param {*} a
-         * the <code>Action</code> for the menu item to be added
-         * @return {javax.swing.JMenuItem} the new menu item
-         * @see Action
-         *
-         * @since 1.3
-         */
-        createActionComponent(a: javax.swing.Action): javax.swing.JMenuItem;
-        /**
-         * Appends a new separator to the end of the menu.
-         */
-        addSeparator(): void;
-        insert$java_lang_String$int(s: string, pos: number): void;
-        /**
-         * Inserts a new menu item with the specified text at a given position.
-         *
-         * @param {string} s
-         * the text for the menu item to add
-         * @param {number} pos
-         * an integer specifying the position at which to add the new
-         * menu item
-         * @exception IllegalArgumentException
-         * when the value of <code>pos</code> &lt; 0
-         */
-        insert(s?: any, pos?: any): any;
-        insert$javax_swing_JMenuItem$int(mi: javax.swing.JMenuItem, pos: number): javax.swing.JMenuItem;
-        insert$javax_swing_Action$int(a: javax.swing.Action, pos: number): javax.swing.JMenuItem;
-        /**
-         * Inserts a separator at the specified position.
-         *
-         * @param {number} index
-         * an integer specifying the position at which to insert the menu
-         * separator
-         * @exception IllegalArgumentException
-         * if the value of <code>index</code> &lt; 0
-         */
-        insertSeparator(index: number): void;
-        /**
-         * Returns the <code>JMenuItem</code> at the specified position. If the
-         * component at <code>pos</code> is not a menu item, <code>null</code> is
-         * returned. This method is included for AWT compatibility.
-         *
-         * @param {number} pos
-         * an integer specifying the position
-         * @exception IllegalArgumentException
-         * if the value of <code>pos</code> &lt; 0
-         * @return {javax.swing.JMenuItem} the menu item at the specified position; or <code>null</code> if
-         * the item as the specified position is not a menu item
-         */
-        getItem(pos: number): javax.swing.JMenuItem;
-        /**
-         * Returns the number of items on the menu, including separators. This
-         * method is included for AWT compatibility.
-         *
-         * @return {number} an integer equal to the number of items on the menu
-         * @see #getMenuComponentCount
-         */
-        getItemCount(): number;
-        /**
-         * Returns true if the menu can be torn off. This method is not yet
-         * implemented.
-         *
-         * @return {boolean} true if the menu can be torn off, else false
-         * @exception Error
-         * if invoked -- this method is not yet implemented
-         */
-        isTearOff(): boolean;
-        remove$javax_swing_JMenuItem(item: javax.swing.JMenuItem): void;
-        /**
-         * Removes the specified menu item from this menu. If there is no popup
-         * menu, this method will have no effect.
-         *
-         * @param {javax.swing.JMenuItem} item
-         * the <code>JMenuItem</code> to be removed from the menu
-         */
-        remove(item?: any): any;
-        remove$int(pos: number): void;
-        remove$java_awt_Component(c: java.awt.Component): void;
-        /**
-         * Removes all menu items from this menu.
-         */
-        removeAll(): void;
-        /**
-         * Returns the number of components on the menu.
-         *
-         * @return {number} an integer containing the number of components on the menu
-         */
-        getMenuComponentCount(): number;
-        /**
-         * Returns the component at position <code>n</code>.
-         *
-         * @param {number} n
-         * the position of the component to be returned
-         * @return {java.awt.Component} the component requested, or <code>null</code> if there is no
-         * popup menu
-         */
-        getMenuComponent(n: number): java.awt.Component;
-        /**
-         * Returns an array of <code>Component</code>s of the menu's subcomponents.
-         * Note that this returns all <code>Component</code>s in the popup menu,
-         * including separators.
-         *
-         * @return {java.awt.Component[]} an array of <code>Component</code>s or an empty array if there is
-         * no popup menu
-         */
-        getMenuComponents(): java.awt.Component[];
-        /**
-         * Returns true if the menu is a 'top-level menu', that is, if it is the
-         * direct child of a menubar.
-         *
-         * @return {boolean} true if the menu is activated from the menu bar; false if the
-         * menu is activated from a menu item on another menu
-         */
-        isTopLevelMenu(): boolean;
-        /**
-         * Returns true if the specified component exists in the submenu hierarchy.
-         *
-         * @param {java.awt.Component} c
-         * the <code>Component</code> to be tested
-         * @return {boolean} true if the <code>Component</code> exists, false otherwise
-         */
-        isMenuComponent(c: java.awt.Component): boolean;
-        /**
-         * Returns the popupmenu associated with this menu. If there is no
-         * popupmenu, it will create one.
-         * @return {javax.swing.JPopupMenu}
-         */
-        getPopupMenu(): javax.swing.JPopupMenu;
-        /**
-         * Adds a listener for menu events.
-         *
-         * @param {*} l
-         * the listener to be added
-         */
-        addMenuListener(l: javax.swing.event.MenuListener): void;
-        /**
-         * Removes a listener for menu events.
-         *
-         * @param {*} l
-         * the listener to be removed
-         */
-        removeMenuListener(l: javax.swing.event.MenuListener): void;
-        /**
-         * Returns an array of all the <code>MenuListener</code>s added to this
-         * JMenu with addMenuListener().
-         *
-         * @return {javax.swing.event.MenuListener[]} all of the <code>MenuListener</code>s added or an empty array if
-         * no listeners have been added
-         * @since 1.4
-         */
-        getMenuListeners(): javax.swing.event.MenuListener[];
-        /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is created lazily.
-         *
-         * @exception Error
-         * if there is a <code>null</code> listener
-         * @see EventListenerList
-         */
-        fireMenuSelected(): void;
-        /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is created lazily.
-         *
-         * @exception Error
-         * if there is a <code>null</code> listener
-         * @see EventListenerList
-         */
-        fireMenuDeselected(): void;
-        /**
-         * Notifies all listeners that have registered interest for notification on
-         * this event type. The event instance is created lazily.
-         *
-         * @exception Error
-         * if there is a <code>null</code> listener
-         * @see EventListenerList
-         */
-        fireMenuCanceled(): void;
-        configureAcceleratorFromAction(a: javax.swing.Action): void;
-        createMenuChangeListener(): javax.swing.event.ChangeListener;
-        /**
-         * Messaged when the menubar selection changes to activate or deactivate
-         * this menu. Overrides <code>JMenuItem.menuSelectionChanged</code>.
-         *
-         * @param {boolean} isIncluded
-         * true if this menu is active, false if it is not
-         */
-        menuSelectionChanged(isIncluded: boolean): void;
-        /**
-         * Returns an array of <code>MenuElement</code>s containing the submenu for
-         * this menu component. If popup menu is <code>null</code> returns an empty
-         * array. This method is required to conform to the <code>MenuElement</code>
-         * interface. Note that since <code>JSeparator</code>s do not conform to the
-         * <code>MenuElement</code> interface, this array will only contain
-         * <code>JMenuItem</code>s.
-         *
-         * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code> objects
-         */
-        getSubElements(): javax.swing.MenuElement[];
-        getComponent(n?: any): java.awt.Component;
-        getComponent$(): java.awt.Component;
-        /**
-         * Processes a key event forwarded from the
-         * <code>MenuSelectionManager</code> and changes the menu selection,
-         * if necessary, by using <code>MenuSelectionManager</code>'s API.
-         * <p>
-         * Note: you do not have to forward the event to sub-components.
-         * This is done automatically by the <code>MenuSelectionManager</code>.
-         *
-         * @param {java.awt.event.KeyEvent} e  a <code>KeyEvent</code>
-         * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
-         * @param {javax.swing.MenuSelectionManager} manager   the <code>MenuSelectionManager</code>
-         */
-        processKeyEvent(e?: any, path?: any, manager?: any): any;
-        processKeyEvent$java_awt_event_KeyEvent(evt: java.awt.event.KeyEvent): void;
-        doClick$int(pressTime: number): void;
-        /**
-         * Programmatically performs a "click". This overrides the method
-         * <code>AbstractButton.doClick</code> in order to make the menu pop up.
-         *
-         * @param {number} pressTime
-         * indicates the number of milliseconds the button was pressed
-         * for
-         */
-        doClick(pressTime?: any): any;
-        /**
-         * Returns a string representation of this <code>JMenu</code>. This method
-         * is intended to be used only for debugging purposes, and the content and
-         * format of the returned string may vary between implementations. The
-         * returned string may be empty but may not be <code>null</code>.
-         *
-         * @return {string} a string representation of this JMenu.
-         */
-        paramString(): string;
-    }
-    namespace JMenu {
-        class MenuChangeListener implements javax.swing.event.ChangeListener, java.io.Serializable {
-            __parent: any;
-            isSelected: boolean;
-            stateChanged(e: javax.swing.event.ChangeEvent): void;
-            constructor(__parent: any);
-        }
-    }
-}
-declare namespace javax.swing {
-    class JCheckBox extends javax.swing.JToggleButton implements java.awt.ItemSelectable {
-        label: string;
-        state: boolean;
-        itemListeners: Array<java.awt.event.ItemListener>;
-        htmlCheckbox: HTMLInputElement;
-        htmlLabel: Text;
-        static base: string;
-        static nameCounter: number;
-        static __javax_swing_JCheckBox_serialVersionUID: number;
-        constructor(label?: any, state?: any);
-        /**
-         *
-         */
-        createHTML(): void;
-        /**
-         *
-         */
-        initHTML(): void;
-        constructComponentName(): string;
-        getLabel(): string;
-        setLabel(label: string): void;
-        getState(): boolean;
-        setStateInternal(state: boolean): void;
-        setState(state: boolean): void;
-        getSelectedObjects(): any[];
-        addItemListener(l: java.awt.event.ItemListener): void;
-        removeItemListener(l: java.awt.event.ItemListener): void;
-        getItemListeners(): java.awt.event.ItemListener[];
-        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
-        processItemEvent(e: java.awt.event.ItemEvent): void;
-        paramString(): string;
     }
 }

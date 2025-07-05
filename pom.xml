@@ -156,7 +156,7 @@
 		<dependency>
 			<groupId>org.jsweet</groupId>
 			<artifactId>jsweet-core</artifactId>
-			<version>6.3.1</version>
+			<version>6.3.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsweet</groupId>
@@ -169,9 +169,9 @@
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jsweet.v3.candies</groupId>
+			<groupId>org.jsweet.candies</groupId>
 			<artifactId>jquery</artifactId>
-			<version>1.10.0-20220903</version>
+			<version>1.10.0-20170726</version>
 		</dependency>
 	</dependencies>
 
