@@ -331,12 +331,11 @@ var java;
     var awt;
     (function (awt) {
         /**
-         * The FontMetrics class contains information about the rendering of a
-         * particular font on a particular screen. This is a JSweet port,
-         * implementing the abstract class as a concrete one with default behaviors.
+         * Instantiates a new font metrics from the specified Font.
          *
-         * @author Ilya S. Okomin (original), Gemini (JSweet port)
+         * @param {java.awt.Font} fnt the Font.
          * @class
+         * @author Ilya S. Okomin (original), Gemini (JSweet port)
          */
         var FontMetrics = /** @class */ (function () {
             function FontMetrics(fnt) {
@@ -11301,6 +11300,9 @@ var java;
                 }
                 else
                     throw new Error('invalid overload');
+            };
+            Graphics.prototype.getFontMetrics = function () {
+                return new java.awt.FontMetrics(this.getFont());
             };
             Graphics.prototype.getClipBounds$ = function () { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
             Graphics.prototype.setClip$int$int$int$int = function (x, y, width, height) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };

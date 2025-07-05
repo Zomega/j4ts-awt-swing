@@ -79,12 +79,11 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     /**
-     * The FontMetrics class contains information about the rendering of a
-     * particular font on a particular screen. This is a JSweet port,
-     * implementing the abstract class as a concrete one with default behaviors.
+     * Instantiates a new font metrics from the specified Font.
      *
-     * @author Ilya S. Okomin (original), Gemini (JSweet port)
+     * @param {java.awt.Font} fnt the Font.
      * @class
+     * @author Ilya S. Okomin (original), Gemini (JSweet port)
      */
     class FontMetrics implements java.io.Serializable {
         static serialVersionUID: number;
@@ -6004,6 +6003,7 @@ declare namespace java.awt {
         abstract setPaintMode(): any;
         abstract getFont(): java.awt.Font;
         abstract setFont(font: java.awt.Font): any;
+        getFontMetrics(): java.awt.FontMetrics;
         getClipBounds$(): java.awt.Rectangle;
         abstract clipRect(x: number, y: number, width: number, height: number): any;
         setClip$int$int$int$int(x: number, y: number, width: number, height: number): void;

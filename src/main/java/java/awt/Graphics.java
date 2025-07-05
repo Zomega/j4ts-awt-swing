@@ -56,9 +56,9 @@ public abstract class Graphics {
 
 	public abstract void setFont(Font font);
 
-//	public FontMetrics getFontMetrics() {
-//		return getFontMetrics(getFont());
-//	}
+	public FontMetrics getFontMetrics() {
+		return new FontMetrics(getFont());
+	}
 
 //	public abstract FontMetrics getFontMetrics(Font f);
 

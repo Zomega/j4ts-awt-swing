@@ -31,7 +31,7 @@ public class FontMetrics implements Serializable {
      *
      * @param fnt the Font.
      */
-    protected FontMetrics(Font fnt) {
+    public FontMetrics(Font fnt) {
         this.font = fnt;
         // Lazily initialize defaultContext2D when first needed.
         // This avoids creating a canvas element if FontMetrics is only used for its font field.
