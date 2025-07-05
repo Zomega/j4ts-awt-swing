@@ -29737,6 +29737,209 @@ var javax;
 (function (java) {
     var awt;
     (function (awt) {
+        /**
+         * Constructs a new Canvas given a GraphicsConfiguration object.
+         * This constructor is largely ignored in a typical JSweet browser context
+         * as GraphicsConfiguration is a native AWT concept.
+         *
+         * @param {*} config a reference to a GraphicsConfiguration object.
+         * @class
+         * @extends java.awt.Component
+         * @author Sami Shaio (original), Gemini (JSweet port)
+         */
+        var Canvas = /** @class */ (function (_super) {
+            __extends(Canvas, _super);
+            function Canvas(config) {
+                var _this = this;
+                if (((config != null) || config === null)) {
+                    var __args = arguments;
+                    {
+                        var __args_43 = arguments;
+                        _this = _super.call(this) || this;
+                        if (_this.htmlCanvasElement === undefined) {
+                            _this.htmlCanvasElement = null;
+                        }
+                        if (_this.context2D === undefined) {
+                            _this.context2D = null;
+                        }
+                    }
+                    if (_this.htmlCanvasElement === undefined) {
+                        _this.htmlCanvasElement = null;
+                    }
+                    if (_this.context2D === undefined) {
+                        _this.context2D = null;
+                    }
+                }
+                else if (config === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.htmlCanvasElement === undefined) {
+                        _this.htmlCanvasElement = null;
+                    }
+                    if (_this.context2D === undefined) {
+                        _this.context2D = null;
+                    }
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            /**
+             * Construct a name for this component. Called by getName() when the
+             * name is null.
+             * @return {string}
+             */
+            Canvas.prototype.constructComponentName = function () {
+                return Canvas.base + Canvas.nameCounter++;
+            };
+            /**
+             * Creates the peer of the canvas. In the JSweet context, this means
+             * creating the underlying HTML &lt;canvas&gt; element and appending it
+             * to the component's HTML element.
+             * It also initializes the 2D rendering context.
+             */
+            Canvas.prototype.addNotify = function () {
+                if (this.htmlElement == null) {
+                    console.error("Canvas: htmlElement is null. Cannot addNotify without a parent HTML element.");
+                    return;
+                }
+                if (this.htmlCanvasElement == null) {
+                    this.htmlCanvasElement = document.createElement("canvas");
+                    this.htmlCanvasElement.width = this.width;
+                    this.htmlCanvasElement.height = this.height;
+                    this.htmlElement.appendChild(this.htmlCanvasElement);
+                    this.context2D = this.htmlCanvasElement.getContext("2d");
+                }
+            };
+            Canvas.prototype.setSize$int$int = function (width, height) {
+                _super.prototype.setSize$int$int.call(this, width, height);
+                if (this.htmlCanvasElement != null) {
+                    this.htmlCanvasElement.width = width;
+                    this.htmlCanvasElement.height = height;
+                }
+            };
+            /**
+             * Sets the size of this component. Overrides Component's setSize
+             * to also update the underlying HTML canvas element's width and height.
+             *
+             * @param {number} width The new width.
+             * @param {number} height The new height.
+             */
+            Canvas.prototype.setSize = function (width, height) {
+                if (((typeof width === 'number') || width === null) && ((typeof height === 'number') || height === null)) {
+                    return this.setSize$int$int(width, height);
+                }
+                else if (((width != null && width instanceof java.awt.Dimension) || width === null) && height === undefined) {
+                    return this.setSize$java_awt_Dimension(width);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            /**
+             * Paints this canvas.
+             * <p>
+             * Most applications that subclass <code>Canvas</code> should
+             * override this method in order to perform some useful operation
+             * (typically, custom painting of the canvas).
+             * The default operation is simply to clear the canvas.
+             * Applications that override this method need not call
+             * super.paint(g).
+             *
+             * @param {java.awt.Graphics} g the specified Graphics context (expected to be WebGraphics2D or similar)
+             */
+            Canvas.prototype.paint = function (g) {
+                if (g != null && this.context2D != null) {
+                    g.clearRect(0, 0, this.width, this.height);
+                }
+            };
+            /**
+             * Updates this canvas.
+             * <p>
+             * This method is called in response to a call to <code>repaint</code>.
+             * The canvas is first cleared by filling it with the background
+             * color, and then completely redrawn by calling this canvas's
+             * <code>paint</code> method.
+             *
+             * @param {java.awt.Graphics} g the specified Graphics context (expected to be WebGraphics2D or similar)
+             */
+            Canvas.prototype.update = function (g) {
+                if (g != null && this.context2D != null) {
+                    g.clearRect(0, 0, this.width, this.height);
+                    this.paint(g);
+                }
+            };
+            Canvas.prototype.createBufferStrategy$int = function (numBuffers) {
+                if (numBuffers < 1) {
+                    throw new java.lang.IllegalArgumentException("Number of buffers must be at least 1.");
+                }
+                console.warn("createBufferStrategy is a no-op in JSweet Canvas port.");
+            };
+            Canvas.prototype.createBufferStrategy$int$java_lang_Object = function (numBuffers, caps) {
+                if (numBuffers < 1) {
+                    throw new java.lang.IllegalArgumentException("Number of buffers must be at least 1.");
+                }
+                if (caps == null) {
+                    throw new java.lang.IllegalArgumentException("BufferCapabilities cannot be null.");
+                }
+                console.warn("createBufferStrategy with capabilities is a no-op in JSweet Canvas port.");
+            };
+            /**
+             * Creates a new strategy for multi-buffering on this component with the
+             * required buffer capabilities.
+             * In a browser environment, this is often a no-op.
+             *
+             * @param {number} numBuffers number of buffers to create
+             * @param {*} caps the required capabilities for creating the buffer strategy;
+             * cannot be <code>null</code>
+             * @exception AWTException if the capabilities supplied could not be
+             * supported or met.
+             * @exception IllegalArgumentException if numBuffers is less than 1, or if
+             * caps is <code>null</code>
+             */
+            Canvas.prototype.createBufferStrategy = function (numBuffers, caps) {
+                if (((typeof numBuffers === 'number') || numBuffers === null) && ((caps != null) || caps === null)) {
+                    return this.createBufferStrategy$int$java_lang_Object(numBuffers, caps);
+                }
+                else if (((typeof numBuffers === 'number') || numBuffers === null) && caps === undefined) {
+                    return this.createBufferStrategy$int(numBuffers);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            /**
+             * Returns the <code>BufferStrategy</code> used by this component.
+             * In a browser environment, this will typically return null or a dummy
+             * object as direct buffer strategies are not applicable.
+             *
+             * @return {*} the buffer strategy used by this component (or null)
+             */
+            Canvas.prototype.getBufferStrategy = function () {
+                return null;
+            };
+            /**
+             * Creates the primary HTML element for this component.
+             * For a Canvas, this creates an HTML &lt;canvas&gt; element.
+             * This method is typically called by the framework when the component is added to a parent.
+             */
+            Canvas.prototype.createHTML = function () {
+                this.htmlCanvasElement = document.createElement("canvas");
+                this.htmlCanvasElement.width = this.width;
+                this.htmlCanvasElement.height = this.height;
+                this.htmlElement = this.htmlCanvasElement;
+                this.context2D = this.htmlCanvasElement.getContext("2d");
+            };
+            Canvas.base = "canvas";
+            Canvas.nameCounter = 0;
+            return Canvas;
+        }(java.awt.Component));
+        awt.Canvas = Canvas;
+        Canvas["__class"] = "java.awt.Canvas";
+        Canvas["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         var Button = /** @class */ (function (_super) {
             __extends(Button, _super);
             function Button(label) {
@@ -31997,7 +32200,7 @@ var javax;
                     var p = __args[0];
                     var d = __args[1];
                     {
-                        var __args_43 = arguments;
+                        var __args_44 = arguments;
                         var x_4 = p.x;
                         var y_4 = p.y;
                         var width_4 = d.width;
@@ -32038,7 +32241,7 @@ var javax;
                     var width_5 = __args[0];
                     var height_4 = __args[1];
                     {
-                        var __args_44 = arguments;
+                        var __args_45 = arguments;
                         var x_5 = 0;
                         var y_5 = 0;
                         _this = _super.call(this) || this;
@@ -32076,7 +32279,7 @@ var javax;
                     var __args = arguments;
                     var r = __args[0];
                     {
-                        var __args_45 = arguments;
+                        var __args_46 = arguments;
                         var x_6 = r.x;
                         var y_6 = r.y;
                         var width_6 = r.width;
@@ -32116,7 +32319,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_46 = arguments;
+                        var __args_47 = arguments;
                         var x_7 = p.x;
                         var y_7 = p.y;
                         var width_7 = 0;
@@ -32156,7 +32359,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_47 = arguments;
+                        var __args_48 = arguments;
                         var x_8 = 0;
                         var y_8 = 0;
                         var width_8 = d.width;
@@ -32195,7 +32398,7 @@ var javax;
                 else if (x === undefined && y === undefined && width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_48 = arguments;
+                        var __args_49 = arguments;
                         var x_9 = 0;
                         var y_9 = 0;
                         var width_9 = 0;
@@ -34045,7 +34248,7 @@ var javax;
                         var oldState_1 = __args[2];
                         var newState_1 = __args[3];
                         {
-                            var __args_49 = arguments;
+                            var __args_50 = arguments;
                             var opposite_1 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.opposite === undefined) {
@@ -34074,7 +34277,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && ((opposite != null && opposite instanceof java.awt.Window) || opposite === null) && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_50 = arguments;
+                            var __args_51 = arguments;
                             var oldState_2 = 0;
                             var newState_2 = 0;
                             _this = _super.call(this, source, id) || this;
@@ -34104,7 +34307,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && opposite === undefined && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_51 = arguments;
+                            var __args_52 = arguments;
                             var opposite_2 = null;
                             var oldState_3 = 0;
                             var newState_3 = 0;
@@ -34353,7 +34556,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof temporary === 'boolean') || temporary === null) && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_52 = arguments;
+                            var __args_53 = arguments;
                             var opposite_3 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.temporary === undefined) {
@@ -34375,10 +34578,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && temporary === undefined && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_53 = arguments;
+                            var __args_54 = arguments;
                             var temporary_1 = false;
                             {
-                                var __args_54 = arguments;
+                                var __args_55 = arguments;
                                 var opposite_4 = null;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.temporary === undefined) {
@@ -34588,7 +34791,7 @@ var javax;
                 else if (layout === undefined) {
                     var __args = arguments;
                     {
-                        var __args_55 = arguments;
+                        var __args_56 = arguments;
                         var layout_1 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -35193,7 +35396,7 @@ var javax;
                     else if (((sourceBean != null) || sourceBean === null) && notifyOnEDT === undefined) {
                         var __args = arguments;
                         {
-                            var __args_56 = arguments;
+                            var __args_57 = arguments;
                             var notifyOnEDT_1 = false;
                             _this = _super.call(this, sourceBean) || this;
                             if (_this.notifyOnEDT === undefined) {
@@ -35787,7 +35990,7 @@ var javax;
                         var popupTrigger_1 = __args[7];
                         var button_1 = __args[8];
                         {
-                            var __args_57 = arguments;
+                            var __args_58 = arguments;
                             var xAbs_1 = 0;
                             var yAbs_1 = 0;
                             _this = _super.call(this, source, id, when, modifiers) || this;
@@ -35882,10 +36085,10 @@ var javax;
                         var clickCount_2 = __args[6];
                         var popupTrigger_2 = __args[7];
                         {
-                            var __args_58 = arguments;
+                            var __args_59 = arguments;
                             var button_2 = MouseEvent.NOBUTTON;
                             {
-                                var __args_59 = arguments;
+                                var __args_60 = arguments;
                                 var xAbs_2 = 0;
                                 var yAbs_2 = 0;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
@@ -36285,7 +36488,7 @@ var javax;
                     if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && ((typeof keyLocation === 'number') || keyLocation === null) && ((typeof isProxyActive === 'boolean') || isProxyActive === null)) {
                         var __args = arguments;
                         {
-                            var __args_60 = arguments;
+                            var __args_61 = arguments;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
                                 _this.isProxyActive = false;
@@ -36392,7 +36595,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_61 = arguments;
+                            var __args_62 = arguments;
                             var keyLocation_1 = KeyEvent.KEY_LOCATION_UNKNOWN;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
@@ -36454,10 +36657,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && keyChar === undefined && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_62 = arguments;
-                            var keyChar_1 = String.fromCharCode(__args_62[4]);
+                            var __args_63 = arguments;
+                            var keyChar_1 = String.fromCharCode(__args_63[4]);
                             {
-                                var __args_63 = arguments;
+                                var __args_64 = arguments;
                                 var keyLocation_2 = KeyEvent.KEY_LOCATION_UNKNOWN;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
                                 if (_this.isProxyActive === undefined) {
@@ -37386,6 +37589,53 @@ var javax;
                 }
                 return null;
             };
+            /**
+             * Gets the base URL. This is the URL of the directory which contains this applet.
+             * In a web environment, this typically corresponds to the base URL of the HTML page.
+             *
+             * @return {java.net.URL} The base URL of the applet.
+             */
+            Applet.prototype.getCodeBase = function () {
+                try {
+                    var href = window.location.href;
+                    var lastSlash = href.lastIndexOf('/');
+                    if (lastSlash > -1) {
+                        return new java.net.URL(href.substring(0, lastSlash + 1));
+                    }
+                    return new java.net.URL(href);
+                }
+                catch (e) {
+                    console.error("Malformed URL Exception in getCodeBase: " + e.message);
+                    return null;
+                }
+            };
+            /**
+             * Gets the URL of the document in which this applet is embedded.
+             * In a web environment, this is simply the current page's URL.
+             *
+             * @return {java.net.URL} The URL of the document containing this applet.
+             */
+            Applet.prototype.getDocumentBase = function () {
+                try {
+                    return new java.net.URL(window.location.href);
+                }
+                catch (e) {
+                    console.error("Malformed URL Exception in getDocumentBase: " + e.message);
+                    return null;
+                }
+            };
+            /**
+             * Requests that the argument string be displayed in the "status window".
+             * In a browser, this attempts to update the browser's status bar.
+             * Note: Modern browsers severely restrict direct manipulation of the status bar
+             * for security reasons. For reliable status display in a web app, it's better
+             * to update a dedicated DOM element (e.g., a div with id="applet-status").
+             *
+             * @param {string} msg A string to display in the status window.
+             */
+            Applet.prototype.showStatus = function (msg) {
+                window.status = msg;
+            };
             Applet.__static_initialized = false;
             return Applet;
         }(java.awt.Panel));
@@ -37420,7 +37670,7 @@ var javax;
                 else if (title === undefined) {
                     var __args = arguments;
                     {
-                        var __args_64 = arguments;
+                        var __args_65 = arguments;
                         var title_1 = "";
                         _this = _super.call(this) || this;
                         if (_this.maximizedBounds === undefined) {
@@ -37689,7 +37939,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_65 = arguments;
+                        var __args_66 = arguments;
                         var dataModel_1 = new JList.JList$0(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -37768,7 +38018,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_66 = arguments;
+                        var __args_67 = arguments;
                         var dataModel_2 = new JList.JList$1(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -37846,7 +38096,7 @@ var javax;
                 else if (dataModel === undefined) {
                     var __args = arguments;
                     {
-                        var __args_67 = arguments;
+                        var __args_68 = arguments;
                         var dataModel_3 = new JList.JList$2(_this);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39379,7 +39629,7 @@ var javax;
                 else if (orientation === undefined) {
                     var __args = arguments;
                     {
-                        var __args_68 = arguments;
+                        var __args_69 = arguments;
                         var orientation_1 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         _this.orientation = javax.swing.SwingConstants.HORIZONTAL;
@@ -39785,7 +40035,7 @@ var javax;
                     var max_1 = __args[1];
                     var value_1 = __args[2];
                     {
-                        var __args_69 = arguments;
+                        var __args_70 = arguments;
                         var orientation_2 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
@@ -39838,9 +40088,9 @@ var javax;
                     var min_2 = __args[0];
                     var max_2 = __args[1];
                     {
-                        var __args_70 = arguments;
+                        var __args_71 = arguments;
                         var orientation_3 = javax.swing.SwingConstants.HORIZONTAL;
-                        var value_2 = ((__args_70[1] + __args_70[2]) / 2 | 0);
+                        var value_2 = ((__args_71[1] + __args_71[2]) / 2 | 0);
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
@@ -39917,7 +40167,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_71 = arguments;
+                        var __args_72 = arguments;
                         var min_3 = 0;
                         var max_3 = 100;
                         var value_3 = 50;
@@ -39970,7 +40220,7 @@ var javax;
                 else if (orientation === undefined && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_72 = arguments;
+                        var __args_73 = arguments;
                         var orientation_4 = javax.swing.SwingConstants.HORIZONTAL;
                         var min_4 = 0;
                         var max_4 = 100;
@@ -40318,7 +40568,7 @@ var javax;
                 else if (((layout != null && (layout.constructor != null && layout.constructor["__interfaces"] != null && layout.constructor["__interfaces"].indexOf("java.awt.LayoutManager") >= 0)) || layout === null) && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_73 = arguments;
+                        var __args_74 = arguments;
                         var isDoubleBuffered_1 = true;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -40334,7 +40584,7 @@ var javax;
                     var __args = arguments;
                     var isDoubleBuffered_2 = __args[0];
                     {
-                        var __args_74 = arguments;
+                        var __args_75 = arguments;
                         var layout_2 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -40349,10 +40599,10 @@ var javax;
                 else if (layout === undefined && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_75 = arguments;
+                        var __args_76 = arguments;
                         var isDoubleBuffered_3 = true;
                         {
-                            var __args_76 = arguments;
+                            var __args_77 = arguments;
                             var layout_3 = new java.awt.FlowLayout();
                             _this = _super.call(this) || this;
                             if (_this.htmlCanvas === undefined) {
@@ -41993,7 +42243,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_77 = arguments;
+                        var __args_78 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -42103,7 +42353,7 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_78 = arguments;
+                        var __args_79 = arguments;
                         var text_4 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
@@ -42212,7 +42462,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_79 = arguments;
+                        var __args_80 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -42322,7 +42572,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_80 = arguments;
+                        var __args_81 = arguments;
                         var text_5 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
@@ -42432,7 +42682,7 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_81 = arguments;
+                        var __args_82 = arguments;
                         var text_6 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
@@ -42895,8 +43145,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_82 = arguments;
-                            var preciseWheelRotation_1 = __args_82[12];
+                            var __args_83 = arguments;
+                            var preciseWheelRotation_1 = __args_83[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -42936,12 +43186,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_83 = arguments;
+                            var __args_84 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_84 = arguments;
-                                var preciseWheelRotation_2 = __args_84[12];
+                                var __args_85 = arguments;
+                                var preciseWheelRotation_2 = __args_85[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -44179,7 +44429,7 @@ var javax;
                     var rows_1 = __args[1];
                     var columns_1 = __args[2];
                     {
-                        var __args_85 = arguments;
+                        var __args_86 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -44236,7 +44486,7 @@ var javax;
                     var rows_2 = __args[0];
                     var columns_2 = __args[1];
                     {
-                        var __args_86 = arguments;
+                        var __args_87 = arguments;
                         var doc_2 = null;
                         var text_9 = null;
                         _this = _super.call(this) || this;
@@ -44293,7 +44543,7 @@ var javax;
                     var __args = arguments;
                     var text_10 = __args[0];
                     {
-                        var __args_87 = arguments;
+                        var __args_88 = arguments;
                         var doc_3 = null;
                         var rows_3 = 0;
                         var columns_3 = 0;
@@ -44350,7 +44600,7 @@ var javax;
                 else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_88 = arguments;
+                        var __args_89 = arguments;
                         var doc_4 = null;
                         var text_11 = null;
                         var rows_4 = 0;
@@ -44555,7 +44805,7 @@ var javax;
                     var text_12 = __args[0];
                     var columns_5 = __args[1];
                     {
-                        var __args_89 = arguments;
+                        var __args_90 = arguments;
                         var doc_5 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -44603,7 +44853,7 @@ var javax;
                     var __args = arguments;
                     var text_13 = __args[0];
                     {
-                        var __args_90 = arguments;
+                        var __args_91 = arguments;
                         var doc_6 = null;
                         var columns_6 = 0;
                         _this = _super.call(this) || this;
@@ -44652,7 +44902,7 @@ var javax;
                     var __args = arguments;
                     var columns_7 = __args[0];
                     {
-                        var __args_91 = arguments;
+                        var __args_92 = arguments;
                         var doc_7 = null;
                         var text_14 = null;
                         _this = _super.call(this) || this;
@@ -44700,7 +44950,7 @@ var javax;
                 else if (doc === undefined && text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_92 = arguments;
+                        var __args_93 = arguments;
                         var doc_8 = null;
                         var text_15 = null;
                         var columns_8 = 0;
@@ -45188,7 +45438,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_93 = arguments;
+                        var __args_94 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45203,7 +45453,7 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_94 = arguments;
+                        var __args_95 = arguments;
                         var text_16 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45217,7 +45467,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_95 = arguments;
+                        var __args_96 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45231,7 +45481,7 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_96 = arguments;
+                        var __args_97 = arguments;
                         var text_17 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
@@ -45245,7 +45495,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_97 = arguments;
+                        var __args_98 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -45260,9 +45510,9 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_98 = arguments;
+                        var __args_99 = arguments;
                         {
-                            var __args_99 = arguments;
+                            var __args_100 = arguments;
                             var text_18 = null;
                             var icon_10 = null;
                             var selected_6 = false;
@@ -45282,7 +45532,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_100 = arguments;
+                        var __args_101 = arguments;
                         var text_19 = null;
                         var icon_11 = null;
                         var selected_7 = false;
@@ -45436,7 +45686,7 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_101 = arguments;
+                        var __args_102 = arguments;
                         var text_20 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -45448,7 +45698,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_102 = arguments;
+                        var __args_103 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -45461,9 +45711,9 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_103 = arguments;
+                        var __args_104 = arguments;
                         {
-                            var __args_104 = arguments;
+                            var __args_105 = arguments;
                             var text_21 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
@@ -45481,7 +45731,7 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_105 = arguments;
+                        var __args_106 = arguments;
                         var text_22 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
@@ -45822,7 +46072,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_106 = arguments;
+                        var __args_107 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -45953,7 +46203,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_107 = arguments;
+                        var __args_108 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -45994,7 +46244,7 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_108 = arguments;
+                        var __args_109 = arguments;
                         var label_2 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
@@ -46181,7 +46431,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_109 = arguments;
+                        var __args_110 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -46217,9 +46467,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_110 = arguments;
+                        var __args_111 = arguments;
                         {
-                            var __args_111 = arguments;
+                            var __args_112 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -46255,7 +46505,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_112 = arguments;
+                        var __args_113 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -47060,7 +47310,7 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_113 = arguments;
+                        var __args_114 = arguments;
                         var label_3 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {

@@ -15217,6 +15217,101 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    /**
+     * Constructs a new Canvas given a GraphicsConfiguration object.
+     * This constructor is largely ignored in a typical JSweet browser context
+     * as GraphicsConfiguration is a native AWT concept.
+     *
+     * @param {*} config a reference to a GraphicsConfiguration object.
+     * @class
+     * @extends java.awt.Component
+     * @author Sami Shaio (original), Gemini (JSweet port)
+     */
+    class Canvas extends java.awt.Component {
+        static base: string;
+        static nameCounter: number;
+        htmlCanvasElement: HTMLCanvasElement;
+        context2D: CanvasRenderingContext2D;
+        constructor(config?: any);
+        /**
+         * Construct a name for this component. Called by getName() when the
+         * name is null.
+         * @return {string}
+         */
+        constructComponentName(): string;
+        /**
+         * Creates the peer of the canvas. In the JSweet context, this means
+         * creating the underlying HTML &lt;canvas&gt; element and appending it
+         * to the component's HTML element.
+         * It also initializes the 2D rendering context.
+         */
+        addNotify(): void;
+        setSize$int$int(width: number, height: number): void;
+        /**
+         * Sets the size of this component. Overrides Component's setSize
+         * to also update the underlying HTML canvas element's width and height.
+         *
+         * @param {number} width The new width.
+         * @param {number} height The new height.
+         */
+        setSize(width?: any, height?: any): any;
+        /**
+         * Paints this canvas.
+         * <p>
+         * Most applications that subclass <code>Canvas</code> should
+         * override this method in order to perform some useful operation
+         * (typically, custom painting of the canvas).
+         * The default operation is simply to clear the canvas.
+         * Applications that override this method need not call
+         * super.paint(g).
+         *
+         * @param {java.awt.Graphics} g the specified Graphics context (expected to be WebGraphics2D or similar)
+         */
+        paint(g: java.awt.Graphics): void;
+        /**
+         * Updates this canvas.
+         * <p>
+         * This method is called in response to a call to <code>repaint</code>.
+         * The canvas is first cleared by filling it with the background
+         * color, and then completely redrawn by calling this canvas's
+         * <code>paint</code> method.
+         *
+         * @param {java.awt.Graphics} g the specified Graphics context (expected to be WebGraphics2D or similar)
+         */
+        update(g: java.awt.Graphics): void;
+        createBufferStrategy$int(numBuffers: number): void;
+        createBufferStrategy$int$java_lang_Object(numBuffers: number, caps: any): void;
+        /**
+         * Creates a new strategy for multi-buffering on this component with the
+         * required buffer capabilities.
+         * In a browser environment, this is often a no-op.
+         *
+         * @param {number} numBuffers number of buffers to create
+         * @param {*} caps the required capabilities for creating the buffer strategy;
+         * cannot be <code>null</code>
+         * @exception AWTException if the capabilities supplied could not be
+         * supported or met.
+         * @exception IllegalArgumentException if numBuffers is less than 1, or if
+         * caps is <code>null</code>
+         */
+        createBufferStrategy(numBuffers?: any, caps?: any): any;
+        /**
+         * Returns the <code>BufferStrategy</code> used by this component.
+         * In a browser environment, this will typically return null or a dummy
+         * object as direct buffer strategies are not applicable.
+         *
+         * @return {*} the buffer strategy used by this component (or null)
+         */
+        getBufferStrategy(): any;
+        /**
+         * Creates the primary HTML element for this component.
+         * For a Canvas, this creates an HTML &lt;canvas&gt; element.
+         * This method is typically called by the framework when the component is added to a parent.
+         */
+        createHTML(): void;
+    }
+}
+declare namespace java.awt {
     class Button extends java.awt.Component {
         actionListener: java.awt.event.ActionListener;
         actionCommand: string;
@@ -17709,6 +17804,30 @@ declare namespace java.applet {
         constructor();
         init(): void;
         getParameter(param: string): string;
+        /**
+         * Gets the base URL. This is the URL of the directory which contains this applet.
+         * In a web environment, this typically corresponds to the base URL of the HTML page.
+         *
+         * @return {java.net.URL} The base URL of the applet.
+         */
+        getCodeBase(): java.net.URL;
+        /**
+         * Gets the URL of the document in which this applet is embedded.
+         * In a web environment, this is simply the current page's URL.
+         *
+         * @return {java.net.URL} The URL of the document containing this applet.
+         */
+        getDocumentBase(): java.net.URL;
+        /**
+         * Requests that the argument string be displayed in the "status window".
+         * In a browser, this attempts to update the browser's status bar.
+         * Note: Modern browsers severely restrict direct manipulation of the status bar
+         * for security reasons. For reliable status display in a web app, it's better
+         * to update a dedicated DOM element (e.g., a div with id="applet-status").
+         *
+         * @param {string} msg A string to display in the status window.
+         */
+        showStatus(msg: string): void;
     }
 }
 declare namespace java.awt {
