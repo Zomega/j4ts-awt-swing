@@ -77,6 +77,141 @@ declare namespace java.awt {
         setVgap(vgap: number): void;
     }
 }
+declare namespace java.awt {
+    /**
+     * The FontMetrics class contains information about the rendering of a
+     * particular font on a particular screen. This is a JSweet port,
+     * implementing the abstract class as a concrete one with default behaviors.
+     *
+     * @author Ilya S. Okomin (original), Gemini (JSweet port)
+     * @class
+     */
+    class FontMetrics implements java.io.Serializable {
+        static serialVersionUID: number;
+        font: java.awt.Font;
+        defaultContext2D: CanvasRenderingContext2D;
+        constructor(fnt: java.awt.Font);
+        /**
+         * Returns the String representation of this FontMetrics.
+         *
+         * @return {string} the string.
+         */
+        toString(): string;
+        /**
+         * Gets the font associated with this FontMetrics.
+         *
+         * @return {java.awt.Font} the font associated with this FontMetrics.
+         */
+        getFont(): java.awt.Font;
+        /**
+         * Gets the height of the text line in this Font.
+         *
+         * @return {number} the height of the text line in this Font.
+         */
+        getHeight(): number;
+        /**
+         * Gets the font ascent of the Font associated with this FontMetrics.
+         * For a JSweet port, this is a default/stub value.
+         * A more accurate implementation would require measuring text on a canvas.
+         *
+         * @return {number} the ascent of the Font associated with this FontMetrics.
+         */
+        getAscent(): number;
+        /**
+         * Gets the font descent of the Font associated with this FontMetrics.
+         * For a JSweet port, this is a default/stub value.
+         *
+         * @return {number} the descent of the Font associated with this FontMetrics.
+         */
+        getDescent(): number;
+        /**
+         * Gets the leading of the Font associated with this FontMetrics.
+         * For a JSweet port, this is a default/stub value.
+         *
+         * @return {number} the leading of the Font associated with this FontMetrics.
+         */
+        getLeading(): number;
+        /**
+         * Checks if the Font has uniform line metrics or not.
+         *
+         * @return {boolean} true, if the Font has uniform line metrics, false otherwise.
+         */
+        hasUniformLineMetrics(): boolean;
+        /**
+         * Returns the distance from the leftmost point to the rightmost point on
+         * the string's baseline showing the specified array of bytes in this Font.
+         *
+         * @param {byte[]} data the array of bytes to be measured.
+         * @param {number} off the start offset.
+         * @param {number} len the number of bytes to be measured.
+         * @return {number} the advance width of the array.
+         */
+        bytesWidth(data: number[], off: number, len: number): number;
+        /**
+         * Returns the distance from the leftmost point to the rightmost point on
+         * the string's baseline showing the specified array of characters in this
+         * Font.
+         *
+         * @param {char[]} data the array of characters to be measured.
+         * @param {number} off the start offset.
+         * @param {number} len the number of bytes to be measured.
+         * @return {number} the advance width of the array.
+         */
+        charsWidth(data: string[], off: number, len: number): number;
+        charWidth$int(ch: number): number;
+        charWidth$char(ch: string): number;
+        /**
+         * Returns the distance from the leftmost point to the rightmost point of
+         * the specified character in this Font.
+         *
+         * @param {string} ch the specified character to be measured.
+         * @return {number} the advance width of the character.
+         */
+        charWidth(ch?: any): number;
+        /**
+         * Gets the maximum advance width of character in this Font.
+         * For a JSweet port, this is a default/stub value or derived from `measureText`.
+         *
+         * @return {number} the maximum advance width of character in this Font.
+         */
+        getMaxAdvance(): number;
+        /**
+         * Gets the maximum font ascent of the Font associated with this
+         * FontMetrics.
+         *
+         * @return {number} the maximum font ascent of the Font associated with this
+         * FontMetrics.
+         */
+        getMaxAscent(): number;
+        /**
+         * Gets the maximum font descent of character in this Font.
+         *
+         * @return {number} the maximum font descent of character in this Font.
+         * @deprecated Replaced by getMaxDescent() method.
+         */
+        getMaxDecent(): number;
+        /**
+         * Gets the maximum font descent of character in this Font.
+         *
+         * @return {number} the maximum font descent of character in this Font.
+         */
+        getMaxDescent(): number;
+        /**
+         * Gets the advance widths of the characters in the Font.
+         * This is a complex method to port accurately without full font data.
+         *
+         * @return {int[]} the advance widths of the characters in the Font.
+         */
+        getWidths(): number[];
+        /**
+         * Returns the advance width for the specified String in this Font.
+         *
+         * @param {string} str String to be measured.
+         * @return {number} the the advance width for the specified String in this Font.
+         */
+        stringWidth(str: string): number;
+    }
+}
 declare namespace java.awt.geom {
     /**
      * The <code>Dimension2D</code> class is to encapsulate a width and a height

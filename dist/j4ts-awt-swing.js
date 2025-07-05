@@ -330,6 +330,247 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        /**
+         * The FontMetrics class contains information about the rendering of a
+         * particular font on a particular screen. This is a JSweet port,
+         * implementing the abstract class as a concrete one with default behaviors.
+         *
+         * @author Ilya S. Okomin (original), Gemini (JSweet port)
+         * @class
+         */
+        var FontMetrics = /** @class */ (function () {
+            function FontMetrics(fnt) {
+                if (this.font === undefined) {
+                    this.font = null;
+                }
+                if (this.defaultContext2D === undefined) {
+                    this.defaultContext2D = null;
+                }
+                this.font = fnt;
+            }
+            /**
+             * Returns the String representation of this FontMetrics.
+             *
+             * @return {string} the string.
+             */
+            FontMetrics.prototype.toString = function () {
+                return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(this.constructor) + "[font=" + this.getFont() + "ascent=" + this.getAscent() + ", descent=" + this.getDescent() + ", height=" + this.getHeight() + "]";
+            };
+            /**
+             * Gets the font associated with this FontMetrics.
+             *
+             * @return {java.awt.Font} the font associated with this FontMetrics.
+             */
+            FontMetrics.prototype.getFont = function () {
+                return this.font;
+            };
+            /**
+             * Gets the height of the text line in this Font.
+             *
+             * @return {number} the height of the text line in this Font.
+             */
+            FontMetrics.prototype.getHeight = function () {
+                return this.getAscent() + this.getDescent() + this.getLeading();
+            };
+            /**
+             * Gets the font ascent of the Font associated with this FontMetrics.
+             * For a JSweet port, this is a default/stub value.
+             * A more accurate implementation would require measuring text on a canvas.
+             *
+             * @return {number} the ascent of the Font associated with this FontMetrics.
+             */
+            FontMetrics.prototype.getAscent = function () {
+                return 15;
+            };
+            /**
+             * Gets the font descent of the Font associated with this FontMetrics.
+             * For a JSweet port, this is a default/stub value.
+             *
+             * @return {number} the descent of the Font associated with this FontMetrics.
+             */
+            FontMetrics.prototype.getDescent = function () {
+                return 5;
+            };
+            /**
+             * Gets the leading of the Font associated with this FontMetrics.
+             * For a JSweet port, this is a default/stub value.
+             *
+             * @return {number} the leading of the Font associated with this FontMetrics.
+             */
+            FontMetrics.prototype.getLeading = function () {
+                return 0;
+            };
+            /**
+             * Checks if the Font has uniform line metrics or not.
+             *
+             * @return {boolean} true, if the Font has uniform line metrics, false otherwise.
+             */
+            FontMetrics.prototype.hasUniformLineMetrics = function () {
+                return true;
+            };
+            /**
+             * Returns the distance from the leftmost point to the rightmost point on
+             * the string's baseline showing the specified array of bytes in this Font.
+             *
+             * @param {byte[]} data the array of bytes to be measured.
+             * @param {number} off the start offset.
+             * @param {number} len the number of bytes to be measured.
+             * @return {number} the advance width of the array.
+             */
+            FontMetrics.prototype.bytesWidth = function (data, off, len) {
+                if ((off >= data.length) || (off < 0)) {
+                    throw new java.lang.IllegalArgumentException("offset off is out of range");
+                }
+                if ((off + len > data.length)) {
+                    throw new java.lang.IllegalArgumentException("number of elements len is out of range");
+                }
+                var width = 0;
+                for (var i = off; i < off + len; i++) {
+                    {
+                        width += this.charWidth$char(String.fromCharCode((data[i] & 255)));
+                    }
+                    ;
+                }
+                return width;
+            };
+            /**
+             * Returns the distance from the leftmost point to the rightmost point on
+             * the string's baseline showing the specified array of characters in this
+             * Font.
+             *
+             * @param {char[]} data the array of characters to be measured.
+             * @param {number} off the start offset.
+             * @param {number} len the number of bytes to be measured.
+             * @return {number} the advance width of the array.
+             */
+            FontMetrics.prototype.charsWidth = function (data, off, len) {
+                if ((off >= data.length) || (off < 0)) {
+                    throw new java.lang.IllegalArgumentException("offset off is out of range");
+                }
+                if ((off + len > data.length)) {
+                    throw new java.lang.IllegalArgumentException("number of elements len is out of range");
+                }
+                var width = 0;
+                for (var i = off; i < off + len; i++) {
+                    {
+                        width += this.charWidth$char(data[i]);
+                    }
+                    ;
+                }
+                return width;
+            };
+            FontMetrics.prototype.charWidth$int = function (ch) {
+                if (this.defaultContext2D == null) {
+                    var dummyCanvas = document.createElement("canvas");
+                    this.defaultContext2D = dummyCanvas.getContext("2d");
+                    if (this.font != null) {
+                        this.defaultContext2D.font = this.font.getSize() + "px " + this.font.getFontName();
+                    }
+                    else {
+                        this.defaultContext2D.font = "16px sans-serif";
+                    }
+                }
+                return (this.defaultContext2D.measureText(/* valueOf */ String(/* toChars */ String.fromCharCode(ch)).toString()).width | 0);
+            };
+            FontMetrics.prototype.charWidth$char = function (ch) {
+                return this.charWidth$int((ch).charCodeAt(0));
+            };
+            /**
+             * Returns the distance from the leftmost point to the rightmost point of
+             * the specified character in this Font.
+             *
+             * @param {string} ch the specified character to be measured.
+             * @return {number} the advance width of the character.
+             */
+            FontMetrics.prototype.charWidth = function (ch) {
+                if (((typeof ch === 'string') || ch === null)) {
+                    return this.charWidth$char(ch);
+                }
+                else if (((typeof ch === 'number') || ch === null)) {
+                    return this.charWidth$int(ch);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            /**
+             * Gets the maximum advance width of character in this Font.
+             * For a JSweet port, this is a default/stub value or derived from `measureText`.
+             *
+             * @return {number} the maximum advance width of character in this Font.
+             */
+            FontMetrics.prototype.getMaxAdvance = function () {
+                return this.charWidth$char('W');
+            };
+            /**
+             * Gets the maximum font ascent of the Font associated with this
+             * FontMetrics.
+             *
+             * @return {number} the maximum font ascent of the Font associated with this
+             * FontMetrics.
+             */
+            FontMetrics.prototype.getMaxAscent = function () {
+                return this.getAscent();
+            };
+            /**
+             * Gets the maximum font descent of character in this Font.
+             *
+             * @return {number} the maximum font descent of character in this Font.
+             * @deprecated Replaced by getMaxDescent() method.
+             */
+            FontMetrics.prototype.getMaxDecent = function () {
+                return this.getMaxDescent();
+            };
+            /**
+             * Gets the maximum font descent of character in this Font.
+             *
+             * @return {number} the maximum font descent of character in this Font.
+             */
+            FontMetrics.prototype.getMaxDescent = function () {
+                return this.getDescent();
+            };
+            /**
+             * Gets the advance widths of the characters in the Font.
+             * This is a complex method to port accurately without full font data.
+             *
+             * @return {int[]} the advance widths of the characters in the Font.
+             */
+            FontMetrics.prototype.getWidths = function () {
+                console.warn("getWidths() is a stub in JSweet FontMetrics. Returns null.");
+                return null;
+            };
+            /**
+             * Returns the advance width for the specified String in this Font.
+             *
+             * @param {string} str String to be measured.
+             * @return {number} the the advance width for the specified String in this Font.
+             */
+            FontMetrics.prototype.stringWidth = function (str) {
+                if (str == null || /* isEmpty */ (str.length === 0)) {
+                    return 0;
+                }
+                if (this.defaultContext2D == null) {
+                    var dummyCanvas = document.createElement("canvas");
+                    this.defaultContext2D = dummyCanvas.getContext("2d");
+                    if (this.font != null) {
+                        this.defaultContext2D.font = this.font.getSize() + "px " + this.font.getFontName();
+                    }
+                    else {
+                        this.defaultContext2D.font = "16px sans-serif";
+                    }
+                }
+                return (this.defaultContext2D.measureText(str).width | 0);
+            };
+            FontMetrics.serialVersionUID = 1681126225205050147;
+            return FontMetrics;
+        }());
+        awt.FontMetrics = FontMetrics;
+        FontMetrics["__class"] = "java.awt.FontMetrics";
+        FontMetrics["__interfaces"] = ["java.io.Serializable"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         var geom;
         (function (geom) {
             /**
