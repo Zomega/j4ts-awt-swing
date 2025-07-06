@@ -60,7 +60,9 @@ public abstract class Graphics {
 		return new FontMetrics(getFont());
 	}
 
-//	public abstract FontMetrics getFontMetrics(Font f);
+	public FontMetrics getFontMetrics(Font f) {
+		return new FontMetrics(f);
+	}
 
 	public abstract Rectangle getClipBounds();
 

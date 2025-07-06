@@ -6003,7 +6003,9 @@ declare namespace java.awt {
         abstract setPaintMode(): any;
         abstract getFont(): java.awt.Font;
         abstract setFont(font: java.awt.Font): any;
-        getFontMetrics(): java.awt.FontMetrics;
+        getFontMetrics$(): java.awt.FontMetrics;
+        getFontMetrics$java_awt_Font(f: java.awt.Font): java.awt.FontMetrics;
+        getFontMetrics(f?: any): java.awt.FontMetrics;
         getClipBounds$(): java.awt.Rectangle;
         abstract clipRect(x: number, y: number, width: number, height: number): any;
         setClip$int$int$int$int(x: number, y: number, width: number, height: number): void;

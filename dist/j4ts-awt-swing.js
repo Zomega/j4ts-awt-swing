@@ -11301,8 +11301,21 @@ var java;
                 else
                     throw new Error('invalid overload');
             };
-            Graphics.prototype.getFontMetrics = function () {
+            Graphics.prototype.getFontMetrics$ = function () {
                 return new java.awt.FontMetrics(this.getFont());
+            };
+            Graphics.prototype.getFontMetrics$java_awt_Font = function (f) {
+                return new java.awt.FontMetrics(f);
+            };
+            Graphics.prototype.getFontMetrics = function (f) {
+                if (((f != null && f instanceof java.awt.Font) || f === null)) {
+                    return this.getFontMetrics$java_awt_Font(f);
+                }
+                else if (f === undefined) {
+                    return this.getFontMetrics$();
+                }
+                else
+                    throw new Error('invalid overload');
             };
             Graphics.prototype.getClipBounds$ = function () { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
             Graphics.prototype.setClip$int$int$int$int = function (x, y, width, height) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
