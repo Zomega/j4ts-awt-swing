@@ -37831,6 +37831,10 @@ var javax;
             Applet.prototype.init = function () {
             };
             Applet.prototype.getParameter = function (param) {
+                var dataValue = this.htmlElement.getAttribute("data-" + param);
+                if (dataValue != null && !(dataValue.length === 0)) {
+                    return dataValue;
+                }
                 var element;
                 for (var i = 0; i < this.htmlElement.children.length; i++) {
                     {

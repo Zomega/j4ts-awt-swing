@@ -52,15 +52,18 @@ public class Applet extends Panel {
 	public void init() {
 	}
 
-	/*
-	https://www.lprp.fr/2019/08/jsweet-convert-applets-to-javascript/
-	Suggests an alternative parameter function to use data-attributes.
 	public String getParameter(String param) {
-		return this.htmlElement.getAttribute((String)("data-").concat(param));
-	}*/
-	public String getParameter(String param) {
+		// 1. Try to get the parameter from a data-attribute first
+		String dataValue = this.htmlElement.getAttribute("data-" + param);
+
+		// If the data-attribute exists and has a value, return it
+		if (dataValue != null && !dataValue.isEmpty()) {
+			return dataValue;
+		}
+
+		// 2. If no data-attribute or it's empty, iterate through child <param> elements
 		Element element;
-		for (int i = 0; i < this.htmlElement.children.length ; i++) {
+		for (int i = 0; i < this.htmlElement.children.length; i++) {
 			element = this.htmlElement.children.item(i);
 			if (element.tagName == "PARAM") {
 				if (element.getAttribute("name") == param) {
@@ -68,6 +71,8 @@ public class Applet extends Panel {
 				}
 			}
 		}
+
+		// 3. If neither method finds the parameter, return null
 		return null;
 	}
 
