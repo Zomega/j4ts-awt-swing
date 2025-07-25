@@ -52,6 +52,14 @@ public class TextField extends Component {
 		}
 	}
 
+	public void removeActionListener(ActionListener actionListener) {
+		// TODO: Confirm?
+		this.actionListener = null;
+		if (htmlElement != null) {
+			initActionListener();
+		}
+	}
+
 	public void setText(String text) {
 		getHTMLElement().value = text;
 	}

@@ -17,6 +17,7 @@ declare namespace java.awt {
         getWidth(observer: java.awt.image.ImageObserver): number;
         getHeight(observer: java.awt.image.ImageObserver): number;
         source: HTMLImageElement;
+        getGraphics(): java.awt.Graphics;
         getScaledInstance(width: number, height: number, scaleType: number): Image;
         /**
          * Use the default image-scaling algorithm.
@@ -8071,6 +8072,7 @@ declare namespace java.awt {
          *
          */
         initHTML(): void;
+        createImage(width: number, height: number): java.awt.Image;
         getLocationOnScreen(): java.awt.Point;
         getBounds(): java.awt.Rectangle;
         setBounds$java_awt_Rectangle(rectangle: java.awt.Rectangle): void;
@@ -8142,6 +8144,7 @@ declare namespace java.awt {
         addMouseListener(l: java.awt.event.MouseListener): void;
         removeMouseListener(l: java.awt.event.MouseListener): void;
         getMouseListeners(): java.awt.event.MouseListener[];
+        addMouseMotionListener(l: java.awt.event.MouseMotionListener): void;
         requestFocus(): void;
         abstract createHTML(): any;
         constructor();
@@ -15312,6 +15315,7 @@ declare namespace java.awt {
         initHTML(): void;
         initActionListener(): void;
         addActionListener(actionListener: java.awt.event.ActionListener): void;
+        removeActionListener(actionListener: java.awt.event.ActionListener): void;
         setText(text: string): void;
         getText(): string;
     }
@@ -15454,7 +15458,7 @@ declare namespace java.awt {
         actionCommand: string;
         label: string;
         background: java.awt.Color;
-        constructor(label: string);
+        constructor(label?: any);
         /**
          *
          * @return {HTMLButtonElement}
@@ -15471,6 +15475,9 @@ declare namespace java.awt {
         initActionListener(): void;
         addActionListener(actionListener: java.awt.event.ActionListener): void;
         setBackground(background: java.awt.Color): void;
+        getLabel(): string;
+        setLabel(label: string): void;
+        setActionCommand(actionCommand: string): void;
     }
 }
 declare namespace java.beans {

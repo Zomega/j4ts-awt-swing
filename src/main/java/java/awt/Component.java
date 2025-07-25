@@ -7,6 +7,7 @@ import jsweet.util.Lang;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -109,6 +110,10 @@ public abstract class Component implements HTMLComponent {
 			htmlElement.style.top = y + "px";
 		}
 	}
+
+	public Image createImage(int width, int height) {
+		return null; // TODO: Implement?
+    }
 
 	public Point getLocationOnScreen() {
 		return new Point(getX(), getY());
@@ -468,6 +473,11 @@ public abstract class Component implements HTMLComponent {
 
 	public synchronized MouseListener[] getMouseListeners() {
 		return mouseListeners;
+	}
+
+	// TODO:Implement!
+	public synchronized void addMouseMotionListener(MouseMotionListener l) {
+		return;
 	}
 
 	public void requestFocus() {

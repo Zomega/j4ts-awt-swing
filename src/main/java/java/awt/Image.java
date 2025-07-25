@@ -75,7 +75,10 @@ public class Image {
 
 	// public abstract ImageProducer getSource();
 
-	// public Graphics getGraphics();
+	// TODO: Implement?
+	public Graphics getGraphics() {
+		return null;
+	}
 
 	public Image getScaledInstance(int width, int height, int scaleType) {
 		Image image = new Image(source.src);
@@ -86,7 +89,7 @@ public class Image {
 	}
 	/**
 	 * Use the default image-scaling algorithm.
-	 * 
+	 *
 	 * @since JDK1.1
 	 */
 	public static final int SCALE_DEFAULT = 1;
@@ -94,7 +97,7 @@ public class Image {
 	/**
 	 * Choose an image-scaling algorithm that gives higher priority to scaling
 	 * speed than smoothness of the scaled image.
-	 * 
+	 *
 	 * @since JDK1.1
 	 */
 	public static final int SCALE_FAST = 2;

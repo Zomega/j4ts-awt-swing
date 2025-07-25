@@ -83,6 +83,9 @@ var java;
             Image.prototype.getHeight = function (observer) {
                 return (this.source.height | 0);
             };
+            Image.prototype.getGraphics = function () {
+                return null;
+            };
             Image.prototype.getScaledInstance = function (width, height, scaleType) {
                 var image = new Image(this.source.src);
                 image.source.width = width;
@@ -15526,6 +15529,9 @@ var java;
                     this.htmlElement.style.top = this.y + "px";
                 }
             };
+            Component.prototype.createImage = function (width, height) {
+                return null;
+            };
             Component.prototype.getLocationOnScreen = function () {
                 return new java.awt.Point(this.getX(), this.getY());
             };
@@ -15869,6 +15875,9 @@ var java;
             };
             Component.prototype.getMouseListeners = function () {
                 return this.mouseListeners;
+            };
+            Component.prototype.addMouseMotionListener = function (l) {
+                return;
             };
             Component.prototype.requestFocus = function () {
             };
@@ -29831,6 +29840,12 @@ var javax;
                     this.initActionListener();
                 }
             };
+            TextField.prototype.removeActionListener = function (actionListener) {
+                this.actionListener = null;
+                if (this.htmlElement != null) {
+                    this.initActionListener();
+                }
+            };
             TextField.prototype.setText = function (text) {
                 this.getHTMLElement().value = text;
             };
@@ -30199,21 +30214,45 @@ var javax;
         var Button = /** @class */ (function (_super) {
             __extends(Button, _super);
             function Button(label) {
-                var _this = _super.call(this) || this;
-                if (_this.actionListener === undefined) {
-                    _this.actionListener = null;
+                var _this = this;
+                if (((typeof label === 'string') || label === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                    if (_this.actionCommand === undefined) {
+                        _this.actionCommand = null;
+                    }
+                    if (_this.label === undefined) {
+                        _this.label = null;
+                    }
+                    if (_this.background === undefined) {
+                        _this.background = null;
+                    }
+                    _this.label = label;
+                    _this.actionCommand = label;
                 }
-                if (_this.actionCommand === undefined) {
-                    _this.actionCommand = null;
+                else if (label === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                    if (_this.actionCommand === undefined) {
+                        _this.actionCommand = null;
+                    }
+                    if (_this.label === undefined) {
+                        _this.label = null;
+                    }
+                    if (_this.background === undefined) {
+                        _this.background = null;
+                    }
+                    _this.label = "";
+                    _this.actionCommand = _this.label;
                 }
-                if (_this.label === undefined) {
-                    _this.label = null;
-                }
-                if (_this.background === undefined) {
-                    _this.background = null;
-                }
-                _this.label = label;
-                _this.actionCommand = label;
+                else
+                    throw new Error('invalid overload');
                 return _this;
             }
             /**
@@ -30257,6 +30296,18 @@ var javax;
             };
             Button.prototype.setBackground = function (background) {
                 this.background = background;
+            };
+            Button.prototype.getLabel = function () {
+                return this.label;
+            };
+            Button.prototype.setLabel = function (label) {
+                this.label = label;
+                if (this.htmlElement != null)
+                    this.htmlElement.innerHTML = label;
+                this.actionCommand = label;
+            };
+            Button.prototype.setActionCommand = function (actionCommand) {
+                this.actionCommand = actionCommand;
             };
             return Button;
         }(java.awt.Component));

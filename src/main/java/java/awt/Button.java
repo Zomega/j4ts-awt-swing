@@ -18,6 +18,11 @@ public class Button extends Component {
 	String label;
 	Color background;
 
+	public Button() {
+		this.label = "";
+		this.actionCommand = this.label;
+	}
+
 	public Button(String label) {
 		this.label = label;
 		this.actionCommand = label;
@@ -63,4 +68,18 @@ public class Button extends Component {
 		this.background = background;
 	}
 
+	public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+        if (htmlElement != null) htmlElement.innerHTML = label;
+        this.actionCommand = label;
+        // TODO: Is changing actionCommand correct?
+    }
+
+    public void setActionCommand(String actionCommand) {
+    	this.actionCommand = actionCommand;
+    }
 }
