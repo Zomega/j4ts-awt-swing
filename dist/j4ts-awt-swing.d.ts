@@ -10938,6 +10938,57 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
+    /**
+     * An example implementation of SpinnerModel that defines a sequence of numbers.
+     *
+     * TODO: AI Implemented Stub. Finish
+     * @param {number} value
+     * @param {*} minimum
+     * @param {*} maximum
+     * @param {number} stepSize
+     * @class
+     */
+    class SpinnerNumberModel implements javax.swing.SpinnerModel {
+        value: number;
+        minimum: java.lang.Comparable<any>;
+        maximum: java.lang.Comparable<any>;
+        stepSize: number;
+        listeners: javax.swing.event.ChangeListener[];
+        constructor(value: number, minimum: java.lang.Comparable<any>, maximum: java.lang.Comparable<any>, stepSize: number);
+        /**
+         *
+         * @return {*}
+         */
+        getValue(): any;
+        /**
+         *
+         * @param {*} value
+         */
+        setValue(value: any): void;
+        /**
+         *
+         * @return {*}
+         */
+        getNextValue(): any;
+        /**
+         *
+         * @return {*}
+         */
+        getPreviousValue(): any;
+        /**
+         *
+         * @param {*} listener
+         */
+        addChangeListener(listener: javax.swing.event.ChangeListener): void;
+        /**
+         *
+         * @param {*} listener
+         */
+        removeChangeListener(listener: javax.swing.event.ChangeListener): void;
+        fireStateChanged(oldValue: any, newValue: any): void;
+    }
+}
+declare namespace javax.swing {
     interface ButtonModel extends java.awt.ItemSelectable {
         isArmed(): boolean;
         isSelected(): boolean;
@@ -11174,6 +11225,22 @@ declare namespace javax.swing {
          * @see #addChangeListener
          */
         removeChangeListener(x: javax.swing.event.ChangeListener): any;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Defines the interface for a mutable sequence of values.
+     *
+     * TODO: AI Implemented Stub. Finish
+     * @class
+     */
+    interface SpinnerModel {
+        getValue(): any;
+        setValue(value: any): any;
+        getNextValue(): any;
+        getPreviousValue(): any;
+        addChangeListener(listener: javax.swing.event.ChangeListener): any;
+        removeChangeListener(listener: javax.swing.event.ChangeListener): any;
     }
 }
 declare namespace javax.swing {
@@ -19649,6 +19716,57 @@ declare namespace javax.swing {
          * @param {number} height
          */
         setSize(width?: any, height?: any): any;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * Constructs a spinner for the given model. The spinner has a set of previous/next
+     * buttons, and an editor appropriate for the model.
+     *
+     * @param {*} model the SpinnerModel that defines the sequence of values.
+     * @class
+     * @extends javax.swing.JComponent
+     */
+    class JSpinner extends javax.swing.JComponent {
+        model: javax.swing.SpinnerModel;
+        spinnerElement: HTMLElement;
+        valueEditor: HTMLInputElement;
+        upButton: HTMLElement;
+        downButton: HTMLElement;
+        constructor(model?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @return {HTMLElement}
+         */
+        getHTMLElement(): HTMLElement;
+        /**
+         * Returns the SpinnerModel that defines this spinner's sequence of values.
+         *
+         * @return {*} the SpinnerModel
+         */
+        getModel(): javax.swing.SpinnerModel;
+        /**
+         * Changes the model that represents the value of this spinner.
+         *
+         * @param {*} model the new SpinnerModel
+         */
+        setModel(model: javax.swing.SpinnerModel): void;
+        /**
+         * Returns the current value of the model.
+         * @return {*} the current value
+         */
+        getValue(): any;
+        /**
+         * Changes the current value of the model.
+         * @param {*} value the new value
+         */
+        setValue(value: any): void;
+        updateValueInEditor(): void;
+        addChangeListener(listener: javax.swing.event.ChangeListener): void;
     }
 }
 declare namespace javax.swing {

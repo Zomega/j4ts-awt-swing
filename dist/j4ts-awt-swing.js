@@ -21676,6 +21676,101 @@ var javax;
     var swing;
     (function (swing) {
         /**
+         * An example implementation of SpinnerModel that defines a sequence of numbers.
+         *
+         * TODO: AI Implemented Stub. Finish
+         * @param {number} value
+         * @param {*} minimum
+         * @param {*} maximum
+         * @param {number} stepSize
+         * @class
+         */
+        var SpinnerNumberModel = /** @class */ (function () {
+            function SpinnerNumberModel(value, minimum, maximum, stepSize) {
+                if (this.value === undefined) {
+                    this.value = null;
+                }
+                if (this.minimum === undefined) {
+                    this.minimum = null;
+                }
+                if (this.maximum === undefined) {
+                    this.maximum = null;
+                }
+                if (this.stepSize === undefined) {
+                    this.stepSize = null;
+                }
+                this.listeners = [];
+                this.value = value;
+                this.minimum = minimum;
+                this.maximum = maximum;
+                this.stepSize = stepSize;
+            }
+            /**
+             *
+             * @return {*}
+             */
+            SpinnerNumberModel.prototype.getValue = function () {
+                return this.value;
+            };
+            /**
+             *
+             * @param {*} value
+             */
+            SpinnerNumberModel.prototype.setValue = function (value) {
+                if (typeof value === 'number') {
+                    var oldValue = this.value;
+                    this.value = value;
+                    this.fireStateChanged(oldValue, this.value);
+                }
+                else {
+                    throw new java.lang.IllegalArgumentException("Invalid value type");
+                }
+            };
+            /**
+             *
+             * @return {*}
+             */
+            SpinnerNumberModel.prototype.getNextValue = function () {
+                if (this.maximum != null && this.maximum.compareTo(this.value) <= 0) {
+                    return null;
+                }
+                return /* doubleValue */ this.value + /* doubleValue */ this.stepSize;
+            };
+            /**
+             *
+             * @return {*}
+             */
+            SpinnerNumberModel.prototype.getPreviousValue = function () {
+                if (this.minimum != null && this.minimum.compareTo(this.value) >= 0) {
+                    return null;
+                }
+                return /* doubleValue */ this.value - /* doubleValue */ this.stepSize;
+            };
+            /**
+             *
+             * @param {*} listener
+             */
+            SpinnerNumberModel.prototype.addChangeListener = function (listener) {
+            };
+            /**
+             *
+             * @param {*} listener
+             */
+            SpinnerNumberModel.prototype.removeChangeListener = function (listener) {
+            };
+            SpinnerNumberModel.prototype.fireStateChanged = function (oldValue, newValue) {
+            };
+            return SpinnerNumberModel;
+        }());
+        swing.SpinnerNumberModel = SpinnerNumberModel;
+        SpinnerNumberModel["__class"] = "javax.swing.SpinnerNumberModel";
+        SpinnerNumberModel["__interfaces"] = ["javax.swing.SpinnerModel"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        /**
          * A MenuSelectionManager owns the selection in menu hierarchy.
          *
          * @author Arnaud Weber
@@ -41057,6 +41152,191 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        /**
+         * Constructs a spinner for the given model. The spinner has a set of previous/next
+         * buttons, and an editor appropriate for the model.
+         *
+         * @param {*} model the SpinnerModel that defines the sequence of values.
+         * @class
+         * @extends javax.swing.JComponent
+         */
+        var JSpinner = /** @class */ (function (_super) {
+            __extends(JSpinner, _super);
+            function JSpinner(model) {
+                var _this = this;
+                if (((model != null && (model.constructor != null && model.constructor["__interfaces"] != null && model.constructor["__interfaces"].indexOf("javax.swing.SpinnerModel") >= 0)) || model === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.model === undefined) {
+                        _this.model = null;
+                    }
+                    if (_this.spinnerElement === undefined) {
+                        _this.spinnerElement = null;
+                    }
+                    if (_this.valueEditor === undefined) {
+                        _this.valueEditor = null;
+                    }
+                    if (_this.upButton === undefined) {
+                        _this.upButton = null;
+                    }
+                    if (_this.downButton === undefined) {
+                        _this.downButton = null;
+                    }
+                    if (model == null) {
+                        throw new java.lang.NullPointerException("model cannot be null");
+                    }
+                    _this.model = model;
+                    _this.createHTML();
+                    _this.model.addChangeListener({ stateChanged: function (e) {
+                            _this.updateValueInEditor();
+                        } });
+                }
+                else if (model === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_78 = arguments;
+                        var model_1 = new javax.swing.SpinnerNumberModel(0, null, null, 1);
+                        _this = _super.call(this) || this;
+                        if (_this.model === undefined) {
+                            _this.model = null;
+                        }
+                        if (_this.spinnerElement === undefined) {
+                            _this.spinnerElement = null;
+                        }
+                        if (_this.valueEditor === undefined) {
+                            _this.valueEditor = null;
+                        }
+                        if (_this.upButton === undefined) {
+                            _this.upButton = null;
+                        }
+                        if (_this.downButton === undefined) {
+                            _this.downButton = null;
+                        }
+                        if (model_1 == null) {
+                            throw new java.lang.NullPointerException("model cannot be null");
+                        }
+                        _this.model = model_1;
+                        _this.createHTML();
+                        _this.model.addChangeListener({ stateChanged: function (e) {
+                                _this.updateValueInEditor();
+                            } });
+                    }
+                    if (_this.model === undefined) {
+                        _this.model = null;
+                    }
+                    if (_this.spinnerElement === undefined) {
+                        _this.spinnerElement = null;
+                    }
+                    if (_this.valueEditor === undefined) {
+                        _this.valueEditor = null;
+                    }
+                    if (_this.upButton === undefined) {
+                        _this.upButton = null;
+                    }
+                    if (_this.downButton === undefined) {
+                        _this.downButton = null;
+                    }
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            /**
+             *
+             */
+            JSpinner.prototype.createHTML = function () {
+                var _this = this;
+                if (this.spinnerElement != null) {
+                    return;
+                }
+                this.spinnerElement = document.createElement("div");
+                this.spinnerElement.className = "j-spinner";
+                this.valueEditor = document.createElement("input");
+                this.valueEditor.type = "text";
+                this.valueEditor.className = "j-spinner-editor";
+                this.spinnerElement.appendChild(this.valueEditor);
+                var buttonsContainer = document.createElement("div");
+                buttonsContainer.className = "j-spinner-buttons";
+                this.upButton = document.createElement("button");
+                this.upButton.className = "j-spinner-up-button";
+                this.upButton.textContent = "\u25b2";
+                buttonsContainer.appendChild(this.upButton);
+                this.downButton = document.createElement("button");
+                this.downButton.className = "j-spinner-down-button";
+                this.downButton.textContent = "\u25bc";
+                buttonsContainer.appendChild(this.downButton);
+                this.spinnerElement.appendChild(buttonsContainer);
+                this.upButton.addEventListener("click", function (e) {
+                    var nextValue = _this.model.getNextValue();
+                    if (nextValue != null) {
+                        _this.model.setValue(nextValue);
+                    }
+                });
+                this.downButton.addEventListener("click", function (e) {
+                    var previousValue = _this.model.getPreviousValue();
+                    if (previousValue != null) {
+                        _this.model.setValue(previousValue);
+                    }
+                });
+            };
+            /**
+             *
+             * @return {HTMLElement}
+             */
+            JSpinner.prototype.getHTMLElement = function () {
+                return this.spinnerElement;
+            };
+            /**
+             * Returns the SpinnerModel that defines this spinner's sequence of values.
+             *
+             * @return {*} the SpinnerModel
+             */
+            JSpinner.prototype.getModel = function () {
+                return this.model;
+            };
+            /**
+             * Changes the model that represents the value of this spinner.
+             *
+             * @param {*} model the new SpinnerModel
+             */
+            JSpinner.prototype.setModel = function (model) {
+                var oldModel = this.getModel();
+                if (oldModel != null) {
+                }
+                this.model = model;
+            };
+            /**
+             * Returns the current value of the model.
+             * @return {*} the current value
+             */
+            JSpinner.prototype.getValue = function () {
+                return this.model.getValue();
+            };
+            /**
+             * Changes the current value of the model.
+             * @param {*} value the new value
+             */
+            JSpinner.prototype.setValue = function (value) {
+                this.model.setValue(value);
+            };
+            /*private*/ JSpinner.prototype.updateValueInEditor = function () {
+                if (this.valueEditor != null && this.model != null) {
+                    this.valueEditor.value = this.model.getValue().toString();
+                }
+            };
+            JSpinner.prototype.addChangeListener = function (listener) {
+                this.model.addChangeListener(listener);
+            };
+            return JSpinner;
+        }(javax.swing.JComponent));
+        swing.JSpinner = JSpinner;
+        JSpinner["__class"] = "javax.swing.JSpinner";
+        JSpinner["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var AbstractButton = /** @class */ (function (_super) {
             __extends(AbstractButton, _super);
             function AbstractButton() {
@@ -42554,7 +42834,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_78 = arguments;
+                        var __args_79 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -42664,7 +42944,7 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_79 = arguments;
+                        var __args_80 = arguments;
                         var text_4 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
@@ -42773,7 +43053,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_80 = arguments;
+                        var __args_81 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -42883,7 +43163,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_81 = arguments;
+                        var __args_82 = arguments;
                         var text_5 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
@@ -42993,7 +43273,7 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_82 = arguments;
+                        var __args_83 = arguments;
                         var text_6 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
@@ -43456,8 +43736,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_83 = arguments;
-                            var preciseWheelRotation_1 = __args_83[12];
+                            var __args_84 = arguments;
+                            var preciseWheelRotation_1 = __args_84[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -43497,12 +43777,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_84 = arguments;
+                            var __args_85 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_85 = arguments;
-                                var preciseWheelRotation_2 = __args_85[12];
+                                var __args_86 = arguments;
+                                var preciseWheelRotation_2 = __args_86[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -44740,7 +45020,7 @@ var javax;
                     var rows_1 = __args[1];
                     var columns_1 = __args[2];
                     {
-                        var __args_86 = arguments;
+                        var __args_87 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -44797,7 +45077,7 @@ var javax;
                     var rows_2 = __args[0];
                     var columns_2 = __args[1];
                     {
-                        var __args_87 = arguments;
+                        var __args_88 = arguments;
                         var doc_2 = null;
                         var text_9 = null;
                         _this = _super.call(this) || this;
@@ -44854,7 +45134,7 @@ var javax;
                     var __args = arguments;
                     var text_10 = __args[0];
                     {
-                        var __args_88 = arguments;
+                        var __args_89 = arguments;
                         var doc_3 = null;
                         var rows_3 = 0;
                         var columns_3 = 0;
@@ -44911,7 +45191,7 @@ var javax;
                 else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_89 = arguments;
+                        var __args_90 = arguments;
                         var doc_4 = null;
                         var text_11 = null;
                         var rows_4 = 0;
@@ -45116,7 +45396,7 @@ var javax;
                     var text_12 = __args[0];
                     var columns_5 = __args[1];
                     {
-                        var __args_90 = arguments;
+                        var __args_91 = arguments;
                         var doc_5 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -45164,7 +45444,7 @@ var javax;
                     var __args = arguments;
                     var text_13 = __args[0];
                     {
-                        var __args_91 = arguments;
+                        var __args_92 = arguments;
                         var doc_6 = null;
                         var columns_6 = 0;
                         _this = _super.call(this) || this;
@@ -45213,7 +45493,7 @@ var javax;
                     var __args = arguments;
                     var columns_7 = __args[0];
                     {
-                        var __args_92 = arguments;
+                        var __args_93 = arguments;
                         var doc_7 = null;
                         var text_14 = null;
                         _this = _super.call(this) || this;
@@ -45261,7 +45541,7 @@ var javax;
                 else if (doc === undefined && text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_93 = arguments;
+                        var __args_94 = arguments;
                         var doc_8 = null;
                         var text_15 = null;
                         var columns_8 = 0;
@@ -45749,7 +46029,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_94 = arguments;
+                        var __args_95 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45764,7 +46044,7 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_95 = arguments;
+                        var __args_96 = arguments;
                         var text_16 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45778,7 +46058,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_96 = arguments;
+                        var __args_97 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45792,7 +46072,7 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_97 = arguments;
+                        var __args_98 = arguments;
                         var text_17 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
@@ -45806,7 +46086,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_98 = arguments;
+                        var __args_99 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -45821,9 +46101,9 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_99 = arguments;
+                        var __args_100 = arguments;
                         {
-                            var __args_100 = arguments;
+                            var __args_101 = arguments;
                             var text_18 = null;
                             var icon_10 = null;
                             var selected_6 = false;
@@ -45843,7 +46123,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_101 = arguments;
+                        var __args_102 = arguments;
                         var text_19 = null;
                         var icon_11 = null;
                         var selected_7 = false;
@@ -45997,7 +46277,7 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_102 = arguments;
+                        var __args_103 = arguments;
                         var text_20 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -46009,7 +46289,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_103 = arguments;
+                        var __args_104 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -46022,9 +46302,9 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_104 = arguments;
+                        var __args_105 = arguments;
                         {
-                            var __args_105 = arguments;
+                            var __args_106 = arguments;
                             var text_21 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
@@ -46042,7 +46322,7 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_106 = arguments;
+                        var __args_107 = arguments;
                         var text_22 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
@@ -46383,7 +46663,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_107 = arguments;
+                        var __args_108 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -46514,7 +46794,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_108 = arguments;
+                        var __args_109 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -46555,7 +46835,7 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_109 = arguments;
+                        var __args_110 = arguments;
                         var label_2 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
@@ -46742,7 +47022,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_110 = arguments;
+                        var __args_111 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -46778,9 +47058,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_111 = arguments;
+                        var __args_112 = arguments;
                         {
-                            var __args_112 = arguments;
+                            var __args_113 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -46816,7 +47096,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_113 = arguments;
+                        var __args_114 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -47621,7 +47901,7 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_114 = arguments;
+                        var __args_115 = arguments;
                         var label_3 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {
