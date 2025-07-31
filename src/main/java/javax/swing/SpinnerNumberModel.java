@@ -8,19 +8,20 @@ import javax.swing.event.ChangeListener;
  * TODO: AI Implemented Stub. Finish
  */
 public class SpinnerNumberModel implements SpinnerModel {
-    private Number value;
-    private Comparable minimum;
-    private Comparable maximum;
-    private Number stepSize;
+    private Double value;
+    private Double minimum;
+    private Double maximum;
+    private Double stepSize;
 
     // A list of listeners to be notified of changes
     private ChangeListener[] listeners = new ChangeListener[0];
 
-    public SpinnerNumberModel(Number value, Comparable minimum, Comparable maximum, Number stepSize) {
-        this.value = value;
-        this.minimum = minimum;
-        this.maximum = maximum;
-        this.stepSize = stepSize;
+    public SpinnerNumberModel(Number value, Number minimum, Number maximum, Number stepSize) {
+        // Convert all incoming Number types to Double for internal consistency
+        this.value = value != null ? value.doubleValue() : null;
+        this.minimum = minimum != null ? minimum.doubleValue() : null;
+        this.maximum = maximum != null ? maximum.doubleValue() : null;
+        this.stepSize = stepSize != null ? stepSize.doubleValue() : null;
     }
 
     @Override
@@ -31,8 +32,8 @@ public class SpinnerNumberModel implements SpinnerModel {
     @Override
     public void setValue(Object value) {
         if (value instanceof Number) {
-            Number oldValue = this.value;
-            this.value = (Number) value;
+            Double oldValue = this.value;
+            this.value = ((Number) value).doubleValue();
             fireStateChanged(oldValue, this.value);
         } else {
             throw new IllegalArgumentException("Invalid value type");
@@ -44,8 +45,7 @@ public class SpinnerNumberModel implements SpinnerModel {
         if (this.maximum != null && this.maximum.compareTo(this.value) <= 0) {
             return null;
         }
-        // This is a simplified increment. A full implementation would need to handle different Number types.
-        return this.value.doubleValue() + this.stepSize.doubleValue();
+        return this.value + this.stepSize;
     }
 
     @Override
@@ -53,8 +53,7 @@ public class SpinnerNumberModel implements SpinnerModel {
         if (this.minimum != null && this.minimum.compareTo(this.value) >= 0) {
             return null;
         }
-        // This is a simplified decrement. A full implementation would need to handle different Number types.
-        return this.value.doubleValue() - this.stepSize.doubleValue();
+        return this.value - this.stepSize;
     }
 
     @Override

@@ -21680,8 +21680,8 @@ var javax;
          *
          * TODO: AI Implemented Stub. Finish
          * @param {number} value
-         * @param {*} minimum
-         * @param {*} maximum
+         * @param {number} minimum
+         * @param {number} maximum
          * @param {number} stepSize
          * @class
          */
@@ -21700,10 +21700,10 @@ var javax;
                     this.stepSize = null;
                 }
                 this.listeners = [];
-                this.value = value;
-                this.minimum = minimum;
-                this.maximum = maximum;
-                this.stepSize = stepSize;
+                this.value = value != null ? /* doubleValue */ value : null;
+                this.minimum = minimum != null ? /* doubleValue */ minimum : null;
+                this.maximum = maximum != null ? /* doubleValue */ maximum : null;
+                this.stepSize = stepSize != null ? /* doubleValue */ stepSize : null;
             }
             /**
              *
@@ -21719,7 +21719,7 @@ var javax;
             SpinnerNumberModel.prototype.setValue = function (value) {
                 if (typeof value === 'number') {
                     var oldValue = this.value;
-                    this.value = value;
+                    this.value = /* doubleValue */ value;
                     this.fireStateChanged(oldValue, this.value);
                 }
                 else {
@@ -21731,20 +21731,30 @@ var javax;
              * @return {*}
              */
             SpinnerNumberModel.prototype.getNextValue = function () {
-                if (this.maximum != null && this.maximum.compareTo(this.value) <= 0) {
+                if (this.maximum != null && /* compareTo */ (function (o1, o2) { if (o1 && o1.compareTo) {
+                    return o1.compareTo(o2);
+                }
+                else {
+                    return o1 < o2 ? -1 : o2 < o1 ? 1 : 0;
+                } })(this.maximum, this.value) <= 0) {
                     return null;
                 }
-                return /* doubleValue */ this.value + /* doubleValue */ this.stepSize;
+                return this.value + this.stepSize;
             };
             /**
              *
              * @return {*}
              */
             SpinnerNumberModel.prototype.getPreviousValue = function () {
-                if (this.minimum != null && this.minimum.compareTo(this.value) >= 0) {
+                if (this.minimum != null && /* compareTo */ (function (o1, o2) { if (o1 && o1.compareTo) {
+                    return o1.compareTo(o2);
+                }
+                else {
+                    return o1 < o2 ? -1 : o2 < o1 ? 1 : 0;
+                } })(this.minimum, this.value) >= 0) {
                     return null;
                 }
-                return /* doubleValue */ this.value - /* doubleValue */ this.stepSize;
+                return this.value - this.stepSize;
             };
             /**
              *

@@ -10943,18 +10943,18 @@ declare namespace javax.swing {
      *
      * TODO: AI Implemented Stub. Finish
      * @param {number} value
-     * @param {*} minimum
-     * @param {*} maximum
+     * @param {number} minimum
+     * @param {number} maximum
      * @param {number} stepSize
      * @class
      */
     class SpinnerNumberModel implements javax.swing.SpinnerModel {
         value: number;
-        minimum: java.lang.Comparable<any>;
-        maximum: java.lang.Comparable<any>;
+        minimum: number;
+        maximum: number;
         stepSize: number;
         listeners: javax.swing.event.ChangeListener[];
-        constructor(value: number, minimum: java.lang.Comparable<any>, maximum: java.lang.Comparable<any>, stepSize: number);
+        constructor(value: number, minimum: number, maximum: number, stepSize: number);
         /**
          *
          * @return {*}
