@@ -15249,6 +15249,57 @@ declare namespace java.awt.event {
     }
 }
 declare namespace java.awt {
+    /**
+     * Constructs a new scroll bar with the specified orientation, initial value,
+     * visible amount, and minimum and maximum values.
+     * @param {number} orientation either {@link #VERTICAL} or {@link #HORIZONTAL}
+     * @param {number} value the initial value of the scroll bar
+     * @param {number} visible the visible amount of the scroll bar
+     * @param {number} minimum the minimum value of the scroll bar
+     * @param {number} maximum the maximum value of the scroll bar
+     * @class
+     * @extends java.awt.Component
+     */
+    class Scrollbar extends java.awt.Component implements java.awt.Adjustable {
+        static HORIZONTAL: number;
+        static VERTICAL: number;
+        orientation: number;
+        value: number;
+        visibleAmount: number;
+        minimum: number;
+        maximum: number;
+        unitIncrement: number;
+        blockIncrement: number;
+        inputElement: HTMLInputElement;
+        adjustmentListeners: java.util.List<java.awt.event.AdjustmentListener>;
+        constructor(orientation?: any, value?: any, visible?: any, minimum?: any, maximum?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        fireAdjustmentEvent(e: java.awt.event.AdjustmentEvent): void;
+        getOrientation(): number;
+        setOrientation(orientation: number): void;
+        getValue(): number;
+        setValue(newValue: number): void;
+        getVisibleAmount(): number;
+        setVisibleAmount(newExtent: number): void;
+        getMinimum(): number;
+        setMinimum(newMinimum: number): void;
+        getMaximum(): number;
+        setMaximum(newMaximum: number): void;
+        getUnitIncrement(): number;
+        setUnitIncrement(v: number): void;
+        getBlockIncrement(): number;
+        setBlockIncrement(v: number): void;
+        getValueIsAdjusting(): boolean;
+        setValueIsAdjusting(b: boolean): void;
+        addAdjustmentListener(l: java.awt.event.AdjustmentListener): void;
+        removeAdjustmentListener(l: java.awt.event.AdjustmentListener): void;
+        setValues(newValue: number, newVisible: number, newMinimum: number, newMaximum: number): void;
+    }
+}
+declare namespace java.awt {
     abstract class Container extends java.awt.Component {
         layoutMgr: java.awt.LayoutManager;
         components: java.awt.Component[];
@@ -19656,6 +19707,66 @@ declare namespace javax.swing.text {
 }
 declare namespace javax.swing {
     /**
+     * [cite_start]Creates a scrollbar with the specified orientation, value, extent, minimum, and maximum. [cite: 454]
+     *
+     * @param {number} orientation either {@link #VERTICAL} or {@link #HORIZONTAL}
+     * @param {number} value       the initial value of the scrollbar
+     * [cite_start]@param extent      the size of the viewable area, also known as the visible amount [cite: 455]
+     * @param {number} min         the minimum value
+     * @param {number} max         the maximum value
+     * @param {number} extent
+     * @class
+     * @extends javax.swing.JComponent
+     */
+    class JScrollBar extends javax.swing.JComponent implements java.awt.Adjustable {
+        /**
+         * The model that represents the scrollbar's minimum, maximum, extent (aka
+         * [cite_start]"visibleAmount") and current value. [cite: 309, 310, 427, 428]
+         */
+        model: javax.swing.BoundedRangeModel;
+        /**
+         * [cite_start]The component's orientation (horizontal or vertical). [cite: 314, 377, 432]
+         */
+        orientation: number;
+        /**
+         * [cite_start]The amount to change the scrollbar's value by, given a unit up/down request. [cite: 315, 384, 436]
+         */
+        unitIncrement: number;
+        /**
+         * [cite_start]The amount to change the scrollbar's value by, given a block up/down request. [cite: 308, 383, 443]
+         */
+        blockIncrement: number;
+        constructor(orientation?: any, value?: any, extent?: any, min?: any, max?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @return {HTMLElement}
+         */
+        getHTMLElement(): HTMLElement;
+        getOrientation(): number;
+        setOrientation(orientation: number): void;
+        getValue(): number;
+        setValue(value: number): void;
+        getVisibleAmount(): number;
+        setVisibleAmount(newExtent: number): void;
+        getMinimum(): number;
+        setMinimum(newMinimum: number): void;
+        getMaximum(): number;
+        setMaximum(newMaximum: number): void;
+        getUnitIncrement(): number;
+        setUnitIncrement(unitIncrement: number): void;
+        getBlockIncrement(): number;
+        setBlockIncrement(blockIncrement: number): void;
+        addAdjustmentListener(l: java.awt.event.AdjustmentListener): void;
+        removeAdjustmentListener(l: java.awt.event.AdjustmentListener): void;
+        setValues(newValue: number, newExtent: number, newMin: number, newMax: number): void;
+    }
+}
+declare namespace javax.swing {
+    /**
      * Creates a new JPanel with the specified layout manager and buffering
      * strategy.
      *
@@ -21239,6 +21350,42 @@ declare namespace javax.swing {
         addActionListener(actionListener: java.awt.event.ActionListener): void;
         removeActionListener(actionListener: java.awt.event.ActionListener): void;
         setBackground(background: java.awt.Color): void;
+    }
+}
+declare namespace javax.swing {
+    /**
+     * [cite_start]Creates a radio button with the specified text, image, and selection state. [cite: 638]
+     * @param {string} text the string displayed on the radio button
+     * @param {*} icon the image that the button should display
+     * @param {boolean} selected if true, the button is initially selected
+     * @class
+     * @extends javax.swing.JToggleButton
+     */
+    class JRadioButton extends javax.swing.JToggleButton {
+        name: string;
+        element: HTMLElement;
+        inputElement: HTMLInputElement;
+        constructor(text?: any, icon?: any, selected?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @return {HTMLElement}
+         */
+        getHTMLElement(): HTMLElement;
+        /**
+         *
+         * @return {boolean}
+         */
+        isSelected(): boolean;
+        /**
+         *
+         * @param {boolean} b
+         */
+        setSelected(b: boolean): void;
+        getUIClassID(): string;
     }
 }
 declare namespace javax.swing {
