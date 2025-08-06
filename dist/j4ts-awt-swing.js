@@ -14532,20 +14532,6 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
-        var Dialog = /** @class */ (function () {
-            function Dialog(frame, bool) {
-            }
-            Dialog.prototype.dispose = function () {
-            };
-            return Dialog;
-        }());
-        awt.Dialog = Dialog;
-        Dialog["__class"] = "java.awt.Dialog";
-    })(awt = java.awt || (java.awt = {}));
-})(java || (java = {}));
-(function (java) {
-    var awt;
-    (function (awt) {
         var RenderingHints = /** @class */ (function () {
             function RenderingHints() {
             }
@@ -21713,6 +21699,37 @@ var javax;
              */
             SwingConstants.PREVIOUS = 13;
         })(SwingConstants = swing.SwingConstants || (swing.SwingConstants = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var BorderFactory = /** @class */ (function () {
+            function BorderFactory() {
+            }
+            BorderFactory.createLineBorder$java_awt_Color = function (color) {
+                return null;
+            };
+            BorderFactory.createLineBorder$java_awt_Color$int = function (color, thickness) {
+                return null;
+            };
+            BorderFactory.createLineBorder = function (color, thickness) {
+                if (((color != null && color instanceof java.awt.Color) || color === null) && ((typeof thickness === 'number') || thickness === null)) {
+                    return javax.swing.BorderFactory.createLineBorder$java_awt_Color$int(color, thickness);
+                }
+                else if (((color != null && color instanceof java.awt.Color) || color === null) && thickness === undefined) {
+                    return javax.swing.BorderFactory.createLineBorder$java_awt_Color(color);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            BorderFactory.createBevelBorder = function (type, highlight, shadow) {
+                return null;
+            };
+            return BorderFactory;
+        }());
+        swing.BorderFactory = BorderFactory;
+        BorderFactory["__class"] = "javax.swing.BorderFactory";
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -38631,6 +38648,23 @@ var javax;
         awt.Frame = Frame;
         Frame["__class"] = "java.awt.Frame";
         Frame["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var Dialog = /** @class */ (function (_super) {
+            __extends(Dialog, _super);
+            function Dialog(frame, bool) {
+                return _super.call(this) || this;
+            }
+            Dialog.prototype.dispose = function () {
+            };
+            return Dialog;
+        }(java.awt.Window));
+        awt.Dialog = Dialog;
+        Dialog["__class"] = "java.awt.Dialog";
+        Dialog["__interfaces"] = ["java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (javax) {

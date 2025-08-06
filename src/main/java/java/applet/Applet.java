@@ -143,6 +143,11 @@ public class Applet extends Panel {
 		return new Image(url.toString());
 	}
 
+	public Image getImage(URL url, String name) {
+		// TODO: implement
+		return null; // TODO
+	}
+
 	public AppletContext getAppletContext() {
 		return new AppletContext(this);
 	}

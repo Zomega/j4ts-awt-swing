@@ -1,6 +1,6 @@
 package java.awt;
 
-class Dialog {
+public class Dialog extends Window {
 	// TODO: Implement this class.
 
 	public Dialog(Object /*Frame*/ frame, boolean bool) {

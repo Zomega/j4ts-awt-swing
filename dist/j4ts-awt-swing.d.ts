@@ -7702,12 +7702,6 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
-    class Dialog {
-        constructor(frame: any, bool: boolean);
-        dispose(): void;
-    }
-}
-declare namespace java.awt {
     class RenderingHints {
         static KEY_ANTIALIASING: any;
         static KEY_ANTIALIASING_$LI$(): any;
@@ -10951,6 +10945,14 @@ declare namespace javax.swing {
          * @return {*} The selected item or <code>null</code> if there is no selection
          */
         getSelectedItem(): any;
+    }
+}
+declare namespace javax.swing {
+    class BorderFactory {
+        static createLineBorder$java_awt_Color(color: java.awt.Color): any;
+        static createLineBorder$java_awt_Color$int(color: java.awt.Color, thickness: number): any;
+        static createLineBorder(color?: any, thickness?: any): any;
+        static createBevelBorder(type: number, highlight: java.awt.Color, shadow: java.awt.Color): any;
     }
 }
 declare namespace javax.swing {
@@ -18312,6 +18314,12 @@ declare namespace java.awt {
          * @return {string} the parameter string of this frame
          */
         paramString(): string;
+    }
+}
+declare namespace java.awt {
+    class Dialog extends java.awt.Window {
+        constructor(frame: any, bool: boolean);
+        dispose(): void;
     }
 }
 declare namespace javax.swing {
