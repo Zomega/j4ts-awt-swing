@@ -14532,6 +14532,20 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        var Dialog = /** @class */ (function () {
+            function Dialog(frame, bool) {
+            }
+            Dialog.prototype.dispose = function () {
+            };
+            return Dialog;
+        }());
+        awt.Dialog = Dialog;
+        Dialog["__class"] = "java.awt.Dialog";
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         var RenderingHints = /** @class */ (function () {
             function RenderingHints() {
             }
@@ -15893,6 +15907,35 @@ var java;
         Component["__class"] = "java.awt.Component";
         Component["__interfaces"] = ["java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var applet;
+    (function (applet_1) {
+        var AppletContext = /** @class */ (function () {
+            function AppletContext(applet) {
+                if (this.applet === undefined) {
+                    this.applet = null;
+                }
+                this.applet = applet;
+            }
+            AppletContext.prototype.getApplet = function (name) {
+                return this.applet;
+            };
+            AppletContext.prototype.getApplets = function () {
+                return null;
+            };
+            AppletContext.prototype.showDocument = function (url, target) {
+                if (target === void 0) { target = "_top"; }
+                console.log("Attempted to showDocument.");
+            };
+            AppletContext.prototype.getImage = function (url) {
+                return this.applet.getImage(url);
+            };
+            return AppletContext;
+        }());
+        applet_1.AppletContext = AppletContext;
+        AppletContext["__class"] = "java.applet.AppletContext";
+    })(applet = java.applet || (java.applet = {}));
 })(java || (java = {}));
 (function (java) {
     var beans;
@@ -36058,6 +36101,8 @@ var javax;
                 _this.listenerList = new javax.swing.event.EventListenerList();
                 return _this;
             }
+            JComponent.prototype.setBorder = function (border) {
+            };
             return JComponent;
         }(java.awt.Container));
         swing.JComponent = JComponent;
@@ -38242,7 +38287,7 @@ var javax;
 })(java || (java = {}));
 (function (java) {
     var applet;
-    (function (applet_1) {
+    (function (applet_2) {
         var Applet = /** @class */ (function (_super) {
             __extends(Applet, _super);
             function Applet() {
@@ -38268,11 +38313,11 @@ var javax;
                                 constructor = ((constructor)[name_3]);
                             }
                         }
-                        var applet_2 = (new constructor());
-                        applet_2.setSize(javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-width")), javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-height")));
-                        applet_2.bindHTML(div);
-                        applet_2.init();
-                        applet_2.doPaintInternal();
+                        var applet_3 = (new constructor());
+                        applet_3.setSize(javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-width")), javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-height")));
+                        applet_3.bindHTML(div);
+                        applet_3.init();
+                        applet_3.doPaintInternal();
                     }
                     return null;
                 });
@@ -38345,10 +38390,16 @@ var javax;
             Applet.prototype.showStatus = function (msg) {
                 window.status = msg;
             };
+            Applet.prototype.getImage = function (url) {
+                return new java.awt.Image(url.toString());
+            };
+            Applet.prototype.getAppletContext = function () {
+                return new java.applet.AppletContext(this);
+            };
             Applet.__static_initialized = false;
             return Applet;
         }(java.awt.Panel));
-        applet_1.Applet = Applet;
+        applet_2.Applet = Applet;
         Applet["__class"] = "java.applet.Applet";
         Applet["__interfaces"] = ["java.awt.HTMLComponent"];
     })(applet = java.applet || (java.applet = {}));

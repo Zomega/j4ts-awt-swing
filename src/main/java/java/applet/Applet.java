@@ -7,6 +7,7 @@ import jsweet.util.StringTypes;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.awt.*;
+import java.awt.Image;
 
 import static def.dom.Globals.console;
 import static def.dom.Globals.document;
@@ -135,5 +136,14 @@ public class Applet extends Panel {
 		// if (statusElement != null) {
 		//     statusElement.textContent = msg;
 		// }
+	}
+
+	public Image getImage(URL url) {
+		// TODO: Confirm this is correct.
+		return new Image(url.toString());
+	}
+
+	public AppletContext getAppletContext() {
+		return new AppletContext(this);
 	}
 }

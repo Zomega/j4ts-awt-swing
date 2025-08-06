@@ -34,4 +34,7 @@ public abstract class JComponent extends Container implements Serializable {
 
 	protected EventListenerList listenerList = new EventListenerList();
 
+	public void setBorder(Object /*Border*/ border) {
+		// TODO: Implement?
+	}
 }

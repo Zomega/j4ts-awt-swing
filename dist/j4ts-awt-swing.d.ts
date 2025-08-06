@@ -7702,6 +7702,12 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class Dialog {
+        constructor(frame: any, bool: boolean);
+        dispose(): void;
+    }
+}
+declare namespace java.awt {
     class RenderingHints {
         static KEY_ANTIALIASING: any;
         static KEY_ANTIALIASING_$LI$(): any;
@@ -8159,6 +8165,16 @@ declare namespace java.awt {
         getSelectedObjects(): any[];
         addItemListener(l: java.awt.event.ItemListener): any;
         removeItemListener(l: java.awt.event.ItemListener): any;
+    }
+}
+declare namespace java.applet {
+    class AppletContext {
+        applet: java.applet.Applet;
+        constructor(applet: java.applet.Applet);
+        getApplet(name: string): java.applet.Applet;
+        getApplets(): java.util.Enumeration<java.applet.Applet>;
+        showDocument(url: java.net.URL, target?: string): void;
+        getImage(url: java.net.URL): java.awt.Image;
     }
 }
 declare namespace java.beans {
@@ -17464,6 +17480,7 @@ declare namespace java.awt {
 declare namespace javax.swing {
     abstract class JComponent extends java.awt.Container implements java.io.Serializable {
         listenerList: javax.swing.event.EventListenerList;
+        setBorder(border: any): void;
         constructor();
     }
 }
@@ -18090,6 +18107,8 @@ declare namespace java.applet {
          * @param {string} msg A string to display in the status window.
          */
         showStatus(msg: string): void;
+        getImage(url: java.net.URL): java.awt.Image;
+        getAppletContext(): java.applet.AppletContext;
     }
 }
 declare namespace java.awt {
