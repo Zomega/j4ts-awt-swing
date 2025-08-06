@@ -1,5 +1,3 @@
 package java.awt;
 
-public interface Stroke {
-
-}
+public interface Stroke {}

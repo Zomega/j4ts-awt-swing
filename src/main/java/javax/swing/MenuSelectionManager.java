@@ -29,5 +29,4 @@ package javax.swing;
  *
  * @author Arnaud Weber
  */
-public class MenuSelectionManager {
-}
+public class MenuSelectionManager {}

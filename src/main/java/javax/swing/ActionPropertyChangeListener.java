@@ -29,56 +29,52 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 
 /**
- * A package-private PropertyChangeListener which listens for property changes
- * on an Action and updates the properties of an ActionEvent source.
- * <p>
- * Subclasses must override the actionPropertyChanged method, which is invoked
- * from the propertyChange method as long as the target is still valid.
- * </p>
- * <p>
- * WARNING WARNING WARNING WARNING WARNING WARNING:<br>
- * Do NOT create an annonymous inner class that extends this! If you do a strong
- * reference will be held to the containing class, which in most cases defeats
- * the purpose of this class.
+ * A package-private PropertyChangeListener which listens for property changes on an Action and
+ * updates the properties of an ActionEvent source.
  *
- * @param T
- *            the type of JComponent the underlying Action is attached to
+ * <p>Subclasses must override the actionPropertyChanged method, which is invoked from the
+ * propertyChange method as long as the target is still valid.
  *
+ * <p>WARNING WARNING WARNING WARNING WARNING WARNING:<br>
+ * Do NOT create an annonymous inner class that extends this! If you do a strong reference will be
+ * held to the containing class, which in most cases defeats the purpose of this class.
+ *
+ * @param T the type of JComponent the underlying Action is attached to
  * @author Georges Saab
  * @see AbstractButton
  */
 @SuppressWarnings("serial")
-abstract class ActionPropertyChangeListener<T extends JComponent> implements PropertyChangeListener, Serializable {
-	private transient T target;
-	private Action action;
+abstract class ActionPropertyChangeListener<T extends JComponent>
+    implements PropertyChangeListener, Serializable {
+  private transient T target;
+  private Action action;
 
-	public ActionPropertyChangeListener(T c, Action a) {
-		super();
-		setTarget(c);
-		this.action = a;
-	}
+  public ActionPropertyChangeListener(T c, Action a) {
+    super();
+    setTarget(c);
+    this.action = a;
+  }
 
-	public final void propertyChange(PropertyChangeEvent e) {
-		T target = getTarget();
-		if (target == null) {
-			getAction().removePropertyChangeListener(this);
-		} else {
-			actionPropertyChanged(target, getAction(), e);
-		}
-	}
+  public final void propertyChange(PropertyChangeEvent e) {
+    T target = getTarget();
+    if (target == null) {
+      getAction().removePropertyChangeListener(this);
+    } else {
+      actionPropertyChanged(target, getAction(), e);
+    }
+  }
 
-	protected abstract void actionPropertyChanged(T target, Action action, PropertyChangeEvent e);
+  protected abstract void actionPropertyChanged(T target, Action action, PropertyChangeEvent e);
 
-	private void setTarget(T c) {
-		this.target = c;
-	}
+  private void setTarget(T c) {
+    this.target = c;
+  }
 
-	public T getTarget() {
-		return this.target;
-	}
+  public T getTarget() {
+    return this.target;
+  }
 
-	public Action getAction() {
-		return action;
-	}
-
+  public Action getAction() {
+    return action;
+  }
 }

@@ -27,359 +27,367 @@ package javax.swing;
 
 import static def.dom.Globals.document;
 
-import java.awt.*;
-import java.beans.Transient;
-
 import def.dom.HTMLImageElement;
 import def.dom.HTMLLabelElement;
+import java.awt.*;
+import java.beans.Transient;
 import jsweet.util.StringTypes;
 
 @SuppressWarnings("serial")
 public class JLabel extends JComponent implements SwingConstants {
-	private int mnemonic;
-	private int mnemonicIndex;
+  private int mnemonic;
+  private int mnemonicIndex;
 
-	private String text;
-	private Icon defaultIcon;
-	private Icon disabledIcon;
-	private boolean disabledIconSet;
+  private String text;
+  private Icon defaultIcon;
+  private Icon disabledIcon;
+  private boolean disabledIconSet;
 
-	private int verticalAlignment;
-	private int horizontalAlignment;
-	private int verticalTextPosition;
-	private int horizontalTextPosition;
-	private int iconTextGap;
+  private int verticalAlignment;
+  private int horizontalAlignment;
+  private int verticalTextPosition;
+  private int horizontalTextPosition;
+  private int iconTextGap;
 
-	protected Component labelFor;
+  protected Component labelFor;
 
-	static final String LABELED_BY_PROPERTY = "labeledBy";
+  static final String LABELED_BY_PROPERTY = "labeledBy";
 
-	public JLabel(String text, Icon icon, int horizontalAlignment) {
-		mnemonic = '\0';
-		mnemonicIndex = -1;
+  public JLabel(String text, Icon icon, int horizontalAlignment) {
+    mnemonic = '\0';
+    mnemonicIndex = -1;
 
-		if (text == null) {
-			text = ""; // "" rather than null, for BeanBox
-		}
+    if (text == null) {
+      text = ""; // "" rather than null, for BeanBox
+    }
 
-		defaultIcon = null;
-		disabledIcon = null;
-		disabledIconSet = false;
+    defaultIcon = null;
+    disabledIcon = null;
+    disabledIconSet = false;
 
-		verticalAlignment = CENTER;
-		verticalTextPosition = CENTER;
-		horizontalTextPosition = TRAILING;
-		iconTextGap = 4;
+    verticalAlignment = CENTER;
+    verticalTextPosition = CENTER;
+    horizontalTextPosition = TRAILING;
+    iconTextGap = 4;
 
-		labelFor = null;
-		setText(text);
-		setIcon(icon);
-		setHorizontalAlignment(horizontalAlignment);
+    labelFor = null;
+    setText(text);
+    setIcon(icon);
+    setHorizontalAlignment(horizontalAlignment);
 
-		// setAlignmentX(LEFT_ALIGNMENT);
-	}
+    // setAlignmentX(LEFT_ALIGNMENT);
+  }
 
-	public JLabel(String text, int horizontalAlignment) {
-		this(text, null, horizontalAlignment);
-	}
+  public JLabel(String text, int horizontalAlignment) {
+    this(text, null, horizontalAlignment);
+  }
 
-	public JLabel(String text) {
-		this(text, null, LEADING);
-	}
+  public JLabel(String text) {
+    this(text, null, LEADING);
+  }
 
-	public JLabel(Icon image, int horizontalAlignment) {
-		this(null, image, horizontalAlignment);
-	}
+  public JLabel(Icon image, int horizontalAlignment) {
+    this(null, image, horizontalAlignment);
+  }
 
-	public JLabel(Icon image) {
-		this(null, image, CENTER);
-	}
+  public JLabel(Icon image) {
+    this(null, image, CENTER);
+  }
 
-	public JLabel() {
-		this("", null, LEADING);
-	}
+  public JLabel() {
+    this("", null, LEADING);
+  }
 
-	HTMLLabelElement htmlLabelElement;
-	HTMLImageElement htmlImageElement;
+  HTMLLabelElement htmlLabelElement;
+  HTMLImageElement htmlImageElement;
 
-	@Override
-	public void createHTML() {
-		htmlElement = document.createElement(StringTypes.div);
-	}
+  @Override
+  public void createHTML() {
+    htmlElement = document.createElement(StringTypes.div);
+  }
 
-	@Override
-	public void initHTML() {
-		super.initHTML();
-		while (getHTMLElement().firstChild != null) {
-			getHTMLElement().removeChild(getHTMLElement().firstChild);
-		}
-		if (defaultIcon != null) {
-			htmlImageElement = defaultIcon.getInternalHTMLImageElement();
-		}
-		htmlLabelElement = document.createElement(StringTypes.label);
-		if (defaultIcon != null) {
-			htmlElement.appendChild(htmlImageElement);
-		}
-		htmlLabelElement.innerHTML = getText();
+  @Override
+  public void initHTML() {
+    super.initHTML();
+    while (getHTMLElement().firstChild != null) {
+      getHTMLElement().removeChild(getHTMLElement().firstChild);
+    }
+    if (defaultIcon != null) {
+      htmlImageElement = defaultIcon.getInternalHTMLImageElement();
+    }
+    htmlLabelElement = document.createElement(StringTypes.label);
+    if (defaultIcon != null) {
+      htmlElement.appendChild(htmlImageElement);
+    }
+    htmlLabelElement.innerHTML = getText();
 
-		htmlElement.style.display = "table";
-		htmlElement.style.tableLayout = "fixed";
-		htmlElement.style.textAlign = "center";
-		htmlLabelElement.style.display = text == null || text.length() == 0 ? "none" : "table-cell";
-		htmlLabelElement.style.verticalAlign = "middle";
-		htmlLabelElement.style.textOverflow = "ellipsis";
-		htmlLabelElement.style.overflow = "hidden";
-		htmlLabelElement.style.whiteSpace = "nowrap";
-		htmlLabelElement.style.font = Font.decode(null).toHTML();
+    htmlElement.style.display = "table";
+    htmlElement.style.tableLayout = "fixed";
+    htmlElement.style.textAlign = "center";
+    htmlLabelElement.style.display = text == null || text.length() == 0 ? "none" : "table-cell";
+    htmlLabelElement.style.verticalAlign = "middle";
+    htmlLabelElement.style.textOverflow = "ellipsis";
+    htmlLabelElement.style.overflow = "hidden";
+    htmlLabelElement.style.whiteSpace = "nowrap";
+    htmlLabelElement.style.font = Font.decode(null).toHTML();
 
+    htmlElement.appendChild(htmlLabelElement);
+  }
 
-		htmlElement.appendChild(htmlLabelElement);
-	}
+  public String getText() {
+    return text;
+  }
 
-	public String getText() {
-		return text;
-	}
+  public void setText(String text) {
 
-	public void setText(String text) {
+    String oldValue = this.text;
+    this.text = text;
+    firePropertyChange("text", oldValue, text);
+    if (htmlLabelElement != null) {
+      htmlLabelElement.innerHTML = text;
+      htmlLabelElement.style.display = text == null || text.length() == 0 ? "none" : "table-cell";
+    }
+  }
 
-		String oldValue = this.text;
-		this.text = text;
-		firePropertyChange("text", oldValue, text);
-		if (htmlLabelElement != null) {
-			htmlLabelElement.innerHTML = text;
-			htmlLabelElement.style.display = text == null || text.length() == 0 ? "none" : "table-cell";
-		}
-	}
+  public Icon getIcon() {
+    return defaultIcon;
+  }
 
-	public Icon getIcon() {
-		return defaultIcon;
-	}
+  public void setIcon(Icon icon) {
+    Icon oldValue = defaultIcon;
+    defaultIcon = icon;
 
-	public void setIcon(Icon icon) {
-		Icon oldValue = defaultIcon;
-		defaultIcon = icon;
+    if ((defaultIcon != oldValue) && !disabledIconSet) {
+      disabledIcon = null;
+    }
 
-		if ((defaultIcon != oldValue) && !disabledIconSet) {
-			disabledIcon = null;
-		}
+    firePropertyChange("icon", oldValue, defaultIcon);
 
-		firePropertyChange("icon", oldValue, defaultIcon);
+    if (defaultIcon != oldValue) {
+      if (htmlImageElement != null) {
+        htmlElement.removeChild(htmlImageElement);
+      }
+      if (htmlElement != null) {
+        htmlElement.insertBefore(
+            htmlImageElement = defaultIcon.getInternalHTMLImageElement(), htmlLabelElement);
+      }
+    }
+  }
 
-		if (defaultIcon != oldValue) {
-			if (htmlImageElement != null) {
-				htmlElement.removeChild(htmlImageElement);
-			}
-			if (htmlElement != null) {
-				htmlElement.insertBefore(htmlImageElement = defaultIcon.getInternalHTMLImageElement(), htmlLabelElement);
-			}
-		}
-	}
+  @Transient
+  public Icon getDisabledIcon() {
+    // if (!disabledIconSet && disabledIcon == null && defaultIcon != null)
+    // {
+    // disabledIcon = UIManager.getLookAndFeel().getDisabledIcon(this,
+    // defaultIcon);
+    // if (disabledIcon != null) {
+    // firePropertyChange("disabledIcon", null, disabledIcon);
+    // }
+    // }
+    return disabledIcon;
+  }
 
-	@Transient
-	public Icon getDisabledIcon() {
-		// if (!disabledIconSet && disabledIcon == null && defaultIcon != null)
-		// {
-		// disabledIcon = UIManager.getLookAndFeel().getDisabledIcon(this,
-		// defaultIcon);
-		// if (disabledIcon != null) {
-		// firePropertyChange("disabledIcon", null, disabledIcon);
-		// }
-		// }
-		return disabledIcon;
-	}
+  public void setDisabledIcon(Icon disabledIcon) {
+    Icon oldValue = this.disabledIcon;
+    this.disabledIcon = disabledIcon;
+    disabledIconSet = (disabledIcon != null);
+    firePropertyChange("disabledIcon", oldValue, disabledIcon);
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public void setDisabledIcon(Icon disabledIcon) {
-		Icon oldValue = this.disabledIcon;
-		this.disabledIcon = disabledIcon;
-		disabledIconSet = (disabledIcon != null);
-		firePropertyChange("disabledIcon", oldValue, disabledIcon);
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
+  public void setDisplayedMnemonic(int key) {
+    int oldKey = mnemonic;
+    mnemonic = key;
+    firePropertyChange("displayedMnemonic", oldKey, mnemonic);
 
-	public void setDisplayedMnemonic(int key) {
-		int oldKey = mnemonic;
-		mnemonic = key;
-		firePropertyChange("displayedMnemonic", oldKey, mnemonic);
+    // setDisplayedMnemonicIndex(SwingUtilities.findDisplayedMnemonicIndex(getText(),
+    // mnemonic));
+  }
 
-		// setDisplayedMnemonicIndex(SwingUtilities.findDisplayedMnemonicIndex(getText(),
-		// mnemonic));
-	}
+  public void setDisplayedMnemonic(char aChar) {
+    int vk = java.awt.event.KeyEvent.getExtendedKeyCodeForChar(aChar);
+    if (vk != java.awt.event.KeyEvent.VK_UNDEFINED) {
+      setDisplayedMnemonic(vk);
+    }
+  }
 
-	public void setDisplayedMnemonic(char aChar) {
-		int vk = java.awt.event.KeyEvent.getExtendedKeyCodeForChar(aChar);
-		if (vk != java.awt.event.KeyEvent.VK_UNDEFINED) {
-			setDisplayedMnemonic(vk);
-		}
-	}
+  public int getDisplayedMnemonic() {
+    return mnemonic;
+  }
 
-	public int getDisplayedMnemonic() {
-		return mnemonic;
-	}
+  public void setDisplayedMnemonicIndex(int index) throws IllegalArgumentException {
+    int oldValue = mnemonicIndex;
+    if (index == -1) {
+      mnemonicIndex = -1;
+    } else {
+      String text = getText();
+      int textLength = (text == null) ? 0 : text.length();
+      if (index < -1 || index >= textLength) { // index out of range
+        throw new IllegalArgumentException("index == " + index);
+      }
+    }
+    mnemonicIndex = index;
+    firePropertyChange("displayedMnemonicIndex", oldValue, index);
+  }
 
-	public void setDisplayedMnemonicIndex(int index) throws IllegalArgumentException {
-		int oldValue = mnemonicIndex;
-		if (index == -1) {
-			mnemonicIndex = -1;
-		} else {
-			String text = getText();
-			int textLength = (text == null) ? 0 : text.length();
-			if (index < -1 || index >= textLength) { // index out of range
-				throw new IllegalArgumentException("index == " + index);
-			}
-		}
-		mnemonicIndex = index;
-		firePropertyChange("displayedMnemonicIndex", oldValue, index);
-	}
+  public int getDisplayedMnemonicIndex() {
+    return mnemonicIndex;
+  }
 
-	public int getDisplayedMnemonicIndex() {
-		return mnemonicIndex;
-	}
+  protected int checkHorizontalKey(int key, String message) {
+    if ((key == LEFT)
+        || (key == CENTER)
+        || (key == RIGHT)
+        || (key == LEADING)
+        || (key == TRAILING)) {
+      return key;
+    } else {
+      throw new IllegalArgumentException(message);
+    }
+  }
 
-	protected int checkHorizontalKey(int key, String message) {
-		if ((key == LEFT) || (key == CENTER) || (key == RIGHT) || (key == LEADING) || (key == TRAILING)) {
-			return key;
-		} else {
-			throw new IllegalArgumentException(message);
-		}
-	}
+  protected int checkVerticalKey(int key, String message) {
+    if ((key == TOP) || (key == CENTER) || (key == BOTTOM)) {
+      return key;
+    } else {
+      throw new IllegalArgumentException(message);
+    }
+  }
 
-	protected int checkVerticalKey(int key, String message) {
-		if ((key == TOP) || (key == CENTER) || (key == BOTTOM)) {
-			return key;
-		} else {
-			throw new IllegalArgumentException(message);
-		}
-	}
+  public int getIconTextGap() {
+    return iconTextGap;
+  }
 
-	public int getIconTextGap() {
-		return iconTextGap;
-	}
+  public void setIconTextGap(int iconTextGap) {
+    int oldValue = this.iconTextGap;
+    this.iconTextGap = iconTextGap;
+    firePropertyChange("iconTextGap", oldValue, iconTextGap);
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public void setIconTextGap(int iconTextGap) {
-		int oldValue = this.iconTextGap;
-		this.iconTextGap = iconTextGap;
-		firePropertyChange("iconTextGap", oldValue, iconTextGap);
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
+  public int getVerticalAlignment() {
+    return verticalAlignment;
+  }
 
-	public int getVerticalAlignment() {
-		return verticalAlignment;
-	}
+  public void setVerticalAlignment(int alignment) {
+    if (alignment == verticalAlignment) return;
+    int oldValue = verticalAlignment;
+    verticalAlignment = checkVerticalKey(alignment, "verticalAlignment");
+    firePropertyChange("verticalAlignment", oldValue, verticalAlignment);
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public void setVerticalAlignment(int alignment) {
-		if (alignment == verticalAlignment)
-			return;
-		int oldValue = verticalAlignment;
-		verticalAlignment = checkVerticalKey(alignment, "verticalAlignment");
-		firePropertyChange("verticalAlignment", oldValue, verticalAlignment);
-		if (htmlElement != null) {
-			initHTML();
-		}
+  public int getHorizontalAlignment() {
+    return horizontalAlignment;
+  }
 
-	}
+  public void setHorizontalAlignment(int alignment) {
+    if (alignment == horizontalAlignment) return;
+    int oldValue = horizontalAlignment;
+    horizontalAlignment = checkHorizontalKey(alignment, "horizontalAlignment");
+    firePropertyChange("horizontalAlignment", oldValue, horizontalAlignment);
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public int getHorizontalAlignment() {
-		return horizontalAlignment;
-	}
+  public int getVerticalTextPosition() {
+    return verticalTextPosition;
+  }
 
-	public void setHorizontalAlignment(int alignment) {
-		if (alignment == horizontalAlignment)
-			return;
-		int oldValue = horizontalAlignment;
-		horizontalAlignment = checkHorizontalKey(alignment, "horizontalAlignment");
-		firePropertyChange("horizontalAlignment", oldValue, horizontalAlignment);
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
+  public void setVerticalTextPosition(int textPosition) {
+    if (textPosition == verticalTextPosition) return;
+    int old = verticalTextPosition;
+    verticalTextPosition = checkVerticalKey(textPosition, "verticalTextPosition");
+    firePropertyChange("verticalTextPosition", old, verticalTextPosition);
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public int getVerticalTextPosition() {
-		return verticalTextPosition;
-	}
+  public int getHorizontalTextPosition() {
+    return horizontalTextPosition;
+  }
 
-	public void setVerticalTextPosition(int textPosition) {
-		if (textPosition == verticalTextPosition)
-			return;
-		int old = verticalTextPosition;
-		verticalTextPosition = checkVerticalKey(textPosition, "verticalTextPosition");
-		firePropertyChange("verticalTextPosition", old, verticalTextPosition);
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
+  public void setHorizontalTextPosition(int textPosition) {
+    int old = horizontalTextPosition;
+    this.horizontalTextPosition = checkHorizontalKey(textPosition, "horizontalTextPosition");
+    firePropertyChange("horizontalTextPosition", old, horizontalTextPosition);
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public int getHorizontalTextPosition() {
-		return horizontalTextPosition;
-	}
+  protected String paramString() {
+    String textString = (text != null ? text : "");
+    String defaultIconString = ((defaultIcon != null) ? defaultIcon.toString() : "");
+    String disabledIconString = ((disabledIcon != null) ? disabledIcon.toString() : "");
+    String labelForString = (labelFor != null ? labelFor.toString() : "");
+    String verticalAlignmentString;
+    if (verticalAlignment == TOP) {
+      verticalAlignmentString = "TOP";
+    } else if (verticalAlignment == CENTER) {
+      verticalAlignmentString = "CENTER";
+    } else if (verticalAlignment == BOTTOM) {
+      verticalAlignmentString = "BOTTOM";
+    } else verticalAlignmentString = "";
+    String horizontalAlignmentString;
+    if (horizontalAlignment == LEFT) {
+      horizontalAlignmentString = "LEFT";
+    } else if (horizontalAlignment == CENTER) {
+      horizontalAlignmentString = "CENTER";
+    } else if (horizontalAlignment == RIGHT) {
+      horizontalAlignmentString = "RIGHT";
+    } else if (horizontalAlignment == LEADING) {
+      horizontalAlignmentString = "LEADING";
+    } else if (horizontalAlignment == TRAILING) {
+      horizontalAlignmentString = "TRAILING";
+    } else horizontalAlignmentString = "";
+    String verticalTextPositionString;
+    if (verticalTextPosition == TOP) {
+      verticalTextPositionString = "TOP";
+    } else if (verticalTextPosition == CENTER) {
+      verticalTextPositionString = "CENTER";
+    } else if (verticalTextPosition == BOTTOM) {
+      verticalTextPositionString = "BOTTOM";
+    } else verticalTextPositionString = "";
+    String horizontalTextPositionString;
+    if (horizontalTextPosition == LEFT) {
+      horizontalTextPositionString = "LEFT";
+    } else if (horizontalTextPosition == CENTER) {
+      horizontalTextPositionString = "CENTER";
+    } else if (horizontalTextPosition == RIGHT) {
+      horizontalTextPositionString = "RIGHT";
+    } else if (horizontalTextPosition == LEADING) {
+      horizontalTextPositionString = "LEADING";
+    } else if (horizontalTextPosition == TRAILING) {
+      horizontalTextPositionString = "TRAILING";
+    } else horizontalTextPositionString = "";
 
-	public void setHorizontalTextPosition(int textPosition) {
-		int old = horizontalTextPosition;
-		this.horizontalTextPosition = checkHorizontalKey(textPosition, "horizontalTextPosition");
-		firePropertyChange("horizontalTextPosition", old, horizontalTextPosition);
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
-
-	protected String paramString() {
-		String textString = (text != null ? text : "");
-		String defaultIconString = ((defaultIcon != null) ? defaultIcon.toString() : "");
-		String disabledIconString = ((disabledIcon != null) ? disabledIcon.toString() : "");
-		String labelForString = (labelFor != null ? labelFor.toString() : "");
-		String verticalAlignmentString;
-		if (verticalAlignment == TOP) {
-			verticalAlignmentString = "TOP";
-		} else if (verticalAlignment == CENTER) {
-			verticalAlignmentString = "CENTER";
-		} else if (verticalAlignment == BOTTOM) {
-			verticalAlignmentString = "BOTTOM";
-		} else
-			verticalAlignmentString = "";
-		String horizontalAlignmentString;
-		if (horizontalAlignment == LEFT) {
-			horizontalAlignmentString = "LEFT";
-		} else if (horizontalAlignment == CENTER) {
-			horizontalAlignmentString = "CENTER";
-		} else if (horizontalAlignment == RIGHT) {
-			horizontalAlignmentString = "RIGHT";
-		} else if (horizontalAlignment == LEADING) {
-			horizontalAlignmentString = "LEADING";
-		} else if (horizontalAlignment == TRAILING) {
-			horizontalAlignmentString = "TRAILING";
-		} else
-			horizontalAlignmentString = "";
-		String verticalTextPositionString;
-		if (verticalTextPosition == TOP) {
-			verticalTextPositionString = "TOP";
-		} else if (verticalTextPosition == CENTER) {
-			verticalTextPositionString = "CENTER";
-		} else if (verticalTextPosition == BOTTOM) {
-			verticalTextPositionString = "BOTTOM";
-		} else
-			verticalTextPositionString = "";
-		String horizontalTextPositionString;
-		if (horizontalTextPosition == LEFT) {
-			horizontalTextPositionString = "LEFT";
-		} else if (horizontalTextPosition == CENTER) {
-			horizontalTextPositionString = "CENTER";
-		} else if (horizontalTextPosition == RIGHT) {
-			horizontalTextPositionString = "RIGHT";
-		} else if (horizontalTextPosition == LEADING) {
-			horizontalTextPositionString = "LEADING";
-		} else if (horizontalTextPosition == TRAILING) {
-			horizontalTextPositionString = "TRAILING";
-		} else
-			horizontalTextPositionString = "";
-
-		return super.paramString() + ",defaultIcon=" + defaultIconString + ",disabledIcon=" + disabledIconString
-				+ ",horizontalAlignment=" + horizontalAlignmentString + ",horizontalTextPosition="
-				+ horizontalTextPositionString + ",iconTextGap=" + iconTextGap + ",labelFor=" + labelForString
-				+ ",text=" + textString + ",verticalAlignment=" + verticalAlignmentString + ",verticalTextPosition="
-				+ verticalTextPositionString;
-	}
-
+    return super.paramString()
+        + ",defaultIcon="
+        + defaultIconString
+        + ",disabledIcon="
+        + disabledIconString
+        + ",horizontalAlignment="
+        + horizontalAlignmentString
+        + ",horizontalTextPosition="
+        + horizontalTextPositionString
+        + ",iconTextGap="
+        + iconTextGap
+        + ",labelFor="
+        + labelForString
+        + ",text="
+        + textString
+        + ",verticalAlignment="
+        + verticalAlignmentString
+        + ",verticalTextPosition="
+        + verticalTextPositionString;
+  }
 }

@@ -31,77 +31,76 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 public class ButtonGroup implements Serializable {
 
-    protected Vector<AbstractButton> buttons = new Vector<AbstractButton>();
+  protected Vector<AbstractButton> buttons = new Vector<AbstractButton>();
 
-    ButtonModel selection = null;
+  ButtonModel selection = null;
 
-    public ButtonGroup() {}
+  public ButtonGroup() {}
 
-    public void add(AbstractButton b) {
-        if(b == null) {
-            return;
-        }
-        buttons.addElement(b);
+  public void add(AbstractButton b) {
+    if (b == null) {
+      return;
+    }
+    buttons.addElement(b);
 
-        if (b.isSelected()) {
-            if (selection == null) {
-                selection = b.getModel();
-            } else {
-                b.setSelected(false);
-            }
-        }
-
-        b.getModel().setGroup(this);
+    if (b.isSelected()) {
+      if (selection == null) {
+        selection = b.getModel();
+      } else {
+        b.setSelected(false);
+      }
     }
 
-    public void remove(AbstractButton b) {
-        if(b == null) {
-            return;
-        }
-        buttons.removeElement(b);
-        if(b.getModel() == selection) {
-            selection = null;
-        }
-        b.getModel().setGroup(null);
-    }
+    b.getModel().setGroup(this);
+  }
 
-    public void clearSelection() {
-        if (selection != null) {
-            ButtonModel oldSelection = selection;
-            selection = null;
-            oldSelection.setSelected(false);
-        }
+  public void remove(AbstractButton b) {
+    if (b == null) {
+      return;
     }
-
-    public Enumeration<AbstractButton> getElements() {
-        return buttons.elements();
+    buttons.removeElement(b);
+    if (b.getModel() == selection) {
+      selection = null;
     }
+    b.getModel().setGroup(null);
+  }
 
-    public ButtonModel getSelection() {
-        return selection;
+  public void clearSelection() {
+    if (selection != null) {
+      ButtonModel oldSelection = selection;
+      selection = null;
+      oldSelection.setSelected(false);
     }
+  }
 
-    public void setSelected(ButtonModel m, boolean b) {
-        if (b && m != null && m != selection) {
-            ButtonModel oldSelection = selection;
-            selection = m;
-            if (oldSelection != null) {
-                oldSelection.setSelected(false);
-            }
-            m.setSelected(true);
-        }
+  public Enumeration<AbstractButton> getElements() {
+    return buttons.elements();
+  }
+
+  public ButtonModel getSelection() {
+    return selection;
+  }
+
+  public void setSelected(ButtonModel m, boolean b) {
+    if (b && m != null && m != selection) {
+      ButtonModel oldSelection = selection;
+      selection = m;
+      if (oldSelection != null) {
+        oldSelection.setSelected(false);
+      }
+      m.setSelected(true);
     }
+  }
 
-    public boolean isSelected(ButtonModel m) {
-        return (m == selection);
+  public boolean isSelected(ButtonModel m) {
+    return (m == selection);
+  }
+
+  public int getButtonCount() {
+    if (buttons == null) {
+      return 0;
+    } else {
+      return buttons.size();
     }
-
-    public int getButtonCount() {
-        if (buttons == null) {
-            return 0;
-        } else {
-            return buttons.size();
-        }
-    }
-
+  }
 }

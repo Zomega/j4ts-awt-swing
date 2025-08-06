@@ -36,24 +36,23 @@
 package java.awt.image;
 
 /**
- * RenderedImage is a common interface for objects which contain
- * or can produce image data in the form of Rasters.  The image
- * data may be stored/produced as a single tile or a regular array
- * of tiles.
+ * RenderedImage is a common interface for objects which contain or can produce image data in the
+ * form of Rasters. The image data may be stored/produced as a single tile or a regular array of
+ * tiles.
  */
-
 public interface RenderedImage {
 
-    /**
-     * Returns the width of the RenderedImage.
-     * @return the width of this <code>RenderedImage</code>.
-     */
-    int getWidth();
+  /**
+   * Returns the width of the RenderedImage.
+   *
+   * @return the width of this <code>RenderedImage</code>.
+   */
+  int getWidth();
 
-    /**
-     * Returns the height of the RenderedImage.
-     * @return the height of this <code>RenderedImage</code>.
-     */
-    int getHeight();
-
+  /**
+   * Returns the height of the RenderedImage.
+   *
+   * @return the height of this <code>RenderedImage</code>.
+   */
+  int getHeight();
 }

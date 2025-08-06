@@ -24,55 +24,52 @@
  */
 package javax.swing;
 
-
 import java.awt.ItemSelectable;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-
 import javax.swing.event.ChangeListener;
 
 public interface ButtonModel extends ItemSelectable {
 
-    boolean isArmed();
+  boolean isArmed();
 
-    boolean isSelected();
+  boolean isSelected();
 
-    boolean isEnabled();
+  boolean isEnabled();
 
-    boolean isPressed();
+  boolean isPressed();
 
-    boolean isRollover();
+  boolean isRollover();
 
-    public void setArmed(boolean b);
+  public void setArmed(boolean b);
 
-    public void setSelected(boolean b);
+  public void setSelected(boolean b);
 
-    public void setEnabled(boolean b);
+  public void setEnabled(boolean b);
 
-    public void setPressed(boolean b);
+  public void setPressed(boolean b);
 
-    public void setRollover(boolean b);
+  public void setRollover(boolean b);
 
-    public void setMnemonic(int key);
+  public void setMnemonic(int key);
 
-    public int  getMnemonic();
+  public int getMnemonic();
 
-    public void setActionCommand(String s);
+  public void setActionCommand(String s);
 
-    public String getActionCommand();
+  public String getActionCommand();
 
-    public void setGroup(ButtonGroup group);
+  public void setGroup(ButtonGroup group);
 
-    void addActionListener(ActionListener l);
+  void addActionListener(ActionListener l);
 
-    void removeActionListener(ActionListener l);
+  void removeActionListener(ActionListener l);
 
-    void addItemListener(ItemListener l);
+  void addItemListener(ItemListener l);
 
-    void removeItemListener(ItemListener l);
+  void removeItemListener(ItemListener l);
 
-    void addChangeListener(ChangeListener l);
+  void addChangeListener(ChangeListener l);
 
-    void removeChangeListener(ChangeListener l);
-
+  void removeChangeListener(ChangeListener l);
 }

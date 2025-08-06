@@ -28,229 +28,228 @@ import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 import static jsweet.util.Lang.array;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.EventListener;
-
 import def.dom.HTMLInputElement;
 import def.dom.HTMLLabelElement;
 import def.dom.Text;
 import def.js.Array;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.EventListener;
 import jsweet.util.StringTypes;
 
 public class Checkbox extends Component implements ItemSelectable {
 
-	String label;
+  String label;
 
-	boolean state;
+  boolean state;
 
-	CheckboxGroup group;
+  CheckboxGroup group;
 
-	Array<ItemListener> itemListeners;
+  Array<ItemListener> itemListeners;
 
-	HTMLInputElement htmlCheckbox;
-	Text htmlLabel;
+  HTMLInputElement htmlCheckbox;
+  Text htmlLabel;
 
-	private static final String base = "checkbox";
-	private static int nameCounter = 0;
+  private static final String base = "checkbox";
+  private static int nameCounter = 0;
 
-	static final long serialVersionUID = 7270714317450821763L;
+  static final long serialVersionUID = 7270714317450821763L;
 
-	public Checkbox() throws HeadlessException {
-		this("", false, null);
-	}
+  public Checkbox() throws HeadlessException {
+    this("", false, null);
+  }
 
-	public Checkbox(String label) throws HeadlessException {
-		this(label, false, null);
-	}
+  public Checkbox(String label) throws HeadlessException {
+    this(label, false, null);
+  }
 
-	public Checkbox(String label, boolean state) throws HeadlessException {
-		this(label, state, null);
-	}
+  public Checkbox(String label, boolean state) throws HeadlessException {
+    this(label, state, null);
+  }
 
-	public Checkbox(String label, boolean state, CheckboxGroup group) throws HeadlessException {
-		this.label = label;
-		this.state = state;
-		this.group = group;
-		this.itemListeners = new Array<ItemListener>();
-		if (state && (group != null)) {
-			group.setSelectedCheckbox(this);
-		}
-	}
+  public Checkbox(String label, boolean state, CheckboxGroup group) throws HeadlessException {
+    this.label = label;
+    this.state = state;
+    this.group = group;
+    this.itemListeners = new Array<ItemListener>();
+    if (state && (group != null)) {
+      group.setSelectedCheckbox(this);
+    }
+  }
 
-	public Checkbox(String label, CheckboxGroup group, boolean state) throws HeadlessException {
-		this(label, state, group);
-	}
+  public Checkbox(String label, CheckboxGroup group, boolean state) throws HeadlessException {
+    this(label, state, group);
+  }
 
-	@Override
-	public HTMLLabelElement getHTMLElement() {
-		return any(super.getHTMLElement());
-	}
+  @Override
+  public HTMLLabelElement getHTMLElement() {
+    return any(super.getHTMLElement());
+  }
 
-	@Override
-	public void createHTML() {
-		if (htmlElement != null) {
-			return;
-		}
-		htmlElement = document.createElement(StringTypes.label);
-		htmlElement.appendChild(htmlLabel = document.createTextNode(""));
-		htmlCheckbox = document.createElement(StringTypes.input);
-		htmlCheckbox.type = group == null ? "checkbox" : "radio";
-		htmlElement.appendChild(htmlCheckbox);
-	}
+  @Override
+  public void createHTML() {
+    if (htmlElement != null) {
+      return;
+    }
+    htmlElement = document.createElement(StringTypes.label);
+    htmlElement.appendChild(htmlLabel = document.createTextNode(""));
+    htmlCheckbox = document.createElement(StringTypes.input);
+    htmlCheckbox.type = group == null ? "checkbox" : "radio";
+    htmlElement.appendChild(htmlCheckbox);
+  }
 
-	@Override
-	public void initHTML() {
-		super.initHTML();
-		htmlCheckbox.checked = state;
-		htmlLabel.data = label;
-		htmlCheckbox.onclick = e -> {
-			setState(htmlCheckbox.checked);
-			processItemEvent(
-					new ItemEvent(this, 0, null, htmlCheckbox.checked ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
-			return e;
-		};
-	}
+  @Override
+  public void initHTML() {
+    super.initHTML();
+    htmlCheckbox.checked = state;
+    htmlLabel.data = label;
+    htmlCheckbox.onclick =
+        e -> {
+          setState(htmlCheckbox.checked);
+          processItemEvent(
+              new ItemEvent(
+                  this, 0, null, htmlCheckbox.checked ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
+          return e;
+        };
+  }
 
-	String constructComponentName() {
-		synchronized (Checkbox.class) {
-			return base + nameCounter++;
-		}
-	}
+  String constructComponentName() {
+    synchronized (Checkbox.class) {
+      return base + nameCounter++;
+    }
+  }
 
-	public String getLabel() {
-		return label;
-	}
+  public String getLabel() {
+    return label;
+  }
 
-	public void setLabel(String label) {
-		synchronized (this) {
-			if (label != this.label && (this.label == null || !this.label.equals(label))) {
-				this.label = label;
-			}
-		}
+  public void setLabel(String label) {
+    synchronized (this) {
+      if (label != this.label && (this.label == null || !this.label.equals(label))) {
+        this.label = label;
+      }
+    }
+  }
 
-	}
+  public boolean getState() {
+    return this.state;
+  }
 
-	public boolean getState() {
-		return this.state;
-	}
+  void setStateInternal(boolean state) {
+    this.state = state;
+    if (htmlCheckbox != null) {
+      htmlCheckbox.checked = state;
+    }
+  }
 
-	void setStateInternal(boolean state) {
-		this.state = state;
-		if (htmlCheckbox != null) {
-			htmlCheckbox.checked = state;
-		}
-	}
+  public void setState(boolean state) {
+    /* Cannot hold check box lock when calling group.setSelectedCheckbox. */
+    CheckboxGroup group = this.group;
+    if (group != null) {
+      if (state) {
+        group.setSelectedCheckbox(this);
+      } else if (group.getSelectedCheckbox() == this) {
+        state = true;
+      }
+    }
+    setStateInternal(state);
+  }
 
-	public void setState(boolean state) {
-		/* Cannot hold check box lock when calling group.setSelectedCheckbox. */
-		CheckboxGroup group = this.group;
-		if (group != null) {
-			if (state) {
-				group.setSelectedCheckbox(this);
-			} else if (group.getSelectedCheckbox() == this) {
-				state = true;
-			}
-		}
-		setStateInternal(state);
-	}
+  public Object[] getSelectedObjects() {
+    if (state) {
+      Object[] items = new Object[1];
+      items[0] = label;
+      return items;
+    }
+    return null;
+  }
 
-	public Object[] getSelectedObjects() {
-		if (state) {
-			Object[] items = new Object[1];
-			items[0] = label;
-			return items;
-		}
-		return null;
-	}
+  public CheckboxGroup getCheckboxGroup() {
+    return group;
+  }
 
-	public CheckboxGroup getCheckboxGroup() {
-		return group;
-	}
+  public void setCheckboxGroup(CheckboxGroup g) {
+    CheckboxGroup oldGroup;
+    boolean oldState;
 
-	public void setCheckboxGroup(CheckboxGroup g) {
-		CheckboxGroup oldGroup;
-		boolean oldState;
+    /*
+     * Do nothing if this check box has already belonged to the check box
+     * group g.
+     */
+    if (this.group == g) {
+      return;
+    }
 
-		/*
-		 * Do nothing if this check box has already belonged to the check box
-		 * group g.
-		 */
-		if (this.group == g) {
-			return;
-		}
+    synchronized (this) {
+      oldGroup = this.group;
+      oldState = getState();
 
-		synchronized (this) {
-			oldGroup = this.group;
-			oldState = getState();
+      this.group = g;
+      if (this.group != null && getState()) {
+        if (this.group.getSelectedCheckbox() != null) {
+          setState(false);
+        } else {
+          this.group.setSelectedCheckbox(this);
+        }
+      }
+    }
 
-			this.group = g;
-			if (this.group != null && getState()) {
-				if (this.group.getSelectedCheckbox() != null) {
-					setState(false);
-				} else {
-					this.group.setSelectedCheckbox(this);
-				}
-			}
-		}
+    /*
+     * Locking check box below could cause deadlock with CheckboxGroup's
+     * setSelectedCheckbox method.
+     *
+     * Fix for 4726853 by kdm@sparc.spb.su Here we should check if this
+     * check box was selected in the previous group and set selected check
+     * box to null for that group if so.
+     */
+    if (oldGroup != null && oldState) {
+      oldGroup.setSelectedCheckbox(null);
+    }
+  }
 
-		/*
-		 * Locking check box below could cause deadlock with CheckboxGroup's
-		 * setSelectedCheckbox method.
-		 *
-		 * Fix for 4726853 by kdm@sparc.spb.su Here we should check if this
-		 * check box was selected in the previous group and set selected check
-		 * box to null for that group if so.
-		 */
-		if (oldGroup != null && oldState) {
-			oldGroup.setSelectedCheckbox(null);
-		}
-	}
+  public synchronized void addItemListener(ItemListener l) {
+    if (l == null) {
+      return;
+    }
+    itemListeners.push(l);
+  }
 
-	public synchronized void addItemListener(ItemListener l) {
-		if (l == null) {
-			return;
-		}
-		itemListeners.push(l);
-	}
+  public synchronized void removeItemListener(ItemListener l) {
+    if (l == null) {
+      return;
+    }
+    int index = (int) itemListeners.indexOf(l);
+    if (index > -1) {
+      itemListeners.splice(index, 1);
+    }
+  }
 
-	public synchronized void removeItemListener(ItemListener l) {
-		if (l == null) {
-			return;
-		}
-		int index = (int) itemListeners.indexOf(l);
-		if (index > -1) {
-			itemListeners.splice(index, 1);
-		}
-	}
+  public synchronized ItemListener[] getItemListeners() {
+    return array(itemListeners);
+  }
 
-	public synchronized ItemListener[] getItemListeners() {
-		return array(itemListeners);
-	}
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
+    Array<T> result = new Array<T>();
+    for (int i = 0; i < itemListeners.length; i++) {
+      if (itemListeners.$get(i).getClass() == listenerType) {
+        result.push(any(itemListeners.$get(i)));
+      }
+    }
+    return array(result);
+  }
 
-	public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
-		Array<T> result = new Array<T>();
-		for (int i = 0; i < itemListeners.length; i++) {
-			if (itemListeners.$get(i).getClass() == listenerType) {
-				result.push(any(itemListeners.$get(i)));
-			}
-		}
-		return array(result);
-	}
+  protected void processItemEvent(ItemEvent e) {
+    for (ItemListener listener : itemListeners) {
+      listener.itemStateChanged(e);
+    }
+  }
 
-	protected void processItemEvent(ItemEvent e) {
-		for (ItemListener listener : itemListeners) {
-			listener.itemStateChanged(e);
-		}
-	}
-
-	protected String paramString() {
-		String str = super.paramString();
-		String label = this.label;
-		if (label != null) {
-			str += ",label=" + label;
-		}
-		return str + ",state=" + state;
-	}
-
+  protected String paramString() {
+    String str = super.paramString();
+    String label = this.label;
+    if (label != null) {
+      str += ",label=" + label;
+    }
+    return str + ",state=" + state;
+  }
 }

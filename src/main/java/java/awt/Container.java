@@ -24,169 +24,167 @@
  */
 package java.awt;
 
-import def.dom.Globals;
 
 import static jsweet.util.Lang.array;
 
 public abstract class Container extends Component {
 
-	LayoutManager layoutMgr;
-	Component[] components = {};
-	Insets insets = new Insets(0, 0, 0, 0);
+  LayoutManager layoutMgr;
+  Component[] components = {};
+  Insets insets = new Insets(0, 0, 0, 0);
 
-	public LayoutManager getLayout() {
-		return layoutMgr;
-	}
+  public LayoutManager getLayout() {
+    return layoutMgr;
+  }
 
-	public void setLayout(LayoutManager mgr) {
-		if (layoutMgr != null) {
-			removeAll();
-			if (layoutMgr instanceof LayoutManager2) {
-				((LayoutManager2) layoutMgr).invalidateLayout(this);
-			}
+  public void setLayout(LayoutManager mgr) {
+    if (layoutMgr != null) {
+      removeAll();
+      if (layoutMgr instanceof LayoutManager2) {
+        ((LayoutManager2) layoutMgr).invalidateLayout(this);
+      }
 
-			if (htmlElement != null) {
-				while (htmlElement.firstChild != null) {
-					htmlElement.removeChild(htmlElement.firstChild);
-				}
-			}
-		}
-		layoutMgr = mgr;
-		if (layoutMgr != null) {
-			if (htmlElement != null) {
-				htmlElement.style.position = "";
-				htmlElement.style.top = "";
-				htmlElement.style.left = "";
-			}
-			layoutMgr.layoutContainer(this);
-		} else if (htmlElement != null) {
-			htmlElement.style.position = "absolute";
-			htmlElement.style.top = "0px";
-			htmlElement.style.left = "0px";
-		}
-	}
+      if (htmlElement != null) {
+        while (htmlElement.firstChild != null) {
+          htmlElement.removeChild(htmlElement.firstChild);
+        }
+      }
+    }
+    layoutMgr = mgr;
+    if (layoutMgr != null) {
+      if (htmlElement != null) {
+        htmlElement.style.position = "";
+        htmlElement.style.top = "";
+        htmlElement.style.left = "";
+      }
+      layoutMgr.layoutContainer(this);
+    } else if (htmlElement != null) {
+      htmlElement.style.position = "absolute";
+      htmlElement.style.top = "0px";
+      htmlElement.style.left = "0px";
+    }
+  }
 
-	public void doLayout() {
-		layout();
-	}
+  public void doLayout() {
+    layout();
+  }
 
-	@Deprecated
-	public void layout() {
-		LayoutManager layoutMgr = this.layoutMgr;
-		if (layoutMgr != null) {
-			layoutMgr.layoutContainer(this);
-		}
-	}
+  @Deprecated
+  public void layout() {
+    LayoutManager layoutMgr = this.layoutMgr;
+    if (layoutMgr != null) {
+      layoutMgr.layoutContainer(this);
+    }
+  }
 
-	public Component add(Component component) {
-		add((String) null, component);
-		return component;
-	}
+  public Component add(Component component) {
+    add((String) null, component);
+    return component;
+  }
 
-	public Component add(Component c, int index) {
-		components = array(array(components).splice(index, 0, c));
-		return c;
-	}
+  public Component add(Component c, int index) {
+    components = array(array(components).splice(index, 0, c));
+    return c;
+  }
 
-	public Component add(String name, Component component) {
-		addImpl(component, name, -1);
-		return component;
-	}
+  public Component add(String name, Component component) {
+    addImpl(component, name, -1);
+    return component;
+  }
 
-	public void add(Component component, Object constraints) {
-		addImpl(component, constraints, -1);
-	}
+  public void add(Component component, Object constraints) {
+    addImpl(component, constraints, -1);
+  }
 
-	public void add(Component component, Object constraints, int index) {
-		addImpl(component, constraints, index);
-	}
+  public void add(Component component, Object constraints, int index) {
+    addImpl(component, constraints, index);
+  }
 
-	protected void addImpl(Component component, Object constraints, int index) {
-		if (component.parent != null) {
-			component.parent.remove(component);
-		}
+  protected void addImpl(Component component, Object constraints, int index) {
+    if (component.parent != null) {
+      component.parent.remove(component);
+    }
 
-		component.initHTML();
+    component.initHTML();
 
-		array(components).push(component);
+    array(components).push(component);
 
-		component.parent = this;
+    component.parent = this;
 
-		if (layoutMgr != null) {
-			if (layoutMgr instanceof LayoutManager2) {
-				((LayoutManager2) layoutMgr).addLayoutComponent(component, constraints);
-			} else if (constraints instanceof String || constraints == null){
-				layoutMgr.addLayoutComponent((String) constraints, component);
-			}
-		} else {
-			component.getHTMLElement().style.position = "absolute";
-		}
+    if (layoutMgr != null) {
+      if (layoutMgr instanceof LayoutManager2) {
+        ((LayoutManager2) layoutMgr).addLayoutComponent(component, constraints);
+      } else if (constraints instanceof String || constraints == null) {
+        layoutMgr.addLayoutComponent((String) constraints, component);
+      }
+    } else {
+      component.getHTMLElement().style.position = "absolute";
+    }
 
-		if (component.getHTMLElement().parentNode == null) {
-			getHTMLElement().appendChild(component.getHTMLElement());
-		}
-	}
+    if (component.getHTMLElement().parentNode == null) {
+      getHTMLElement().appendChild(component.getHTMLElement());
+    }
+  }
 
-	@Override
-	public void doPaintInternal() {
-		super.doPaintInternal();
-		for (Component c : components) {
-			c.doPaintInternal();
-		}
-	}
+  @Override
+  public void doPaintInternal() {
+    super.doPaintInternal();
+    for (Component c : components) {
+      c.doPaintInternal();
+    }
+  }
 
-	public int getComponentCount() {
-		return components.length;
-	}
+  public int getComponentCount() {
+    return components.length;
+  }
 
-	public void remove(int index) {
-		remove(array(components).$get(index));
-	}
+  public void remove(int index) {
+    remove(array(components).$get(index));
+  }
 
-	public Component getComponent(int n) {
-		return components[n];
-	}
+  public Component getComponent(int n) {
+    return components[n];
+  }
 
-	public Component[] getComponents() {
-		return components;
-	}
+  public Component[] getComponents() {
+    return components;
+  }
 
-	public void removeAll() {
-		if (layoutMgr != null) {
-			array(components).forEach(layoutMgr::removeLayoutComponent);
-		}
-		components = new Component[0];
-	}
+  public void removeAll() {
+    if (layoutMgr != null) {
+      array(components).forEach(layoutMgr::removeLayoutComponent);
+    }
+    components = new Component[0];
+  }
 
-	public void remove(Component comp) {
-		int i = array(components).indexOf(comp);
-		if (i < 0)
-			return;
+  public void remove(Component comp) {
+    int i = array(components).indexOf(comp);
+    if (i < 0) return;
 
-		if (layoutMgr != null) {
-			layoutMgr.removeLayoutComponent(comp);
-		}
+    if (layoutMgr != null) {
+      layoutMgr.removeLayoutComponent(comp);
+    }
 
-		comp.parent = null;
+    comp.parent = null;
 
-		if (comp.getHTMLElement().parentNode != null) {
-			comp.getHTMLElement().parentNode.removeChild(comp.getHTMLElement());
-		}
+    if (comp.getHTMLElement().parentNode != null) {
+      comp.getHTMLElement().parentNode.removeChild(comp.getHTMLElement());
+    }
 
-		array(components).splice(i, 1);
-	}
+    array(components).splice(i, 1);
+  }
 
-	public Insets getInsets() {
-		return insets;
-	}
+  public Insets getInsets() {
+    return insets;
+  }
 
-	public void setInsets(Insets insets) {
-		this.insets = insets;
-	}
+  public void setInsets(Insets insets) {
+    this.insets = insets;
+  }
 
-	public void setComponentZOrder(Component component, int zOrder) {
-		String order = Integer.toString(getComponentCount() - zOrder);
-		if (component.getHTMLElement().style.zIndex != order)
-			component.getHTMLElement().style.zIndex = order;
-	}
+  public void setComponentZOrder(Component component, int zOrder) {
+    String order = Integer.toString(getComponentCount() - zOrder);
+    if (component.getHTMLElement().style.zIndex != order)
+      component.getHTMLElement().style.zIndex = order;
+  }
 }

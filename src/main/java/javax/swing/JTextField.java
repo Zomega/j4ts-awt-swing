@@ -27,434 +27,434 @@ package javax.swing;
 import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 
+import def.dom.HTMLInputElement;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import javax.swing.event.EventListenerList;
 import javax.swing.text.JTextComponent;
-
-import def.dom.HTMLInputElement;
 import jsweet.util.StringTypes;
 
 @SuppressWarnings("serial")
 public class JTextField extends JTextComponent implements SwingConstants {
 
-	@Override
-	public HTMLInputElement getHTMLElement() {
-		return any(super.getHTMLElement());
-	}
+  @Override
+  public HTMLInputElement getHTMLElement() {
+    return any(super.getHTMLElement());
+  }
 
-	@Override
-	public void createHTML() {
-		if (htmlElement != null) {
-			return;
-		}
-		htmlElement = document.createElement(StringTypes.input);
-		getHTMLElement().setAttribute("type", "text");
-		getHTMLElement().style.backgroundColor = Color.WHITE.toHTML();
-		getHTMLElement().style.border = "2px groove " + new Color(180, 185, 196).toHTML();
-		getHTMLElement().style.padding = "0px";
-		getHTMLElement().style.boxSizing = "border-box";
-	}
+  @Override
+  public void createHTML() {
+    if (htmlElement != null) {
+      return;
+    }
+    htmlElement = document.createElement(StringTypes.input);
+    getHTMLElement().setAttribute("type", "text");
+    getHTMLElement().style.backgroundColor = Color.WHITE.toHTML();
+    getHTMLElement().style.border = "2px groove " + new Color(180, 185, 196).toHTML();
+    getHTMLElement().style.padding = "0px";
+    getHTMLElement().style.boxSizing = "border-box";
+  }
 
-	@Override
-	public void initHTML() {
-		super.initHTML();
-		getHTMLElement().value = text;
-		getHTMLElement().readOnly = !editable;
-		initActionListeners();
-	}
+  @Override
+  public void initHTML() {
+    super.initHTML();
+    getHTMLElement().value = text;
+    getHTMLElement().readOnly = !editable;
+    initActionListeners();
+  }
 
-	private void initActionListeners() {
-		for (ActionListener actionListener : getActionListeners()) {
-			htmlElement.addEventListener(StringTypes.click, e -> {
-				actionListener.actionPerformed(new ActionEvent(this, 0, null));
-				return e;
-			});
-		}
-	}
+  private void initActionListeners() {
+    for (ActionListener actionListener : getActionListeners()) {
+      htmlElement.addEventListener(
+          StringTypes.click,
+          e -> {
+            actionListener.actionPerformed(new ActionEvent(this, 0, null));
+            return e;
+          });
+    }
+  }
 
-	public JTextField() {
-		this(null, null, 0);
-	}
+  public JTextField() {
+    this(null, null, 0);
+  }
 
-	public JTextField(String text) {
-		this(null, text, 0);
-	}
+  public JTextField(String text) {
+    this(null, text, 0);
+  }
 
-	public JTextField(int columns) {
-		this(null, null, columns);
-	}
+  public JTextField(int columns) {
+    this(null, null, columns);
+  }
 
-	public JTextField(String text, int columns) {
-		this(null, text, columns);
-	}
+  public JTextField(String text, int columns) {
+    this(null, text, columns);
+  }
 
-	public JTextField(Object doc, String text, int columns) {
-		if (columns < 0) {
-			throw new IllegalArgumentException("columns less than zero.");
-		}
-		this.columns = columns;
-		if (text != null) {
-			setText(text);
-		}
-	}
+  public JTextField(Object doc, String text, int columns) {
+    if (columns < 0) {
+      throw new IllegalArgumentException("columns less than zero.");
+    }
+    this.columns = columns;
+    if (text != null) {
+      setText(text);
+    }
+  }
 
-	@Override
-	public void setText(String text) {
-		super.setText(text);
-		if (htmlElement != null) {
-			getHTMLElement().value = text;
-		}
-	}
-	
-	@Override
-	public void setEditable(boolean editable) {
-		super.setEditable(editable);
-		if (htmlElement != null) {
-			getHTMLElement().readOnly = !editable;
-		}
-	}
+  @Override
+  public void setText(String text) {
+    super.setText(text);
+    if (htmlElement != null) {
+      getHTMLElement().value = text;
+    }
+  }
 
-	/**
-	 * Gets the class ID for a UI.
-	 *
-	 * @return the string "TextFieldUI"
-	 * @see JComponent#getUIClassID
-	 * @see UIDefaults#getUI
-	 */
-	public String getUIClassID() {
-		return uiClassID;
-	}
+  @Override
+  public void setEditable(boolean editable) {
+    super.setEditable(editable);
+    if (htmlElement != null) {
+      getHTMLElement().readOnly = !editable;
+    }
+  }
 
-	/**
-	 * Returns the horizontal alignment of the text. Valid keys are:
-	 * <ul>
-	 * <li><code>JTextField.LEFT</code>
-	 * <li><code>JTextField.CENTER</code>
-	 * <li><code>JTextField.RIGHT</code>
-	 * <li><code>JTextField.LEADING</code>
-	 * <li><code>JTextField.TRAILING</code>
-	 * </ul>
-	 *
-	 * @return the horizontal alignment
-	 */
-	public int getHorizontalAlignment() {
-		return horizontalAlignment;
-	}
+  /**
+   * Gets the class ID for a UI.
+   *
+   * @return the string "TextFieldUI"
+   * @see JComponent#getUIClassID
+   * @see UIDefaults#getUI
+   */
+  public String getUIClassID() {
+    return uiClassID;
+  }
 
-	public void setHorizontalAlignment(int alignment) {
-		if (alignment == horizontalAlignment)
-			return;
-		int oldValue = horizontalAlignment;
-		if ((alignment == LEFT) || (alignment == CENTER) || (alignment == RIGHT) || (alignment == LEADING)
-				|| (alignment == TRAILING)) {
-			horizontalAlignment = alignment;
-		} else {
-			throw new IllegalArgumentException("horizontalAlignment");
-		}
-		firePropertyChange("horizontalAlignment", oldValue, horizontalAlignment);
-		invalidate();
-		repaint();
-	}
+  /**
+   * Returns the horizontal alignment of the text. Valid keys are:
+   *
+   * <ul>
+   *   <li><code>JTextField.LEFT</code>
+   *   <li><code>JTextField.CENTER</code>
+   *   <li><code>JTextField.RIGHT</code>
+   *   <li><code>JTextField.LEADING</code>
+   *   <li><code>JTextField.TRAILING</code>
+   * </ul>
+   *
+   * @return the horizontal alignment
+   */
+  public int getHorizontalAlignment() {
+    return horizontalAlignment;
+  }
 
-	/**
-	 * Returns the number of columns in this <code>TextField</code>.
-	 *
-	 * @return the number of columns &gt;= 0
-	 */
-	public int getColumns() {
-		return columns;
-	}
+  public void setHorizontalAlignment(int alignment) {
+    if (alignment == horizontalAlignment) return;
+    int oldValue = horizontalAlignment;
+    if ((alignment == LEFT)
+        || (alignment == CENTER)
+        || (alignment == RIGHT)
+        || (alignment == LEADING)
+        || (alignment == TRAILING)) {
+      horizontalAlignment = alignment;
+    } else {
+      throw new IllegalArgumentException("horizontalAlignment");
+    }
+    firePropertyChange("horizontalAlignment", oldValue, horizontalAlignment);
+    invalidate();
+    repaint();
+  }
 
-	/**
-	 * Sets the number of columns in this <code>TextField</code>, and then
-	 * invalidate the layout.
-	 *
-	 * @param columns
-	 *            the number of columns &gt;= 0
-	 * @exception IllegalArgumentException
-	 *                if <code>columns</code> is less than 0
-	 * @beaninfo description: the number of columns preferred for display
-	 */
-	public void setColumns(int columns) {
-		int oldVal = this.columns;
-		if (columns < 0) {
-			throw new IllegalArgumentException("columns less than zero.");
-		}
-		if (columns != oldVal) {
-			this.columns = columns;
-			invalidate();
-		}
-	}
+  /**
+   * Returns the number of columns in this <code>TextField</code>.
+   *
+   * @return the number of columns &gt;= 0
+   */
+  public int getColumns() {
+    return columns;
+  }
 
-	/**
-	 * Returns the preferred size <code>Dimensions</code> needed for this
-	 * <code>TextField</code>. If a non-zero number of columns has been set, the
-	 * width is set to the columns multiplied by the column width.
-	 *
-	 * @return the dimension of this textfield
-	 */
-	public Dimension getPreferredSize() {
-		Dimension size = super.getPreferredSize();
-		return size;
-	}
+  /**
+   * Sets the number of columns in this <code>TextField</code>, and then invalidate the layout.
+   *
+   * @param columns the number of columns &gt;= 0
+   * @exception IllegalArgumentException if <code>columns</code> is less than 0
+   * @beaninfo description: the number of columns preferred for display
+   */
+  public void setColumns(int columns) {
+    int oldVal = this.columns;
+    if (columns < 0) {
+      throw new IllegalArgumentException("columns less than zero.");
+    }
+    if (columns != oldVal) {
+      this.columns = columns;
+      invalidate();
+    }
+  }
 
-	/**
-	 * Sets the current font. This removes cached row height and column width so
-	 * the new font will be reflected. <code>revalidate</code> is called after
-	 * setting the font.
-	 *
-	 * @param f
-	 *            the new font
-	 */
-	public void setFont(Font f) {
-		super.setFont(f);
-		columnWidth = 0;
-	}
+  /**
+   * Returns the preferred size <code>Dimensions</code> needed for this <code>TextField</code>. If a
+   * non-zero number of columns has been set, the width is set to the columns multiplied by the
+   * column width.
+   *
+   * @return the dimension of this textfield
+   */
+  public Dimension getPreferredSize() {
+    Dimension size = super.getPreferredSize();
+    return size;
+  }
 
-	/**
-	 * Adds the specified action listener to receive action events from this
-	 * textfield.
-	 *
-	 * @param l
-	 *            the action listener to be added
-	 */
-	public synchronized void addActionListener(ActionListener l) {
-		listenerList.add(ActionListener.class, l);
-	}
+  /**
+   * Sets the current font. This removes cached row height and column width so the new font will be
+   * reflected. <code>revalidate</code> is called after setting the font.
+   *
+   * @param f the new font
+   */
+  public void setFont(Font f) {
+    super.setFont(f);
+    columnWidth = 0;
+  }
 
-	/**
-	 * Removes the specified action listener so that it no longer receives
-	 * action events from this textfield.
-	 *
-	 * @param l
-	 *            the action listener to be removed
-	 */
-	public synchronized void removeActionListener(ActionListener l) {
-		if ((l != null) && (getAction() == l)) {
-			setAction(null);
-		} else {
-			listenerList.remove(ActionListener.class, l);
-		}
-	}
+  /**
+   * Adds the specified action listener to receive action events from this textfield.
+   *
+   * @param l the action listener to be added
+   */
+  public synchronized void addActionListener(ActionListener l) {
+    listenerList.add(ActionListener.class, l);
+  }
 
-	/**
-	 * Returns an array of all the <code>ActionListener</code>s added to this
-	 * JTextField with addActionListener().
-	 *
-	 * @return all of the <code>ActionListener</code>s added or an empty array
-	 *         if no listeners have been added
-	 * @since 1.4
-	 */
-	public synchronized ActionListener[] getActionListeners() {
-		return listenerList.getListeners(ActionListener.class);
-	}
+  /**
+   * Removes the specified action listener so that it no longer receives action events from this
+   * textfield.
+   *
+   * @param l the action listener to be removed
+   */
+  public synchronized void removeActionListener(ActionListener l) {
+    if ((l != null) && (getAction() == l)) {
+      setAction(null);
+    } else {
+      listenerList.remove(ActionListener.class, l);
+    }
+  }
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created. The listener list
-	 * is processed in last to first order.
-	 * 
-	 * @see EventListenerList
-	 */
-	protected void fireActionPerformed() {
-		// Guaranteed to return a non-null array
-		Object[] listeners = listenerList.getListenerList();
-		int modifiers = 0;
-		ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, (command != null) ? command : getText(), 0,
-				modifiers);
+  /**
+   * Returns an array of all the <code>ActionListener</code>s added to this JTextField with
+   * addActionListener().
+   *
+   * @return all of the <code>ActionListener</code>s added or an empty array if no listeners have
+   *     been added
+   * @since 1.4
+   */
+  public synchronized ActionListener[] getActionListeners() {
+    return listenerList.getListeners(ActionListener.class);
+  }
 
-		// Process the listeners last to first, notifying
-		// those that are interested in this event
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == ActionListener.class) {
-				((ActionListener) listeners[i + 1]).actionPerformed(e);
-			}
-		}
-	}
+  /**
+   * Notifies all listeners that have registered interest for notification on this event type. The
+   * event instance is lazily created. The listener list is processed in last to first order.
+   *
+   * @see EventListenerList
+   */
+  protected void fireActionPerformed() {
+    // Guaranteed to return a non-null array
+    Object[] listeners = listenerList.getListenerList();
+    int modifiers = 0;
+    ActionEvent e =
+        new ActionEvent(
+            this,
+            ActionEvent.ACTION_PERFORMED,
+            (command != null) ? command : getText(),
+            0,
+            modifiers);
 
-	public void setActionCommand(String command) {
-		this.command = command;
-	}
+    // Process the listeners last to first, notifying
+    // those that are interested in this event
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == ActionListener.class) {
+        ((ActionListener) listeners[i + 1]).actionPerformed(e);
+      }
+    }
+  }
 
-	private Action action;
-	private PropertyChangeListener actionPropertyChangeListener;
+  public void setActionCommand(String command) {
+    this.command = command;
+  }
 
-	public void setAction(Action a) {
-		Action oldValue = getAction();
-		if (action == null || !action.equals(a)) {
-			action = a;
-			if (oldValue != null) {
-				removeActionListener(oldValue);
-				oldValue.removePropertyChangeListener(actionPropertyChangeListener);
-				actionPropertyChangeListener = null;
-			}
-			configurePropertiesFromAction(action);
-			if (action != null) {
-				// Don't add if it is already a listener
-				if (!isListener(ActionListener.class, action)) {
-					addActionListener(action);
-				}
-				// Reverse linkage:
-				actionPropertyChangeListener = createActionPropertyChangeListener(action);
-				action.addPropertyChangeListener(actionPropertyChangeListener);
-			}
-			firePropertyChange("action", oldValue, action);
-		}
-	}
+  private Action action;
+  private PropertyChangeListener actionPropertyChangeListener;
 
-	private boolean isListener(Class<?> c, ActionListener a) {
-		boolean isListener = false;
-		Object[] listeners = listenerList.getListenerList();
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == c && listeners[i + 1] == a) {
-				isListener = true;
-			}
-		}
-		return isListener;
-	}
+  public void setAction(Action a) {
+    Action oldValue = getAction();
+    if (action == null || !action.equals(a)) {
+      action = a;
+      if (oldValue != null) {
+        removeActionListener(oldValue);
+        oldValue.removePropertyChangeListener(actionPropertyChangeListener);
+        actionPropertyChangeListener = null;
+      }
+      configurePropertiesFromAction(action);
+      if (action != null) {
+        // Don't add if it is already a listener
+        if (!isListener(ActionListener.class, action)) {
+          addActionListener(action);
+        }
+        // Reverse linkage:
+        actionPropertyChangeListener = createActionPropertyChangeListener(action);
+        action.addPropertyChangeListener(actionPropertyChangeListener);
+      }
+      firePropertyChange("action", oldValue, action);
+    }
+  }
 
-	// JSweet HACK
-	@SuppressWarnings("unused")
-	private boolean isListener(String c, ActionListener a) {
-		boolean isListener = false;
-		Object[] listeners = listenerList.getListenerList();
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == c && listeners[i + 1] == a) {
-				isListener = true;
-			}
-		}
-		return isListener;
-	}
+  private boolean isListener(Class<?> c, ActionListener a) {
+    boolean isListener = false;
+    Object[] listeners = listenerList.getListenerList();
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == c && listeners[i + 1] == a) {
+        isListener = true;
+      }
+    }
+    return isListener;
+  }
 
-	public Action getAction() {
-		return action;
-	}
+  // JSweet HACK
+  @SuppressWarnings("unused")
+  private boolean isListener(String c, ActionListener a) {
+    boolean isListener = false;
+    Object[] listeners = listenerList.getListenerList();
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == c && listeners[i + 1] == a) {
+        isListener = true;
+      }
+    }
+    return isListener;
+  }
 
-	protected void configurePropertiesFromAction(Action a) {
-		AbstractAction.setEnabledFromAction(this, a);
-		AbstractAction.setToolTipTextFromAction(this, a);
-		setActionCommandFromAction(a);
-	}
+  public Action getAction() {
+    return action;
+  }
 
-	protected void actionPropertyChanged(Action action, String propertyName) {
-		if (propertyName == Action.ACTION_COMMAND_KEY) {
-			setActionCommandFromAction(action);
-		} else if (propertyName == "enabled") {
-			AbstractAction.setEnabledFromAction(this, action);
-		} else if (propertyName == Action.SHORT_DESCRIPTION) {
-			AbstractAction.setToolTipTextFromAction(this, action);
-		}
-	}
+  protected void configurePropertiesFromAction(Action a) {
+    AbstractAction.setEnabledFromAction(this, a);
+    AbstractAction.setToolTipTextFromAction(this, a);
+    setActionCommandFromAction(a);
+  }
 
-	private void setActionCommandFromAction(Action action) {
-		setActionCommand((action == null) ? null : (String) action.getValue(Action.ACTION_COMMAND_KEY));
-	}
+  protected void actionPropertyChanged(Action action, String propertyName) {
+    if (propertyName == Action.ACTION_COMMAND_KEY) {
+      setActionCommandFromAction(action);
+    } else if (propertyName == "enabled") {
+      AbstractAction.setEnabledFromAction(this, action);
+    } else if (propertyName == Action.SHORT_DESCRIPTION) {
+      AbstractAction.setToolTipTextFromAction(this, action);
+    }
+  }
 
-	protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
-		return new TextFieldActionPropertyChangeListener(this, a);
-	}
+  private void setActionCommandFromAction(Action action) {
+    setActionCommand((action == null) ? null : (String) action.getValue(Action.ACTION_COMMAND_KEY));
+  }
 
-	private static class TextFieldActionPropertyChangeListener extends ActionPropertyChangeListener<JTextField> {
-		TextFieldActionPropertyChangeListener(JTextField tf, Action a) {
-			super(tf, a);
-		}
+  protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
+    return new TextFieldActionPropertyChangeListener(this, a);
+  }
 
-		protected void actionPropertyChanged(JTextField textField, Action action, PropertyChangeEvent e) {
-			textField.actionPropertyChanged(action, e.getPropertyName());
-		}
-	}
+  private static class TextFieldActionPropertyChangeListener
+      extends ActionPropertyChangeListener<JTextField> {
+    TextFieldActionPropertyChangeListener(JTextField tf, Action a) {
+      super(tf, a);
+    }
 
-	/**
-	 * Fetches the command list for the editor. This is the list of commands
-	 * supported by the plugged-in UI augmented by the collection of commands
-	 * that the editor itself supports. These are useful for binding to events,
-	 * such as in a keymap.
-	 *
-	 * @return the command list
-	 */
-	public Action[] getActions() {
-		return defaultActions;
-	}
+    protected void actionPropertyChanged(
+        JTextField textField, Action action, PropertyChangeEvent e) {
+      textField.actionPropertyChanged(action, e.getPropertyName());
+    }
+  }
 
-	/**
-	 * Processes action events occurring on this textfield by dispatching them
-	 * to any registered <code>ActionListener</code> objects. This is normally
-	 * called by the controller registered with textfield.
-	 */
-	public void postActionEvent() {
-		fireActionPerformed();
-	}
+  /**
+   * Fetches the command list for the editor. This is the list of commands supported by the
+   * plugged-in UI augmented by the collection of commands that the editor itself supports. These
+   * are useful for binding to events, such as in a keymap.
+   *
+   * @return the command list
+   */
+  public Action[] getActions() {
+    return defaultActions;
+  }
 
-	// --- Scrolling support -----------------------------------
+  /**
+   * Processes action events occurring on this textfield by dispatching them to any registered
+   * <code>ActionListener</code> objects. This is normally called by the controller registered with
+   * textfield.
+   */
+  public void postActionEvent() {
+    fireActionPerformed();
+  }
 
-	/**
-	 * Returns true if the receiver has an <code>ActionListener</code>
-	 * installed.
-	 */
-	boolean hasActionListener() {
-		// Guaranteed to return a non-null array
-		Object[] listeners = listenerList.getListenerList();
-		// Process the listeners last to first, notifying
-		// those that are interested in this event
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == ActionListener.class) {
-				return true;
-			}
-		}
-		return false;
-	}
+  // --- Scrolling support -----------------------------------
 
-	/**
-	 * Name of the action to send notification that the contents of the field
-	 * have been accepted. Typically this is bound to a carriage-return.
-	 */
-	public static final String notifyAction = "notify-field-accept";
+  /** Returns true if the receiver has an <code>ActionListener</code> installed. */
+  boolean hasActionListener() {
+    // Guaranteed to return a non-null array
+    Object[] listeners = listenerList.getListenerList();
+    // Process the listeners last to first, notifying
+    // those that are interested in this event
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == ActionListener.class) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	private int horizontalAlignment = LEADING;
-	private int columns;
-	private int columnWidth;
-	private String command;
+  /**
+   * Name of the action to send notification that the contents of the field have been accepted.
+   * Typically this is bound to a carriage-return.
+   */
+  public static final String notifyAction = "notify-field-accept";
 
-	private static final Action[] defaultActions = {};
+  private int horizontalAlignment = LEADING;
+  private int columns;
+  private int columnWidth;
+  private String command;
 
-	/**
-	 * @see #getUIClassID
-	 * @see #readObject
-	 */
-	private static final String uiClassID = "TextFieldUI";
+  private static final Action[] defaultActions = {};
 
-	/**
-	 * Returns a string representation of this <code>JTextField</code>. This
-	 * method is intended to be used only for debugging purposes, and the
-	 * content and format of the returned string may vary between
-	 * implementations. The returned string may be empty but may not be
-	 * <code>null</code>.
-	 *
-	 * @return a string representation of this <code>JTextField</code>
-	 */
-	protected String paramString() {
-		String horizontalAlignmentString;
-		if (horizontalAlignment == LEFT) {
-			horizontalAlignmentString = "LEFT";
-		} else if (horizontalAlignment == CENTER) {
-			horizontalAlignmentString = "CENTER";
-		} else if (horizontalAlignment == RIGHT) {
-			horizontalAlignmentString = "RIGHT";
-		} else if (horizontalAlignment == LEADING) {
-			horizontalAlignmentString = "LEADING";
-		} else if (horizontalAlignment == TRAILING) {
-			horizontalAlignmentString = "TRAILING";
-		} else
-			horizontalAlignmentString = "";
-		String commandString = (command != null ? command : "");
+  /**
+   * @see #getUIClassID
+   * @see #readObject
+   */
+  private static final String uiClassID = "TextFieldUI";
 
-		return super.paramString() + ",columns=" + columns + ",columnWidth=" + columnWidth + ",command=" + commandString
-				+ ",horizontalAlignment=" + horizontalAlignmentString;
-	}
+  /**
+   * Returns a string representation of this <code>JTextField</code>. This method is intended to be
+   * used only for debugging purposes, and the content and format of the returned string may vary
+   * between implementations. The returned string may be empty but may not be <code>null</code>.
+   *
+   * @return a string representation of this <code>JTextField</code>
+   */
+  protected String paramString() {
+    String horizontalAlignmentString;
+    if (horizontalAlignment == LEFT) {
+      horizontalAlignmentString = "LEFT";
+    } else if (horizontalAlignment == CENTER) {
+      horizontalAlignmentString = "CENTER";
+    } else if (horizontalAlignment == RIGHT) {
+      horizontalAlignmentString = "RIGHT";
+    } else if (horizontalAlignment == LEADING) {
+      horizontalAlignmentString = "LEADING";
+    } else if (horizontalAlignment == TRAILING) {
+      horizontalAlignmentString = "TRAILING";
+    } else horizontalAlignmentString = "";
+    String commandString = (command != null ? command : "");
 
+    return super.paramString()
+        + ",columns="
+        + columns
+        + ",columnWidth="
+        + columnWidth
+        + ",command="
+        + commandString
+        + ",horizontalAlignment="
+        + horizontalAlignmentString;
+  }
 }

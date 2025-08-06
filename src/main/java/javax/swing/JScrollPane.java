@@ -1,20 +1,21 @@
 package javax.swing;
 
-import jsweet.util.StringTypes;
 import static def.dom.Globals.document;
 
+import jsweet.util.StringTypes;
+
 class JScrollPane extends JComponent {
-	// TODO
+  // TODO
 
-	@Override
-	public void createHTML() {
-		if (htmlElement != null) {
-			return;
-		}
-		htmlElement = document.createElement(StringTypes.div);
-	}
+  @Override
+  public void createHTML() {
+    if (htmlElement != null) {
+      return;
+    }
+    htmlElement = document.createElement(StringTypes.div);
+  }
 
-	public Object /*JViewport*/ getViewport() {
-		return null; // TODO
-	}
+  public Object /*JViewport*/ getViewport() {
+    return null; // TODO
+  }
 }

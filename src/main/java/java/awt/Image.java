@@ -26,90 +26,88 @@ package java.awt;
 
 import static def.dom.Globals.document;
 
-import java.awt.image.ImageObserver;
-
 import def.dom.HTMLImageElement;
+import java.awt.image.ImageObserver;
 import jsweet.util.StringTypes;
 
 public class Image {
 
-	// @Interface
-	// class ImageSource {
-	// public double width;
-	// public double height;
-	// }
+  // @Interface
+  // class ImageSource {
+  // public double width;
+  // public double height;
+  // }
 
-	// public Image(ImageSource source) {
-	// this.source = source;
-	// }
+  // public Image(ImageSource source) {
+  // this.source = source;
+  // }
 
-	public Image(String src) {
-		source = document.createElement(StringTypes.img);
-		source.src = src;
-		setScale(SCALE_DEFAULT);
-	}
+  public Image(String src) {
+    source = document.createElement(StringTypes.img);
+    source.src = src;
+    setScale(SCALE_DEFAULT);
+  }
 
-	private void setScale(int scale) {
-		switch (scale) {
-			case SCALE_DEFAULT:
-			case SCALE_FAST:
-			case SCALE_REPLICATE:
-				source.style.$set("imageRendering", "pixelated");
-				break;
-			case SCALE_SMOOTH:
-			case SCALE_AREA_AVERAGING:
-				source.style.$set("imageRendering", "");
+  private void setScale(int scale) {
+    switch (scale) {
+      case SCALE_DEFAULT:
+      case SCALE_FAST:
+      case SCALE_REPLICATE:
+        source.style.$set("imageRendering", "pixelated");
+        break;
+      case SCALE_SMOOTH:
+      case SCALE_AREA_AVERAGING:
+        source.style.$set("imageRendering", "");
+    }
+  }
 
-		}
-	}
+  public int getWidth(ImageObserver observer) {
+    return (int) source.width;
+  }
 
-	public int getWidth(ImageObserver observer) {
-		return (int) source.width;
-	}
+  public int getHeight(ImageObserver observer) {
+    return (int) source.height;
+  }
 
-	public int getHeight(ImageObserver observer) {
-		return (int) source.height;
-	}
+  public final HTMLImageElement source;
 
-	public final HTMLImageElement source;
+  // public abstract ImageProducer getSource();
 
-	// public abstract ImageProducer getSource();
+  // TODO: Implement?
+  public Graphics getGraphics() {
+    return null;
+  }
 
-	// TODO: Implement?
-	public Graphics getGraphics() {
-		return null;
-	}
+  public Image getScaledInstance(int width, int height, int scaleType) {
+    Image image = new Image(source.src);
+    image.source.width = width;
+    image.source.height = height;
+    image.setScale(scaleType);
+    return image;
+  }
 
-	public Image getScaledInstance(int width, int height, int scaleType) {
-		Image image = new Image(source.src);
-		image.source.width = width;
-		image.source.height = height;
-		image.setScale(scaleType);
-		return image;
-	}
-	/**
-	 * Use the default image-scaling algorithm.
-	 *
-	 * @since JDK1.1
-	 */
-	public static final int SCALE_DEFAULT = 1;
+  /**
+   * Use the default image-scaling algorithm.
+   *
+   * @since JDK1.1
+   */
+  public static final int SCALE_DEFAULT = 1;
 
-	/**
-	 * Choose an image-scaling algorithm that gives higher priority to scaling
-	 * speed than smoothness of the scaled image.
-	 *
-	 * @since JDK1.1
-	 */
-	public static final int SCALE_FAST = 2;
+  /**
+   * Choose an image-scaling algorithm that gives higher priority to scaling speed than smoothness
+   * of the scaled image.
+   *
+   * @since JDK1.1
+   */
+  public static final int SCALE_FAST = 2;
 
-	public static final int SCALE_SMOOTH = 4;
+  public static final int SCALE_SMOOTH = 4;
 
-	public static final int SCALE_REPLICATE = 8;
+  public static final int SCALE_REPLICATE = 8;
 
-	public static final int SCALE_AREA_AVERAGING = 16;
+  public static final int SCALE_AREA_AVERAGING = 16;
 
-	public void flush() {
-		// do nothing
-	}
-
+  public void flush() {
+    // do nothing
+  }
 }

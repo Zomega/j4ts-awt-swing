@@ -27,13 +27,11 @@ package javax.swing;
 
 import java.awt.Component;
 
-
 /**
- * Identifies components that can be used as "rubber stamps" to paint
- * the cells in a JList.  For example, to use a JLabel as a
- * ListCellRenderer, you would write something like this:
- * <pre>
- * {@code
+ * Identifies components that can be used as "rubber stamps" to paint the cells in a JList. For
+ * example, to use a JLabel as a ListCellRenderer, you would write something like this:
+ *
+ * <pre>{@code
  * class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
  *     public MyCellRenderer() {
  *         setOpaque(true);
@@ -76,41 +74,30 @@ import java.awt.Component;
  *         return this;
  *     }
  * }
- * }
- * </pre>
+ * }</pre>
  *
  * @param <E> the type of values this renderer can be used for
- *
  * @see JList
  * @see DefaultListCellRenderer
- *
  * @author Hans Muller
  */
-public interface ListCellRenderer<E>
-{
-    /**
-     * Return a component that has been configured to display the specified
-     * value. That component's <code>paint</code> method is then called to
-     * "render" the cell.  If it is necessary to compute the dimensions
-     * of a list because the list cells do not have a fixed size, this method
-     * is called to generate a component on which <code>getPreferredSize</code>
-     * can be invoked.
-     *
-     * @param list The JList we're painting.
-     * @param value The value returned by list.getModel().getElementAt(index).
-     * @param index The cells index.
-     * @param isSelected True if the specified cell was selected.
-     * @param cellHasFocus True if the specified cell has the focus.
-     * @return A component whose paint() method will render the specified value.
-     *
-     * @see JList
-     * @see ListSelectionModel
-     * @see ListModel
-     */
-    Component getListCellRendererComponent(
-        JList<? extends E> list,
-        E value,
-        int index,
-        boolean isSelected,
-        boolean cellHasFocus);
+public interface ListCellRenderer<E> {
+  /**
+   * Return a component that has been configured to display the specified value. That component's
+   * <code>paint</code> method is then called to "render" the cell. If it is necessary to compute
+   * the dimensions of a list because the list cells do not have a fixed size, this method is called
+   * to generate a component on which <code>getPreferredSize</code> can be invoked.
+   *
+   * @param list The JList we're painting.
+   * @param value The value returned by list.getModel().getElementAt(index).
+   * @param index The cells index.
+   * @param isSelected True if the specified cell was selected.
+   * @param cellHasFocus True if the specified cell has the focus.
+   * @return A component whose paint() method will render the specified value.
+   * @see JList
+   * @see ListSelectionModel
+   * @see ListModel
+   */
+  Component getListCellRendererComponent(
+      JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus);
 }

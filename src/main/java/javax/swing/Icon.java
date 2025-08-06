@@ -24,20 +24,17 @@
  */
 package javax.swing;
 
+import def.dom.HTMLImageElement;
 import java.awt.Component;
 import java.awt.Graphics;
 
-import def.dom.HTMLImageElement;
+public interface Icon {
+  void paintIcon(Component c, Graphics g, int x, int y);
 
+  int getIconWidth();
 
-public interface Icon
-{
-    void paintIcon(Component c, Graphics g, int x, int y);
+  int getIconHeight();
 
-    int getIconWidth();
-
-    int getIconHeight();
-
-    // web implementation
-    HTMLImageElement getInternalHTMLImageElement();
+  // web implementation
+  HTMLImageElement getInternalHTMLImageElement();
 }

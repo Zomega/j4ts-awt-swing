@@ -1,5 +1,3 @@
 package java.awt;
 
-public interface Paint {
-
-}
+public interface Paint {}

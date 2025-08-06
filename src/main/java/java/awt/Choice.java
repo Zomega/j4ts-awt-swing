@@ -28,241 +28,239 @@ import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 import static jsweet.util.Lang.array;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.EventListener;
-import java.util.Vector;
-
 import def.dom.HTMLOptionElement;
 import def.dom.HTMLSelectElement;
 import def.dom.NodeList;
 import def.js.Array;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.EventListener;
+import java.util.Vector;
 import jsweet.util.StringTypes;
 
 public class Choice extends Component implements ItemSelectable {
-	Vector<String> pItems;
+  Vector<String> pItems;
 
-	int selectedIndex = -1;
+  int selectedIndex = -1;
 
-	Array<ItemListener> itemListeners;
+  Array<ItemListener> itemListeners;
 
-	private static final String base = "choice";
-	private static int nameCounter = 0;
+  private static final String base = "choice";
+  private static int nameCounter = 0;
 
-	private static final long serialVersionUID = -4075310674757313071L;
+  private static final long serialVersionUID = -4075310674757313071L;
 
-	public Choice() throws HeadlessException {
-		pItems = new Vector<>();
-		itemListeners = new Array<ItemListener>();
-	}
+  public Choice() throws HeadlessException {
+    pItems = new Vector<>();
+    itemListeners = new Array<ItemListener>();
+  }
 
-	public void createHTML() {
-		htmlElement = document.createElement(StringTypes.select);
-	}
+  public void createHTML() {
+    htmlElement = document.createElement(StringTypes.select);
+  }
 
-	public HTMLSelectElement getHTMLElement() {
-		return (HTMLSelectElement) htmlElement;
-	}
+  public HTMLSelectElement getHTMLElement() {
+    return (HTMLSelectElement) htmlElement;
+  }
 
-	public void initHTML() {
-		super.initHTML();
-		getHTMLElement().onchange = e -> {
-			int i = (int) getHTMLElement().selectedIndex;
-			HTMLOptionElement option = (HTMLOptionElement) getHTMLElement().childNodes.item(i);
-			processItemEvent(new ItemEvent(this, 0, option.innerHTML, ItemEvent.SELECTED));
-			return e;
-		};
-		NodeList childNodes = getHTMLElement().childNodes;
-		for (int i = 0; i < childNodes.length; ++i) {
-			getHTMLElement().removeChild(childNodes.$get(i));
-		}
-		for (int i = 0; i < getItemCount(); i++) {
-			HTMLOptionElement option = document.createElement(StringTypes.option);
-			option.innerHTML = getItem(i);
-			option.value = getItem(i);
-			if (getSelectedIndex() == i) {
-				option.selected = true;
-			}
-			getHTMLElement().appendChild(option);
-		}
-	}
+  public void initHTML() {
+    super.initHTML();
+    getHTMLElement().onchange =
+        e -> {
+          int i = (int) getHTMLElement().selectedIndex;
+          HTMLOptionElement option = (HTMLOptionElement) getHTMLElement().childNodes.item(i);
+          processItemEvent(new ItemEvent(this, 0, option.innerHTML, ItemEvent.SELECTED));
+          return e;
+        };
+    NodeList childNodes = getHTMLElement().childNodes;
+    for (int i = 0; i < childNodes.length; ++i) {
+      getHTMLElement().removeChild(childNodes.$get(i));
+    }
+    for (int i = 0; i < getItemCount(); i++) {
+      HTMLOptionElement option = document.createElement(StringTypes.option);
+      option.innerHTML = getItem(i);
+      option.value = getItem(i);
+      if (getSelectedIndex() == i) {
+        option.selected = true;
+      }
+      getHTMLElement().appendChild(option);
+    }
+  }
 
-	String constructComponentName() {
-		synchronized (Choice.class) {
-			return base + nameCounter++;
-		}
-	}
+  String constructComponentName() {
+    synchronized (Choice.class) {
+      return base + nameCounter++;
+    }
+  }
 
-	public int getItemCount() {
-		return countItems();
-	}
+  public int getItemCount() {
+    return countItems();
+  }
 
-	@Deprecated
-	public int countItems() {
-		return pItems.size();
-	}
+  @Deprecated
+  public int countItems() {
+    return pItems.size();
+  }
 
-	public String getItem(int index) {
-		return getItemImpl(index);
-	}
+  public String getItem(int index) {
+    return getItemImpl(index);
+  }
 
-	final String getItemImpl(int index) {
-		return pItems.elementAt(index);
-	}
+  final String getItemImpl(int index) {
+    return pItems.elementAt(index);
+  }
 
-	public void add(String item) {
-		addItem(item);
-	}
+  public void add(String item) {
+    addItem(item);
+  }
 
-	public void addItem(String item) {
-		synchronized (this) {
-			insertNoInvalidate(item, pItems.size());
-		}
-	}
+  public void addItem(String item) {
+    synchronized (this) {
+      insertNoInvalidate(item, pItems.size());
+    }
+  }
 
-	private void insertNoInvalidate(String item, int index) {
-		if (item == null) {
-			throw new NullPointerException("cannot add null item to Choice");
-		}
-		pItems.insertElementAt(item, index);
-		// no selection or selection shifted up
-		if (selectedIndex < 0 || selectedIndex >= index) {
-			select(0);
-		}
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
+  private void insertNoInvalidate(String item, int index) {
+    if (item == null) {
+      throw new NullPointerException("cannot add null item to Choice");
+    }
+    pItems.insertElementAt(item, index);
+    // no selection or selection shifted up
+    if (selectedIndex < 0 || selectedIndex >= index) {
+      select(0);
+    }
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	public void insert(String item, int index) {
-		synchronized (this) {
-			if (index < 0) {
-				throw new IllegalArgumentException("index less than zero.");
-			}
-			/* if the index greater than item count, add item to the end */
-			index = Math.min(index, pItems.size());
+  public void insert(String item, int index) {
+    synchronized (this) {
+      if (index < 0) {
+        throw new IllegalArgumentException("index less than zero.");
+      }
+      /* if the index greater than item count, add item to the end */
+      index = Math.min(index, pItems.size());
 
-			insertNoInvalidate(item, index);
-		}
-	}
+      insertNoInvalidate(item, index);
+    }
+  }
 
-	public void remove(String item) {
-		synchronized (this) {
-			int index = pItems.indexOf(item);
-			if (index < 0) {
-				throw new IllegalArgumentException("item " + item + " not found in choice");
-			} else {
-				removeNoInvalidate(index);
-			}
-		}
+  public void remove(String item) {
+    synchronized (this) {
+      int index = pItems.indexOf(item);
+      if (index < 0) {
+        throw new IllegalArgumentException("item " + item + " not found in choice");
+      } else {
+        removeNoInvalidate(index);
+      }
+    }
+  }
 
-	}
+  public void remove(int position) {
+    synchronized (this) {
+      removeNoInvalidate(position);
+    }
+  }
 
-	public void remove(int position) {
-		synchronized (this) {
-			removeNoInvalidate(position);
-		}
-	}
+  private void removeNoInvalidate(int position) {
+    pItems.removeElementAt(position);
+    if (pItems.size() == 0) {
+      selectedIndex = -1;
+    } else if (selectedIndex == position) {
+      select(0);
+    } else if (selectedIndex > position) {
+      select(selectedIndex - 1);
+    }
+    if (htmlElement != null) {
+      initHTML();
+    }
+  }
 
-	private void removeNoInvalidate(int position) {
-		pItems.removeElementAt(position);
-		if (pItems.size() == 0) {
-			selectedIndex = -1;
-		} else if (selectedIndex == position) {
-			select(0);
-		} else if (selectedIndex > position) {
-			select(selectedIndex - 1);
-		}
-		if (htmlElement != null) {
-			initHTML();
-		}
-	}
+  public void removeAll() {
+    synchronized (this) {
+      pItems.removeAllElements();
+      selectedIndex = -1;
+      if (htmlElement != null) {
+        initHTML();
+      }
+    }
+  }
 
-	public void removeAll() {
-		synchronized (this) {
-			pItems.removeAllElements();
-			selectedIndex = -1;
-			if (htmlElement != null) {
-				initHTML();
-			}
-		}
-	}
+  public synchronized String getSelectedItem() {
+    return (selectedIndex >= 0) ? getItem(selectedIndex) : null;
+  }
 
-	public synchronized String getSelectedItem() {
-		return (selectedIndex >= 0) ? getItem(selectedIndex) : null;
-	}
+  public synchronized Object[] getSelectedObjects() {
+    if (selectedIndex >= 0) {
+      Object[] items = new Object[1];
+      items[0] = getItem(selectedIndex);
+      return items;
+    }
+    return null;
+  }
 
-	public synchronized Object[] getSelectedObjects() {
-		if (selectedIndex >= 0) {
-			Object[] items = new Object[1];
-			items[0] = getItem(selectedIndex);
-			return items;
-		}
-		return null;
-	}
+  public int getSelectedIndex() {
+    return selectedIndex;
+  }
 
-	public int getSelectedIndex() {
-		return selectedIndex;
-	}
+  public synchronized void select(int pos) {
+    if ((pos >= pItems.size()) || (pos < 0)) {
+      throw new IllegalArgumentException("illegal Choice item position: " + pos);
+    }
+    if (pItems.size() > 0) {
+      selectedIndex = pos;
+      if (htmlElement != null) {
+        initHTML();
+      }
+    }
+  }
 
-	public synchronized void select(int pos) {
-		if ((pos >= pItems.size()) || (pos < 0)) {
-			throw new IllegalArgumentException("illegal Choice item position: " + pos);
-		}
-		if (pItems.size() > 0) {
-			selectedIndex = pos;
-			if (htmlElement != null) {
-				initHTML();
-			}
-		}
-	}
+  public synchronized void select(String str) {
+    int index = pItems.indexOf(str);
+    if (index >= 0) {
+      select(index);
+    }
+  }
 
-	public synchronized void select(String str) {
-		int index = pItems.indexOf(str);
-		if (index >= 0) {
-			select(index);
-		}
-	}
+  public synchronized void addItemListener(ItemListener l) {
+    if (l == null) {
+      return;
+    }
+    itemListeners.push(l);
+  }
 
-	public synchronized void addItemListener(ItemListener l) {
-		if (l == null) {
-			return;
-		}
-		itemListeners.push(l);
-	}
+  public synchronized void removeItemListener(ItemListener l) {
+    if (l == null) {
+      return;
+    }
+    int index = (int) itemListeners.indexOf(l);
+    if (index > -1) {
+      itemListeners.splice(index, 1);
+    }
+  }
 
-	public synchronized void removeItemListener(ItemListener l) {
-		if (l == null) {
-			return;
-		}
-		int index = (int) itemListeners.indexOf(l);
-		if (index > -1) {
-			itemListeners.splice(index, 1);
-		}
-	}
+  public synchronized ItemListener[] getItemListeners() {
+    return array(itemListeners);
+  }
 
-	public synchronized ItemListener[] getItemListeners() {
-		return array(itemListeners);
-	}
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
+    Array<T> result = new Array<T>();
+    for (int i = 0; i < itemListeners.length; i++) {
+      if (itemListeners.$get(i).getClass() == listenerType) {
+        result.push(any(itemListeners.$get(i)));
+      }
+    }
+    return array(result);
+  }
 
-	public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
-		Array<T> result = new Array<T>();
-		for (int i = 0; i < itemListeners.length; i++) {
-			if (itemListeners.$get(i).getClass() == listenerType) {
-				result.push(any(itemListeners.$get(i)));
-			}
-		}
-		return array(result);
-	}
+  protected void processItemEvent(ItemEvent e) {
+    for (ItemListener listener : itemListeners) {
+      listener.itemStateChanged(e);
+    }
+  }
 
-	protected void processItemEvent(ItemEvent e) {
-		for (ItemListener listener : itemListeners) {
-			listener.itemStateChanged(e);
-		}
-	}
-
-	protected String paramString() {
-		return super.paramString() + ",current=" + getSelectedItem();
-	}
-
+  protected String paramString() {
+    return super.paramString() + ",current=" + getSelectedItem();
+  }
 }

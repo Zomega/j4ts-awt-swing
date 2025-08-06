@@ -28,164 +28,163 @@ import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 import static jsweet.util.Lang.array;
 
+import def.dom.HTMLInputElement;
+import def.dom.Text;
+import def.js.Array;
 import java.awt.Checkbox;
 import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.EventListener;
-
-import def.dom.HTMLInputElement;
-import def.dom.Text;
-import def.js.Array;
 import jsweet.util.StringTypes;
 
 public class JCheckBox extends JToggleButton implements ItemSelectable {
 
-	String label;
+  String label;
 
-	boolean state;
+  boolean state;
 
-	Array<ItemListener> itemListeners;
+  Array<ItemListener> itemListeners;
 
-	HTMLInputElement htmlCheckbox;
-	Text htmlLabel;
+  HTMLInputElement htmlCheckbox;
+  Text htmlLabel;
 
-	private static final String base = "checkbox";
-	private static int nameCounter = 0;
+  private static final String base = "checkbox";
+  private static int nameCounter = 0;
 
-	static final long serialVersionUID = 7270714317450821763L;
+  static final long serialVersionUID = 7270714317450821763L;
 
-	public JCheckBox() {
-		this("", false);
-	}
+  public JCheckBox() {
+    this("", false);
+  }
 
-	public JCheckBox(String label) {
-		this(label, false);
-	}
+  public JCheckBox(String label) {
+    this(label, false);
+  }
 
-	public JCheckBox(String label, boolean state) {
-		this.label = label;
-		this.state = state;
-		this.itemListeners = new Array<ItemListener>();
-	}
+  public JCheckBox(String label, boolean state) {
+    this.label = label;
+    this.state = state;
+    this.itemListeners = new Array<ItemListener>();
+  }
 
-	@Override
-	public void createHTML() {
-		if (htmlElement != null) {
-			return;
-		}
-		htmlElement = document.createElement(StringTypes.label);
+  @Override
+  public void createHTML() {
+    if (htmlElement != null) {
+      return;
+    }
+    htmlElement = document.createElement(StringTypes.label);
 
-		htmlCheckbox = document.createElement(StringTypes.input);
-		htmlCheckbox.type = "checkbox";
+    htmlCheckbox = document.createElement(StringTypes.input);
+    htmlCheckbox.type = "checkbox";
 
-		htmlElement.appendChild(htmlCheckbox);
-		htmlElement.appendChild(htmlLabel = document.createTextNode(""));
-		htmlElement.style.whiteSpace = "nowrap";
-		htmlElement.style.display = "inline";
-	}
+    htmlElement.appendChild(htmlCheckbox);
+    htmlElement.appendChild(htmlLabel = document.createTextNode(""));
+    htmlElement.style.whiteSpace = "nowrap";
+    htmlElement.style.display = "inline";
+  }
 
-	@Override
-	public void initHTML() {
-		super.initHTML();
-		htmlCheckbox.checked = state;
-		htmlLabel.data = label;
+  @Override
+  public void initHTML() {
+    super.initHTML();
+    htmlCheckbox.checked = state;
+    htmlLabel.data = label;
 
-		htmlCheckbox.onclick = e -> {
-			setState(htmlCheckbox.checked);
-			processItemEvent(
-					new ItemEvent(this, 0, null, htmlCheckbox.checked ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
-			return e;
-		};
-	}
+    htmlCheckbox.onclick =
+        e -> {
+          setState(htmlCheckbox.checked);
+          processItemEvent(
+              new ItemEvent(
+                  this, 0, null, htmlCheckbox.checked ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
+          return e;
+        };
+  }
 
-	String constructComponentName() {
-		synchronized (Checkbox.class) {
-			return base + nameCounter++;
-		}
-	}
+  String constructComponentName() {
+    synchronized (Checkbox.class) {
+      return base + nameCounter++;
+    }
+  }
 
-	public String getLabel() {
-		return label;
-	}
+  public String getLabel() {
+    return label;
+  }
 
-	public void setLabel(String label) {
-		synchronized (this) {
-			if (label != this.label && (this.label == null || !this.label.equals(label))) {
-				this.label = label;
-			}
-		}
+  public void setLabel(String label) {
+    synchronized (this) {
+      if (label != this.label && (this.label == null || !this.label.equals(label))) {
+        this.label = label;
+      }
+    }
+  }
 
-	}
+  public boolean getState() {
+    return this.state;
+  }
 
-	public boolean getState() {
-		return this.state;
-	}
+  void setStateInternal(boolean state) {
+    this.state = state;
+    if (htmlCheckbox != null) {
+      htmlCheckbox.checked = state;
+    }
+  }
 
-	void setStateInternal(boolean state) {
-		this.state = state;
-		if (htmlCheckbox != null) {
-			htmlCheckbox.checked = state;
-		}
-	}
+  public void setState(boolean state) {
+    setStateInternal(state);
+  }
 
-	public void setState(boolean state) {
-		setStateInternal(state);
-	}
+  public Object[] getSelectedObjects() {
+    if (state) {
+      Object[] items = new Object[1];
+      items[0] = label;
+      return items;
+    }
+    return null;
+  }
 
-	public Object[] getSelectedObjects() {
-		if (state) {
-			Object[] items = new Object[1];
-			items[0] = label;
-			return items;
-		}
-		return null;
-	}
+  public synchronized void addItemListener(ItemListener l) {
+    if (l == null) {
+      return;
+    }
+    itemListeners.push(l);
+  }
 
-	public synchronized void addItemListener(ItemListener l) {
-		if (l == null) {
-			return;
-		}
-		itemListeners.push(l);
-	}
+  public synchronized void removeItemListener(ItemListener l) {
+    if (l == null) {
+      return;
+    }
+    int index = (int) itemListeners.indexOf(l);
+    if (index > -1) {
+      itemListeners.splice(index, 1);
+    }
+  }
 
-	public synchronized void removeItemListener(ItemListener l) {
-		if (l == null) {
-			return;
-		}
-		int index = (int) itemListeners.indexOf(l);
-		if (index > -1) {
-			itemListeners.splice(index, 1);
-		}
-	}
+  public synchronized ItemListener[] getItemListeners() {
+    return array(itemListeners);
+  }
 
-	public synchronized ItemListener[] getItemListeners() {
-		return array(itemListeners);
-	}
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
+    Array<T> result = new Array<T>();
+    for (int i = 0; i < itemListeners.length; i++) {
+      if (itemListeners.$get(i).getClass() == listenerType) {
+        result.push(any(itemListeners.$get(i)));
+      }
+    }
+    return array(result);
+  }
 
-	public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
-		Array<T> result = new Array<T>();
-		for (int i = 0; i < itemListeners.length; i++) {
-			if (itemListeners.$get(i).getClass() == listenerType) {
-				result.push(any(itemListeners.$get(i)));
-			}
-		}
-		return array(result);
-	}
+  protected void processItemEvent(ItemEvent e) {
+    for (ItemListener listener : itemListeners) {
+      listener.itemStateChanged(e);
+    }
+  }
 
-	protected void processItemEvent(ItemEvent e) {
-		for (ItemListener listener : itemListeners) {
-			listener.itemStateChanged(e);
-		}
-	}
-
-	protected String paramString() {
-		String str = super.paramString();
-		String label = this.label;
-		if (label != null) {
-			str += ",label=" + label;
-		}
-		return str + ",state=" + state;
-	}
-
+  protected String paramString() {
+    String str = super.paramString();
+    String label = this.label;
+    if (label != null) {
+      str += ",label=" + label;
+    }
+    return str + ",state=" + state;
+  }
 }

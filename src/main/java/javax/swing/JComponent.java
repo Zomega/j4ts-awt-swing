@@ -26,15 +26,14 @@ package javax.swing;
 
 import java.awt.Container;
 import java.io.Serializable;
-
 import javax.swing.event.EventListenerList;
 
 @SuppressWarnings("serial")
 public abstract class JComponent extends Container implements Serializable {
 
-	protected EventListenerList listenerList = new EventListenerList();
+  protected EventListenerList listenerList = new EventListenerList();
 
-	public void setBorder(Object /*Border*/ border) {
-		// TODO: Implement?
-	}
+  public void setBorder(Object /*Border*/ border) {
+    // TODO: Implement?
+  }
 }

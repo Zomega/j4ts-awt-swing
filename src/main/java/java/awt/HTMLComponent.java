@@ -4,12 +4,11 @@ import def.dom.HTMLElement;
 
 public interface HTMLComponent {
 
-	HTMLElement getHTMLElement();
+  HTMLElement getHTMLElement();
 
-	void bindHTML(HTMLElement htmlElement);
+  void bindHTML(HTMLElement htmlElement);
 
-	void createHTML();
+  void createHTML();
 
-	void initHTML();
-
+  void initHTML();
 }

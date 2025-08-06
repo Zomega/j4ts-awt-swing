@@ -28,94 +28,88 @@ package javax.swing;
 import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.LayoutManager2;
-import java.io.Serializable;
-
 import def.dom.HTMLDivElement;
 import def.dom.HTMLTableCellElement;
 import def.dom.HTMLTableElement;
 import def.dom.HTMLTableRowElement;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.LayoutManager2;
+import java.io.Serializable;
 import jsweet.util.StringTypes;
 
 @SuppressWarnings("serial")
 public class BoxLayout implements LayoutManager2, Serializable {
 
-	public static final int X_AXIS = 0;
+  public static final int X_AXIS = 0;
 
-	public static final int Y_AXIS = 1;
+  public static final int Y_AXIS = 1;
 
-	public static final int LINE_AXIS = 2;
+  public static final int LINE_AXIS = 2;
 
-	public static final int PAGE_AXIS = 3;
+  public static final int PAGE_AXIS = 3;
 
-	private HTMLTableElement table;
+  private HTMLTableElement table;
 
-	public BoxLayout(Container target, int axis) {
-		if (axis != X_AXIS && axis != Y_AXIS && axis != LINE_AXIS && axis != PAGE_AXIS) {
-			throw new Error("Invalid axis");
-		}
-		this.axis = axis;
-		this.target = target;
-	}
+  public BoxLayout(Container target, int axis) {
+    if (axis != X_AXIS && axis != Y_AXIS && axis != LINE_AXIS && axis != PAGE_AXIS) {
+      throw new Error("Invalid axis");
+    }
+    this.axis = axis;
+    this.target = target;
+  }
 
-	public final Container getTarget() {
-		return this.target;
-	}
+  public final Container getTarget() {
+    return this.target;
+  }
 
-	public final int getAxis() {
-		return this.axis;
-	}
+  public final int getAxis() {
+    return this.axis;
+  }
 
-	public synchronized void invalidateLayout(Container target) {
-	}
+  public synchronized void invalidateLayout(Container target) {}
 
-	public void addLayoutComponent(String name, Component comp) {
-	}
+  public void addLayoutComponent(String name, Component comp) {}
 
-	public void removeLayoutComponent(Component comp) {
-	}
+  public void removeLayoutComponent(Component comp) {}
 
-	@Override
-	public void addLayoutComponent(Component comp, Object constraints) {
-		if (axis == X_AXIS || axis == LINE_AXIS) {
-			HTMLTableRowElement tr = (HTMLTableRowElement) table.firstChild;
-			if (tr == null) {
-				tr = document.createElement(StringTypes.tr);
-				table.appendChild(tr);
-			}
-			HTMLTableCellElement td = document.createElement(StringTypes.td);
-			td.appendChild(comp.getHTMLElement());
-			tr.appendChild(td);
-		} else {
-			HTMLTableRowElement tr = document.createElement(StringTypes.tr);
-			HTMLTableCellElement td = document.createElement(StringTypes.td);
-			tr.appendChild(td);
-			td.appendChild(comp.getHTMLElement());
-			table.appendChild(tr);
-		}
-	}
+  @Override
+  public void addLayoutComponent(Component comp, Object constraints) {
+    if (axis == X_AXIS || axis == LINE_AXIS) {
+      HTMLTableRowElement tr = (HTMLTableRowElement) table.firstChild;
+      if (tr == null) {
+        tr = document.createElement(StringTypes.tr);
+        table.appendChild(tr);
+      }
+      HTMLTableCellElement td = document.createElement(StringTypes.td);
+      td.appendChild(comp.getHTMLElement());
+      tr.appendChild(td);
+    } else {
+      HTMLTableRowElement tr = document.createElement(StringTypes.tr);
+      HTMLTableCellElement td = document.createElement(StringTypes.td);
+      tr.appendChild(td);
+      td.appendChild(comp.getHTMLElement());
+      table.appendChild(tr);
+    }
+  }
 
-	public synchronized float getLayoutAlignmentX(Container target) {
-		return 0;
-	}
+  public synchronized float getLayoutAlignmentX(Container target) {
+    return 0;
+  }
 
-	public synchronized float getLayoutAlignmentY(Container target) {
-		return 0;
-	}
+  public synchronized float getLayoutAlignmentY(Container target) {
+    return 0;
+  }
 
-	@Override
-	public void layoutContainer(Container target) {
-		if (table == null) {
-			table = document.createElement(StringTypes.table);
-			HTMLDivElement div = any(target.getHTMLElement());
-			div.appendChild(table);
-		}
-	}
+  @Override
+  public void layoutContainer(Container target) {
+    if (table == null) {
+      table = document.createElement(StringTypes.table);
+      HTMLDivElement div = any(target.getHTMLElement());
+      div.appendChild(table);
+    }
+  }
 
-	private int axis;
-	private Container target;
-
+  private int axis;
+  private Container target;
 }
