@@ -10,4 +10,8 @@ public class Dialog extends Window {
 	public void dispose() {
 		// TODO: Implement
 	}
+
+	public void	setTitle(String title) {
+		// TODO: Implement?
+	}
 }

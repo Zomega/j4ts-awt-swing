@@ -37,4 +37,8 @@ public class Toolkit {
 		return createImage(filename);
 	}
 
+	Dimension getScreenSize() {
+		return null; // TODO
+	}
+
 }

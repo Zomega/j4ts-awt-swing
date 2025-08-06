@@ -5128,6 +5128,7 @@ declare namespace java.awt {
         static getDefaultToolkit(): Toolkit;
         createImage(filename: string): java.awt.Image;
         getImage(filename: string): java.awt.Image;
+        getScreenSize(): java.awt.Dimension;
         constructor();
     }
 }
@@ -18322,6 +18323,7 @@ declare namespace java.awt {
     class Dialog extends java.awt.Window {
         constructor(frame: any, bool: boolean);
         dispose(): void;
+        setTitle(title: string): void;
     }
 }
 declare namespace javax.swing {

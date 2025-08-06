@@ -10868,6 +10868,9 @@ var java;
             Toolkit.prototype.getImage = function (filename) {
                 return this.createImage(filename);
             };
+            Toolkit.prototype.getScreenSize = function () {
+                return null;
+            };
             Toolkit.toolkit = null;
             return Toolkit;
         }());
@@ -38672,6 +38675,8 @@ var javax;
                 return _super.call(this) || this;
             }
             Dialog.prototype.dispose = function () {
+            };
+            Dialog.prototype.setTitle = function (title) {
             };
             return Dialog;
         }(java.awt.Window));
