@@ -18109,7 +18109,9 @@ declare namespace java.applet {
          * @param {string} msg A string to display in the status window.
          */
         showStatus(msg: string): void;
-        getImage(url: java.net.URL): java.awt.Image;
+        getImage$java_net_URL(url: java.net.URL): java.awt.Image;
+        getImage$java_net_URL$java_lang_String(url: java.net.URL, name: string): java.awt.Image;
+        getImage(url?: any, name?: any): java.awt.Image;
         getAppletContext(): java.applet.AppletContext;
     }
 }
@@ -19721,6 +19723,16 @@ declare namespace javax.swing {
         }
     }
 }
+declare namespace javax.swing {
+    class JTextPane extends javax.swing.JComponent {
+        /**
+         *
+         */
+        createHTML(): void;
+        setPage(page: java.net.URL): void;
+        constructor();
+    }
+}
 declare namespace javax.swing.text {
     abstract class JTextComponent extends javax.swing.JComponent {
         text: string;
@@ -19790,6 +19802,17 @@ declare namespace javax.swing {
         addAdjustmentListener(l: java.awt.event.AdjustmentListener): void;
         removeAdjustmentListener(l: java.awt.event.AdjustmentListener): void;
         setValues(newValue: number, newExtent: number, newMin: number, newMax: number): void;
+    }
+}
+declare namespace javax.swing {
+    class JTabbedPane extends javax.swing.JComponent {
+        /**
+         *
+         */
+        createHTML(): void;
+        setTabPlacement(tabPlacement: number): void;
+        addTab(title: string, icon: javax.swing.Icon, component: java.awt.Component, tip: string): void;
+        constructor();
     }
 }
 declare namespace javax.swing {
@@ -20269,6 +20292,16 @@ declare namespace javax.swing {
             itemStateChanged(event: java.awt.event.ItemEvent): void;
             constructor(__parent: any);
         }
+    }
+}
+declare namespace javax.swing {
+    class JScrollPane extends javax.swing.JComponent {
+        /**
+         *
+         */
+        createHTML(): void;
+        getViewport(): any;
+        constructor();
     }
 }
 declare namespace javax.swing {

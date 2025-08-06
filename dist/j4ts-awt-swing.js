@@ -15915,7 +15915,7 @@ var java;
                 console.log("Attempted to showDocument.");
             };
             AppletContext.prototype.getImage = function (url) {
-                return this.applet.getImage(url);
+                return this.applet.getImage$java_net_URL(url);
             };
             return AppletContext;
         }());
@@ -38407,8 +38407,21 @@ var javax;
             Applet.prototype.showStatus = function (msg) {
                 window.status = msg;
             };
-            Applet.prototype.getImage = function (url) {
+            Applet.prototype.getImage$java_net_URL = function (url) {
                 return new java.awt.Image(url.toString());
+            };
+            Applet.prototype.getImage$java_net_URL$java_lang_String = function (url, name) {
+                return null;
+            };
+            Applet.prototype.getImage = function (url, name) {
+                if (((url != null && url instanceof java.net.URL) || url === null) && ((typeof name === 'string') || name === null)) {
+                    return this.getImage$java_net_URL$java_lang_String(url, name);
+                }
+                else if (((url != null && url instanceof java.net.URL) || url === null) && name === undefined) {
+                    return this.getImage$java_net_URL(url);
+                }
+                else
+                    throw new Error('invalid overload');
             };
             Applet.prototype.getAppletContext = function () {
                 return new java.applet.AppletContext(this);
@@ -41302,6 +41315,32 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        var JTextPane = /** @class */ (function (_super) {
+            __extends(JTextPane, _super);
+            function JTextPane() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JTextPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+            };
+            JTextPane.prototype.setPage = function (page) {
+            };
+            return JTextPane;
+        }(javax.swing.JComponent));
+        swing.JTextPane = JTextPane;
+        JTextPane["__class"] = "javax.swing.JTextPane";
+        JTextPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var text;
         (function (text_2) {
             var JTextComponent = /** @class */ (function (_super) {
@@ -41517,6 +41556,34 @@ var javax;
         swing.JScrollBar = JScrollBar;
         JScrollBar["__class"] = "javax.swing.JScrollBar";
         JScrollBar["__interfaces"] = ["java.awt.HTMLComponent", "java.awt.Adjustable", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JTabbedPane = /** @class */ (function (_super) {
+            __extends(JTabbedPane, _super);
+            function JTabbedPane() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JTabbedPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+            };
+            JTabbedPane.prototype.setTabPlacement = function (tabPlacement) {
+            };
+            JTabbedPane.prototype.addTab = function (title, icon, component, tip) {
+            };
+            return JTabbedPane;
+        }(javax.swing.JComponent));
+        swing.JTabbedPane = JTabbedPane;
+        JTabbedPane["__class"] = "javax.swing.JTabbedPane";
+        JTabbedPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -42618,6 +42685,33 @@ var javax;
             Handler["__class"] = "javax.swing.AbstractButton.Handler";
             Handler["__interfaces"] = ["java.util.EventListener", "java.awt.event.ActionListener", "javax.swing.event.ChangeListener", "java.awt.event.ItemListener", "java.io.Serializable"];
         })(AbstractButton = swing.AbstractButton || (swing.AbstractButton = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JScrollPane = /** @class */ (function (_super) {
+            __extends(JScrollPane, _super);
+            function JScrollPane() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JScrollPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+            };
+            JScrollPane.prototype.getViewport = function () {
+                return null;
+            };
+            return JScrollPane;
+        }(javax.swing.JComponent));
+        swing.JScrollPane = JScrollPane;
+        JScrollPane["__class"] = "javax.swing.JScrollPane";
+        JScrollPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
