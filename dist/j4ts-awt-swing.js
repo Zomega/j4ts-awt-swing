@@ -102,8 +102,8 @@ var java;
              */
             Image.SCALE_DEFAULT = 1;
             /**
-             * Choose an image-scaling algorithm that gives higher priority to scaling
-             * speed than smoothness of the scaled image.
+             * Choose an image-scaling algorithm that gives higher priority to scaling speed than smoothness
+             * of the scaled image.
              *
              * @since JDK1.1
              */
@@ -375,9 +375,8 @@ var java;
                 return this.getAscent() + this.getDescent() + this.getLeading();
             };
             /**
-             * Gets the font ascent of the Font associated with this FontMetrics.
-             * For a JSweet port, this is a default/stub value.
-             * A more accurate implementation would require measuring text on a canvas.
+             * Gets the font ascent of the Font associated with this FontMetrics. For a JSweet port, this is a
+             * default/stub value. A more accurate implementation would require measuring text on a canvas.
              *
              * @return {number} the ascent of the Font associated with this FontMetrics.
              */
@@ -385,8 +384,8 @@ var java;
                 return 15;
             };
             /**
-             * Gets the font descent of the Font associated with this FontMetrics.
-             * For a JSweet port, this is a default/stub value.
+             * Gets the font descent of the Font associated with this FontMetrics. For a JSweet port, this is
+             * a default/stub value.
              *
              * @return {number} the descent of the Font associated with this FontMetrics.
              */
@@ -394,8 +393,8 @@ var java;
                 return 5;
             };
             /**
-             * Gets the leading of the Font associated with this FontMetrics.
-             * For a JSweet port, this is a default/stub value.
+             * Gets the leading of the Font associated with this FontMetrics. For a JSweet port, this is a
+             * default/stub value.
              *
              * @return {number} the leading of the Font associated with this FontMetrics.
              */
@@ -411,8 +410,8 @@ var java;
                 return true;
             };
             /**
-             * Returns the distance from the leftmost point to the rightmost point on
-             * the string's baseline showing the specified array of bytes in this Font.
+             * Returns the distance from the leftmost point to the rightmost point on the string's baseline
+             * showing the specified array of bytes in this Font.
              *
              * @param {byte[]} data the array of bytes to be measured.
              * @param {number} off the start offset.
@@ -436,9 +435,8 @@ var java;
                 return width;
             };
             /**
-             * Returns the distance from the leftmost point to the rightmost point on
-             * the string's baseline showing the specified array of characters in this
-             * Font.
+             * Returns the distance from the leftmost point to the rightmost point on the string's baseline
+             * showing the specified array of characters in this Font.
              *
              * @param {char[]} data the array of characters to be measured.
              * @param {number} off the start offset.
@@ -478,8 +476,8 @@ var java;
                 return this.charWidth$int((ch).charCodeAt(0));
             };
             /**
-             * Returns the distance from the leftmost point to the rightmost point of
-             * the specified character in this Font.
+             * Returns the distance from the leftmost point to the rightmost point of the specified character
+             * in this Font.
              *
              * @param {string} ch the specified character to be measured.
              * @return {number} the advance width of the character.
@@ -495,8 +493,8 @@ var java;
                     throw new Error('invalid overload');
             };
             /**
-             * Gets the maximum advance width of character in this Font.
-             * For a JSweet port, this is a default/stub value or derived from `measureText`.
+             * Gets the maximum advance width of character in this Font. For a JSweet port, this is a
+             * default/stub value or derived from `measureText`.
              *
              * @return {number} the maximum advance width of character in this Font.
              */
@@ -504,11 +502,9 @@ var java;
                 return this.charWidth$char('W');
             };
             /**
-             * Gets the maximum font ascent of the Font associated with this
-             * FontMetrics.
+             * Gets the maximum font ascent of the Font associated with this FontMetrics.
              *
-             * @return {number} the maximum font ascent of the Font associated with this
-             * FontMetrics.
+             * @return {number} the maximum font ascent of the Font associated with this FontMetrics.
              */
             FontMetrics.prototype.getMaxAscent = function () {
                 return this.getAscent();
@@ -531,8 +527,8 @@ var java;
                 return this.getDescent();
             };
             /**
-             * Gets the advance widths of the characters in the Font.
-             * This is a complex method to port accurately without full font data.
+             * Gets the advance widths of the characters in the Font. This is a complex method to port
+             * accurately without full font data.
              *
              * @return {int[]} the advance widths of the characters in the Font.
              */
@@ -576,12 +572,10 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * The <code>Dimension2D</code> class is to encapsulate a width and a height
-             * dimension.
-             * <p>
-             * This class is only the abstract superclass for all objects that store a 2D
-             * dimension. The actual storage representation of the sizes is left to the
-             * subclass.
+             * The <code>Dimension2D</code> class is to encapsulate a width and a height dimension.
+             *
+             * <p>This class is only the abstract superclass for all objects that store a 2D dimension. The
+             * actual storage representation of the sizes is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -592,15 +586,12 @@ var java;
                 }
                 Dimension2D.prototype.setSize$double$double = function (width, height) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the size of this <code>Dimension</code> object to the specified
-                 * width and height. This method is included for completeness, to parallel
-                 * the {@link java.awt.Component#getSize} method of
-                 * {@link java.awt.Component}.
+                 * Sets the size of this <code>Dimension</code> object to the specified width and height. This
+                 * method is included for completeness, to parallel the {@link java.awt.Component#getSize}
+                 * method of {@link java.awt.Component}.
                  *
-                 * @param {number} width
-                 * the new width for the <code>Dimension</code> object
-                 * @param {number} height
-                 * the new height for the <code>Dimension</code> object
+                 * @param {number} width the new width for the <code>Dimension</code> object
+                 * @param {number} height the new height for the <code>Dimension</code> object
                  * @since 1.2
                  */
                 Dimension2D.prototype.setSize = function (width, height) {
@@ -620,8 +611,7 @@ var java;
                  * Creates a new object of the same class as this object.
                  *
                  * @return {*} a clone of this instance.
-                 * @exception OutOfMemoryError
-                 * if there is not enough memory.
+                 * @exception OutOfMemoryError if there is not enough memory.
                  * @see java.lang.Cloneable
                  * @since 1.2
                  */
@@ -650,8 +640,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of a cubic curve segment
-             * through the PathIterator interface.
+             * A utility class to iterate over the path segments of a cubic curve segment through the
+             * PathIterator interface.
              *
              * @author Jim Graham
              * @class
@@ -689,9 +679,8 @@ var java;
                     return (this.index > 1);
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 CubicIterator.prototype.next = function () {
                     this.index++;
@@ -721,14 +710,12 @@ var java;
                     return type;
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -786,12 +773,11 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * The <code>Point2D</code> class defines a point representing a location in
-             * {@code (x,y)} coordinate space.
-             * <p>
-             * This class is only the abstract superclass for all objects that store a 2D
-             * coordinate. The actual storage representation of the coordinates is left to
-             * the subclass.
+             * The <code>Point2D</code> class defines a point representing a location in {@code (x,y)}
+             * coordinate space.
+             *
+             * <p>This class is only the abstract superclass for all objects that store a 2D coordinate. The
+             * actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -802,13 +788,11 @@ var java;
                 }
                 Point2D.prototype.setLocation$double$double = function (x, y) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location of this <code>Point2D</code> to the specified
-                 * <code>double</code> coordinates.
+                 * Sets the location of this <code>Point2D</code> to the specified <code>double</code>
+                 * coordinates.
                  *
-                 * @param {number} x
-                 * the new X coordinate of this {@code Point2D}
-                 * @param {number} y
-                 * the new Y coordinate of this {@code Point2D}
+                 * @param {number} x the new X coordinate of this {@code Point2D}
+                 * @param {number} y the new Y coordinate of this {@code Point2D}
                  * @since 1.2
                  */
                 Point2D.prototype.setLocation = function (x, y) {
@@ -827,16 +811,11 @@ var java;
                 /**
                  * Returns the square of the distance between two points.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the first specified point
-                 * @param {number} y1
-                 * the Y coordinate of the first specified point
-                 * @param {number} x2
-                 * the X coordinate of the second specified point
-                 * @param {number} y2
-                 * the Y coordinate of the second specified point
-                 * @return {number} the square of the distance between the two sets of specified
-                 * coordinates.
+                 * @param {number} x1 the X coordinate of the first specified point
+                 * @param {number} y1 the Y coordinate of the first specified point
+                 * @param {number} x2 the X coordinate of the second specified point
+                 * @param {number} y2 the Y coordinate of the second specified point
+                 * @return {number} the square of the distance between the two sets of specified coordinates.
                  * @since 1.2
                  */
                 Point2D.distanceSq = function (x1, y1, x2, y2) {
@@ -847,14 +826,10 @@ var java;
                 /**
                  * Returns the distance between two points.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the first specified point
-                 * @param {number} y1
-                 * the Y coordinate of the first specified point
-                 * @param {number} x2
-                 * the X coordinate of the second specified point
-                 * @param {number} y2
-                 * the Y coordinate of the second specified point
+                 * @param {number} x1 the X coordinate of the first specified point
+                 * @param {number} y1 the Y coordinate of the first specified point
+                 * @param {number} x2 the X coordinate of the second specified point
+                 * @param {number} y2 the Y coordinate of the second specified point
                  * @return {number} the distance between the two sets of specified coordinates.
                  * @since 1.2
                  */
@@ -869,17 +844,13 @@ var java;
                     return (px * px + py * py);
                 };
                 /**
-                 * Returns the square of the distance from this <code>Point2D</code> to a
-                 * specified point.
+                 * Returns the square of the distance from this <code>Point2D</code> to a specified point.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point to be measured against
-                 * this <code>Point2D</code>
-                 * @param {number} py
-                 * the Y coordinate of the specified point to be measured against
-                 * this <code>Point2D</code>
-                 * @return {number} the square of the distance between this <code>Point2D</code> and
-                 * the specified point.
+                 * @param {number} px the X coordinate of the specified point to be measured against this <code>Point2D
+                 * </code>
+                 * @param {number} py the Y coordinate of the specified point to be measured against this <code>Point2D
+                 * </code>
+                 * @return {number} the square of the distance between this <code>Point2D</code> and the specified point.
                  * @since 1.2
                  */
                 Point2D.prototype.distanceSq = function (px, py) {
@@ -905,14 +876,11 @@ var java;
                 /**
                  * Returns the distance from this <code>Point2D</code> to a specified point.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point to be measured against
-                 * this <code>Point2D</code>
-                 * @param {number} py
-                 * the Y coordinate of the specified point to be measured against
-                 * this <code>Point2D</code>
-                 * @return {number} the distance between this <code>Point2D</code> and a specified
-                 * point.
+                 * @param {number} px the X coordinate of the specified point to be measured against this <code>Point2D
+                 * </code>
+                 * @param {number} py the Y coordinate of the specified point to be measured against this <code>Point2D
+                 * </code>
+                 * @return {number} the distance between this <code>Point2D</code> and a specified point.
                  * @since 1.2
                  */
                 Point2D.prototype.distance = function (px, py) {
@@ -931,12 +899,10 @@ var java;
                     return Math.sqrt(px * px + py * py);
                 };
                 /**
-                 * Creates a new object of the same class and with the same contents as this
-                 * object.
+                 * Creates a new object of the same class and with the same contents as this object.
                  *
                  * @return {*} a clone of this instance.
-                 * @exception OutOfMemoryError
-                 * if there is not enough memory.
+                 * @exception OutOfMemoryError if there is not enough memory.
                  * @see java.lang.Cloneable
                  * @since 1.2
                  */
@@ -962,16 +928,13 @@ var java;
                     return (((bits | 0)) ^ (((bits >> 32) | 0)));
                 };
                 /**
-                 * Determines whether or not two points are equal. Two instances of
-                 * <code>Point2D</code> are equal if the values of their <code>x</code> and
-                 * <code>y</code> member fields, representing their position in the
-                 * coordinate space, are the same.
+                 * Determines whether or not two points are equal. Two instances of <code>Point2D</code> are equal
+                 * if the values of their <code>x</code> and <code>y</code> member fields, representing their
+                 * position in the coordinate space, are the same.
                  *
-                 * @param {*} obj
-                 * an object to be compared with this <code>Point2D</code>
-                 * @return {boolean} <code>true</code> if the object to be compared is an instance of
-                 * <code>Point2D</code> and has the same values; <code>false</code>
-                 * otherwise.
+                 * @param {*} obj an object to be compared with this <code>Point2D</code>
+                 * @return {boolean} <code>true</code> if the object to be compared is an instance of <code>Point2D</code>
+                 * and has the same values; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Point2D.prototype.equals = function (obj) {
@@ -988,15 +951,10 @@ var java;
             Point2D["__interfaces"] = ["java.lang.Cloneable"];
             (function (Point2D) {
                 /**
-                 * Constructs and initializes a <code>Point2D</code> with the specified
-                 * coordinates.
+                 * Constructs and initializes a <code>Point2D</code> with the specified coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the newly constructed
-                 * <code>Point2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the newly constructed
-                 * <code>Point2D</code>
+                 * @param {number} x the X coordinate of the newly constructed <code>Point2D</code>
+                 * @param {number} y the Y coordinate of the newly constructed <code>Point2D</code>
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Point2D
@@ -1058,13 +1016,11 @@ var java;
                         this.y = y;
                     };
                     /**
-                     * Sets the location of this <code>Point2D</code> to the specified
-                     * <code>float</code> coordinates.
+                     * Sets the location of this <code>Point2D</code> to the specified <code>float</code>
+                     * coordinates.
                      *
-                     * @param {number} x
-                     * the new X coordinate of this {@code Point2D}
-                     * @param {number} y
-                     * the new Y coordinate of this {@code Point2D}
+                     * @param {number} x the new X coordinate of this {@code Point2D}
+                     * @param {number} y the new Y coordinate of this {@code Point2D}
                      * @since 1.2
                      */
                     Float.prototype.setLocation = function (x, y) {
@@ -1081,8 +1037,7 @@ var java;
                             throw new Error('invalid overload');
                     };
                     /**
-                     * Returns a <code>String</code> that represents the value of this
-                     * <code>Point2D</code>.
+                     * Returns a <code>String</code> that represents the value of this <code>Point2D</code>.
                      *
                      * @return {string} a string representation of this <code>Point2D</code>.
                      * @since 1.2
@@ -1097,15 +1052,10 @@ var java;
                 Float["__class"] = "java.awt.geom.Point2D.Float";
                 Float["__interfaces"] = ["java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes a <code>Point2D</code> with the specified
-                 * coordinates.
+                 * Constructs and initializes a <code>Point2D</code> with the specified coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the newly constructed
-                 * <code>Point2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the newly constructed
-                 * <code>Point2D</code>
+                 * @param {number} x the X coordinate of the newly constructed <code>Point2D</code>
+                 * @param {number} y the Y coordinate of the newly constructed <code>Point2D</code>
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Point2D
@@ -1180,8 +1130,7 @@ var java;
                             throw new Error('invalid overload');
                     };
                     /**
-                     * Returns a <code>String</code> that represents the value of this
-                     * <code>Point2D</code>.
+                     * Returns a <code>String</code> that represents the value of this <code>Point2D</code>.
                      *
                      * @return {string} a string representation of this <code>Point2D</code>.
                      * @since 1.2
@@ -1205,11 +1154,10 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * Constructs an instance of <code>NoninvertibleTransformException</code>
-             * with the specified detail message.
+             * Constructs an instance of <code>NoninvertibleTransformException</code> with the specified
+             * detail message.
              *
-             * @param {string} s
-             * the detail message
+             * @param {string} s the detail message
              * @since 1.2
              * @class
              * @extends java.lang.Exception
@@ -1236,8 +1184,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of a rectangle through the
-             * PathIterator interface.
+             * A utility class to iterate over the path segments of a rectangle through the PathIterator
+             * interface.
              *
              * @author Jim Graham
              * @class
@@ -1290,9 +1238,8 @@ var java;
                     return this.index > 5;
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 RectIterator.prototype.next = function () {
                     this.index++;
@@ -1318,14 +1265,12 @@ var java;
                     return (this.index === 0 ? java.awt.geom.PathIterator.SEG_MOVETO : java.awt.geom.PathIterator.SEG_LINETO);
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -1379,8 +1324,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of an rounded rectangle
-             * through the PathIterator interface.
+             * A utility class to iterate over the path segments of an rounded rectangle through the
+             * PathIterator interface.
              *
              * @author Jim Graham
              * @class
@@ -1441,9 +1386,8 @@ var java;
                     return this.index >= RoundRectIterator.ctrlpts_$LI$().length;
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 RoundRectIterator.prototype.next = function () {
                     this.index++;
@@ -1491,14 +1435,12 @@ var java;
                     return RoundRectIterator.types_$LI$()[this.index];
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -1550,8 +1492,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of a quadratic curve
-             * segment through the PathIterator interface.
+             * A utility class to iterate over the path segments of a quadratic curve segment through the
+             * PathIterator interface.
              *
              * @author Jim Graham
              * @class
@@ -1589,9 +1531,8 @@ var java;
                     return (this.index > 1);
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 QuadIterator.prototype.next = function () {
                     this.index++;
@@ -1619,14 +1560,12 @@ var java;
                     return type;
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -1682,10 +1621,10 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * Constructs an <code>IllegalPathStateException</code> with the
-             * specified detail message.
-             * @param   {string} s   the detail message
-             * @since   1.2
+             * Constructs an <code>IllegalPathStateException</code> with the specified detail message.
+             *
+             * @param {string} s the detail message
+             * @since 1.2
              * @class
              * @extends java.lang.RuntimeException
              */
@@ -1719,8 +1658,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of a line segment through
-             * the PathIterator interface.
+             * A utility class to iterate over the path segments of a line segment through the PathIterator
+             * interface.
              *
              * @author Jim Graham
              * @class
@@ -1758,9 +1697,8 @@ var java;
                     return (this.index > 1);
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 LineIterator.prototype.next = function () {
                     this.index++;
@@ -1786,14 +1724,12 @@ var java;
                     return type;
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -1847,12 +1783,11 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * The <code>QuadCurve2D</code> class defines a quadratic parametric curve
-             * segment in {@code (x,y)} coordinate space.
-             * <p>
-             * This class is only the abstract superclass for all objects that store a 2D
-             * quadratic curve segment. The actual storage representation of the coordinates
-             * is left to the subclass.
+             * The <code>QuadCurve2D</code> class defines a quadratic parametric curve segment in {@code (x,y)}
+             * coordinate space.
+             *
+             * <p>This class is only the abstract superclass for all objects that store a 2D quadratic curve
+             * segment. The actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -1863,21 +1798,15 @@ var java;
                 }
                 QuadCurve2D.prototype.setCurve$double$double$double$double$double$double = function (x1, y1, ctrlx, ctrly, x2, y2) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location of the end points and control point of this curve to
-                 * the specified <code>double</code> coordinates.
+                 * Sets the location of the end points and control point of this curve to the specified <code>
+                 * double</code> coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} ctrlx
-                 * the X coordinate of the control point
-                 * @param {number} ctrly
-                 * the Y coordinate of the control point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} ctrlx the X coordinate of the control point
+                 * @param {number} ctrly the Y coordinate of the control point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
                  * @since 1.2
                  */
                 QuadCurve2D.prototype.setCurve = function (x1, y1, ctrlx, ctrly, x2, y2) {
@@ -1915,24 +1844,16 @@ var java;
                     return java.awt.geom.Line2D.ptSegDistSq(x1, y1, x2, y2, ctrlx, ctrly);
                 };
                 /**
-                 * Returns the square of the flatness, or maximum distance of a control
-                 * point from the line connecting the end points, of the quadratic curve
-                 * specified by the indicated control points.
+                 * Returns the square of the flatness, or maximum distance of a control point from the line
+                 * connecting the end points, of the quadratic curve specified by the indicated control points.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} ctrlx
-                 * the X coordinate of the control point
-                 * @param {number} ctrly
-                 * the Y coordinate of the control point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
-                 * @return {number} the square of the flatness of the quadratic curve defined by the
-                 * specified coordinates.
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} ctrlx the X coordinate of the control point
+                 * @param {number} ctrly the Y coordinate of the control point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
+                 * @return {number} the square of the flatness of the quadratic curve defined by the specified coordinates.
                  * @since 1.2
                  */
                 QuadCurve2D.getFlatnessSq = function (x1, y1, ctrlx, ctrly, x2, y2) {
@@ -1949,24 +1870,16 @@ var java;
                     return java.awt.geom.Line2D.ptSegDist(x1, y1, x2, y2, ctrlx, ctrly);
                 };
                 /**
-                 * Returns the flatness, or maximum distance of a control point from the
-                 * line connecting the end points, of the quadratic curve specified by the
-                 * indicated control points.
+                 * Returns the flatness, or maximum distance of a control point from the line connecting the end
+                 * points, of the quadratic curve specified by the indicated control points.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} ctrlx
-                 * the X coordinate of the control point
-                 * @param {number} ctrly
-                 * the Y coordinate of the control point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
-                 * @return {number} the flatness of the quadratic curve defined by the specified
-                 * coordinates.
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} ctrlx the X coordinate of the control point
+                 * @param {number} ctrly the Y coordinate of the control point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
+                 * @return {number} the flatness of the quadratic curve defined by the specified coordinates.
                  * @since 1.2
                  */
                 QuadCurve2D.getFlatness = function (x1, y1, ctrlx, ctrly, x2, y2) {
@@ -1986,9 +1899,8 @@ var java;
                     return java.awt.geom.Line2D.ptSegDist(coords[offset + 0], coords[offset + 1], coords[offset + 4], coords[offset + 5], coords[offset + 2], coords[offset + 3]);
                 };
                 /**
-                 * Returns the square of the flatness, or maximum distance of a control
-                 * point from the line connecting the end points, of this
-                 * <code>QuadCurve2D</code>.
+                 * Returns the square of the flatness, or maximum distance of a control point from the line
+                 * connecting the end points, of this <code>QuadCurve2D</code>.
                  *
                  * @return {number} the square of the flatness of this <code>QuadCurve2D</code>.
                  * @since 1.2
@@ -1997,8 +1909,8 @@ var java;
                     return java.awt.geom.Line2D.ptSegDistSq(this.getX1(), this.getY1(), this.getX2(), this.getY2(), this.getCtrlX(), this.getCtrlY());
                 };
                 /**
-                 * Returns the flatness, or maximum distance of a control point from the
-                 * line connecting the end points, of this <code>QuadCurve2D</code>.
+                 * Returns the flatness, or maximum distance of a control point from the line connecting the end
+                 * points, of this <code>QuadCurve2D</code>.
                  *
                  * @return {number} the flatness of this <code>QuadCurve2D</code>.
                  * @since 1.2
@@ -2007,18 +1919,15 @@ var java;
                     return java.awt.geom.Line2D.ptSegDist(this.getX1(), this.getY1(), this.getX2(), this.getY2(), this.getCtrlX(), this.getCtrlY());
                 };
                 /**
-                 * Subdivides this <code>QuadCurve2D</code> and stores the resulting two
-                 * subdivided curves into the <code>left</code> and <code>right</code> curve
-                 * parameters. Either or both of the <code>left</code> and
-                 * <code>right</code> objects can be the same as this
-                 * <code>QuadCurve2D</code> or <code>null</code>.
+                 * Subdivides this <code>QuadCurve2D</code> and stores the resulting two subdivided curves into
+                 * the <code>left</code> and <code>right</code> curve parameters. Either or both of the <code>left
+                 * </code> and <code>right</code> objects can be the same as this <code>QuadCurve2D</code> or
+                 * <code>null</code>.
                  *
-                 * @param {java.awt.geom.QuadCurve2D} left
-                 * the <code>QuadCurve2D</code> object for storing the left or
-                 * first half of the subdivided curve
-                 * @param {java.awt.geom.QuadCurve2D} right
-                 * the <code>QuadCurve2D</code> object for storing the right or
-                 * second half of the subdivided curve
+                 * @param {java.awt.geom.QuadCurve2D} left the <code>QuadCurve2D</code> object for storing the left or first half of the
+                 * subdivided curve
+                 * @param {java.awt.geom.QuadCurve2D} right the <code>QuadCurve2D</code> object for storing the right or second half of the
+                 * subdivided curve
                  * @since 1.2
                  */
                 QuadCurve2D.prototype.subdivide = function (left, right) {
@@ -2079,36 +1988,22 @@ var java;
                     }
                 };
                 /**
-                 * Subdivides the quadratic curve specified by the coordinates stored in the
-                 * <code>src</code> array at indices <code>srcoff</code> through
-                 * <code>srcoff</code>&nbsp;+&nbsp;5 and stores the resulting two subdivided
-                 * curves into the two result arrays at the corresponding indices. Either or
-                 * both of the <code>left</code> and <code>right</code> arrays can be
-                 * <code>null</code> or a reference to the same array and offset as the
-                 * <code>src</code> array. Note that the last point in the first subdivided
-                 * curve is the same as the first point in the second subdivided curve.
-                 * Thus, it is possible to pass the same array for <code>left</code> and
-                 * <code>right</code> and to use offsets such that <code>rightoff</code>
-                 * equals <code>leftoff</code> + 4 in order to avoid allocating extra
-                 * storage for this common point.
+                 * Subdivides the quadratic curve specified by the coordinates stored in the <code>src</code>
+                 * array at indices <code>srcoff</code> through <code>srcoff</code>&nbsp;+&nbsp;5 and stores the
+                 * resulting two subdivided curves into the two result arrays at the corresponding indices. Either
+                 * or both of the <code>left</code> and <code>right</code> arrays can be <code>null</code> or a
+                 * reference to the same array and offset as the <code>src</code> array. Note that the last point
+                 * in the first subdivided curve is the same as the first point in the second subdivided curve.
+                 * Thus, it is possible to pass the same array for <code>left</code> and <code>right</code> and to
+                 * use offsets such that <code>rightoff</code> equals <code>leftoff</code> + 4 in order to avoid
+                 * allocating extra storage for this common point.
                  *
-                 * @param {double[]} src
-                 * the array holding the coordinates for the source curve
-                 * @param {number} srcoff
-                 * the offset into the array of the beginning of the the 6 source
-                 * coordinates
-                 * @param {double[]} left
-                 * the array for storing the coordinates for the first half of
-                 * the subdivided curve
-                 * @param {number} leftoff
-                 * the offset into the array of the beginning of the the 6 left
-                 * coordinates
-                 * @param {double[]} right
-                 * the array for storing the coordinates for the second half of
-                 * the subdivided curve
-                 * @param {number} rightoff
-                 * the offset into the array of the beginning of the the 6 right
-                 * coordinates
+                 * @param {double[]} src the array holding the coordinates for the source curve
+                 * @param {number} srcoff the offset into the array of the beginning of the the 6 source coordinates
+                 * @param {double[]} left the array for storing the coordinates for the first half of the subdivided curve
+                 * @param {number} leftoff the offset into the array of the beginning of the the 6 left coordinates
+                 * @param {double[]} right the array for storing the coordinates for the second half of the subdivided curve
+                 * @param {number} rightoff the offset into the array of the beginning of the the 6 right coordinates
                  * @since 1.2
                  */
                 QuadCurve2D.subdivide = function (src, srcoff, left, leftoff, right, rightoff) {
@@ -2153,28 +2048,22 @@ var java;
                     return roots;
                 };
                 /**
-                 * Solves the quadratic whose coefficients are in the <code>eqn</code> array
-                 * and places the non-complex roots into the <code>res</code> array,
-                 * returning the number of roots. The quadratic solved is represented by the
-                 * equation:
+                 * Solves the quadratic whose coefficients are in the <code>eqn</code> array and places the
+                 * non-complex roots into the <code>res</code> array, returning the number of roots. The quadratic
+                 * solved is represented by the equation:
                  *
                  * <pre>
                  * eqn = {C, B, A};
                  * ax^2 + bx + c = 0
                  * </pre>
                  *
-                 * A return value of <code>-1</code> is used to distinguish a constant
-                 * equation, which might be always 0 or never 0, from an equation that has
-                 * no zeroes.
+                 * A return value of <code>-1</code> is used to distinguish a constant equation, which might be
+                 * always 0 or never 0, from an equation that has no zeroes.
                  *
-                 * @param {double[]} eqn
-                 * the specified array of coefficients to use to solve the
+                 * @param {double[]} eqn the specified array of coefficients to use to solve the quadratic equation
+                 * @param {double[]} res the array that contains the non-complex roots resulting from the solution of the
                  * quadratic equation
-                 * @param {double[]} res
-                 * the array that contains the non-complex roots resulting from
-                 * the solution of the quadratic equation
-                 * @return {number} the number of roots, or <code>-1</code> if the equation is a
-                 * constant.
+                 * @return {number} the number of roots, or <code>-1</code> if the equation is a constant.
                  * @since 1.3
                  */
                 QuadCurve2D.solveQuadratic = function (eqn, res) {
@@ -2214,12 +2103,11 @@ var java;
                     return this.contains$double$double(p.getX(), p.getY());
                 };
                 /**
-                 * Fill an array with the coefficients of the parametric equation in t,
-                 * ready for solving against val with solveQuadratic. We currently have: val
-                 * = Py(t) = C1*(1-t)^2 + 2*CP*t*(1-t) + C2*t^2 = C1 - 2*C1*t + C1*t^2 +
-                 * 2*CP*t - 2*CP*t^2 + C2*t^2 = C1 + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2
-                 * 0 = (C1 - val) + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2 0 = C + Bt + At^2
-                 * C = C1 - val B = 2*CP - 2*C1 A = C1 - 2*CP + C2
+                 * Fill an array with the coefficients of the parametric equation in t, ready for solving against
+                 * val with solveQuadratic. We currently have: val = Py(t) = C1*(1-t)^2 + 2*CP*t*(1-t) + C2*t^2 =
+                 * C1 - 2*C1*t + C1*t^2 + 2*CP*t - 2*CP*t^2 + C2*t^2 = C1 + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2
+                 * 0 = (C1 - val) + (2*CP - 2*C1)*t + (C1 - 2*CP + C2)*t^2 0 = C + Bt + At^2 C = C1 - val B = 2*CP
+                 * - 2*C1 A = C1 - 2*CP + C2
                  * @param {double[]} eqn
                  * @param {number} val
                  * @param {number} c1
@@ -2234,12 +2122,11 @@ var java;
                     return;
                 };
                 /**
-                 * Evaluate the t values in the first num slots of the vals[] array and
-                 * place the evaluated values back into the same array. Only evaluate t
-                 * values that are within the range &lt;0, 1&gt;, including the 0 and 1 ends
-                 * of the range iff the include0 or include1 booleans are true. If an
-                 * "inflection" equation is handed in, then any points which represent a
-                 * point of inflection for that quadratic equation are also ignored.
+                 * Evaluate the t values in the first num slots of the vals[] array and place the evaluated values
+                 * back into the same array. Only evaluate t values that are within the range &lt;0, 1&gt;,
+                 * including the 0 and 1 ends of the range iff the include0 or include1 booleans are true. If an
+                 * "inflection" equation is handed in, then any points which represent a point of inflection for
+                 * that quadratic equation are also ignored.
                  * @param {double[]} vals
                  * @param {number} num
                  * @param {boolean} include0
@@ -2266,9 +2153,8 @@ var java;
                     return j;
                 };
                 /**
-                 * Determine where coord lies with respect to the range from low to high. It
-                 * is assumed that low &lt;= high. The return value is one of the 5 values
-                 * BELOW, LOWEDGE, INSIDE, HIGHEDGE, or ABOVE.
+                 * Determine where coord lies with respect to the range from low to high. It is assumed that low
+                 * &lt;= high. The return value is one of the 5 values BELOW, LOWEDGE, INSIDE, HIGHEDGE, or ABOVE.
                  * @param {number} coord
                  * @param {number} low
                  * @param {number} high
@@ -2285,11 +2171,10 @@ var java;
                     return QuadCurve2D.INSIDE;
                 };
                 /**
-                 * Determine if the pttag represents a coordinate that is already in its
-                 * test range, or is on the border with either of the two opttags
-                 * representing another coordinate that is "towards the inside" of that test
-                 * range. In other words, are either of the two "opt" points
-                 * "drawing the pt inward"?
+                 * Determine if the pttag represents a coordinate that is already in its test range, or is on the
+                 * border with either of the two opttags representing another coordinate that is "towards the
+                 * inside" of that test range. In other words, are either of the two "opt" points "drawing the pt
+                 * inward"?
                  * @param {number} pttag
                  * @param {number} opt1tag
                  * @param {number} opt2tag
@@ -2469,23 +2354,17 @@ var java;
                     return new java.awt.geom.FlatteningPathIterator(this.getPathIterator$java_awt_geom_AffineTransform(at), flatness);
                 };
                 /**
-                 * Returns an iteration object that defines the boundary of the flattened
-                 * shape of this <code>QuadCurve2D</code>. The iterator for this class is
-                 * not multi-threaded safe, which means that this <code>QuadCurve2D</code>
-                 * class does not guarantee that modifications to the geometry of this
-                 * <code>QuadCurve2D</code> object do not affect any iterations of that
-                 * geometry that are already in process.
+                 * Returns an iteration object that defines the boundary of the flattened shape of this <code>
+                 * QuadCurve2D</code>. The iterator for this class is not multi-threaded safe, which means that
+                 * this <code>QuadCurve2D</code> class does not guarantee that modifications to the geometry of
+                 * this <code>QuadCurve2D</code> object do not affect any iterations of that geometry that are
+                 * already in process.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to apply to the
-                 * boundary of the shape
-                 * @param {number} flatness
-                 * the maximum distance that the control points for a subdivided
-                 * curve can be with respect to a line connecting the end points
-                 * of this curve before this curve is replaced by a straight line
-                 * connecting the end points.
-                 * @return {*} a <code>PathIterator</code> object that defines the flattened
-                 * boundary of the shape.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to apply to the boundary of the shape
+                 * @param {number} flatness the maximum distance that the control points for a subdivided curve can be with
+                 * respect to a line connecting the end points of this curve before this curve is replaced by
+                 * a straight line connecting the end points.
+                 * @return {*} a <code>PathIterator</code> object that defines the flattened boundary of the shape.
                  * @since 1.2
                  */
                 QuadCurve2D.prototype.getPathIterator = function (at, flatness) {
@@ -2499,12 +2378,10 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Creates a new object of the same class and with the same contents as this
-                 * object.
+                 * Creates a new object of the same class and with the same contents as this object.
                  *
                  * @return {*} a clone of this instance.
-                 * @exception OutOfMemoryError
-                 * if there is not enough memory.
+                 * @exception OutOfMemoryError if there is not enough memory.
                  * @see java.lang.Cloneable
                  * @since 1.2
                  */
@@ -2531,21 +2408,15 @@ var java;
             QuadCurve2D["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable"];
             (function (QuadCurve2D) {
                 /**
-                 * Constructs and initializes a <code>QuadCurve2D</code> from the
-                 * specified {@code float} coordinates.
+                 * Constructs and initializes a <code>QuadCurve2D</code> from the specified {@code float}
+                 * coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} ctrlx
-                 * the X coordinate of the control point
-                 * @param {number} ctrly
-                 * the Y coordinate of the control point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} ctrlx the X coordinate of the control point
+                 * @param {number} ctrly the Y coordinate of the control point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.QuadCurve2D
@@ -2701,21 +2572,15 @@ var java;
                         this.y2 = y2;
                     };
                     /**
-                     * Sets the location of the end points and control point of this curve
-                     * to the specified {@code float} coordinates.
+                     * Sets the location of the end points and control point of this curve to the specified {@code
+                     * float} coordinates.
                      *
-                     * @param {number} x1
-                     * the X coordinate of the start point
-                     * @param {number} y1
-                     * the Y coordinate of the start point
-                     * @param {number} ctrlx
-                     * the X coordinate of the control point
-                     * @param {number} ctrly
-                     * the Y coordinate of the control point
-                     * @param {number} x2
-                     * the X coordinate of the end point
-                     * @param {number} y2
-                     * the Y coordinate of the end point
+                     * @param {number} x1 the X coordinate of the start point
+                     * @param {number} y1 the Y coordinate of the start point
+                     * @param {number} ctrlx the X coordinate of the control point
+                     * @param {number} ctrly the Y coordinate of the control point
+                     * @param {number} x2 the X coordinate of the end point
+                     * @param {number} y2 the Y coordinate of the end point
                      * @since 1.2
                      */
                     Float.prototype.setCurve = function (x1, y1, ctrlx, ctrly, x2, y2) {
@@ -2760,21 +2625,15 @@ var java;
                 Float["__class"] = "java.awt.geom.QuadCurve2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes a <code>QuadCurve2D</code> from the
-                 * specified {@code double} coordinates.
+                 * Constructs and initializes a <code>QuadCurve2D</code> from the specified {@code double}
+                 * coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} ctrlx
-                 * the X coordinate of the control point
-                 * @param {number} ctrly
-                 * the Y coordinate of the control point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} ctrlx the X coordinate of the control point
+                 * @param {number} ctrly the Y coordinate of the control point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.QuadCurve2D
@@ -2980,16 +2839,13 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * The <code>Area</code> class creates an area geometry from the specified
-             * {@link Shape} object. The geometry is explicitly closed, if the
-             * <code>Shape</code> is not already closed. The fill rule (even-odd or
-             * winding) specified by the geometry of the <code>Shape</code> is used to
+             * The <code>Area</code> class creates an area geometry from the specified {@link Shape} object.
+             * The geometry is explicitly closed, if the <code>Shape</code> is not already closed. The fill
+             * rule (even-odd or winding) specified by the geometry of the <code>Shape</code> is used to
              * determine the resulting enclosed area.
              *
-             * @param {*} s
-             * the <code>Shape</code> from which the area is constructed
-             * @throws NullPointerException
-             * if <code>s</code> is null
+             * @param {*} s the <code>Shape</code> from which the area is constructed
+             * @throws NullPointerException if <code>s</code> is null
              * @since 1.2
              * @class
              */
@@ -3088,10 +2944,9 @@ var java;
                     return operator.calculate(curves, Area.EmptyCurves_$LI$());
                 };
                 /**
-                 * Adds the shape of the specified <code>Area</code> to the shape of this
-                 * <code>Area</code>. The resulting shape of this <code>Area</code> will
-                 * include the union of both shapes, or all areas that were contained in
-                 * either this or the specified <code>Area</code>.
+                 * Adds the shape of the specified <code>Area</code> to the shape of this <code>Area</code>. The
+                 * resulting shape of this <code>Area</code> will include the union of both shapes, or all areas
+                 * that were contained in either this or the specified <code>Area</code>.
                  *
                  * <pre>
                  * // Example:
@@ -3111,10 +2966,8 @@ var java;
                  * ##                                 ##     ##            ##
                  * </pre>
                  *
-                 * @param {java.awt.geom.Area} rhs
-                 * the <code>Area</code> to be added to the current shape
-                 * @throws NullPointerException
-                 * if <code>rhs</code> is null
+                 * @param {java.awt.geom.Area} rhs the <code>Area</code> to be added to the current shape
+                 * @throws NullPointerException if <code>rhs</code> is null
                  * @since 1.2
                  */
                 Area.prototype.add = function (rhs) {
@@ -3122,10 +2975,9 @@ var java;
                     this.invalidateBounds();
                 };
                 /**
-                 * Subtracts the shape of the specified <code>Area</code> from the shape of
-                 * this <code>Area</code>. The resulting shape of this <code>Area</code>
-                 * will include areas that were contained only in this <code>Area</code> and
-                 * not in the specified <code>Area</code>.
+                 * Subtracts the shape of the specified <code>Area</code> from the shape of this <code>Area</code>
+                 * . The resulting shape of this <code>Area</code> will include areas that were contained only in
+                 * this <code>Area</code> and not in the specified <code>Area</code>.
                  *
                  * <pre>
                  * // Example:
@@ -3145,10 +2997,8 @@ var java;
                  * ##                                 ##     ##
                  * </pre>
                  *
-                 * @param {java.awt.geom.Area} rhs
-                 * the <code>Area</code> to be subtracted from the current shape
-                 * @throws NullPointerException
-                 * if <code>rhs</code> is null
+                 * @param {java.awt.geom.Area} rhs the <code>Area</code> to be subtracted from the current shape
+                 * @throws NullPointerException if <code>rhs</code> is null
                  * @since 1.2
                  */
                 Area.prototype.subtract = function (rhs) {
@@ -3156,11 +3006,10 @@ var java;
                     this.invalidateBounds();
                 };
                 /**
-                 * Sets the shape of this <code>Area</code> to the intersection of its
-                 * current shape and the shape of the specified <code>Area</code>. The
-                 * resulting shape of this <code>Area</code> will include only areas that
-                 * were contained in both this <code>Area</code> and also in the specified
-                 * <code>Area</code>.
+                 * Sets the shape of this <code>Area</code> to the intersection of its current shape and the shape
+                 * of the specified <code>Area</code>. The resulting shape of this <code>Area</code> will include
+                 * only areas that were contained in both this <code>Area</code> and also in the specified <code>
+                 * Area</code>.
                  *
                  * <pre>
                  * // Example:
@@ -3180,11 +3029,8 @@ var java;
                  * ##                                 ##
                  * </pre>
                  *
-                 * @param {java.awt.geom.Area} rhs
-                 * the <code>Area</code> to be intersected with this
-                 * <code>Area</code>
-                 * @throws NullPointerException
-                 * if <code>rhs</code> is null
+                 * @param {java.awt.geom.Area} rhs the <code>Area</code> to be intersected with this <code>Area</code>
+                 * @throws NullPointerException if <code>rhs</code> is null
                  * @since 1.2
                  */
                 Area.prototype.intersect = function (rhs) {
@@ -3192,10 +3038,9 @@ var java;
                     this.invalidateBounds();
                 };
                 /**
-                 * Sets the shape of this <code>Area</code> to be the combined area of its
-                 * current shape and the shape of the specified <code>Area</code>, minus
-                 * their intersection. The resulting shape of this <code>Area</code> will
-                 * include only areas that were contained in either this <code>Area</code>
+                 * Sets the shape of this <code>Area</code> to be the combined area of its current shape and the
+                 * shape of the specified <code>Area</code>, minus their intersection. The resulting shape of this
+                 * <code>Area</code> will include only areas that were contained in either this <code>Area</code>
                  * or in the specified <code>Area</code>, but not in both.
                  *
                  * <pre>
@@ -3216,11 +3061,8 @@ var java;
                  * ##                                 ##     ##            ##
                  * </pre>
                  *
-                 * @param {java.awt.geom.Area} rhs
-                 * the <code>Area</code> to be exclusive ORed with this
-                 * <code>Area</code>.
-                 * @throws NullPointerException
-                 * if <code>rhs</code> is null
+                 * @param {java.awt.geom.Area} rhs the <code>Area</code> to be exclusive ORed with this <code>Area</code>.
+                 * @throws NullPointerException if <code>rhs</code> is null
                  * @since 1.2
                  */
                 Area.prototype.exclusiveOr = function (rhs) {
@@ -3228,8 +3070,7 @@ var java;
                     this.invalidateBounds();
                 };
                 /**
-                 * Removes all of the geometry from this <code>Area</code> and restores it
-                 * to an empty area.
+                 * Removes all of the geometry from this <code>Area</code> and restores it to an empty area.
                  *
                  * @since 1.2
                  */
@@ -3240,19 +3081,18 @@ var java;
                 /**
                  * Tests whether this <code>Area</code> object encloses any area.
                  *
-                 * @return {boolean} <code>true</code> if this <code>Area</code> object represents an
-                 * empty area; <code>false</code> otherwise.
+                 * @return {boolean} <code>true</code> if this <code>Area</code> object represents an empty area; <code>
+                 * false</code> otherwise.
                  * @since 1.2
                  */
                 Area.prototype.isEmpty = function () {
                     return (this.curves.size() === 0);
                 };
                 /**
-                 * Tests whether this <code>Area</code> consists entirely of straight edged
-                 * polygonal geometry.
+                 * Tests whether this <code>Area</code> consists entirely of straight edged polygonal geometry.
                  *
-                 * @return {boolean} <code>true</code> if the geometry of this <code>Area</code>
-                 * consists entirely of line segments; <code>false</code> otherwise.
+                 * @return {boolean} <code>true</code> if the geometry of this <code>Area</code> consists entirely of line
+                 * segments; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Area.prototype.isPolygonal = function () {
@@ -3270,8 +3110,8 @@ var java;
                 /**
                  * Tests whether this <code>Area</code> is rectangular in shape.
                  *
-                 * @return {boolean} <code>true</code> if the geometry of this <code>Area</code> is
-                 * rectangular in shape; <code>false</code> otherwise.
+                 * @return {boolean} <code>true</code> if the geometry of this <code>Area</code> is rectangular in shape;
+                 * <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Area.prototype.isRectangular = function () {
@@ -3296,15 +3136,13 @@ var java;
                     return true;
                 };
                 /**
-                 * Tests whether this <code>Area</code> is comprised of a single closed
-                 * subpath. This method returns <code>true</code> if the path contains 0 or
-                 * 1 subpaths, or <code>false</code> if the path contains more than 1
-                 * subpath. The subpaths are counted by the number of
-                 * {@link PathIterator#SEG_MOVETO} segments that appear in the
-                 * path.
+                 * Tests whether this <code>Area</code> is comprised of a single closed subpath. This method
+                 * returns <code>true</code> if the path contains 0 or 1 subpaths, or <code>false</code> if the
+                 * path contains more than 1 subpath. The subpaths are counted by the number of {@link
+                 * PathIterator#SEG_MOVETO} segments that appear in the path.
                  *
-                 * @return {boolean} <code>true</code> if the <code>Area</code> is comprised of a
-                 * single basic geometry; <code>false</code> otherwise.
+                 * @return {boolean} <code>true</code> if the <code>Area</code> is comprised of a single basic geometry;
+                 * <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Area.prototype.isSingular = function () {
@@ -3344,13 +3182,12 @@ var java;
                     return (this.cachedBounds = r);
                 };
                 /**
-                 * Returns a high precision bounding {@link Rectangle2D} that completely
-                 * encloses this <code>Area</code>.
-                 * <p>
-                 * The Area class will attempt to return the tightest bounding box possible
-                 * for the Shape. The bounding box will not be padded to include the control
-                 * points of curves in the outline of the Shape, but should tightly fit the
-                 * actual geometry of the outline itself.
+                 * Returns a high precision bounding {@link Rectangle2D} that completely encloses this <code>Area
+                 * </code>.
+                 *
+                 * <p>The Area class will attempt to return the tightest bounding box possible for the Shape. The
+                 * bounding box will not be padded to include the control points of curves in the outline of the
+                 * Shape, but should tightly fit the actual geometry of the outline itself.
                  *
                  * @return {java.awt.geom.Rectangle2D} the bounding <code>Rectangle2D</code> for the <code>Area</code>.
                  * @since 1.2
@@ -3359,16 +3196,13 @@ var java;
                     return this.getCachedBounds().getBounds2D();
                 };
                 /**
-                 * Returns a bounding {@link Rectangle} that completely encloses this
-                 * <code>Area</code>.
-                 * <p>
-                 * The Area class will attempt to return the tightest bounding box possible
-                 * for the Shape. The bounding box will not be padded to include the control
-                 * points of curves in the outline of the Shape, but should tightly fit the
-                 * actual geometry of the outline itself. Since the returned object
-                 * represents the bounding box with integers, the bounding box can only be
-                 * as tight as the nearest integer coordinates that encompass the geometry
-                 * of the Shape.
+                 * Returns a bounding {@link Rectangle} that completely encloses this <code>Area</code>.
+                 *
+                 * <p>The Area class will attempt to return the tightest bounding box possible for the Shape. The
+                 * bounding box will not be padded to include the control points of curves in the outline of the
+                 * Shape, but should tightly fit the actual geometry of the outline itself. Since the returned
+                 * object represents the bounding box with integers, the bounding box can only be as tight as the
+                 * nearest integer coordinates that encompass the geometry of the Shape.
                  *
                  * @return {java.awt.Rectangle} the bounding <code>Rectangle</code> for the <code>Area</code>.
                  * @since 1.2
@@ -3386,13 +3220,11 @@ var java;
                     return new Area(this);
                 };
                 /**
-                 * Tests whether the geometries of the two <code>Area</code> objects are
-                 * equal. This method will return false if the argument is null.
+                 * Tests whether the geometries of the two <code>Area</code> objects are equal. This method will
+                 * return false if the argument is null.
                  *
-                 * @param {java.awt.geom.Area} other
-                 * the <code>Area</code> to be compared to this <code>Area</code>
-                 * @return {boolean} <code>true</code> if the two geometries are equal;
-                 * <code>false</code> otherwise.
+                 * @param {java.awt.geom.Area} other the <code>Area</code> to be compared to this <code>Area</code>
+                 * @return {boolean} <code>true</code> if the two geometries are equal; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Area.prototype.equals = function (other) {
@@ -3406,14 +3238,12 @@ var java;
                     return c.isEmpty();
                 };
                 /**
-                 * Transforms the geometry of this <code>Area</code> using the specified
-                 * {@link AffineTransform}. The geometry is transformed in place, which
-                 * permanently changes the enclosed area defined by this object.
+                 * Transforms the geometry of this <code>Area</code> using the specified {@link AffineTransform}.
+                 * The geometry is transformed in place, which permanently changes the enclosed area defined by
+                 * this object.
                  *
-                 * @param {java.awt.geom.AffineTransform} t
-                 * the transformation used to transform the area
-                 * @throws NullPointerException
-                 * if <code>t</code> is null
+                 * @param {java.awt.geom.AffineTransform} t the transformation used to transform the area
+                 * @throws NullPointerException if <code>t</code> is null
                  * @since 1.2
                  */
                 Area.prototype.transform = function (t) {
@@ -3424,17 +3254,13 @@ var java;
                     this.invalidateBounds();
                 };
                 /**
-                 * Creates a new <code>Area</code> object that contains the same geometry as
-                 * this <code>Area</code> transformed by the specified
-                 * <code>AffineTransform</code>. This <code>Area</code> object is unchanged.
+                 * Creates a new <code>Area</code> object that contains the same geometry as this <code>Area
+                 * </code> transformed by the specified <code>AffineTransform</code>. This <code>Area</code>
+                 * object is unchanged.
                  *
-                 * @param {java.awt.geom.AffineTransform} t
-                 * the specified <code>AffineTransform</code> used to transform
-                 * the new <code>Area</code>
-                 * @throws NullPointerException
-                 * if <code>t</code> is null
-                 * @return {java.awt.geom.Area} a new <code>Area</code> object representing the transformed
-                 * geometry.
+                 * @param {java.awt.geom.AffineTransform} t the specified <code>AffineTransform</code> used to transform the new <code>Area</code>
+                 * @throws NullPointerException if <code>t</code> is null
+                 * @return {java.awt.geom.Area} a new <code>Area</code> object representing the transformed geometry.
                  * @since 1.2
                  */
                 Area.prototype.createTransformedArea = function (t) {
@@ -3539,21 +3365,16 @@ var java;
                     return new java.awt.geom.FlatteningPathIterator(this.getPathIterator$java_awt_geom_AffineTransform(at), flatness);
                 };
                 /**
-                 * Creates a <code>PathIterator</code> for the flattened outline of this
-                 * <code>Area</code> object. Only uncurved path segments represented by the
-                 * SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types are returned by the
-                 * iterator. This <code>Area</code> object is unchanged.
+                 * Creates a <code>PathIterator</code> for the flattened outline of this <code>Area</code> object.
+                 * Only uncurved path segments represented by the SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point
+                 * types are returned by the iterator. This <code>Area</code> object is unchanged.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired
-                 * @param {number} flatness
-                 * the maximum amount that the control points for a given curve
-                 * can vary from colinear before a subdivided curve is replaced
-                 * by a straight line connecting the end points
-                 * @return {*} the <code>PathIterator</code> object that returns the geometry of
-                 * the outline of this <code>Area</code>, one segment at a time.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired
+                 * @param {number} flatness the maximum amount that the control points for a given curve can vary from
+                 * colinear before a subdivided curve is replaced by a straight line connecting the end points
+                 * @return {*} the <code>PathIterator</code> object that returns the geometry of the outline of this
+                 * <code>Area</code>, one segment at a time.
                  * @since 1.2
                  */
                 Area.prototype.getPathIterator = function (at, flatness) {
@@ -3681,9 +3502,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * Constructs a new <code>AffineTransform</code> from 6 floating point
-             * values representing the 6 specifiable entries of the 3x3
-             * transformation matrix.
+             * Constructs a new <code>AffineTransform</code> from 6 floating point values representing the 6
+             * specifiable entries of the 3x3 transformation matrix.
              *
              * @param {number} m00 the X coordinate scaling element of the 3x3 matrix
              * @param {number} m10 the Y coordinate shearing element of the 3x3 matrix
@@ -3960,19 +3780,19 @@ var java;
                     AffineTransform.HI_SHEAR = AffineTransform.APPLY_SHEAR << AffineTransform.HI_SHIFT;
                 } return AffineTransform.HI_SHEAR; };
                 /**
-                 * Returns a transform representing a translation transformation.
-                 * The matrix representing the returned transform is:
+                 * Returns a transform representing a translation transformation. The matrix representing the
+                 * returned transform is:
+                 *
                  * <pre>
                  * [   1    0    tx  ]
                  * [   0    1    ty  ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} tx the distance by which coordinates are translated in the
-                 * X axis direction
-                 * @param {number} ty the distance by which coordinates are translated in the
-                 * Y axis direction
-                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that represents a
-                 * translation transformation, created with the specified vector.
+                 *
+                 * @param {number} tx the distance by which coordinates are translated in the X axis direction
+                 * @param {number} ty the distance by which coordinates are translated in the Y axis direction
+                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that represents a translation transformation,
+                 * created with the specified vector.
                  * @since 1.2
                  */
                 AffineTransform.getTranslateInstance = function (tx, ty) {
@@ -4001,16 +3821,13 @@ var java;
                     return Tx;
                 };
                 /**
-                 * Returns a transform that rotates coordinates around an anchor
-                 * point according to a rotation vector.
-                 * All coordinates rotate about the specified anchor coordinates
-                 * by the same amount.
-                 * The amount of rotation is such that coordinates along the former
-                 * positive X axis will subsequently align with the vector pointing
-                 * from the origin to the specified vector coordinates.
-                 * If both <code>vecx</code> and <code>vecy</code> are 0.0,
-                 * an identity transform is returned.
-                 * This operation is equivalent to calling:
+                 * Returns a transform that rotates coordinates around an anchor point according to a rotation
+                 * vector. All coordinates rotate about the specified anchor coordinates by the same amount. The
+                 * amount of rotation is such that coordinates along the former positive X axis will subsequently
+                 * align with the vector pointing from the origin to the specified vector coordinates. If both
+                 * <code>vecx</code> and <code>vecy</code> are 0.0, an identity transform is returned. This
+                 * operation is equivalent to calling:
+                 *
                  * <pre>
                  * AffineTransform.getRotateInstance(Math.atan2(vecy, vecx),
                  * anchorx, anchory);
@@ -4020,9 +3837,8 @@ var java;
                  * @param {number} vecy the Y coordinate of the rotation vector
                  * @param {number} anchorx the X coordinate of the rotation anchor point
                  * @param {number} anchory the Y coordinate of the rotation anchor point
-                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that rotates
-                 * coordinates around the specified point according to the
-                 * specified rotation vector.
+                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that rotates coordinates around the specified
+                 * point according to the specified rotation vector.
                  * @since 1.6
                  */
                 AffineTransform.getRotateInstance = function (vecx, vecy, anchorx, anchory) {
@@ -4052,22 +3868,22 @@ var java;
                     return Tx;
                 };
                 /**
-                 * Returns a transform that rotates coordinates by the specified
-                 * number of quadrants around the specified anchor point.
-                 * This operation is equivalent to calling:
+                 * Returns a transform that rotates coordinates by the specified number of quadrants around the
+                 * specified anchor point. This operation is equivalent to calling:
+                 *
                  * <pre>
                  * AffineTransform.getRotateInstance(numquadrants * Math.PI / 2.0,
                  * anchorx, anchory);
                  * </pre>
-                 * Rotating by a positive number of quadrants rotates points on
-                 * the positive X axis toward the positive Y axis.
+                 *
+                 * Rotating by a positive number of quadrants rotates points on the positive X axis toward the
+                 * positive Y axis.
                  *
                  * @param {number} numquadrants the number of 90 degree arcs to rotate by
                  * @param {number} anchorx the X coordinate of the rotation anchor point
                  * @param {number} anchory the Y coordinate of the rotation anchor point
-                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that rotates
-                 * coordinates by the specified number of quadrants around the
-                 * specified anchor point.
+                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that rotates coordinates by the specified number
+                 * of quadrants around the specified anchor point.
                  * @since 1.6
                  */
                 AffineTransform.getQuadrantRotateInstance = function (numquadrants, anchorx, anchory) {
@@ -4081,19 +3897,19 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Returns a transform representing a scaling transformation.
-                 * The matrix representing the returned transform is:
+                 * Returns a transform representing a scaling transformation. The matrix representing the returned
+                 * transform is:
+                 *
                  * <pre>
                  * [   sx   0    0   ]
                  * [   0    sy   0   ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} sx the factor by which coordinates are scaled along the
-                 * X axis direction
-                 * @param {number} sy the factor by which coordinates are scaled along the
-                 * Y axis direction
-                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that scales
-                 * coordinates by the specified factors.
+                 *
+                 * @param {number} sx the factor by which coordinates are scaled along the X axis direction
+                 * @param {number} sy the factor by which coordinates are scaled along the Y axis direction
+                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that scales coordinates by the specified
+                 * factors.
                  * @since 1.2
                  */
                 AffineTransform.getScaleInstance = function (sx, sy) {
@@ -4102,19 +3918,21 @@ var java;
                     return Tx;
                 };
                 /**
-                 * Returns a transform representing a shearing transformation.
-                 * The matrix representing the returned transform is:
+                 * Returns a transform representing a shearing transformation. The matrix representing the
+                 * returned transform is:
+                 *
                  * <pre>
                  * [   1   shx   0   ]
                  * [  shy   1    0   ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} shx the multiplier by which coordinates are shifted in the
-                 * direction of the positive X axis as a factor of their Y coordinate
-                 * @param {number} shy the multiplier by which coordinates are shifted in the
-                 * direction of the positive Y axis as a factor of their X coordinate
-                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that shears
-                 * coordinates by the specified multipliers.
+                 *
+                 * @param {number} shx the multiplier by which coordinates are shifted in the direction of the positive X
+                 * axis as a factor of their Y coordinate
+                 * @param {number} shy the multiplier by which coordinates are shifted in the direction of the positive Y
+                 * axis as a factor of their X coordinate
+                 * @return {java.awt.geom.AffineTransform} an <code>AffineTransform</code> object that shears coordinates by the specified
+                 * multipliers.
                  * @since 1.2
                  */
                 AffineTransform.getShearInstance = function (shx, shy) {
@@ -4123,20 +3941,14 @@ var java;
                     return Tx;
                 };
                 /**
-                 * Retrieves the flag bits describing the conversion properties of
-                 * this transform.
-                 * The return value is either one of the constants TYPE_IDENTITY
-                 * or TYPE_GENERAL_TRANSFORM, or a combination of the
-                 * appropriate flag bits.
-                 * A valid combination of flag bits is an exclusive OR operation
-                 * that can combine
-                 * the TYPE_TRANSLATION flag bit
-                 * in addition to either of the
-                 * TYPE_UNIFORM_SCALE or TYPE_GENERAL_SCALE flag bits
-                 * as well as either of the
-                 * TYPE_QUADRANT_ROTATION or TYPE_GENERAL_ROTATION flag bits.
-                 * @return {number} the OR combination of any of the indicated flags that
-                 * apply to this transform
+                 * Retrieves the flag bits describing the conversion properties of this transform. The return
+                 * value is either one of the constants TYPE_IDENTITY or TYPE_GENERAL_TRANSFORM, or a combination
+                 * of the appropriate flag bits. A valid combination of flag bits is an exclusive OR operation
+                 * that can combine the TYPE_TRANSLATION flag bit in addition to either of the TYPE_UNIFORM_SCALE
+                 * or TYPE_GENERAL_SCALE flag bits as well as either of the TYPE_QUADRANT_ROTATION or
+                 * TYPE_GENERAL_ROTATION flag bits.
+                 *
+                 * @return {number} the OR combination of any of the indicated flags that apply to this transform
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
@@ -4153,8 +3965,8 @@ var java;
                     return this.type;
                 };
                 /**
-                 * This is the utility function to calculate the flag bits when
-                 * they have not been cached.
+                 * This is the utility function to calculate the flag bits when they have not been cached.
+                 *
                  * @see #getType
                  * @private
                  */
@@ -4276,40 +4088,32 @@ var java;
                     this.type = ret;
                 };
                 /**
-                 * Returns the determinant of the matrix representation of the transform.
-                 * The determinant is useful both to determine if the transform can
-                 * be inverted and to get a single value representing the
-                 * combined X and Y scaling of the transform.
-                 * <p>
-                 * If the determinant is non-zero, then this transform is
-                 * invertible and the various methods that depend on the inverse
-                 * transform do not need to throw a
-                 * {@link NoninvertibleTransformException}.
-                 * If the determinant is zero then this transform can not be
-                 * inverted since the transform maps all input coordinates onto
-                 * a line or a point.
-                 * If the determinant is near enough to zero then inverse transform
-                 * operations might not carry enough precision to produce meaningful
-                 * results.
-                 * <p>
-                 * If this transform represents a uniform scale, as indicated by
-                 * the <code>getType</code> method then the determinant also
-                 * represents the square of the uniform scale factor by which all of
-                 * the points are expanded from or contracted towards the origin.
-                 * If this transform represents a non-uniform scale or more general
-                 * transform then the determinant is not likely to represent a
-                 * value useful for any purpose other than determining if inverse
-                 * transforms are possible.
-                 * <p>
-                 * Mathematically, the determinant is calculated using the formula:
+                 * Returns the determinant of the matrix representation of the transform. The determinant is
+                 * useful both to determine if the transform can be inverted and to get a single value
+                 * representing the combined X and Y scaling of the transform.
+                 *
+                 * <p>If the determinant is non-zero, then this transform is invertible and the various methods
+                 * that depend on the inverse transform do not need to throw a {@link
+                 * NoninvertibleTransformException}. If the determinant is zero then this transform can not be
+                 * inverted since the transform maps all input coordinates onto a line or a point. If the
+                 * determinant is near enough to zero then inverse transform operations might not carry enough
+                 * precision to produce meaningful results.
+                 *
+                 * <p>If this transform represents a uniform scale, as indicated by the <code>getType</code>
+                 * method then the determinant also represents the square of the uniform scale factor by which all
+                 * of the points are expanded from or contracted towards the origin. If this transform represents
+                 * a non-uniform scale or more general transform then the determinant is not likely to represent a
+                 * value useful for any purpose other than determining if inverse transforms are possible.
+                 *
+                 * <p>Mathematically, the determinant is calculated using the formula:
+                 *
                  * <pre>
                  * |  m00  m01  m02  |
                  * |  m10  m11  m12  |  =  m00 * m11 - m01 * m10
                  * |   0    0    1   |
                  * </pre>
                  *
-                 * @return {number} the determinant of the matrix used to transform the
-                 * coordinates.
+                 * @return {number} the determinant of the matrix used to transform the coordinates.
                  * @see #getType
                  * @see #createInverse
                  * @see #inverseTransform
@@ -4335,13 +4139,12 @@ var java;
                     }
                 };
                 /**
-                 * Manually recalculates the state of the transform when the matrix
-                 * changes too much to predict the effects on the state.
-                 * The following table specifies what the various settings of the
-                 * state field say about the values of the corresponding matrix
-                 * element fields.
-                 * Note that the rules governing the SCALE fields are slightly
-                 * different depending on whether the SHEAR flag is also set.
+                 * Manually recalculates the state of the transform when the matrix changes too much to predict
+                 * the effects on the state. The following table specifies what the various settings of the state
+                 * field say about the values of the corresponding matrix element fields. Note that the rules
+                 * governing the SCALE fields are slightly different depending on whether the SHEAR flag is also
+                 * set.
+                 *
                  * <pre>
                  * SCALE            SHEAR          TRANSLATE
                  * m00/m11          m01/m10          m02/m12
@@ -4406,16 +4209,14 @@ var java;
                     throw new java.lang.InternalError("missing case in transform state switch");
                 };
                 /**
-                 * Retrieves the 6 specifiable values in the 3x3 affine transformation
-                 * matrix and places them into an array of double precisions values.
-                 * The values are stored in the array as
-                 * {&nbsp;m00&nbsp;m10&nbsp;m01&nbsp;m11&nbsp;m02&nbsp;m12&nbsp;}.
-                 * An array of 4 doubles can also be specified, in which case only the
-                 * first four elements representing the non-transform
-                 * parts of the array are retrieved and the values are stored into
-                 * the array as {&nbsp;m00&nbsp;m10&nbsp;m01&nbsp;m11&nbsp;}
-                 * @param {double[]} flatmatrix the double array used to store the returned
-                 * values.
+                 * Retrieves the 6 specifiable values in the 3x3 affine transformation matrix and places them into
+                 * an array of double precisions values. The values are stored in the array as
+                 * {&nbsp;m00&nbsp;m10&nbsp;m01&nbsp;m11&nbsp;m02&nbsp;m12&nbsp;}. An array of 4 doubles can also
+                 * be specified, in which case only the first four elements representing the non-transform parts
+                 * of the array are retrieved and the values are stored into the array as
+                 * {&nbsp;m00&nbsp;m10&nbsp;m01&nbsp;m11&nbsp;}
+                 *
+                 * @param {double[]} flatmatrix the double array used to store the returned values.
                  * @see #getScaleX
                  * @see #getScaleY
                  * @see #getShearX
@@ -4435,10 +4236,10 @@ var java;
                     }
                 };
                 /**
-                 * Returns the X coordinate scaling element (m00) of the 3x3
-                 * affine transformation matrix.
-                 * @return {number} a double value that is the X coordinate of the scaling
-                 * element of the affine transformation matrix.
+                 * Returns the X coordinate scaling element (m00) of the 3x3 affine transformation matrix.
+                 *
+                 * @return {number} a double value that is the X coordinate of the scaling element of the affine
+                 * transformation matrix.
                  * @see #getMatrix
                  * @since 1.2
                  */
@@ -4446,10 +4247,10 @@ var java;
                     return this.m00;
                 };
                 /**
-                 * Returns the Y coordinate scaling element (m11) of the 3x3
-                 * affine transformation matrix.
-                 * @return {number} a double value that is the Y coordinate of the scaling
-                 * element of the affine transformation matrix.
+                 * Returns the Y coordinate scaling element (m11) of the 3x3 affine transformation matrix.
+                 *
+                 * @return {number} a double value that is the Y coordinate of the scaling element of the affine
+                 * transformation matrix.
                  * @see #getMatrix
                  * @since 1.2
                  */
@@ -4457,10 +4258,10 @@ var java;
                     return this.m11;
                 };
                 /**
-                 * Returns the X coordinate shearing element (m01) of the 3x3
-                 * affine transformation matrix.
-                 * @return {number} a double value that is the X coordinate of the shearing
-                 * element of the affine transformation matrix.
+                 * Returns the X coordinate shearing element (m01) of the 3x3 affine transformation matrix.
+                 *
+                 * @return {number} a double value that is the X coordinate of the shearing element of the affine
+                 * transformation matrix.
                  * @see #getMatrix
                  * @since 1.2
                  */
@@ -4468,10 +4269,10 @@ var java;
                     return this.m01;
                 };
                 /**
-                 * Returns the Y coordinate shearing element (m10) of the 3x3
-                 * affine transformation matrix.
-                 * @return {number} a double value that is the Y coordinate of the shearing
-                 * element of the affine transformation matrix.
+                 * Returns the Y coordinate shearing element (m10) of the 3x3 affine transformation matrix.
+                 *
+                 * @return {number} a double value that is the Y coordinate of the shearing element of the affine
+                 * transformation matrix.
                  * @see #getMatrix
                  * @since 1.2
                  */
@@ -4479,10 +4280,11 @@ var java;
                     return this.m10;
                 };
                 /**
-                 * Returns the X coordinate of the translation element (m02) of the
-                 * 3x3 affine transformation matrix.
-                 * @return {number} a double value that is the X coordinate of the translation
-                 * element of the affine transformation matrix.
+                 * Returns the X coordinate of the translation element (m02) of the 3x3 affine transformation
+                 * matrix.
+                 *
+                 * @return {number} a double value that is the X coordinate of the translation element of the affine
+                 * transformation matrix.
                  * @see #getMatrix
                  * @since 1.2
                  */
@@ -4490,10 +4292,11 @@ var java;
                     return this.m02;
                 };
                 /**
-                 * Returns the Y coordinate of the translation element (m12) of the
-                 * 3x3 affine transformation matrix.
-                 * @return {number} a double value that is the Y coordinate of the translation
-                 * element of the affine transformation matrix.
+                 * Returns the Y coordinate of the translation element (m12) of the 3x3 affine transformation
+                 * matrix.
+                 *
+                 * @return {number} a double value that is the Y coordinate of the translation element of the affine
+                 * transformation matrix.
                  * @see #getMatrix
                  * @since 1.2
                  */
@@ -4501,18 +4304,17 @@ var java;
                     return this.m12;
                 };
                 /**
-                 * Concatenates this transform with a translation transformation.
-                 * This is equivalent to calling concatenate(T), where T is an
-                 * <code>AffineTransform</code> represented by the following matrix:
+                 * Concatenates this transform with a translation transformation. This is equivalent to calling
+                 * concatenate(T), where T is an <code>AffineTransform</code> represented by the following matrix:
+                 *
                  * <pre>
                  * [   1    0    tx  ]
                  * [   0    1    ty  ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} tx the distance by which coordinates are translated in the
-                 * X axis direction
-                 * @param {number} ty the distance by which coordinates are translated in the
-                 * Y axis direction
+                 *
+                 * @param {number} tx the distance by which coordinates are translated in the X axis direction
+                 * @param {number} ty the distance by which coordinates are translated in the Y axis direction
                  * @since 1.2
                  */
                 AffineTransform.prototype.translate = function (tx, ty) {
@@ -4711,17 +4513,13 @@ var java;
                     this.translate(-anchorx, -anchory);
                 };
                 /**
-                 * Concatenates this transform with a transform that rotates
-                 * coordinates around an anchor point according to a rotation
-                 * vector.
-                 * All coordinates rotate about the specified anchor coordinates
-                 * by the same amount.
-                 * The amount of rotation is such that coordinates along the former
-                 * positive X axis will subsequently align with the vector pointing
-                 * from the origin to the specified vector coordinates.
-                 * If both <code>vecx</code> and <code>vecy</code> are 0.0,
-                 * the transform is not modified in any way.
-                 * This method is equivalent to calling:
+                 * Concatenates this transform with a transform that rotates coordinates around an anchor point
+                 * according to a rotation vector. All coordinates rotate about the specified anchor coordinates
+                 * by the same amount. The amount of rotation is such that coordinates along the former positive X
+                 * axis will subsequently align with the vector pointing from the origin to the specified vector
+                 * coordinates. If both <code>vecx</code> and <code>vecy</code> are 0.0, the transform is not
+                 * modified in any way. This method is equivalent to calling:
+                 *
                  * <pre>
                  * rotate(Math.atan2(vecy, vecx), anchorx, anchory);
                  * </pre>
@@ -4791,15 +4589,15 @@ var java;
                     }
                 };
                 /**
-                 * Concatenates this transform with a transform that rotates
-                 * coordinates by the specified number of quadrants around
-                 * the specified anchor point.
-                 * This method is equivalent to calling:
+                 * Concatenates this transform with a transform that rotates coordinates by the specified number
+                 * of quadrants around the specified anchor point. This method is equivalent to calling:
+                 *
                  * <pre>
                  * rotate(numquadrants * Math.PI / 2.0, anchorx, anchory);
                  * </pre>
-                 * Rotating by a positive number of quadrants rotates points on
-                 * the positive X axis toward the positive Y axis.
+                 *
+                 * Rotating by a positive number of quadrants rotates points on the positive X axis toward the
+                 * positive Y axis.
                  *
                  * @param {number} numquadrants the number of 90 degree arcs to rotate by
                  * @param {number} anchorx the X coordinate of the rotation anchor point
@@ -4817,18 +4615,17 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Concatenates this transform with a scaling transformation.
-                 * This is equivalent to calling concatenate(S), where S is an
-                 * <code>AffineTransform</code> represented by the following matrix:
+                 * Concatenates this transform with a scaling transformation. This is equivalent to calling
+                 * concatenate(S), where S is an <code>AffineTransform</code> represented by the following matrix:
+                 *
                  * <pre>
                  * [   sx   0    0   ]
                  * [   0    sy   0   ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} sx the factor by which coordinates are scaled along the
-                 * X axis direction
-                 * @param {number} sy the factor by which coordinates are scaled along the
-                 * Y axis direction
+                 *
+                 * @param {number} sx the factor by which coordinates are scaled along the X axis direction
+                 * @param {number} sy the factor by which coordinates are scaled along the Y axis direction
                  * @since 1.2
                  */
                 AffineTransform.prototype.scale = function (sx, sy) {
@@ -4880,18 +4677,20 @@ var java;
                     }
                 };
                 /**
-                 * Concatenates this transform with a shearing transformation.
-                 * This is equivalent to calling concatenate(SH), where SH is an
-                 * <code>AffineTransform</code> represented by the following matrix:
+                 * Concatenates this transform with a shearing transformation. This is equivalent to calling
+                 * concatenate(SH), where SH is an <code>AffineTransform</code> represented by the following
+                 * matrix:
+                 *
                  * <pre>
                  * [   1   shx   0   ]
                  * [  shy   1    0   ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} shx the multiplier by which coordinates are shifted in the
-                 * direction of the positive X axis as a factor of their Y coordinate
-                 * @param {number} shy the multiplier by which coordinates are shifted in the
-                 * direction of the positive Y axis as a factor of their X coordinate
+                 *
+                 * @param {number} shx the multiplier by which coordinates are shifted in the direction of the positive X
+                 * axis as a factor of their Y coordinate
+                 * @param {number} shy the multiplier by which coordinates are shifted in the direction of the positive Y
+                 * axis as a factor of their X coordinate
                  * @since 1.2
                  */
                 AffineTransform.prototype.shear = function (shx, shy) {
@@ -4945,6 +4744,7 @@ var java;
                 };
                 /**
                  * Resets this transform to the Identity transform.
+                 *
                  * @since 1.2
                  */
                 AffineTransform.prototype.setToIdentity = function () {
@@ -4954,17 +4754,17 @@ var java;
                     this.type = AffineTransform.TYPE_IDENTITY;
                 };
                 /**
-                 * Sets this transform to a translation transformation.
-                 * The matrix representing this transform becomes:
+                 * Sets this transform to a translation transformation. The matrix representing this transform
+                 * becomes:
+                 *
                  * <pre>
                  * [   1    0    tx  ]
                  * [   0    1    ty  ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} tx the distance by which coordinates are translated in the
-                 * X axis direction
-                 * @param {number} ty the distance by which coordinates are translated in the
-                 * Y axis direction
+                 *
+                 * @param {number} tx the distance by which coordinates are translated in the X axis direction
+                 * @param {number} ty the distance by which coordinates are translated in the Y axis direction
                  * @since 1.2
                  */
                 AffineTransform.prototype.setToTranslation = function (tx, ty) {
@@ -5074,17 +4874,13 @@ var java;
                     }
                 };
                 /**
-                 * Sets this transform to a rotation transformation that rotates
-                 * coordinates around an anchor point according to a rotation
-                 * vector.
-                 * All coordinates rotate about the specified anchor coordinates
-                 * by the same amount.
-                 * The amount of rotation is such that coordinates along the former
-                 * positive X axis will subsequently align with the vector pointing
-                 * from the origin to the specified vector coordinates.
-                 * If both <code>vecx</code> and <code>vecy</code> are 0.0,
-                 * the transform is set to an identity transform.
-                 * This operation is equivalent to calling:
+                 * Sets this transform to a rotation transformation that rotates coordinates around an anchor
+                 * point according to a rotation vector. All coordinates rotate about the specified anchor
+                 * coordinates by the same amount. The amount of rotation is such that coordinates along the
+                 * former positive X axis will subsequently align with the vector pointing from the origin to the
+                 * specified vector coordinates. If both <code>vecx</code> and <code>vecy</code> are 0.0, the
+                 * transform is set to an identity transform. This operation is equivalent to calling:
+                 *
                  * <pre>
                  * setToTranslation(Math.atan2(vecy, vecx), anchorx, anchory);
                  * </pre>
@@ -5218,15 +5014,16 @@ var java;
                     }
                 };
                 /**
-                 * Sets this transform to a translated rotation transformation
-                 * that rotates coordinates by the specified number of quadrants
-                 * around the specified anchor point.
-                 * This operation is equivalent to calling:
+                 * Sets this transform to a translated rotation transformation that rotates coordinates by the
+                 * specified number of quadrants around the specified anchor point. This operation is equivalent
+                 * to calling:
+                 *
                  * <pre>
                  * setToRotation(numquadrants * Math.PI / 2.0, anchorx, anchory);
                  * </pre>
-                 * Rotating by a positive number of quadrants rotates points on
-                 * the positive X axis toward the positive Y axis.
+                 *
+                 * Rotating by a positive number of quadrants rotates points on the positive X axis toward the
+                 * positive Y axis.
                  *
                  * @param {number} numquadrants the number of 90 degree arcs to rotate by
                  * @param {number} anchorx the X coordinate of the rotation anchor point
@@ -5244,17 +5041,17 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Sets this transform to a scaling transformation.
-                 * The matrix representing this transform becomes:
+                 * Sets this transform to a scaling transformation. The matrix representing this transform
+                 * becomes:
+                 *
                  * <pre>
                  * [   sx   0    0   ]
                  * [   0    sy   0   ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} sx the factor by which coordinates are scaled along the
-                 * X axis direction
-                 * @param {number} sy the factor by which coordinates are scaled along the
-                 * Y axis direction
+                 *
+                 * @param {number} sx the factor by which coordinates are scaled along the X axis direction
+                 * @param {number} sy the factor by which coordinates are scaled along the Y axis direction
                  * @since 1.2
                  */
                 AffineTransform.prototype.setToScale = function (sx, sy) {
@@ -5274,17 +5071,19 @@ var java;
                     }
                 };
                 /**
-                 * Sets this transform to a shearing transformation.
-                 * The matrix representing this transform becomes:
+                 * Sets this transform to a shearing transformation. The matrix representing this transform
+                 * becomes:
+                 *
                  * <pre>
                  * [   1   shx   0   ]
                  * [  shy   1    0   ]
                  * [   0    0    1   ]
                  * </pre>
-                 * @param {number} shx the multiplier by which coordinates are shifted in the
-                 * direction of the positive X axis as a factor of their Y coordinate
-                 * @param {number} shy the multiplier by which coordinates are shifted in the
-                 * direction of the positive Y axis as a factor of their X coordinate
+                 *
+                 * @param {number} shx the multiplier by which coordinates are shifted in the direction of the positive X
+                 * axis as a factor of their Y coordinate
+                 * @param {number} shy the multiplier by which coordinates are shifted in the direction of the positive Y
+                 * axis as a factor of their X coordinate
                  * @since 1.2
                  */
                 AffineTransform.prototype.setToShear = function (shx, shy) {
@@ -5323,8 +5122,7 @@ var java;
                     this.updateState();
                 };
                 /**
-                 * Sets this transform to the matrix specified by the 6
-                 * double precision values.
+                 * Sets this transform to the matrix specified by the 6 double precision values.
                  *
                  * @param {number} m00 the X coordinate scaling element of the 3x3 matrix
                  * @param {number} m10 the Y coordinate shearing element of the 3x3 matrix
@@ -5345,23 +5143,20 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Concatenates an <code>AffineTransform</code> <code>Tx</code> to
-                 * this <code>AffineTransform</code> Cx in the most commonly useful
-                 * way to provide a new user space
-                 * that is mapped to the former user space by <code>Tx</code>.
-                 * Cx is updated to perform the combined transformation.
-                 * Transforming a point p by the updated transform Cx' is
-                 * equivalent to first transforming p by <code>Tx</code> and then
-                 * transforming the result by the original transform Cx like this:
-                 * Cx'(p) = Cx(Tx(p))
-                 * In matrix notation, if this transform Cx is
-                 * represented by the matrix [this] and <code>Tx</code> is represented
-                 * by the matrix [Tx] then this method does the following:
+                 * Concatenates an <code>AffineTransform</code> <code>Tx</code> to this <code>AffineTransform
+                 * </code> Cx in the most commonly useful way to provide a new user space that is mapped to the
+                 * former user space by <code>Tx</code>. Cx is updated to perform the combined transformation.
+                 * Transforming a point p by the updated transform Cx' is equivalent to first transforming p by
+                 * <code>Tx</code> and then transforming the result by the original transform Cx like this: Cx'(p)
+                 * = Cx(Tx(p)) In matrix notation, if this transform Cx is represented by the matrix [this] and
+                 * <code>Tx</code> is represented by the matrix [Tx] then this method does the following:
+                 *
                  * <pre>
                  * [this] = [this] x [Tx]
                  * </pre>
-                 * @param {java.awt.geom.AffineTransform} Tx the <code>AffineTransform</code> object to be
-                 * concatenated with this <code>AffineTransform</code> object.
+                 *
+                 * @param {java.awt.geom.AffineTransform} Tx the <code>AffineTransform</code> object to be concatenated with this <code>
+                 * AffineTransform</code> object.
                  * @see #preConcatenate
                  * @since 1.2
                  */
@@ -5534,26 +5329,21 @@ var java;
                     this.updateState();
                 };
                 /**
-                 * Concatenates an <code>AffineTransform</code> <code>Tx</code> to
-                 * this <code>AffineTransform</code> Cx
-                 * in a less commonly used way such that <code>Tx</code> modifies the
-                 * coordinate transformation relative to the absolute pixel
-                 * space rather than relative to the existing user space.
-                 * Cx is updated to perform the combined transformation.
-                 * Transforming a point p by the updated transform Cx' is
-                 * equivalent to first transforming p by the original transform
-                 * Cx and then transforming the result by
-                 * <code>Tx</code> like this:
-                 * Cx'(p) = Tx(Cx(p))
-                 * In matrix notation, if this transform Cx
-                 * is represented by the matrix [this] and <code>Tx</code> is
-                 * represented by the matrix [Tx] then this method does the
-                 * following:
+                 * Concatenates an <code>AffineTransform</code> <code>Tx</code> to this <code>AffineTransform
+                 * </code> Cx in a less commonly used way such that <code>Tx</code> modifies the coordinate
+                 * transformation relative to the absolute pixel space rather than relative to the existing user
+                 * space. Cx is updated to perform the combined transformation. Transforming a point p by the
+                 * updated transform Cx' is equivalent to first transforming p by the original transform Cx and
+                 * then transforming the result by <code>Tx</code> like this: Cx'(p) = Tx(Cx(p)) In matrix
+                 * notation, if this transform Cx is represented by the matrix [this] and <code>Tx</code> is
+                 * represented by the matrix [Tx] then this method does the following:
+                 *
                  * <pre>
                  * [this] = [Tx] x [this]
                  * </pre>
-                 * @param {java.awt.geom.AffineTransform} Tx the <code>AffineTransform</code> object to be
-                 * concatenated with this <code>AffineTransform</code> object.
+                 *
+                 * @param {java.awt.geom.AffineTransform} Tx the <code>AffineTransform</code> object to be concatenated with this <code>
+                 * AffineTransform</code> object.
                  * @see #concatenate
                  * @since 1.2
                  */
@@ -5722,25 +5512,19 @@ var java;
                     this.updateState();
                 };
                 /**
-                 * Returns an <code>AffineTransform</code> object representing the
-                 * inverse transformation.
-                 * The inverse transform Tx' of this transform Tx
-                 * maps coordinates transformed by Tx back
-                 * to their original coordinates.
-                 * In other words, Tx'(Tx(p)) = p = Tx(Tx'(p)).
-                 * <p>
-                 * If this transform maps all coordinates onto a point or a line
-                 * then it will not have an inverse, since coordinates that do
-                 * not lie on the destination point or line will not have an inverse
-                 * mapping.
-                 * The <code>getDeterminant</code> method can be used to determine if this
-                 * transform has no inverse, in which case an exception will be
-                 * thrown if the <code>createInverse</code> method is called.
-                 * @return {java.awt.geom.AffineTransform} a new <code>AffineTransform</code> object representing the
-                 * inverse transformation.
+                 * Returns an <code>AffineTransform</code> object representing the inverse transformation. The
+                 * inverse transform Tx' of this transform Tx maps coordinates transformed by Tx back to their
+                 * original coordinates. In other words, Tx'(Tx(p)) = p = Tx(Tx'(p)).
+                 *
+                 * <p>If this transform maps all coordinates onto a point or a line then it will not have an
+                 * inverse, since coordinates that do not lie on the destination point or line will not have an
+                 * inverse mapping. The <code>getDeterminant</code> method can be used to determine if this
+                 * transform has no inverse, in which case an exception will be thrown if the <code>createInverse
+                 * </code> method is called.
+                 *
+                 * @return {java.awt.geom.AffineTransform} a new <code>AffineTransform</code> object representing the inverse transformation.
                  * @see #getDeterminant
-                 * @exception NoninvertibleTransformException
-                 * if the matrix cannot be inverted.
+                 * @exception NoninvertibleTransformException if the matrix cannot be inverted.
                  * @since 1.2
                  */
                 AffineTransform.prototype.createInverse = function () {
@@ -5788,22 +5572,18 @@ var java;
                     }
                 };
                 /**
-                 * Sets this transform to the inverse of itself.
-                 * The inverse transform Tx' of this transform Tx
-                 * maps coordinates transformed by Tx back
-                 * to their original coordinates.
-                 * In other words, Tx'(Tx(p)) = p = Tx(Tx'(p)).
-                 * <p>
-                 * If this transform maps all coordinates onto a point or a line
-                 * then it will not have an inverse, since coordinates that do
-                 * not lie on the destination point or line will not have an inverse
-                 * mapping.
-                 * The <code>getDeterminant</code> method can be used to determine if this
-                 * transform has no inverse, in which case an exception will be
-                 * thrown if the <code>invert</code> method is called.
+                 * Sets this transform to the inverse of itself. The inverse transform Tx' of this transform Tx
+                 * maps coordinates transformed by Tx back to their original coordinates. In other words,
+                 * Tx'(Tx(p)) = p = Tx(Tx'(p)).
+                 *
+                 * <p>If this transform maps all coordinates onto a point or a line then it will not have an
+                 * inverse, since coordinates that do not lie on the destination point or line will not have an
+                 * inverse mapping. The <code>getDeterminant</code> method can be used to determine if this
+                 * transform has no inverse, in which case an exception will be thrown if the <code>invert</code>
+                 * method is called.
+                 *
                  * @see #getDeterminant
-                 * @exception NoninvertibleTransformException
-                 * if the matrix cannot be inverted.
+                 * @exception NoninvertibleTransformException if the matrix cannot be inverted.
                  * @since 1.6
                  */
                 AffineTransform.prototype.invert = function () {
@@ -5994,33 +5774,25 @@ var java;
                     ;
                 };
                 /**
-                 * Transforms an array of point objects by this transform.
-                 * If any element of the <code>ptDst</code> array is
-                 * <code>null</code>, a new <code>Point2D</code> object is allocated
-                 * and stored into that element before storing the results of the
-                 * transformation.
-                 * <p>
-                 * Note that this method does not take any precautions to
-                 * avoid problems caused by storing results into <code>Point2D</code>
-                 * objects that will be used as the source for calculations
-                 * further down the source array.
-                 * This method does guarantee that if a specified <code>Point2D</code>
-                 * object is both the source and destination for the same single point
-                 * transform operation then the results will not be stored until
-                 * the calculations are complete to avoid storing the results on
-                 * top of the operands.
-                 * If, however, the destination <code>Point2D</code> object for one
-                 * operation is the same object as the source <code>Point2D</code>
-                 * object for another operation further down the source array then
-                 * the original coordinates in that point are overwritten before
-                 * they can be converted.
+                 * Transforms an array of point objects by this transform. If any element of the <code>ptDst
+                 * </code> array is <code>null</code>, a new <code>Point2D</code> object is allocated and stored
+                 * into that element before storing the results of the transformation.
+                 *
+                 * <p>Note that this method does not take any precautions to avoid problems caused by storing
+                 * results into <code>Point2D</code> objects that will be used as the source for calculations
+                 * further down the source array. This method does guarantee that if a specified <code>Point2D
+                 * </code> object is both the source and destination for the same single point transform operation
+                 * then the results will not be stored until the calculations are complete to avoid storing the
+                 * results on top of the operands. If, however, the destination <code>Point2D</code> object for
+                 * one operation is the same object as the source <code>Point2D</code> object for another
+                 * operation further down the source array then the original coordinates in that point are
+                 * overwritten before they can be converted.
+                 *
                  * @param {java.awt.geom.Point2D[]} ptSrc the array containing the source point objects
-                 * @param {java.awt.geom.Point2D[]} ptDst the array into which the transform point objects are
-                 * returned
-                 * @param {number} srcOff the offset to the first point object to be
-                 * transformed in the source array
-                 * @param {number} dstOff the offset to the location of the first
-                 * transformed point object that is stored in the destination array
+                 * @param {java.awt.geom.Point2D[]} ptDst the array into which the transform point objects are returned
+                 * @param {number} srcOff the offset to the first point object to be transformed in the source array
+                 * @param {number} dstOff the offset to the location of the first transformed point object that is stored
+                 * in the destination array
                  * @param {number} numPts the number of point objects to be transformed
                  * @since 1.2
                  */
@@ -6693,27 +6465,22 @@ var java;
                     }
                 };
                 /**
-                 * Inverse transforms an array of double precision coordinates by
-                 * this transform.
-                 * The two coordinate array sections can be exactly the same or
-                 * can be overlapping sections of the same array without affecting the
-                 * validity of the results.
-                 * This method ensures that no source coordinates are
-                 * overwritten by a previous operation before they can be transformed.
-                 * The coordinates are stored in the arrays starting at the specified
-                 * offset in the order <code>[x0, y0, x1, y1, ..., xn, yn]</code>.
-                 * @param {double[]} srcPts the array containing the source point coordinates.
-                 * Each point is stored as a pair of x,&nbsp;y coordinates.
-                 * @param {double[]} dstPts the array into which the transformed point
-                 * coordinates are returned.  Each point is stored as a pair of
-                 * x,&nbsp;y coordinates.
-                 * @param {number} srcOff the offset to the first point to be transformed
-                 * in the source array
-                 * @param {number} dstOff the offset to the location of the first
-                 * transformed point that is stored in the destination array
+                 * Inverse transforms an array of double precision coordinates by this transform. The two
+                 * coordinate array sections can be exactly the same or can be overlapping sections of the same
+                 * array without affecting the validity of the results. This method ensures that no source
+                 * coordinates are overwritten by a previous operation before they can be transformed. The
+                 * coordinates are stored in the arrays starting at the specified offset in the order <code>
+                 * [x0, y0, x1, y1, ..., xn, yn]</code>.
+                 *
+                 * @param {double[]} srcPts the array containing the source point coordinates. Each point is stored as a pair
+                 * of x,&nbsp;y coordinates.
+                 * @param {double[]} dstPts the array into which the transformed point coordinates are returned. Each point
+                 * is stored as a pair of x,&nbsp;y coordinates.
+                 * @param {number} srcOff the offset to the first point to be transformed in the source array
+                 * @param {number} dstOff the offset to the location of the first transformed point that is stored in the
+                 * destination array
                  * @param {number} numPts the number of point objects to be transformed
-                 * @exception NoninvertibleTransformException  if the matrix cannot be
-                 * inverted.
+                 * @exception NoninvertibleTransformException if the matrix cannot be inverted.
                  * @since 1.2
                  */
                 AffineTransform.prototype.inverseTransform = function (srcPts, srcOff, dstPts, dstOff, numPts) {
@@ -6822,34 +6589,30 @@ var java;
                     }
                 };
                 /**
-                 * Transforms an array of relative distance vectors by this
-                 * transform.
-                 * A relative distance vector is transformed without applying the
-                 * translation components of the affine transformation matrix
+                 * Transforms an array of relative distance vectors by this transform. A relative distance vector
+                 * is transformed without applying the translation components of the affine transformation matrix
                  * using the following equations:
+                 *
                  * <pre>
                  * [  x' ]   [  m00  m01 (m02) ] [  x  ]   [ m00x + m01y ]
                  * [  y' ] = [  m10  m11 (m12) ] [  y  ] = [ m10x + m11y ]
                  * [ (1) ]   [  (0)  (0) ( 1 ) ] [ (1) ]   [     (1)     ]
                  * </pre>
-                 * The two coordinate array sections can be exactly the same or
-                 * can be overlapping sections of the same array without affecting the
-                 * validity of the results.
-                 * This method ensures that no source coordinates are
-                 * overwritten by a previous operation before they can be transformed.
-                 * The coordinates are stored in the arrays starting at the indicated
-                 * offset in the order <code>[x0, y0, x1, y1, ..., xn, yn]</code>.
-                 * @param {double[]} srcPts the array containing the source distance vectors.
-                 * Each vector is stored as a pair of relative x,&nbsp;y coordinates.
-                 * @param {double[]} dstPts the array into which the transformed distance vectors
-                 * are returned.  Each vector is stored as a pair of relative
-                 * x,&nbsp;y coordinates.
-                 * @param {number} srcOff the offset to the first vector to be transformed
-                 * in the source array
-                 * @param {number} dstOff the offset to the location of the first
-                 * transformed vector that is stored in the destination array
-                 * @param {number} numPts the number of vector coordinate pairs to be
-                 * transformed
+                 *
+                 * The two coordinate array sections can be exactly the same or can be overlapping sections of the
+                 * same array without affecting the validity of the results. This method ensures that no source
+                 * coordinates are overwritten by a previous operation before they can be transformed. The
+                 * coordinates are stored in the arrays starting at the indicated offset in the order <code>
+                 * [x0, y0, x1, y1, ..., xn, yn]</code>.
+                 *
+                 * @param {double[]} srcPts the array containing the source distance vectors. Each vector is stored as a pair
+                 * of relative x,&nbsp;y coordinates.
+                 * @param {double[]} dstPts the array into which the transformed distance vectors are returned. Each vector
+                 * is stored as a pair of relative x,&nbsp;y coordinates.
+                 * @param {number} srcOff the offset to the first vector to be transformed in the source array
+                 * @param {number} dstOff the offset to the location of the first transformed vector that is stored in the
+                 * destination array
+                 * @param {number} numPts the number of vector coordinate pairs to be transformed
                  * @since 1.2
                  */
                 AffineTransform.prototype.deltaTransform = function (srcPts, srcOff, dstPts, dstOff, numPts) {
@@ -6863,13 +6626,12 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Returns a new {@link Shape} object defined by the geometry of the
-                 * specified <code>Shape</code> after it has been transformed by
-                 * this transform.
-                 * @param {*} pSrc the specified <code>Shape</code> object to be
-                 * transformed by this transform.
-                 * @return {*} a new <code>Shape</code> object that defines the geometry
-                 * of the transformed <code>Shape</code>, or null if {@code pSrc} is null.
+                 * Returns a new {@link Shape} object defined by the geometry of the specified <code>Shape</code>
+                 * after it has been transformed by this transform.
+                 *
+                 * @param {*} pSrc the specified <code>Shape</code> object to be transformed by this transform.
+                 * @return {*} a new <code>Shape</code> object that defines the geometry of the transformed <code>
+                 * Shape</code>, or null if {@code pSrc} is null.
                  * @since 1.2
                  */
                 AffineTransform.prototype.createTransformedShape = function (pSrc) {
@@ -6893,20 +6655,19 @@ var java;
                     } })(matval * 1.0E15) / 1.0E15;
                 };
                 /**
-                 * Returns a <code>String</code> that represents the value of this
-                 * {@link Object}.
-                 * @return {string} a <code>String</code> representing the value of this
-                 * <code>Object</code>.
+                 * Returns a <code>String</code> that represents the value of this {@link Object}.
+                 *
+                 * @return {string} a <code>String</code> representing the value of this <code>Object</code>.
                  * @since 1.2
                  */
                 AffineTransform.prototype.toString = function () {
                     return ("AffineTransform[[" + AffineTransform._matround(this.m00) + ", " + AffineTransform._matround(this.m01) + ", " + AffineTransform._matround(this.m02) + "], [" + AffineTransform._matround(this.m10) + ", " + AffineTransform._matround(this.m11) + ", " + AffineTransform._matround(this.m12) + "]]");
                 };
                 /**
-                 * Returns <code>true</code> if this <code>AffineTransform</code> is
-                 * an identity transform.
-                 * @return {boolean} <code>true</code> if this <code>AffineTransform</code> is
-                 * an identity transform; <code>false</code> otherwise.
+                 * Returns <code>true</code> if this <code>AffineTransform</code> is an identity transform.
+                 *
+                 * @return {boolean} <code>true</code> if this <code>AffineTransform</code> is an identity transform; <code>
+                 * false</code> otherwise.
                  * @since 1.2
                  */
                 AffineTransform.prototype.isIdentity = function () {
@@ -6914,8 +6675,8 @@ var java;
                 };
                 /**
                  * Returns a copy of this <code>AffineTransform</code> object.
-                 * @return {*} an <code>Object</code> that is a copy of this
-                 * <code>AffineTransform</code> object.
+                 *
+                 * @return {*} an <code>Object</code> that is a copy of this <code>AffineTransform</code> object.
                  * @since 1.2
                  */
                 AffineTransform.prototype.clone = function () {
@@ -6931,7 +6692,8 @@ var java;
                 };
                 /**
                  * Returns the hashcode for this transform.
-                 * @return      {number} a hash code for this transform.
+                 *
+                 * @return {number} a hash code for this transform.
                  * @since 1.2
                  */
                 AffineTransform.prototype.hashCode = function () {
@@ -6944,13 +6706,12 @@ var java;
                     return (((bits | 0)) ^ (((bits >> 32) | 0)));
                 };
                 /**
-                 * Returns <code>true</code> if this <code>AffineTransform</code>
-                 * represents the same affine coordinate transform as the specified
-                 * argument.
-                 * @param {*} obj the <code>Object</code> to test for equality with this
-                 * <code>AffineTransform</code>
-                 * @return {boolean} <code>true</code> if <code>obj</code> equals this
-                 * <code>AffineTransform</code> object; <code>false</code> otherwise.
+                 * Returns <code>true</code> if this <code>AffineTransform</code> represents the same affine
+                 * coordinate transform as the specified argument.
+                 *
+                 * @param {*} obj the <code>Object</code> to test for equality with this <code>AffineTransform</code>
+                 * @return {boolean} <code>true</code> if <code>obj</code> equals this <code>AffineTransform</code> object;
+                 * <code>false</code> otherwise.
                  * @since 1.2
                  */
                 AffineTransform.prototype.equals = function (obj) {
@@ -6962,14 +6723,12 @@ var java;
                 };
                 AffineTransform.TYPE_UNKNOWN = -1;
                 /**
-                 * This constant indicates that the transform defined by this object
-                 * is an identity transform.
-                 * An identity transform is one in which the output coordinates are
-                 * always the same as the input coordinates.
-                 * If this transform is anything other than the identity transform,
-                 * the type will either be the constant GENERAL_TRANSFORM or a
-                 * combination of the appropriate flag bits for the various coordinate
-                 * conversions that this transform performs.
+                 * This constant indicates that the transform defined by this object is an identity transform. An
+                 * identity transform is one in which the output coordinates are always the same as the input
+                 * coordinates. If this transform is anything other than the identity transform, the type will
+                 * either be the constant GENERAL_TRANSFORM or a combination of the appropriate flag bits for the
+                 * various coordinate conversions that this transform performs.
+                 *
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
                  * @see #TYPE_GENERAL_SCALE
@@ -6982,11 +6741,10 @@ var java;
                  */
                 AffineTransform.TYPE_IDENTITY = 0;
                 /**
-                 * This flag bit indicates that the transform defined by this object
-                 * performs a translation in addition to the conversions indicated
-                 * by other flag bits.
-                 * A translation moves the coordinates by a constant amount in x
-                 * and y without changing the length or angle of vectors.
+                 * This flag bit indicates that the transform defined by this object performs a translation in
+                 * addition to the conversions indicated by other flag bits. A translation moves the coordinates
+                 * by a constant amount in x and y without changing the length or angle of vectors.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_UNIFORM_SCALE
                  * @see #TYPE_GENERAL_SCALE
@@ -6999,13 +6757,11 @@ var java;
                  */
                 AffineTransform.TYPE_TRANSLATION = 1;
                 /**
-                 * This flag bit indicates that the transform defined by this object
-                 * performs a uniform scale in addition to the conversions indicated
-                 * by other flag bits.
-                 * A uniform scale multiplies the length of vectors by the same amount
-                 * in both the x and y directions without changing the angle between
-                 * vectors.
-                 * This flag bit is mutually exclusive with the TYPE_GENERAL_SCALE flag.
+                 * This flag bit indicates that the transform defined by this object performs a uniform scale in
+                 * addition to the conversions indicated by other flag bits. A uniform scale multiplies the length
+                 * of vectors by the same amount in both the x and y directions without changing the angle between
+                 * vectors. This flag bit is mutually exclusive with the TYPE_GENERAL_SCALE flag.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_GENERAL_SCALE
@@ -7018,13 +6774,11 @@ var java;
                  */
                 AffineTransform.TYPE_UNIFORM_SCALE = 2;
                 /**
-                 * This flag bit indicates that the transform defined by this object
-                 * performs a general scale in addition to the conversions indicated
-                 * by other flag bits.
-                 * A general scale multiplies the length of vectors by different
-                 * amounts in the x and y directions without changing the angle
-                 * between perpendicular vectors.
-                 * This flag bit is mutually exclusive with the TYPE_UNIFORM_SCALE flag.
+                 * This flag bit indicates that the transform defined by this object performs a general scale in
+                 * addition to the conversions indicated by other flag bits. A general scale multiplies the length
+                 * of vectors by different amounts in the x and y directions without changing the angle between
+                 * perpendicular vectors. This flag bit is mutually exclusive with the TYPE_UNIFORM_SCALE flag.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
@@ -7037,20 +6791,16 @@ var java;
                  */
                 AffineTransform.TYPE_GENERAL_SCALE = 4;
                 /**
-                 * This flag bit indicates that the transform defined by this object
-                 * performs a mirror image flip about some axis which changes the
-                 * normally right handed coordinate system into a left handed
-                 * system in addition to the conversions indicated by other flag bits.
-                 * A right handed coordinate system is one where the positive X
-                 * axis rotates counterclockwise to overlay the positive Y axis
-                 * similar to the direction that the fingers on your right hand
-                 * curl when you stare end on at your thumb.
-                 * A left handed coordinate system is one where the positive X
-                 * axis rotates clockwise to overlay the positive Y axis similar
-                 * to the direction that the fingers on your left hand curl.
-                 * There is no mathematical way to determine the angle of the
-                 * original flipping or mirroring transformation since all angles
-                 * of flip are identical given an appropriate adjusting rotation.
+                 * This flag bit indicates that the transform defined by this object performs a mirror image flip
+                 * about some axis which changes the normally right handed coordinate system into a left handed
+                 * system in addition to the conversions indicated by other flag bits. A right handed coordinate
+                 * system is one where the positive X axis rotates counterclockwise to overlay the positive Y axis
+                 * similar to the direction that the fingers on your right hand curl when you stare end on at your
+                 * thumb. A left handed coordinate system is one where the positive X axis rotates clockwise to
+                 * overlay the positive Y axis similar to the direction that the fingers on your left hand curl.
+                 * There is no mathematical way to determine the angle of the original flipping or mirroring
+                 * transformation since all angles of flip are identical given an appropriate adjusting rotation.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
@@ -7063,13 +6813,12 @@ var java;
                  */
                 AffineTransform.TYPE_FLIP = 64;
                 /**
-                 * This flag bit indicates that the transform defined by this object
-                 * performs a quadrant rotation by some multiple of 90 degrees in
-                 * addition to the conversions indicated by other flag bits.
-                 * A rotation changes the angles of vectors by the same amount
-                 * regardless of the original direction of the vector and without
-                 * changing the length of the vector.
-                 * This flag bit is mutually exclusive with the TYPE_GENERAL_ROTATION flag.
+                 * This flag bit indicates that the transform defined by this object performs a quadrant rotation
+                 * by some multiple of 90 degrees in addition to the conversions indicated by other flag bits. A
+                 * rotation changes the angles of vectors by the same amount regardless of the original direction
+                 * of the vector and without changing the length of the vector. This flag bit is mutually
+                 * exclusive with the TYPE_GENERAL_ROTATION flag.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
@@ -7082,14 +6831,12 @@ var java;
                  */
                 AffineTransform.TYPE_QUADRANT_ROTATION = 8;
                 /**
-                 * This flag bit indicates that the transform defined by this object
-                 * performs a rotation by an arbitrary angle in addition to the
-                 * conversions indicated by other flag bits.
-                 * A rotation changes the angles of vectors by the same amount
-                 * regardless of the original direction of the vector and without
-                 * changing the length of the vector.
-                 * This flag bit is mutually exclusive with the
+                 * This flag bit indicates that the transform defined by this object performs a rotation by an
+                 * arbitrary angle in addition to the conversions indicated by other flag bits. A rotation changes
+                 * the angles of vectors by the same amount regardless of the original direction of the vector and
+                 * without changing the length of the vector. This flag bit is mutually exclusive with the
                  * TYPE_QUADRANT_ROTATION flag.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
@@ -7102,12 +6849,11 @@ var java;
                  */
                 AffineTransform.TYPE_GENERAL_ROTATION = 16;
                 /**
-                 * This constant indicates that the transform defined by this object
-                 * performs an arbitrary conversion of the input coordinates.
-                 * If this transform can be classified by any of the above constants,
-                 * the type will either be the constant TYPE_IDENTITY or a
-                 * combination of the appropriate flag bits for the various coordinate
-                 * conversions that this transform performs.
+                 * This constant indicates that the transform defined by this object performs an arbitrary
+                 * conversion of the input coordinates. If this transform can be classified by any of the above
+                 * constants, the type will either be the constant TYPE_IDENTITY or a combination of the
+                 * appropriate flag bits for the various coordinate conversions that this transform performs.
+                 *
                  * @see #TYPE_IDENTITY
                  * @see #TYPE_TRANSLATION
                  * @see #TYPE_UNIFORM_SCALE
@@ -7120,10 +6866,10 @@ var java;
                  */
                 AffineTransform.TYPE_GENERAL_TRANSFORM = 32;
                 /**
-                 * This constant is used for the internal state variable to indicate
-                 * that no calculations need to be performed and that the source
-                 * coordinates only need to be copied to their destinations to
+                 * This constant is used for the internal state variable to indicate that no calculations need to
+                 * be performed and that the source coordinates only need to be copied to their destinations to
                  * complete the transformation equation of this transform.
+                 *
                  * @see #APPLY_TRANSLATE
                  * @see #APPLY_SCALE
                  * @see #APPLY_SHEAR
@@ -7131,9 +6877,10 @@ var java;
                  */
                 AffineTransform.APPLY_IDENTITY = 0;
                 /**
-                 * This constant is used for the internal state variable to indicate
-                 * that the translation components of the matrix (m02 and m12) need
-                 * to be added to complete the transformation equation of this transform.
+                 * This constant is used for the internal state variable to indicate that the translation
+                 * components of the matrix (m02 and m12) need to be added to complete the transformation equation
+                 * of this transform.
+                 *
                  * @see #APPLY_IDENTITY
                  * @see #APPLY_SCALE
                  * @see #APPLY_SHEAR
@@ -7141,17 +6888,14 @@ var java;
                  */
                 AffineTransform.APPLY_TRANSLATE = 1;
                 /**
-                 * This constant is used for the internal state variable to indicate
-                 * that the scaling components of the matrix (m00 and m11) need
-                 * to be factored in to complete the transformation equation of
-                 * this transform.  If the APPLY_SHEAR bit is also set then it
-                 * indicates that the scaling components are not both 0.0.  If the
-                 * APPLY_SHEAR bit is not also set then it indicates that the
-                 * scaling components are not both 1.0.  If neither the APPLY_SHEAR
-                 * nor the APPLY_SCALE bits are set then the scaling components
-                 * are both 1.0, which means that the x and y components contribute
-                 * to the transformed coordinate, but they are not multiplied by
-                 * any scaling factor.
+                 * This constant is used for the internal state variable to indicate that the scaling components
+                 * of the matrix (m00 and m11) need to be factored in to complete the transformation equation of
+                 * this transform. If the APPLY_SHEAR bit is also set then it indicates that the scaling
+                 * components are not both 0.0. If the APPLY_SHEAR bit is not also set then it indicates that the
+                 * scaling components are not both 1.0. If neither the APPLY_SHEAR nor the APPLY_SCALE bits are
+                 * set then the scaling components are both 1.0, which means that the x and y components
+                 * contribute to the transformed coordinate, but they are not multiplied by any scaling factor.
+                 *
                  * @see #APPLY_IDENTITY
                  * @see #APPLY_TRANSLATE
                  * @see #APPLY_SHEAR
@@ -7159,12 +6903,11 @@ var java;
                  */
                 AffineTransform.APPLY_SCALE = 2;
                 /**
-                 * This constant is used for the internal state variable to indicate
-                 * that the shearing components of the matrix (m01 and m10) need
-                 * to be factored in to complete the transformation equation of this
-                 * transform.  The presence of this bit in the state variable changes
-                 * the interpretation of the APPLY_SCALE bit as indicated in its
-                 * documentation.
+                 * This constant is used for the internal state variable to indicate that the shearing components
+                 * of the matrix (m01 and m10) need to be factored in to complete the transformation equation of
+                 * this transform. The presence of this bit in the state variable changes the interpretation of
+                 * the APPLY_SCALE bit as indicated in its documentation.
+                 *
                  * @see #APPLY_IDENTITY
                  * @see #APPLY_TRANSLATE
                  * @see #APPLY_SCALE
@@ -7187,25 +6930,18 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * Constructs a new <code>FlatteningPathIterator</code> object that flattens
-             * a path as it iterates over it. The <code>limit</code> parameter allows
-             * you to control the maximum number of recursive subdivisions that the
-             * iterator can make before it assumes that the curve is flat enough without
-             * measuring against the <code>flatness</code> parameter. The flattened
-             * iteration therefore never generates more than a maximum of
-             * <code>(2^limit)</code> line segments per curve.
+             * Constructs a new <code>FlatteningPathIterator</code> object that flattens a path as it iterates
+             * over it. The <code>limit</code> parameter allows you to control the maximum number of recursive
+             * subdivisions that the iterator can make before it assumes that the curve is flat enough without
+             * measuring against the <code>flatness</code> parameter. The flattened iteration therefore never
+             * generates more than a maximum of <code>(2^limit)</code> line segments per curve.
              *
-             * @param {*} src
-             * the original unflattened path being iterated over
-             * @param {number} flatness
-             * the maximum allowable distance between the control points and
-             * the flattened curve
-             * @param {number} limit
-             * the maximum number of recursive subdivisions allowed for any
-             * curved segment
-             * @exception IllegalArgumentException
-             * if <code>flatness</code> or <code>limit</code> is less
-             * than zero
+             * @param {*} src the original unflattened path being iterated over
+             * @param {number} flatness the maximum allowable distance between the control points and the flattened
+             * curve
+             * @param {number} limit the maximum number of recursive subdivisions allowed for any curved segment
+             * @exception IllegalArgumentException if <code>flatness</code> or <code>limit</code> is less than
+             * zero
              * @class
              * @author Jim Graham
              */
@@ -7390,8 +7126,7 @@ var java;
                 /**
                  * Returns the winding rule for determining the interior of the path.
                  *
-                 * @return {number} the winding rule of the original unflattened path being iterated
-                 * over.
+                 * @return {number} the winding rule of the original unflattened path being iterated over.
                  * @see PathIterator#WIND_EVEN_ODD
                  * @see PathIterator#WIND_NON_ZERO
                  */
@@ -7401,8 +7136,7 @@ var java;
                 /**
                  * Tests if the iteration is complete.
                  *
-                 * @return {boolean} <code>true</code> if all the segments have been read;
-                 * <code>false</code> otherwise.
+                 * @return {boolean} <code>true</code> if all the segments have been read; <code>false</code> otherwise.
                  */
                 FlatteningPathIterator.prototype.isDone = function () {
                     return this.done;
@@ -7543,18 +7277,15 @@ var java;
                     return type;
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, or SEG_CLOSE. A float array of length 6 must be passed in and
-                 * can be used to store the coordinates of the point(s). Each point is
-                 * stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
-                 * types return one point, and SEG_CLOSE does not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, or SEG_CLOSE. A float array of length 6 must
+                 * be passed in and can be used to store the coordinates of the point(s). Each point is stored as
+                 * a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO types return one point, and
+                 * SEG_CLOSE does not return any points.
                  *
-                 * @param {float[]} coords
-                 * an array that holds the data returned from this method
+                 * @param {float[]} coords an array that holds the data returned from this method
                  * @return {number} the path segment type of the current path segment.
-                 * @exception NoSuchElementException
-                 * if there are no more elements in the flattening path to be
+                 * @exception NoSuchElementException if there are no more elements in the flattening path to be
                  * returned.
                  * @see PathIterator#SEG_MOVETO
                  * @see PathIterator#SEG_LINETO
@@ -7599,8 +7330,7 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of an arc through the
-             * PathIterator interface.
+             * A utility class to iterate over the path segments of an arc through the PathIterator interface.
              *
              * @author Jim Graham
              * @class
@@ -7698,9 +7428,8 @@ var java;
                     return this.index > this.arcSegs + this.lineSegs;
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 ArcIterator.prototype.next = function () {
                     this.index++;
@@ -7751,14 +7480,12 @@ var java;
                     return java.awt.geom.PathIterator.SEG_CUBICTO;
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -7835,36 +7562,32 @@ var java;
             var PathIterator;
             (function (PathIterator) {
                 /**
-                 * The winding rule constant for specifying an even-odd rule for determining
-                 * the interior of a path. The even-odd rule specifies that a point lies
-                 * inside the path if a ray drawn in any direction from that point to
-                 * infinity is crossed by path segments an odd number of times.
+                 * The winding rule constant for specifying an even-odd rule for determining the interior of a
+                 * path. The even-odd rule specifies that a point lies inside the path if a ray drawn in any
+                 * direction from that point to infinity is crossed by path segments an odd number of times.
                  */
                 PathIterator.WIND_EVEN_ODD = 0;
                 /**
-                 * The winding rule constant for specifying a non-zero rule for determining
-                 * the interior of a path. The non-zero rule specifies that a point lies
-                 * inside the path if a ray drawn in any direction from that point to
-                 * infinity is crossed by path segments a different number of times in the
-                 * counter-clockwise direction than the clockwise direction.
+                 * The winding rule constant for specifying a non-zero rule for determining the interior of a
+                 * path. The non-zero rule specifies that a point lies inside the path if a ray drawn in any
+                 * direction from that point to infinity is crossed by path segments a different number of times
+                 * in the counter-clockwise direction than the clockwise direction.
                  */
                 PathIterator.WIND_NON_ZERO = 1;
                 /**
-                 * The segment type constant for a point that specifies the starting
-                 * location for a new subpath.
+                 * The segment type constant for a point that specifies the starting location for a new subpath.
                  */
                 PathIterator.SEG_MOVETO = 0;
                 /**
-                 * The segment type constant for a point that specifies the end point of a
-                 * line to be drawn from the most recently specified point.
+                 * The segment type constant for a point that specifies the end point of a line to be drawn from
+                 * the most recently specified point.
                  */
                 PathIterator.SEG_LINETO = 1;
                 /**
-                 * The segment type constant for the pair of points that specify a quadratic
-                 * parametric curve to be drawn from the most recently specified point. The
-                 * curve is interpolated by solving the parametric control equation in the
-                 * range <code>(t=[0..1])</code> using the most recently specified (current)
-                 * point (CP), the first control point (P1), and the final interpolated
+                 * The segment type constant for the pair of points that specify a quadratic parametric curve to
+                 * be drawn from the most recently specified point. The curve is interpolated by solving the
+                 * parametric control equation in the range <code>(t=[0..1])</code> using the most recently
+                 * specified (current) point (CP), the first control point (P1), and the final interpolated
                  * control point (P2). The parametric control equation for this curve is:
                  *
                  * <pre>
@@ -7879,13 +7602,12 @@ var java;
                  */
                 PathIterator.SEG_QUADTO = 2;
                 /**
-                 * The segment type constant for the set of 3 points that specify a cubic
-                 * parametric curve to be drawn from the most recently specified point. The
-                 * curve is interpolated by solving the parametric control equation in the
-                 * range <code>(t=[0..1])</code> using the most recently specified (current)
-                 * point (CP), the first control point (P1), the second control point (P2),
-                 * and the final interpolated control point (P3). The parametric control
-                 * equation for this curve is:
+                 * The segment type constant for the set of 3 points that specify a cubic parametric curve to be
+                 * drawn from the most recently specified point. The curve is interpolated by solving the
+                 * parametric control equation in the range <code>(t=[0..1])</code> using the most recently
+                 * specified (current) point (CP), the first control point (P1), the second control point (P2),
+                 * and the final interpolated control point (P3). The parametric control equation for this curve
+                 * is:
                  *
                  * <pre>
                  * P(t) = B(3,0)*CP + B(3,1)*P1 + B(3,2)*P2 + B(3,3)*P3
@@ -7901,9 +7623,8 @@ var java;
                  */
                 PathIterator.SEG_CUBICTO = 3;
                 /**
-                 * The segment type constant that specifies that the preceding subpath
-                 * should be closed by appending a line segment back to the point
-                 * corresponding to the most recent SEG_MOVETO.
+                 * The segment type constant that specifies that the preceding subpath should be closed by
+                 * appending a line segment back to the point corresponding to the most recent SEG_MOVETO.
                  */
                 PathIterator.SEG_CLOSE = 4;
             })(PathIterator = geom.PathIterator || (geom.PathIterator = {}));
@@ -7916,17 +7637,15 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * This <code>Line2D</code> represents a line segment in {@code (x,y)}
-             * coordinate space. This class, like all of the Java 2D API, uses a default
-             * coordinate system called <i>user space</i> in which the y-axis values
-             * increase downward and x-axis values increase to the right. For more
-             * information on the user space coordinate system, see the <a href=
-             * "http://docs.oracle.com/javase/1.3/docs/guide/2d/spec/j2d-intro.fm2.html#61857">
-             * Coordinate Systems</a> section of the Java 2D Programmer's Guide.
-             * <p>
-             * This class is only the abstract superclass for all objects that store a 2D
-             * line segment. The actual storage representation of the coordinates is left to
-             * the subclass.
+             * This <code>Line2D</code> represents a line segment in {@code (x,y)} coordinate space. This class,
+             * like all of the Java 2D API, uses a default coordinate system called <i>user space</i> in which
+             * the y-axis values increase downward and x-axis values increase to the right. For more information
+             * on the user space coordinate system, see the <a href=
+             * "http://docs.oracle.com/javase/1.3/docs/guide/2d/spec/j2d-intro.fm2.html#61857"> Coordinate
+             * Systems</a> section of the Java 2D Programmer's Guide.
+             *
+             * <p>This class is only the abstract superclass for all objects that store a 2D line segment. The
+             * actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -7937,17 +7656,13 @@ var java;
                 }
                 Line2D.prototype.setLine$double$double$double$double = function (x1, y1, x2, y2) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location of the end points of this <code>Line2D</code> to the
-                 * specified double coordinates.
+                 * Sets the location of the end points of this <code>Line2D</code> to the specified double
+                 * coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
                  * @since 1.2
                  */
                 Line2D.prototype.setLine = function (x1, y1, x2, y2) {
@@ -7970,51 +7685,37 @@ var java;
                     this.setLine$double$double$double$double(l.getX1(), l.getY1(), l.getX2(), l.getY2());
                 };
                 /**
-                 * Returns an indicator of where the specified point {@code (px,py)} lies
-                 * with respect to the line segment from {@code (x1,y1)} to {@code (x2,y2)}.
-                 * The return value can be either 1, -1, or 0 and indicates in which
-                 * direction the specified line must pivot around its first end point,
-                 * {@code (x1,y1)}, in order to point at the specified point {@code (px,py)}
-                 * .
-                 * <p>
-                 * A return value of 1 indicates that the line segment must turn in the
-                 * direction that takes the positive X axis towards the negative Y axis. In
-                 * the default coordinate system used by Java 2D, this direction is
-                 * counterclockwise.
-                 * <p>
-                 * A return value of -1 indicates that the line segment must turn in the
-                 * direction that takes the positive X axis towards the positive Y axis. In
-                 * the default coordinate system, this direction is clockwise.
-                 * <p>
-                 * A return value of 0 indicates that the point lies exactly on the line
-                 * segment. Note that an indicator value of 0 is rare and not useful for
-                 * determining collinearity because of floating point rounding issues.
-                 * <p>
-                 * If the point is colinear with the line segment, but not between the end
-                 * points, then the value will be -1 if the point lies
-                 * "beyond {@code (x1,y1)}" or 1 if the point lies "beyond {@code (x2,y2)}".
+                 * Returns an indicator of where the specified point {@code (px,py)} lies with respect to the line
+                 * segment from {@code (x1,y1)} to {@code (x2,y2)}. The return value can be either 1, -1, or 0 and
+                 * indicates in which direction the specified line must pivot around its first end point, {@code
+                 * (x1,y1)}, in order to point at the specified point {@code (px,py)} .
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
+                 * <p>A return value of 1 indicates that the line segment must turn in the direction that takes
+                 * the positive X axis towards the negative Y axis. In the default coordinate system used by Java
+                 * 2D, this direction is counterclockwise.
+                 *
+                 * <p>A return value of -1 indicates that the line segment must turn in the direction that takes
+                 * the positive X axis towards the positive Y axis. In the default coordinate system, this
+                 * direction is clockwise.
+                 *
+                 * <p>A return value of 0 indicates that the point lies exactly on the line segment. Note that an
+                 * indicator value of 0 is rare and not useful for determining collinearity because of floating
+                 * point rounding issues.
+                 *
+                 * <p>If the point is colinear with the line segment, but not between the end points, then the
+                 * value will be -1 if the point lies "beyond {@code (x1,y1)}" or 1 if the point lies "beyond
+                 * {@code (x2,y2)}".
+                 *
+                 * @param {number} x1 the X coordinate of the start point of the specified line segment
+                 * @param {number} y1 the Y coordinate of the start point of the specified line segment
+                 * @param {number} x2 the X coordinate of the end point of the specified line segment
+                 * @param {number} y2 the Y coordinate of the end point of the specified line segment
+                 * @param {number} px the X coordinate of the specified point to be compared with the specified line
                  * segment
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
+                 * @param {number} py the Y coordinate of the specified point to be compared with the specified line
                  * segment
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} px
-                 * the X coordinate of the specified point to be compared with
-                 * the specified line segment
-                 * @param {number} py
-                 * the Y coordinate of the specified point to be compared with
-                 * the specified line segment
-                 * @return {number} an integer that indicates the position of the third specified
-                 * coordinates with respect to the line segment formed by the first
-                 * two specified coordinates.
+                 * @return {number} an integer that indicates the position of the third specified coordinates with respect
+                 * to the line segment formed by the first two specified coordinates.
                  * @since 1.2
                  */
                 Line2D.relativeCCW = function (x1, y1, x2, y2, px, py) {
@@ -8040,19 +7741,14 @@ var java;
                     return Line2D.relativeCCW(this.getX1(), this.getY1(), this.getX2(), this.getY2(), px, py);
                 };
                 /**
-                 * Returns an indicator of where the specified point {@code (px,py)} lies
-                 * with respect to this line segment. See the method comments of
-                 * {@link #relativeCCW(double, double, double, double, double, double)} to
-                 * interpret the return value.
+                 * Returns an indicator of where the specified point {@code (px,py)} lies with respect to this
+                 * line segment. See the method comments of {@link #relativeCCW(double, double, double, double,
+                 * double, double)} to interpret the return value.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point to be compared with
+                 * @param {number} px the X coordinate of the specified point to be compared with this <code>Line2D</code>
+                 * @param {number} py the Y coordinate of the specified point to be compared with this <code>Line2D</code>
+                 * @return {number} an integer that indicates the position of the specified coordinates with respect to
                  * this <code>Line2D</code>
-                 * @param {number} py
-                 * the Y coordinate of the specified point to be compared with
-                 * this <code>Line2D</code>
-                 * @return {number} an integer that indicates the position of the specified
-                 * coordinates with respect to this <code>Line2D</code>
                  * @see #relativeCCW(double, double, double, double, double, double)
                  * @since 1.2
                  */
@@ -8070,36 +7766,19 @@ var java;
                     return Line2D.relativeCCW(this.getX1(), this.getY1(), this.getX2(), this.getY2(), p.getX(), p.getY());
                 };
                 /**
-                 * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)}
-                 * intersects the line segment from {@code (x3,y3)} to {@code (x4,y4)}.
+                 * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)} intersects the line segment
+                 * from {@code (x3,y3)} to {@code (x4,y4)}.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the first specified
-                 * line segment
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the first specified
-                 * line segment
-                 * @param {number} x2
-                 * the X coordinate of the end point of the first specified line
-                 * segment
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the first specified line
-                 * segment
-                 * @param {number} x3
-                 * the X coordinate of the start point of the second specified
-                 * line segment
-                 * @param {number} y3
-                 * the Y coordinate of the start point of the second specified
-                 * line segment
-                 * @param {number} x4
-                 * the X coordinate of the end point of the second specified line
-                 * segment
-                 * @param {number} y4
-                 * the Y coordinate of the end point of the second specified line
-                 * segment
-                 * @return {boolean} <code>true</code> if the first specified line segment and the
-                 * second specified line segment intersect each other;
-                 * <code>false</code> otherwise.
+                 * @param {number} x1 the X coordinate of the start point of the first specified line segment
+                 * @param {number} y1 the Y coordinate of the start point of the first specified line segment
+                 * @param {number} x2 the X coordinate of the end point of the first specified line segment
+                 * @param {number} y2 the Y coordinate of the end point of the first specified line segment
+                 * @param {number} x3 the X coordinate of the start point of the second specified line segment
+                 * @param {number} y3 the Y coordinate of the start point of the second specified line segment
+                 * @param {number} x4 the X coordinate of the end point of the second specified line segment
+                 * @param {number} y4 the Y coordinate of the end point of the second specified line segment
+                 * @return {boolean} <code>true</code> if the first specified line segment and the second specified line
+                 * segment intersect each other; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Line2D.linesIntersect = function (x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -8109,23 +7788,14 @@ var java;
                     return Line2D.linesIntersect(x1, y1, x2, y2, this.getX1(), this.getY1(), this.getX2(), this.getY2());
                 };
                 /**
-                 * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)}
-                 * intersects this line segment.
+                 * Tests if the line segment from {@code (x1,y1)} to {@code (x2,y2)} intersects this line segment.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
-                 * segment
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
-                 * segment
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * segment
-                 * @return {boolean} {@code <true>} if this line segment and the specified line
-                 * segment intersect each other; <code>false</code> otherwise.
+                 * @param {number} x1 the X coordinate of the start point of the specified line segment
+                 * @param {number} y1 the Y coordinate of the start point of the specified line segment
+                 * @param {number} x2 the X coordinate of the end point of the specified line segment
+                 * @param {number} y2 the Y coordinate of the end point of the specified line segment
+                 * @return {boolean} {@code <true>} if this line segment and the specified line segment intersect each
+                 * other; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Line2D.prototype.intersectsLine = function (x1, y1, x2, y2) {
@@ -8142,32 +7812,21 @@ var java;
                     return Line2D.linesIntersect(l.getX1(), l.getY1(), l.getX2(), l.getY2(), this.getX1(), this.getY1(), this.getX2(), this.getY2());
                 };
                 /**
-                 * Returns the square of the distance from a point to a line segment. The
-                 * distance measured is the distance between the specified point and the
-                 * closest point between the specified end points. If the specified point
-                 * intersects the line segment in between the end points, this method
-                 * returns 0.0.
+                 * Returns the square of the distance from a point to a line segment. The distance measured is the
+                 * distance between the specified point and the closest point between the specified end points. If
+                 * the specified point intersects the line segment in between the end points, this method returns
+                 * 0.0.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
+                 * @param {number} x1 the X coordinate of the start point of the specified line segment
+                 * @param {number} y1 the Y coordinate of the start point of the specified line segment
+                 * @param {number} x2 the X coordinate of the end point of the specified line segment
+                 * @param {number} y2 the Y coordinate of the end point of the specified line segment
+                 * @param {number} px the X coordinate of the specified point being measured against the specified line
                  * segment
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
+                 * @param {number} py the Y coordinate of the specified point being measured against the specified line
                  * segment
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * the specified line segment
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * the specified line segment
-                 * @return {number} a double value that is the square of the distance from the
-                 * specified point to the specified line segment.
+                 * @return {number} a double value that is the square of the distance from the specified point to the
+                 * specified line segment.
                  * @see #ptLineDistSq(double, double, double, double, double, double)
                  * @since 1.2
                  */
@@ -8199,31 +7858,20 @@ var java;
                     return lenSq;
                 };
                 /**
-                 * Returns the distance from a point to a line segment. The distance
-                 * measured is the distance between the specified point and the closest
-                 * point between the specified end points. If the specified point intersects
-                 * the line segment in between the end points, this method returns 0.0.
+                 * Returns the distance from a point to a line segment. The distance measured is the distance
+                 * between the specified point and the closest point between the specified end points. If the
+                 * specified point intersects the line segment in between the end points, this method returns 0.0.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
+                 * @param {number} x1 the X coordinate of the start point of the specified line segment
+                 * @param {number} y1 the Y coordinate of the start point of the specified line segment
+                 * @param {number} x2 the X coordinate of the end point of the specified line segment
+                 * @param {number} y2 the Y coordinate of the end point of the specified line segment
+                 * @param {number} px the X coordinate of the specified point being measured against the specified line
                  * segment
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
+                 * @param {number} py the Y coordinate of the specified point being measured against the specified line
                  * segment
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * the specified line segment
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * the specified line segment
-                 * @return {number} a double value that is the distance from the specified point to
-                 * the specified line segment.
+                 * @return {number} a double value that is the distance from the specified point to the specified line
+                 * segment.
                  * @see #ptLineDist(double, double, double, double, double, double)
                  * @since 1.2
                  */
@@ -8234,20 +7882,15 @@ var java;
                     return Line2D.ptSegDistSq(this.getX1(), this.getY1(), this.getX2(), this.getY2(), px, py);
                 };
                 /**
-                 * Returns the square of the distance from a point to this line segment. The
-                 * distance measured is the distance between the specified point and the
-                 * closest point between the current line's end points. If the specified
-                 * point intersects the line segment in between the end points, this method
-                 * returns 0.0.
+                 * Returns the square of the distance from a point to this line segment. The distance measured is
+                 * the distance between the specified point and the closest point between the current line's end
+                 * points. If the specified point intersects the line segment in between the end points, this
+                 * method returns 0.0.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * this line segment
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * this line segment
-                 * @return {number} a double value that is the square of the distance from the
-                 * specified point to the current line segment.
+                 * @param {number} px the X coordinate of the specified point being measured against this line segment
+                 * @param {number} py the Y coordinate of the specified point being measured against this line segment
+                 * @return {number} a double value that is the square of the distance from the specified point to the
+                 * current line segment.
                  * @see #ptLineDistSq(double, double)
                  * @since 1.2
                  */
@@ -8268,20 +7911,14 @@ var java;
                     return Line2D.ptSegDist(this.getX1(), this.getY1(), this.getX2(), this.getY2(), px, py);
                 };
                 /**
-                 * Returns the distance from a point to this line segment. The distance
-                 * measured is the distance between the specified point and the closest
-                 * point between the current line's end points. If the specified point
-                 * intersects the line segment in between the end points, this method
-                 * returns 0.0.
+                 * Returns the distance from a point to this line segment. The distance measured is the distance
+                 * between the specified point and the closest point between the current line's end points. If the
+                 * specified point intersects the line segment in between the end points, this method returns 0.0.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * this line segment
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * this line segment
-                 * @return {number} a double value that is the distance from the specified point to
-                 * the current line segment.
+                 * @param {number} px the X coordinate of the specified point being measured against this line segment
+                 * @param {number} py the Y coordinate of the specified point being measured against this line segment
+                 * @return {number} a double value that is the distance from the specified point to the current line
+                 * segment.
                  * @see #ptLineDist(double, double)
                  * @since 1.2
                  */
@@ -8299,28 +7936,19 @@ var java;
                     return Line2D.ptSegDist(this.getX1(), this.getY1(), this.getX2(), this.getY2(), pt.getX(), pt.getY());
                 };
                 /**
-                 * Returns the square of the distance from a point to a line. The distance
-                 * measured is the distance between the specified point and the closest
-                 * point on the infinitely-extended line defined by the specified
-                 * coordinates. If the specified point intersects the line, this method
+                 * Returns the square of the distance from a point to a line. The distance measured is the
+                 * distance between the specified point and the closest point on the infinitely-extended line
+                 * defined by the specified coordinates. If the specified point intersects the line, this method
                  * returns 0.0.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * the specified line
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * the specified line
-                 * @return {number} a double value that is the square of the distance from the
-                 * specified point to the specified line.
+                 * @param {number} x1 the X coordinate of the start point of the specified line
+                 * @param {number} y1 the Y coordinate of the start point of the specified line
+                 * @param {number} x2 the X coordinate of the end point of the specified line
+                 * @param {number} y2 the Y coordinate of the end point of the specified line
+                 * @param {number} px the X coordinate of the specified point being measured against the specified line
+                 * @param {number} py the Y coordinate of the specified point being measured against the specified line
+                 * @return {number} a double value that is the square of the distance from the specified point to the
+                 * specified line.
                  * @see #ptSegDistSq(double, double, double, double, double, double)
                  * @since 1.2
                  */
@@ -8338,27 +7966,17 @@ var java;
                     return lenSq;
                 };
                 /**
-                 * Returns the distance from a point to a line. The distance measured is the
-                 * distance between the specified point and the closest point on the
-                 * infinitely-extended line defined by the specified coordinates. If the
-                 * specified point intersects the line, this method returns 0.0.
+                 * Returns the distance from a point to a line. The distance measured is the distance between the
+                 * specified point and the closest point on the infinitely-extended line defined by the specified
+                 * coordinates. If the specified point intersects the line, this method returns 0.0.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * the specified line
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * the specified line
-                 * @return {number} a double value that is the distance from the specified point to
-                 * the specified line.
+                 * @param {number} x1 the X coordinate of the start point of the specified line
+                 * @param {number} y1 the Y coordinate of the start point of the specified line
+                 * @param {number} x2 the X coordinate of the end point of the specified line
+                 * @param {number} y2 the Y coordinate of the end point of the specified line
+                 * @param {number} px the X coordinate of the specified point being measured against the specified line
+                 * @param {number} py the Y coordinate of the specified point being measured against the specified line
+                 * @return {number} a double value that is the distance from the specified point to the specified line.
                  * @see #ptSegDist(double, double, double, double, double, double)
                  * @since 1.2
                  */
@@ -8369,20 +7987,15 @@ var java;
                     return Line2D.ptLineDistSq(this.getX1(), this.getY1(), this.getX2(), this.getY2(), px, py);
                 };
                 /**
-                 * Returns the square of the distance from a point to this line. The
-                 * distance measured is the distance between the specified point and the
-                 * closest point on the infinitely-extended line defined by this
-                 * <code>Line2D</code>. If the specified point intersects the line, this
-                 * method returns 0.0.
+                 * Returns the square of the distance from a point to this line. The distance measured is the
+                 * distance between the specified point and the closest point on the infinitely-extended line
+                 * defined by this <code>Line2D</code>. If the specified point intersects the line, this method
+                 * returns 0.0.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * this line
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * this line
-                 * @return {number} a double value that is the square of the distance from a
-                 * specified point to the current line.
+                 * @param {number} px the X coordinate of the specified point being measured against this line
+                 * @param {number} py the Y coordinate of the specified point being measured against this line
+                 * @return {number} a double value that is the square of the distance from a specified point to the current
+                 * line.
                  * @see #ptSegDistSq(double, double)
                  * @since 1.2
                  */
@@ -8403,19 +8016,13 @@ var java;
                     return Line2D.ptLineDist(this.getX1(), this.getY1(), this.getX2(), this.getY2(), px, py);
                 };
                 /**
-                 * Returns the distance from a point to this line. The distance measured is
-                 * the distance between the specified point and the closest point on the
-                 * infinitely-extended line defined by this <code>Line2D</code>. If the
-                 * specified point intersects the line, this method returns 0.0.
+                 * Returns the distance from a point to this line. The distance measured is the distance between
+                 * the specified point and the closest point on the infinitely-extended line defined by this
+                 * <code>Line2D</code>. If the specified point intersects the line, this method returns 0.0.
                  *
-                 * @param {number} px
-                 * the X coordinate of the specified point being measured against
-                 * this line
-                 * @param {number} py
-                 * the Y coordinate of the specified point being measured against
-                 * this line
-                 * @return {number} a double value that is the distance from a specified point to the
-                 * current line.
+                 * @param {number} px the X coordinate of the specified point being measured against this line
+                 * @param {number} py the Y coordinate of the specified point being measured against this line
+                 * @return {number} a double value that is the distance from a specified point to the current line.
                  * @see #ptSegDist(double, double)
                  * @since 1.2
                  */
@@ -8468,24 +8075,16 @@ var java;
                     return false;
                 };
                 /**
-                 * Tests if the interior of this <code>Line2D</code> entirely contains the
-                 * specified set of rectangular coordinates. This method is required to
-                 * implement the <code>Shape</code> interface, but in the case of
-                 * <code>Line2D</code> objects it always returns false since a line contains
-                 * no area.
-                 *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of the specified
-                 * rectangular area
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of the specified
-                 * rectangular area
-                 * @param {number} w
-                 * the width of the specified rectangular area
-                 * @param {number} h
-                 * the height of the specified rectangular area
-                 * @return {boolean} <code>false</code> because a <code>Line2D</code> contains no
+                 * Tests if the interior of this <code>Line2D</code> entirely contains the specified set of
+                 * rectangular coordinates. This method is required to implement the <code>Shape</code> interface,
+                 * but in the case of <code>Line2D</code> objects it always returns false since a line contains no
                  * area.
+                 *
+                 * @param {number} x the X coordinate of the upper-left corner of the specified rectangular area
+                 * @param {number} y the Y coordinate of the upper-left corner of the specified rectangular area
+                 * @param {number} w the width of the specified rectangular area
+                 * @param {number} h the height of the specified rectangular area
+                 * @return {boolean} <code>false</code> because a <code>Line2D</code> contains no area.
                  * @since 1.2
                  */
                 Line2D.prototype.contains = function (x, y, w, h) {
@@ -8523,22 +8122,17 @@ var java;
                     return new java.awt.geom.LineIterator(this, at);
                 };
                 /**
-                 * Returns an iteration object that defines the boundary of this flattened
-                 * <code>Line2D</code>. The iterator for this class is not multi-threaded
-                 * safe, which means that this <code>Line2D</code> class does not guarantee
-                 * that modifications to the geometry of this <code>Line2D</code> object do
-                 * not affect any iterations of that geometry that are already in process.
+                 * Returns an iteration object that defines the boundary of this flattened <code>Line2D</code>.
+                 * The iterator for this class is not multi-threaded safe, which means that this <code>Line2D
+                 * </code> class does not guarantee that modifications to the geometry of this <code>Line2D</code>
+                 * object do not affect any iterations of that geometry that are already in process.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * the specified <code>AffineTransform</code>
-                 * @param {number} flatness
-                 * the maximum amount that the control points for a given curve
-                 * can vary from colinear before a subdivided curve is replaced
-                 * by a straight line connecting the end points. Since a
-                 * <code>Line2D</code> object is always flat, this parameter is
-                 * ignored.
-                 * @return {*} a <code>PathIterator</code> that defines the boundary of the
-                 * flattened <code>Line2D</code>
+                 * @param {java.awt.geom.AffineTransform} at the specified <code>AffineTransform</code>
+                 * @param {number} flatness the maximum amount that the control points for a given curve can vary from
+                 * colinear before a subdivided curve is replaced by a straight line connecting the end
+                 * points. Since a <code>Line2D</code> object is always flat, this parameter is ignored.
+                 * @return {*} a <code>PathIterator</code> that defines the boundary of the flattened <code>Line2D
+                 * </code>
                  * @since 1.2
                  */
                 Line2D.prototype.getPathIterator = function (at, flatness) {
@@ -8555,8 +8149,7 @@ var java;
                  * Creates a new object of the same class as this object.
                  *
                  * @return {*} a clone of this instance.
-                 * @exception OutOfMemoryError
-                 * if there is not enough memory.
+                 * @exception OutOfMemoryError if there is not enough memory.
                  * @see java.lang.Cloneable
                  * @since 1.2
                  */
@@ -8580,14 +8173,10 @@ var java;
                 /**
                  * Constructs and initializes a Line from the specified coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Line2D
@@ -8719,17 +8308,13 @@ var java;
                         this.y2 = y2;
                     };
                     /**
-                     * Sets the location of the end points of this <code>Line2D</code> to
-                     * the specified float coordinates.
+                     * Sets the location of the end points of this <code>Line2D</code> to the specified float
+                     * coordinates.
                      *
-                     * @param {number} x1
-                     * the X coordinate of the start point
-                     * @param {number} y1
-                     * the Y coordinate of the start point
-                     * @param {number} x2
-                     * the X coordinate of the end point
-                     * @param {number} y2
-                     * the Y coordinate of the end point
+                     * @param {number} x1 the X coordinate of the start point
+                     * @param {number} y1 the Y coordinate of the start point
+                     * @param {number} x2 the X coordinate of the end point
+                     * @param {number} y2 the Y coordinate of the end point
                      * @since 1.2
                      */
                     Float.prototype.setLine = function (x1, y1, x2, y2) {
@@ -8784,17 +8369,12 @@ var java;
                 Float["__class"] = "java.awt.geom.Line2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes a <code>Line2D</code> from the specified
-                 * coordinates.
+                 * Constructs and initializes a <code>Line2D</code> from the specified coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point
-                 * @param {number} y1
-                 * the Y coordinate of the start point
-                 * @param {number} x2
-                 * the X coordinate of the end point
-                 * @param {number} y2
-                 * the Y coordinate of the end point
+                 * @param {number} x1 the X coordinate of the start point
+                 * @param {number} y1 the Y coordinate of the start point
+                 * @param {number} x2 the X coordinate of the end point
+                 * @param {number} y2 the Y coordinate of the end point
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Line2D
@@ -8986,13 +8566,12 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * <code>RectangularShape</code> is the base class for a number of {@link Shape}
-             * objects whose geometry is defined by a rectangular frame. This class does not
-             * directly specify any specific geometry by itself, but merely provides
-             * manipulation methods inherited by a whole category of <code>Shape</code>
-             * objects. The manipulation methods provided by this class can be used to query
-             * and modify the rectangular frame, which provides a reference for the
-             * subclasses to define their geometry.
+             * <code>RectangularShape</code> is the base class for a number of {@link Shape} objects whose
+             * geometry is defined by a rectangular frame. This class does not directly specify any specific
+             * geometry by itself, but merely provides manipulation methods inherited by a whole category of
+             * <code>Shape</code> objects. The manipulation methods provided by this class can be used to query
+             * and modify the rectangular frame, which provides a reference for the subclasses to define their
+             * geometry.
              *
              * @author Jim Graham
              * @since 1.2
@@ -9002,77 +8581,69 @@ var java;
                 function RectangularShape() {
                 }
                 /**
-                 * Returns the smallest X coordinate of the framing rectangle of the
-                 * <code>Shape</code> in <code>double</code> precision.
+                 * Returns the smallest X coordinate of the framing rectangle of the <code>Shape</code> in <code>
+                 * double</code> precision.
                  *
-                 * @return {number} the smallest X coordinate of the framing rectangle of the
-                 * <code>Shape</code>.
+                 * @return {number} the smallest X coordinate of the framing rectangle of the <code>Shape</code>.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getMinX = function () {
                     return this.getX();
                 };
                 /**
-                 * Returns the smallest Y coordinate of the framing rectangle of the
-                 * <code>Shape</code> in <code>double</code> precision.
+                 * Returns the smallest Y coordinate of the framing rectangle of the <code>Shape</code> in <code>
+                 * double</code> precision.
                  *
-                 * @return {number} the smallest Y coordinate of the framing rectangle of the
-                 * <code>Shape</code>.
+                 * @return {number} the smallest Y coordinate of the framing rectangle of the <code>Shape</code>.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getMinY = function () {
                     return this.getY();
                 };
                 /**
-                 * Returns the largest X coordinate of the framing rectangle of the
-                 * <code>Shape</code> in <code>double</code> precision.
+                 * Returns the largest X coordinate of the framing rectangle of the <code>Shape</code> in <code>
+                 * double</code> precision.
                  *
-                 * @return {number} the largest X coordinate of the framing rectangle of the
-                 * <code>Shape</code>.
+                 * @return {number} the largest X coordinate of the framing rectangle of the <code>Shape</code>.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getMaxX = function () {
                     return this.getX() + this.getWidth();
                 };
                 /**
-                 * Returns the largest Y coordinate of the framing rectangle of the
-                 * <code>Shape</code> in <code>double</code> precision.
+                 * Returns the largest Y coordinate of the framing rectangle of the <code>Shape</code> in <code>
+                 * double</code> precision.
                  *
-                 * @return {number} the largest Y coordinate of the framing rectangle of the
-                 * <code>Shape</code>.
+                 * @return {number} the largest Y coordinate of the framing rectangle of the <code>Shape</code>.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getMaxY = function () {
                     return this.getY() + this.getHeight();
                 };
                 /**
-                 * Returns the X coordinate of the center of the framing rectangle of the
-                 * <code>Shape</code> in <code>double</code> precision.
+                 * Returns the X coordinate of the center of the framing rectangle of the <code>Shape</code> in
+                 * <code>double</code> precision.
                  *
-                 * @return {number} the X coordinate of the center of the framing rectangle of the
-                 * <code>Shape</code>.
+                 * @return {number} the X coordinate of the center of the framing rectangle of the <code>Shape</code>.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getCenterX = function () {
                     return this.getX() + this.getWidth() / 2.0;
                 };
                 /**
-                 * Returns the Y coordinate of the center of the framing rectangle of the
-                 * <code>Shape</code> in <code>double</code> precision.
+                 * Returns the Y coordinate of the center of the framing rectangle of the <code>Shape</code> in
+                 * <code>double</code> precision.
                  *
-                 * @return {number} the Y coordinate of the center of the framing rectangle of the
-                 * <code>Shape</code>.
+                 * @return {number} the Y coordinate of the center of the framing rectangle of the <code>Shape</code>.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getCenterY = function () {
                     return this.getY() + this.getHeight() / 2.0;
                 };
                 /**
-                 * Returns the framing {@link Rectangle2D} that defines the overall shape of
-                 * this object.
+                 * Returns the framing {@link Rectangle2D} that defines the overall shape of this object.
                  *
-                 * @return {java.awt.geom.Rectangle2D} a <code>Rectangle2D</code>, specified in <code>double</code>
-                 * coordinates.
+                 * @return {java.awt.geom.Rectangle2D} a <code>Rectangle2D</code>, specified in <code>double</code> coordinates.
                  * @see #setFrame(double, double, double, double)
                  * @see #setFrame(Point2D, Dimension2D)
                  * @see #setFrame(Rectangle2D)
@@ -9083,19 +8654,13 @@ var java;
                 };
                 RectangularShape.prototype.setFrame$double$double$double$double = function (x, y, w, h) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location and size of the framing rectangle of this
-                 * <code>Shape</code> to the specified rectangular values.
+                 * Sets the location and size of the framing rectangle of this <code>Shape</code> to the specified
+                 * rectangular values.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of the specified
-                 * rectangular shape
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of the specified
-                 * rectangular shape
-                 * @param {number} w
-                 * the width of the specified rectangular shape
-                 * @param {number} h
-                 * the height of the specified rectangular shape
+                 * @param {number} x the X coordinate of the upper-left corner of the specified rectangular shape
+                 * @param {number} y the Y coordinate of the upper-left corner of the specified rectangular shape
+                 * @param {number} w the width of the specified rectangular shape
+                 * @param {number} h the height of the specified rectangular shape
                  * @see #getFrame
                  * @since 1.2
                  */
@@ -9132,18 +8697,14 @@ var java;
                     this.setFrame$double$double$double$double(x1, y1, x2 - x1, y2 - y1);
                 };
                 /**
-                 * Sets the diagonal of the framing rectangle of this <code>Shape</code>
-                 * based on the two specified coordinates. The framing rectangle is used by
-                 * the subclasses of <code>RectangularShape</code> to define their geometry.
+                 * Sets the diagonal of the framing rectangle of this <code>Shape</code> based on the two
+                 * specified coordinates. The framing rectangle is used by the subclasses of <code>
+                 * RectangularShape</code> to define their geometry.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified diagonal
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified diagonal
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified diagonal
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified diagonal
+                 * @param {number} x1 the X coordinate of the start point of the specified diagonal
+                 * @param {number} y1 the Y coordinate of the start point of the specified diagonal
+                 * @param {number} x2 the X coordinate of the end point of the specified diagonal
+                 * @param {number} y2 the Y coordinate of the end point of the specified diagonal
                  * @since 1.2
                  */
                 RectangularShape.prototype.setFrameFromDiagonal = function (x1, y1, x2, y2) {
@@ -9165,19 +8726,14 @@ var java;
                     this.setFrame$double$double$double$double(centerX - halfW, centerY - halfH, halfW * 2.0, halfH * 2.0);
                 };
                 /**
-                 * Sets the framing rectangle of this <code>Shape</code> based on the
-                 * specified center point coordinates and corner point coordinates. The
-                 * framing rectangle is used by the subclasses of
+                 * Sets the framing rectangle of this <code>Shape</code> based on the specified center point
+                 * coordinates and corner point coordinates. The framing rectangle is used by the subclasses of
                  * <code>RectangularShape</code> to define their geometry.
                  *
-                 * @param {number} centerX
-                 * the X coordinate of the specified center point
-                 * @param {number} centerY
-                 * the Y coordinate of the specified center point
-                 * @param {number} cornerX
-                 * the X coordinate of the specified corner point
-                 * @param {number} cornerY
-                 * the Y coordinate of the specified corner point
+                 * @param {number} centerX the X coordinate of the specified center point
+                 * @param {number} centerY the Y coordinate of the specified center point
+                 * @param {number} cornerX the X coordinate of the specified corner point
+                 * @param {number} cornerY the Y coordinate of the specified corner point
                  * @since 1.2
                  */
                 RectangularShape.prototype.setFrameFromCenter = function (centerX, centerY, cornerX, cornerY) {
@@ -9226,30 +8782,23 @@ var java;
                     return new java.awt.geom.FlatteningPathIterator(this['getPathIterator$java_awt_geom_AffineTransform'](at), flatness);
                 };
                 /**
-                 * Returns an iterator object that iterates along the <code>Shape</code>
-                 * object's boundary and provides access to a flattened view of the outline
-                 * of the <code>Shape</code> object's geometry.
-                 * <p>
-                 * Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned
-                 * by the iterator.
-                 * <p>
-                 * The amount of subdivision of the curved segments is controlled by the
-                 * <code>flatness</code> parameter, which specifies the maximum distance
-                 * that any point on the unflattened transformed curve can deviate from the
-                 * returned flattened path segments. An optional {@link AffineTransform} can
-                 * be specified so that the coordinates returned in the iteration are
+                 * Returns an iterator object that iterates along the <code>Shape</code> object's boundary and
+                 * provides access to a flattened view of the outline of the <code>Shape</code> object's geometry.
+                 *
+                 * <p>Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned by the iterator.
+                 *
+                 * <p>The amount of subdivision of the curved segments is controlled by the <code>flatness</code>
+                 * parameter, which specifies the maximum distance that any point on the unflattened transformed
+                 * curve can deviate from the returned flattened path segments. An optional {@link
+                 * AffineTransform} can be specified so that the coordinates returned in the iteration are
                  * transformed accordingly.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired.
-                 * @param {number} flatness
-                 * the maximum distance that the line segments used to
-                 * approximate the curved segments are allowed to deviate from
-                 * any point on the original curve
-                 * @return {*} a <code>PathIterator</code> object that provides access to the
-                 * <code>Shape</code> object's flattened geometry.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired.
+                 * @param {number} flatness the maximum distance that the line segments used to approximate the curved
+                 * segments are allowed to deviate from any point on the original curve
+                 * @return {*} a <code>PathIterator</code> object that provides access to the <code>Shape</code>
+                 * object's flattened geometry.
                  * @since 1.2
                  */
                 RectangularShape.prototype.getPathIterator = function (at, flatness) {
@@ -9260,12 +8809,10 @@ var java;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Creates a new object of the same class and with the same contents as this
-                 * object.
+                 * Creates a new object of the same class and with the same contents as this object.
                  *
                  * @return {*} a clone of this instance.
-                 * @exception OutOfMemoryError
-                 * if there is not enough memory.
+                 * @exception OutOfMemoryError if there is not enough memory.
                  * @see java.lang.Cloneable
                  * @since 1.2
                  */
@@ -9294,12 +8841,11 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * The <code>CubicCurve2D</code> class defines a cubic parametric curve segment
-             * in {@code (x,y)} coordinate space.
-             * <p>
-             * This class is only the abstract superclass for all objects which store a 2D
-             * cubic curve segment. The actual storage representation of the coordinates is
-             * left to the subclass.
+             * The <code>CubicCurve2D</code> class defines a cubic parametric curve segment in {@code (x,y)}
+             * coordinate space.
+             *
+             * <p>This class is only the abstract superclass for all objects which store a 2D cubic curve
+             * segment. The actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -9310,33 +8856,19 @@ var java;
                 }
                 CubicCurve2D.prototype.setCurve$double$double$double$double$double$double$double$double = function (x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location of the end points and control points of this curve to
-                 * the specified double coordinates.
+                 * Sets the location of the end points and control points of this curve to the specified double
+                 * coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate used to set the start point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} y1
-                 * the Y coordinate used to set the start point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx1
-                 * the X coordinate used to set the first control point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrly1
-                 * the Y coordinate used to set the first control point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx2
-                 * the X coordinate used to set the second control point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrly2
-                 * the Y coordinate used to set the second control point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} x2
-                 * the X coordinate used to set the end point of this
-                 * {@code CubicCurve2D}
-                 * @param {number} y2
-                 * the Y coordinate used to set the end point of this
-                 * {@code CubicCurve2D}
+                 * @param {number} x1 the X coordinate used to set the start point of this {@code CubicCurve2D}
+                 * @param {number} y1 the Y coordinate used to set the start point of this {@code CubicCurve2D}
+                 * @param {number} ctrlx1 the X coordinate used to set the first control point of this {@code CubicCurve2D}
+                 * @param {number} ctrly1 the Y coordinate used to set the first control point of this {@code CubicCurve2D}
+                 * @param {number} ctrlx2 the X coordinate used to set the second control point of this {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly2 the Y coordinate used to set the second control point of this {@code
+                 * CubicCurve2D}
+                 * @param {number} x2 the X coordinate used to set the end point of this {@code CubicCurve2D}
+                 * @param {number} y2 the Y coordinate used to set the end point of this {@code CubicCurve2D}
                  * @since 1.2
                  */
                 CubicCurve2D.prototype.setCurve = function (x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2) {
@@ -9374,36 +8906,22 @@ var java;
                     return Math.max(java.awt.geom.Line2D.ptSegDistSq(x1, y1, x2, y2, ctrlx1, ctrly1), java.awt.geom.Line2D.ptSegDistSq(x1, y1, x2, y2, ctrlx2, ctrly2));
                 };
                 /**
-                 * Returns the square of the flatness of the cubic curve specified by the
-                 * indicated control points. The flatness is the maximum distance of a
-                 * control point from the line connecting the end points.
+                 * Returns the square of the flatness of the cubic curve specified by the indicated control
+                 * points. The flatness is the maximum distance of a control point from the line connecting the
+                 * end points.
                  *
-                 * @param {number} x1
-                 * the X coordinate that specifies the start point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} y1
-                 * the Y coordinate that specifies the start point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx1
-                 * the X coordinate that specifies the first control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrly1
-                 * the Y coordinate that specifies the first control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx2
-                 * the X coordinate that specifies the second control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrly2
-                 * the Y coordinate that specifies the second control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} x2
-                 * the X coordinate that specifies the end point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} y2
-                 * the Y coordinate that specifies the end point of a
-                 * {@code CubicCurve2D}
-                 * @return {number} the square of the flatness of the {@code CubicCurve2D}
-                 * represented by the specified coordinates.
+                 * @param {number} x1 the X coordinate that specifies the start point of a {@code CubicCurve2D}
+                 * @param {number} y1 the Y coordinate that specifies the start point of a {@code CubicCurve2D}
+                 * @param {number} ctrlx1 the X coordinate that specifies the first control point of a {@code CubicCurve2D}
+                 * @param {number} ctrly1 the Y coordinate that specifies the first control point of a {@code CubicCurve2D}
+                 * @param {number} ctrlx2 the X coordinate that specifies the second control point of a {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly2 the Y coordinate that specifies the second control point of a {@code
+                 * CubicCurve2D}
+                 * @param {number} x2 the X coordinate that specifies the end point of a {@code CubicCurve2D}
+                 * @param {number} y2 the Y coordinate that specifies the end point of a {@code CubicCurve2D}
+                 * @return {number} the square of the flatness of the {@code CubicCurve2D} represented by the specified
+                 * coordinates.
                  * @since 1.2
                  */
                 CubicCurve2D.getFlatnessSq = function (x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2) {
@@ -9420,36 +8938,20 @@ var java;
                     return Math.sqrt(CubicCurve2D.getFlatnessSq$double$double$double$double$double$double$double$double(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2));
                 };
                 /**
-                 * Returns the flatness of the cubic curve specified by the indicated
-                 * control points. The flatness is the maximum distance of a control point
-                 * from the line connecting the end points.
+                 * Returns the flatness of the cubic curve specified by the indicated control points. The flatness
+                 * is the maximum distance of a control point from the line connecting the end points.
                  *
-                 * @param {number} x1
-                 * the X coordinate that specifies the start point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} y1
-                 * the Y coordinate that specifies the start point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx1
-                 * the X coordinate that specifies the first control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrly1
-                 * the Y coordinate that specifies the first control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx2
-                 * the X coordinate that specifies the second control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrly2
-                 * the Y coordinate that specifies the second control point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} x2
-                 * the X coordinate that specifies the end point of a
-                 * {@code CubicCurve2D}
-                 * @param {number} y2
-                 * the Y coordinate that specifies the end point of a
-                 * {@code CubicCurve2D}
-                 * @return {number} the flatness of the {@code CubicCurve2D} represented by the
-                 * specified coordinates.
+                 * @param {number} x1 the X coordinate that specifies the start point of a {@code CubicCurve2D}
+                 * @param {number} y1 the Y coordinate that specifies the start point of a {@code CubicCurve2D}
+                 * @param {number} ctrlx1 the X coordinate that specifies the first control point of a {@code CubicCurve2D}
+                 * @param {number} ctrly1 the Y coordinate that specifies the first control point of a {@code CubicCurve2D}
+                 * @param {number} ctrlx2 the X coordinate that specifies the second control point of a {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly2 the Y coordinate that specifies the second control point of a {@code
+                 * CubicCurve2D}
+                 * @param {number} x2 the X coordinate that specifies the end point of a {@code CubicCurve2D}
+                 * @param {number} y2 the Y coordinate that specifies the end point of a {@code CubicCurve2D}
+                 * @return {number} the flatness of the {@code CubicCurve2D} represented by the specified coordinates.
                  * @since 1.2
                  */
                 CubicCurve2D.getFlatness = function (x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2) {
@@ -9469,9 +8971,8 @@ var java;
                     return CubicCurve2D.getFlatness$double$double$double$double$double$double$double$double(coords[offset + 0], coords[offset + 1], coords[offset + 2], coords[offset + 3], coords[offset + 4], coords[offset + 5], coords[offset + 6], coords[offset + 7]);
                 };
                 /**
-                 * Returns the square of the flatness of this curve. The flatness is the
-                 * maximum distance of a control point from the line connecting the end
-                 * points.
+                 * Returns the square of the flatness of this curve. The flatness is the maximum distance of a
+                 * control point from the line connecting the end points.
                  *
                  * @return {number} the square of the flatness of this curve.
                  * @since 1.2
@@ -9480,8 +8981,8 @@ var java;
                     return CubicCurve2D.getFlatnessSq$double$double$double$double$double$double$double$double(this.getX1(), this.getY1(), this.getCtrlX1(), this.getCtrlY1(), this.getCtrlX2(), this.getCtrlY2(), this.getX2(), this.getY2());
                 };
                 /**
-                 * Returns the flatness of this curve. The flatness is the maximum distance
-                 * of a control point from the line connecting the end points.
+                 * Returns the flatness of this curve. The flatness is the maximum distance of a control point
+                 * from the line connecting the end points.
                  *
                  * @return {number} the flatness of this curve.
                  * @since 1.2
@@ -9490,16 +8991,14 @@ var java;
                     return CubicCurve2D.getFlatness$double$double$double$double$double$double$double$double(this.getX1(), this.getY1(), this.getCtrlX1(), this.getCtrlY1(), this.getCtrlX2(), this.getCtrlY2(), this.getX2(), this.getY2());
                 };
                 /**
-                 * Subdivides this cubic curve and stores the resulting two subdivided
-                 * curves into the left and right curve parameters. Either or both of the
-                 * left and right objects may be the same as this object or null.
+                 * Subdivides this cubic curve and stores the resulting two subdivided curves into the left and
+                 * right curve parameters. Either or both of the left and right objects may be the same as this
+                 * object or null.
                  *
-                 * @param {java.awt.geom.CubicCurve2D} left
-                 * the cubic curve object for storing for the left or first half
-                 * of the subdivided curve
-                 * @param {java.awt.geom.CubicCurve2D} right
-                 * the cubic curve object for storing for the right or second
-                 * half of the subdivided curve
+                 * @param {java.awt.geom.CubicCurve2D} left the cubic curve object for storing for the left or first half of the subdivided
+                 * curve
+                 * @param {java.awt.geom.CubicCurve2D} right the cubic curve object for storing for the right or second half of the subdivided
+                 * curve
                  * @since 1.2
                  */
                 CubicCurve2D.prototype.subdivide = function (left, right) {
@@ -9580,36 +9079,22 @@ var java;
                     }
                 };
                 /**
-                 * Subdivides the cubic curve specified by the coordinates stored in the
-                 * <code>src</code> array at indices <code>srcoff</code> through (
-                 * <code>srcoff</code>&nbsp;+&nbsp;7) and stores the resulting two
-                 * subdivided curves into the two result arrays at the corresponding
-                 * indices. Either or both of the <code>left</code> and <code>right</code>
-                 * arrays may be <code>null</code> or a reference to the same array as the
-                 * <code>src</code> array. Note that the last point in the first subdivided
-                 * curve is the same as the first point in the second subdivided curve.
-                 * Thus, it is possible to pass the same array for <code>left</code> and
-                 * <code>right</code> and to use offsets, such as <code>rightoff</code>
-                 * equals (<code>leftoff</code> + 6), in order to avoid allocating extra
-                 * storage for this common point.
+                 * Subdivides the cubic curve specified by the coordinates stored in the <code>src</code> array at
+                 * indices <code>srcoff</code> through ( <code>srcoff</code>&nbsp;+&nbsp;7) and stores the
+                 * resulting two subdivided curves into the two result arrays at the corresponding indices. Either
+                 * or both of the <code>left</code> and <code>right</code> arrays may be <code>null</code> or a
+                 * reference to the same array as the <code>src</code> array. Note that the last point in the
+                 * first subdivided curve is the same as the first point in the second subdivided curve. Thus, it
+                 * is possible to pass the same array for <code>left</code> and <code>right</code> and to use
+                 * offsets, such as <code>rightoff</code> equals (<code>leftoff</code> + 6), in order to avoid
+                 * allocating extra storage for this common point.
                  *
-                 * @param {double[]} src
-                 * the array holding the coordinates for the source curve
-                 * @param {number} srcoff
-                 * the offset into the array of the beginning of the the 6 source
-                 * coordinates
-                 * @param {double[]} left
-                 * the array for storing the coordinates for the first half of
-                 * the subdivided curve
-                 * @param {number} leftoff
-                 * the offset into the array of the beginning of the the 6 left
-                 * coordinates
-                 * @param {double[]} right
-                 * the array for storing the coordinates for the second half of
-                 * the subdivided curve
-                 * @param {number} rightoff
-                 * the offset into the array of the beginning of the the 6 right
-                 * coordinates
+                 * @param {double[]} src the array holding the coordinates for the source curve
+                 * @param {number} srcoff the offset into the array of the beginning of the the 6 source coordinates
+                 * @param {double[]} left the array for storing the coordinates for the first half of the subdivided curve
+                 * @param {number} leftoff the offset into the array of the beginning of the the 6 left coordinates
+                 * @param {double[]} right the array for storing the coordinates for the second half of the subdivided curve
+                 * @param {number} rightoff the offset into the array of the beginning of the the 6 right coordinates
                  * @since 1.2
                  */
                 CubicCurve2D.subdivide = function (src, srcoff, left, leftoff, right, rightoff) {
@@ -9685,19 +9170,15 @@ var java;
                     return num;
                 };
                 /**
-                 * Solve the cubic whose coefficients are in the <code>eqn</code> array and
-                 * place the non-complex roots into the <code>res</code> array, returning
-                 * the number of roots. The cubic solved is represented by the equation: eqn
-                 * = {c, b, a, d} dx^3 + ax^2 + bx + c = 0 A return value of -1 is used to
-                 * distinguish a constant equation, which may be always 0 or never 0, from
-                 * an equation which has no zeroes.
+                 * Solve the cubic whose coefficients are in the <code>eqn</code> array and place the non-complex
+                 * roots into the <code>res</code> array, returning the number of roots. The cubic solved is
+                 * represented by the equation: eqn = {c, b, a, d} dx^3 + ax^2 + bx + c = 0 A return value of -1
+                 * is used to distinguish a constant equation, which may be always 0 or never 0, from an equation
+                 * which has no zeroes.
                  *
-                 * @param {double[]} eqn
-                 * the specified array of coefficients to use to solve the cubic
-                 * equation
-                 * @param {double[]} res
-                 * the array that contains the non-complex roots resulting from
-                 * the solution of the cubic equation
+                 * @param {double[]} eqn the specified array of coefficients to use to solve the cubic equation
+                 * @param {double[]} res the array that contains the non-complex roots resulting from the solution of the
+                 * cubic equation
                  * @return {number} the number of roots, or -1 if the equation is a constant
                  * @since 1.3
                  */
@@ -9981,23 +9462,17 @@ var java;
                     return new java.awt.geom.FlatteningPathIterator(this.getPathIterator$java_awt_geom_AffineTransform(at), flatness);
                 };
                 /**
-                 * Return an iteration object that defines the boundary of the flattened
-                 * shape. The iterator for this class is not multi-threaded safe, which
-                 * means that this <code>CubicCurve2D</code> class does not guarantee that
-                 * modifications to the geometry of this <code>CubicCurve2D</code> object do
-                 * not affect any iterations of that geometry that are already in process.
+                 * Return an iteration object that defines the boundary of the flattened shape. The iterator for
+                 * this class is not multi-threaded safe, which means that this <code>CubicCurve2D</code> class
+                 * does not guarantee that modifications to the geometry of this <code>CubicCurve2D</code> object
+                 * do not affect any iterations of that geometry that are already in process.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired
-                 * @param {number} flatness
-                 * the maximum amount that the control points for a given curve
-                 * can vary from colinear before a subdivided curve is replaced
-                 * by a straight line connecting the end points
-                 * @return {*} the <code>PathIterator</code> object that returns the geometry of
-                 * the outline of this <code>CubicCurve2D</code>, one segment at a
-                 * time.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired
+                 * @param {number} flatness the maximum amount that the control points for a given curve can vary from
+                 * colinear before a subdivided curve is replaced by a straight line connecting the end points
+                 * @return {*} the <code>PathIterator</code> object that returns the geometry of the outline of this
+                 * <code>CubicCurve2D</code>, one segment at a time.
                  * @since 1.2
                  */
                 CubicCurve2D.prototype.getPathIterator = function (at, flatness) {
@@ -10014,8 +9489,7 @@ var java;
                  * Creates a new object of the same class as this object.
                  *
                  * @return {*} a clone of this instance.
-                 * @exception OutOfMemoryError
-                 * if there is not enough memory.
+                 * @exception OutOfMemoryError if there is not enough memory.
                  * @see java.lang.Cloneable
                  * @since 1.2
                  */
@@ -10037,33 +9511,21 @@ var java;
             CubicCurve2D["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable"];
             (function (CubicCurve2D) {
                 /**
-                 * Constructs and initializes a {@code CubicCurve2D} from the specified
-                 * {@code float} coordinates.
+                 * Constructs and initializes a {@code CubicCurve2D} from the specified {@code float}
+                 * coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate for the start point of the resulting
-                 * {@code CubicCurve2D}
-                 * @param {number} y1
-                 * the Y coordinate for the start point of the resulting
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx1
-                 * the X coordinate for the first control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} ctrly1
-                 * the Y coordinate for the first control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} ctrlx2
-                 * the X coordinate for the second control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} ctrly2
-                 * the Y coordinate for the second control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} x2
-                 * the X coordinate for the end point of the resulting
-                 * {@code CubicCurve2D}
-                 * @param {number} y2
-                 * the Y coordinate for the end point of the resulting
-                 * {@code CubicCurve2D}
+                 * @param {number} x1 the X coordinate for the start point of the resulting {@code CubicCurve2D}
+                 * @param {number} y1 the Y coordinate for the start point of the resulting {@code CubicCurve2D}
+                 * @param {number} ctrlx1 the X coordinate for the first control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly1 the Y coordinate for the first control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrlx2 the X coordinate for the second control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly2 the Y coordinate for the second control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} x2 the X coordinate for the end point of the resulting {@code CubicCurve2D}
+                 * @param {number} y2 the Y coordinate for the end point of the resulting {@code CubicCurve2D}
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.CubicCurve2D
@@ -10262,33 +9724,21 @@ var java;
                         this.y2 = y2;
                     };
                     /**
-                     * Sets the location of the end points and control points of this curve
-                     * to the specified {@code float} coordinates.
+                     * Sets the location of the end points and control points of this curve to the specified {@code
+                     * float} coordinates.
                      *
-                     * @param {number} x1
-                     * the X coordinate used to set the start point of this
-                     * {@code CubicCurve2D}
-                     * @param {number} y1
-                     * the Y coordinate used to set the start point of this
-                     * {@code CubicCurve2D}
-                     * @param {number} ctrlx1
-                     * the X coordinate used to set the first control point of
-                     * this {@code CubicCurve2D}
-                     * @param {number} ctrly1
-                     * the Y coordinate used to set the first control point of
-                     * this {@code CubicCurve2D}
-                     * @param {number} ctrlx2
-                     * the X coordinate used to set the second control point of
-                     * this {@code CubicCurve2D}
-                     * @param {number} ctrly2
-                     * the Y coordinate used to set the second control point of
-                     * this {@code CubicCurve2D}
-                     * @param {number} x2
-                     * the X coordinate used to set the end point of this
-                     * {@code CubicCurve2D}
-                     * @param {number} y2
-                     * the Y coordinate used to set the end point of this
-                     * {@code CubicCurve2D}
+                     * @param {number} x1 the X coordinate used to set the start point of this {@code CubicCurve2D}
+                     * @param {number} y1 the Y coordinate used to set the start point of this {@code CubicCurve2D}
+                     * @param {number} ctrlx1 the X coordinate used to set the first control point of this {@code
+                     * CubicCurve2D}
+                     * @param {number} ctrly1 the Y coordinate used to set the first control point of this {@code
+                     * CubicCurve2D}
+                     * @param {number} ctrlx2 the X coordinate used to set the second control point of this {@code
+                     * CubicCurve2D}
+                     * @param {number} ctrly2 the Y coordinate used to set the second control point of this {@code
+                     * CubicCurve2D}
+                     * @param {number} x2 the X coordinate used to set the end point of this {@code CubicCurve2D}
+                     * @param {number} y2 the Y coordinate used to set the end point of this {@code CubicCurve2D}
                      * @since 1.2
                      */
                     Float.prototype.setCurve = function (x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2) {
@@ -10333,33 +9783,21 @@ var java;
                 Float["__class"] = "java.awt.geom.CubicCurve2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes a {@code CubicCurve2D} from the specified
-                 * {@code double} coordinates.
+                 * Constructs and initializes a {@code CubicCurve2D} from the specified {@code double}
+                 * coordinates.
                  *
-                 * @param {number} x1
-                 * the X coordinate for the start point of the resulting
-                 * {@code CubicCurve2D}
-                 * @param {number} y1
-                 * the Y coordinate for the start point of the resulting
-                 * {@code CubicCurve2D}
-                 * @param {number} ctrlx1
-                 * the X coordinate for the first control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} ctrly1
-                 * the Y coordinate for the first control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} ctrlx2
-                 * the X coordinate for the second control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} ctrly2
-                 * the Y coordinate for the second control point of the
-                 * resulting {@code CubicCurve2D}
-                 * @param {number} x2
-                 * the X coordinate for the end point of the resulting
-                 * {@code CubicCurve2D}
-                 * @param {number} y2
-                 * the Y coordinate for the end point of the resulting
-                 * {@code CubicCurve2D}
+                 * @param {number} x1 the X coordinate for the start point of the resulting {@code CubicCurve2D}
+                 * @param {number} y1 the Y coordinate for the start point of the resulting {@code CubicCurve2D}
+                 * @param {number} ctrlx1 the X coordinate for the first control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly1 the Y coordinate for the first control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrlx2 the X coordinate for the second control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} ctrly2 the Y coordinate for the second control point of the resulting {@code
+                 * CubicCurve2D}
+                 * @param {number} x2 the X coordinate for the end point of the resulting {@code CubicCurve2D}
+                 * @param {number} y2 the Y coordinate for the end point of the resulting {@code CubicCurve2D}
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.CubicCurve2D
@@ -10608,8 +10046,8 @@ var java;
         var geom;
         (function (geom) {
             /**
-             * A utility class to iterate over the path segments of an ellipse through the
-             * PathIterator interface.
+             * A utility class to iterate over the path segments of an ellipse through the PathIterator
+             * interface.
              *
              * @author Jim Graham
              * @class
@@ -10662,9 +10100,8 @@ var java;
                     return this.index > 5;
                 };
                 /**
-                 * Moves the iterator to the next segment of the path forwards along the
-                 * primary direction of traversal as long as there are more points in that
-                 * direction.
+                 * Moves the iterator to the next segment of the path forwards along the primary direction of
+                 * traversal as long as there are more points in that direction.
                  */
                 EllipseIterator.prototype.next = function () {
                     this.index++;
@@ -10707,14 +10144,12 @@ var java;
                     return java.awt.geom.PathIterator.SEG_CUBICTO;
                 };
                 /**
-                 * Returns the coordinates and type of the current path segment in the
-                 * iteration. The return value is the path segment type: SEG_MOVETO,
-                 * SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A float array of
-                 * length 6 must be passed in and may be used to store the coordinates of
-                 * the point(s). Each point is stored as a pair of float x,y coordinates.
-                 * SEG_MOVETO and SEG_LINETO types will return one point, SEG_QUADTO will
-                 * return two points, SEG_CUBICTO will return 3 points and SEG_CLOSE will
-                 * not return any points.
+                 * Returns the coordinates and type of the current path segment in the iteration. The return value
+                 * is the path segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A
+                 * float array of length 6 must be passed in and may be used to store the coordinates of the
+                 * point(s). Each point is stored as a pair of float x,y coordinates. SEG_MOVETO and SEG_LINETO
+                 * types will return one point, SEG_QUADTO will return two points, SEG_CUBICTO will return 3
+                 * points and SEG_CLOSE will not return any points.
                  *
                  * @see #SEG_MOVETO
                  * @see #SEG_LINETO
@@ -10796,13 +10231,13 @@ var java;
     var awt;
     (function (awt) {
         /**
-         * Constructs an IllegalComponentStateException with the specified detail
-         * message.  A detail message is a String that describes this particular
-         * exception.
+         * Constructs an IllegalComponentStateException with the specified detail message. A detail
+         * message is a String that describes this particular exception.
+         *
          * @param {string} s the String that contains a detailed message
          * @class
          * @extends java.lang.IllegalStateException
-         * @author      Jonni Kanerva
+         * @author Jonni Kanerva
          */
         var IllegalComponentStateException = /** @class */ (function (_super) {
             __extends(IllegalComponentStateException, _super);
@@ -10884,26 +10319,24 @@ var java;
         var event;
         (function (event) {
             /**
-             * An abstract adapter class for receiving container events.
-             * The methods in this class are empty. This class exists as
-             * convenience for creating listener objects.
-             * <P>
-             * Extend this class to create a <code>ContainerEvent</code> listener
-             * and override the methods for the events of interest. (If you implement the
-             * <code>ContainerListener</code> interface, you have to define all of
-             * the methods in it. This abstract class defines null methods for them
-             * all, so you can only have to define methods for events you care about.)
-             * <P>
-             * Create a listener object using the extended class and then register it with
-             * a component using the component's <code>addContainerListener</code>
-             * method. When the container's contents change because a component has
-             * been added or removed, the relevant method in the listener object is invoked,
-             * and the <code>ContainerEvent</code> is passed to it.
+             * An abstract adapter class for receiving container events. The methods in this class are empty.
+             * This class exists as convenience for creating listener objects.
+             *
+             * <p>Extend this class to create a <code>ContainerEvent</code> listener and override the methods
+             * for the events of interest. (If you implement the <code>ContainerListener</code> interface, you
+             * have to define all of the methods in it. This abstract class defines null methods for them all,
+             * so you can only have to define methods for events you care about.)
+             *
+             * <p>Create a listener object using the extended class and then register it with a component using
+             * the component's <code>addContainerListener</code> method. When the container's contents change
+             * because a component has been added or removed, the relevant method in the listener object is
+             * invoked, and the <code>ContainerEvent</code> is passed to it.
              *
              * @see ContainerEvent
              * @see ContainerListener
-             * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/containerlistener.html">Tutorial: Writing a Container Listener</a>
-             *
+             * @see <a
+             * href="http://docs.oracle.com/javase/tutorial/uiswing/events/containerlistener.html">Tutorial:
+             * Writing a Container Listener</a>
              * @author Amy Fowler
              * @since 1.1
              * @class
@@ -10937,26 +10370,24 @@ var java;
         var event;
         (function (event) {
             /**
-             * An abstract adapter class for receiving component events.
-             * The methods in this class are empty. This class exists as
-             * convenience for creating listener objects.
-             * <P>
-             * Extend this class to create a <code>ComponentEvent</code> listener
-             * and override the methods for the events of interest. (If you implement the
-             * <code>ComponentListener</code> interface, you have to define all of
-             * the methods in it. This abstract class defines null methods for them
-             * all, so you can only have to define methods for events you care about.)
-             * <P>
-             * Create a listener object using your class and then register it with a
-             * component using the component's <code>addComponentListener</code>
-             * method. When the component's size, location, or visibility
-             * changes, the relevant method in the listener object is invoked,
-             * and the <code>ComponentEvent</code> is passed to it.
+             * An abstract adapter class for receiving component events. The methods in this class are empty.
+             * This class exists as convenience for creating listener objects.
+             *
+             * <p>Extend this class to create a <code>ComponentEvent</code> listener and override the methods
+             * for the events of interest. (If you implement the <code>ComponentListener</code> interface, you
+             * have to define all of the methods in it. This abstract class defines null methods for them all,
+             * so you can only have to define methods for events you care about.)
+             *
+             * <p>Create a listener object using your class and then register it with a component using the
+             * component's <code>addComponentListener</code> method. When the component's size, location, or
+             * visibility changes, the relevant method in the listener object is invoked, and the <code>
+             * ComponentEvent</code> is passed to it.
              *
              * @see ComponentEvent
              * @see ComponentListener
-             * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial: Writing a Component Listener</a>
-             *
+             * @see <a
+             * href="http://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html">Tutorial:
+             * Writing a Component Listener</a>
              * @author Carl Quinn
              * @since 1.1
              * @class
@@ -11002,31 +10433,28 @@ var java;
         var event;
         (function (event) {
             /**
-             * An abstract adapter class for receiving mouse motion events.
-             * The methods in this class are empty. This class exists as
-             * convenience for creating listener objects.
-             * <P>
-             * Mouse motion events occur when a mouse is moved or dragged.
-             * (Many such events will be generated in a normal program.
-             * To track clicks and other mouse events, use the MouseAdapter.)
-             * <P>
-             * Extend this class to create a <code>MouseEvent</code> listener
-             * and override the methods for the events of interest. (If you implement the
-             * <code>MouseMotionListener</code> interface, you have to define all of
-             * the methods in it. This abstract class defines null methods for them
-             * all, so you can only have to define methods for events you care about.)
-             * <P>
-             * Create a listener object using the extended class and then register it with
-             * a component using the component's <code>addMouseMotionListener</code>
-             * method. When the mouse is moved or dragged, the relevant method in the
-             * listener object is invoked and the <code>MouseEvent</code> is passed to it.
+             * An abstract adapter class for receiving mouse motion events. The methods in this class are empty.
+             * This class exists as convenience for creating listener objects.
+             *
+             * <p>Mouse motion events occur when a mouse is moved or dragged. (Many such events will be
+             * generated in a normal program. To track clicks and other mouse events, use the MouseAdapter.)
+             *
+             * <p>Extend this class to create a <code>MouseEvent</code> listener and override the methods for
+             * the events of interest. (If you implement the <code>MouseMotionListener</code> interface, you
+             * have to define all of the methods in it. This abstract class defines null methods for them all,
+             * so you can only have to define methods for events you care about.)
+             *
+             * <p>Create a listener object using the extended class and then register it with a component using
+             * the component's <code>addMouseMotionListener</code> method. When the mouse is moved or dragged,
+             * the relevant method in the listener object is invoked and the <code>MouseEvent</code> is passed
+             * to it.
              *
              * @author Amy Fowler
-             *
              * @see MouseEvent
              * @see MouseMotionListener
-             * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mousemotionlistener.html">Tutorial: Writing a Mouse Motion Listener</a>
-             *
+             * @see <a
+             * href="http://docs.oracle.com/javase/tutorial/uiswing/events/mousemotionlistener.html">Tutorial:
+             * Writing a Mouse Motion Listener</a>
              * @since 1.1
              * @class
              */
@@ -11034,18 +10462,15 @@ var java;
                 function MouseMotionAdapter() {
                 }
                 /**
-                 * Invoked when a mouse button is pressed on a component and then
-                 * dragged.  Mouse drag events will continue to be delivered to
-                 * the component where the first originated until the mouse button is
-                 * released (regardless of whether the mouse position is within the
-                 * bounds of the component).
+                 * Invoked when a mouse button is pressed on a component and then dragged. Mouse drag events will
+                 * continue to be delivered to the component where the first originated until the mouse button is
+                 * released (regardless of whether the mouse position is within the bounds of the component).
                  * @param {java.awt.event.MouseEvent} e
                  */
                 MouseMotionAdapter.prototype.mouseDragged = function (e) {
                 };
                 /**
-                 * Invoked when the mouse button has been moved on a component
-                 * (with no buttons no down).
+                 * Invoked when the mouse button has been moved on a component (with no buttons no down).
                  * @param {java.awt.event.MouseEvent} e
                  */
                 MouseMotionAdapter.prototype.mouseMoved = function (e) {
@@ -11064,27 +10489,24 @@ var java;
         var event;
         (function (event) {
             /**
-             * An abstract adapter class for receiving window events.
-             * The methods in this class are empty. This class exists as
-             * convenience for creating listener objects.
-             * <P>
-             * Extend this class to create a <code>WindowEvent</code> listener
-             * and override the methods for the events of interest. (If you implement the
-             * <code>WindowListener</code> interface, you have to define all of
-             * the methods in it. This abstract class defines null methods for them
-             * all, so you can only have to define methods for events you care about.)
-             * <P>
-             * Create a listener object using the extended class and then register it with
-             * a Window using the window's <code>addWindowListener</code>
-             * method. When the window's status changes by virtue of being opened,
-             * closed, activated or deactivated, iconified or deiconified,
-             * the relevant method in the listener
-             * object is invoked, and the <code>WindowEvent</code> is passed to it.
+             * An abstract adapter class for receiving window events. The methods in this class are empty. This
+             * class exists as convenience for creating listener objects.
+             *
+             * <p>Extend this class to create a <code>WindowEvent</code> listener and override the methods for
+             * the events of interest. (If you implement the <code>WindowListener</code> interface, you have to
+             * define all of the methods in it. This abstract class defines null methods for them all, so you
+             * can only have to define methods for events you care about.)
+             *
+             * <p>Create a listener object using the extended class and then register it with a Window using the
+             * window's <code>addWindowListener</code> method. When the window's status changes by virtue of
+             * being opened, closed, activated or deactivated, iconified or deiconified, the relevant method in
+             * the listener object is invoked, and the <code>WindowEvent</code> is passed to it.
              *
              * @see WindowEvent
              * @see WindowListener
-             * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial: Writing a Window Listener</a>
-             *
+             * @see <a
+             * href="http://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html">Tutorial:
+             * Writing a Window Listener</a>
              * @author Carl Quinn
              * @author Amy Fowler
              * @author David Mendenhall
@@ -11101,8 +10523,8 @@ var java;
                 WindowAdapter.prototype.windowOpened = function (e) {
                 };
                 /**
-                 * Invoked when a window is in the process of being closed.
-                 * The close operation can be overridden at this point.
+                 * Invoked when a window is in the process of being closed. The close operation can be overridden
+                 * at this point.
                  * @param {java.awt.event.WindowEvent} e
                  */
                 WindowAdapter.prototype.windowClosing = function (e) {
@@ -11139,15 +10561,15 @@ var java;
                 };
                 /**
                  * Invoked when a window state is changed.
+                 *
                  * @since 1.4
                  * @param {java.awt.event.WindowEvent} e
                  */
                 WindowAdapter.prototype.windowStateChanged = function (e) {
                 };
                 /**
-                 * Invoked when the Window is set to be the focused Window, which means
-                 * that the Window, or one of its subcomponents, will receive keyboard
-                 * events.
+                 * Invoked when the Window is set to be the focused Window, which means that the Window, or one of
+                 * its subcomponents, will receive keyboard events.
                  *
                  * @since 1.4
                  * @param {java.awt.event.WindowEvent} e
@@ -11155,9 +10577,8 @@ var java;
                 WindowAdapter.prototype.windowGainedFocus = function (e) {
                 };
                 /**
-                 * Invoked when the Window is no longer the focused Window, which means
-                 * that keyboard events will no longer be delivered to the Window or any of
-                 * its subcomponents.
+                 * Invoked when the Window is no longer the focused Window, which means that keyboard events will
+                 * no longer be delivered to the Window or any of its subcomponents.
                  *
                  * @since 1.4
                  * @param {java.awt.event.WindowEvent} e
@@ -11178,45 +10599,38 @@ var java;
         var event;
         (function (event) {
             /**
-             * An abstract adapter class for receiving mouse events.
-             * The methods in this class are empty. This class exists as
-             * convenience for creating listener objects.
-             * <P>
-             * Mouse events let you track when a mouse is pressed, released, clicked,
-             * moved, dragged, when it enters a component, when it exits and
-             * when a mouse wheel is moved.
-             * <P>
-             * Extend this class to create a {@code MouseEvent}
-             * (including drag and motion events) or/and {@code MouseWheelEvent}
-             * listener and override the methods for the events of interest. (If you implement the
-             * {@code MouseListener},
-             * {@code MouseMotionListener}
-             * interface, you have to define all of
-             * the methods in it. This abstract class defines null methods for them
-             * all, so you can only have to define methods for events you care about.)
-             * <P>
-             * Create a listener object using the extended class and then register it with
-             * a component using the component's {@code addMouseListener}
-             * {@code addMouseMotionListener}, {@code addMouseWheelListener}
-             * methods.
-             * The relevant method in the listener object is invoked  and the {@code MouseEvent}
-             * or {@code MouseWheelEvent}  is passed to it in following cases:
+             * An abstract adapter class for receiving mouse events. The methods in this class are empty. This
+             * class exists as convenience for creating listener objects.
+             *
+             * <p>Mouse events let you track when a mouse is pressed, released, clicked, moved, dragged, when it
+             * enters a component, when it exits and when a mouse wheel is moved.
+             *
+             * <p>Extend this class to create a {@code MouseEvent} (including drag and motion events) or/and
+             * {@code MouseWheelEvent} listener and override the methods for the events of interest. (If you
+             * implement the {@code MouseListener}, {@code MouseMotionListener} interface, you have to define
+             * all of the methods in it. This abstract class defines null methods for them all, so you can only
+             * have to define methods for events you care about.)
+             *
+             * <p>Create a listener object using the extended class and then register it with a component using
+             * the component's {@code addMouseListener} {@code addMouseMotionListener}, {@code
+             * addMouseWheelListener} methods. The relevant method in the listener object is invoked and the
+             * {@code MouseEvent} or {@code MouseWheelEvent} is passed to it in following cases:
+             *
              * <ul>
-             * <li>when a mouse button is pressed, released, or clicked (pressed and  released)
+             * <li>when a mouse button is pressed, released, or clicked (pressed and released)
              * <li>when the mouse cursor enters or exits the component
              * <li>when the mouse wheel rotated, or mouse moved or dragged
              * </ul>
              *
              * @author Carl Quinn
              * @author Andrei Dmitriev
-             *
              * @see MouseEvent
              * @see MouseWheelEvent
              * @see MouseListener
              * @see MouseMotionListener
              * @see MouseWheelListener
-             * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html">Tutorial: Writing a Mouse Listener</a>
-             *
+             * @see <a href="http://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html">Tutorial:
+             * Writing a Mouse Listener</a>
              * @since 1.1
              * @class
              */
@@ -11255,6 +10669,7 @@ var java;
                 };
                 /**
                  * {@inheritDoc}
+                 *
                  * @since 1.6
                  * @param {java.awt.event.MouseWheelEvent} e
                  */
@@ -11262,6 +10677,7 @@ var java;
                 };
                 /**
                  * {@inheritDoc}
+                 *
                  * @since 1.6
                  * @param {java.awt.event.MouseEvent} e
                  */
@@ -11269,6 +10685,7 @@ var java;
                 };
                 /**
                  * {@inheritDoc}
+                 *
                  * @since 1.6
                  * @param {java.awt.event.MouseEvent} e
                  */
@@ -11480,14 +10897,11 @@ var java;
     var awt;
     (function (awt) {
         /**
-         * Constructs a border layout with the specified gaps between components.
-         * The horizontal gap is specified by <code>hgap</code> and the vertical gap
-         * is specified by <code>vgap</code>.
+         * Constructs a border layout with the specified gaps between components. The horizontal gap is
+         * specified by <code>hgap</code> and the vertical gap is specified by <code>vgap</code>.
          *
-         * @param {number} hgap
-         * the horizontal gap.
-         * @param {number} vgap
-         * the vertical gap.
+         * @param {number} hgap the horizontal gap.
+         * @param {number} vgap the vertical gap.
          * @class
          */
         var BorderLayout = /** @class */ (function () {
@@ -11654,8 +11068,7 @@ var java;
             /**
              * Sets the horizontal gap between components.
              *
-             * @param {number} hgap
-             * the horizontal gap between components
+             * @param {number} hgap the horizontal gap between components
              * @since JDK1.1
              */
             BorderLayout.prototype.setHgap = function (hgap) {
@@ -11673,8 +11086,7 @@ var java;
             /**
              * Sets the vertical gap between components.
              *
-             * @param {number} vgap
-             * the vertical gap between components
+             * @param {number} vgap the vertical gap between components
              * @since JDK1.1
              */
             BorderLayout.prototype.setVgap = function (vgap) {
@@ -11736,8 +11148,7 @@ var java;
                 this.add(comp, pos);
             };
             /**
-             * @deprecated replaced by
-             * <code>addLayoutComponent(Component, Object)</code>.
+             * @deprecated replaced by <code>addLayoutComponent(Component, Object)</code>.
              * @param {string} name
              * @param {java.awt.Component} comp
              */
@@ -11752,13 +11163,11 @@ var java;
                     throw new Error('invalid overload');
             };
             /**
-             * Removes the specified component from this border layout. This method is
-             * called when a container calls its <code>remove</code> or
-             * <code>removeAll</code> methods. Most applications do not call this method
-             * directly.
+             * Removes the specified component from this border layout. This method is called when a container
+             * calls its <code>remove</code> or <code>removeAll</code> methods. Most applications do not call
+             * this method directly.
              *
-             * @param {java.awt.Component} comp
-             * the component to be removed.
+             * @param {java.awt.Component} comp the component to be removed.
              * @see java.awt.Container#remove(java.awt.Component)
              * @see java.awt.Container#removeAll()
              */
@@ -12001,32 +11410,30 @@ var java;
              */
             BorderLayout.CENTER = "Center";
             /**
-             * Synonym for PAGE_START. Exists for compatibility with previous versions.
-             * PAGE_START is preferred.
+             * Synonym for PAGE_START. Exists for compatibility with previous versions. PAGE_START is
+             * preferred.
              *
              * @see #PAGE_START
              * @since 1.2
              */
             BorderLayout.BEFORE_FIRST_LINE = "First";
             /**
-             * Synonym for PAGE_END. Exists for compatibility with previous versions.
-             * PAGE_END is preferred.
+             * Synonym for PAGE_END. Exists for compatibility with previous versions. PAGE_END is preferred.
              *
              * @see #PAGE_END
              * @since 1.2
              */
             BorderLayout.AFTER_LAST_LINE = "Last";
             /**
-             * Synonym for LINE_START. Exists for compatibility with previous versions.
-             * LINE_START is preferred.
+             * Synonym for LINE_START. Exists for compatibility with previous versions. LINE_START is
+             * preferred.
              *
              * @see #LINE_START
              * @since 1.2
              */
             BorderLayout.BEFORE_LINE_BEGINS = "Before";
             /**
-             * Synonym for LINE_END. Exists for compatibility with previous versions.
-             * LINE_END is preferred.
+             * Synonym for LINE_END. Exists for compatibility with previous versions. LINE_END is preferred.
              *
              * @see #LINE_END
              * @since 1.2
@@ -12105,20 +11512,15 @@ var java;
     var awt;
     (function (awt) {
         /**
-         * Creates an sRGB color with the specified red, green, blue, and alpha
-         * values in the range (0 - 255).
+         * Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0 -
+         * 255).
          *
-         * @throws IllegalArgumentException
-         * if <code>r</code>, <code>g</code>, <code>b</code> or
-         * <code>a</code> are outside of the range 0 to 255, inclusive
-         * @param {number} r
-         * the red component
-         * @param {number} g
-         * the green component
-         * @param {number} b
-         * the blue component
-         * @param {number} a
-         * the alpha component
+         * @throws IllegalArgumentException if <code>r</code>, <code>g</code>, <code>b</code> or <code>a
+         * </code> are outside of the range 0 to 255, inclusive
+         * @param {number} r the red component
+         * @param {number} g the green component
+         * @param {number} b the blue component
+         * @param {number} a the alpha component
          * @see #getRed
          * @see #getGreen
          * @see #getBlue
@@ -12368,15 +11770,12 @@ var java;
                 }
             };
             /**
-             * Checks the color integer components supplied for validity. Throws an
-             * {@link IllegalArgumentException} if the value is out of range.
+             * Checks the color integer components supplied for validity. Throws an {@link
+             * IllegalArgumentException} if the value is out of range.
              *
-             * @param {number} r
-             * the Red component
-             * @param {number} g
-             * the Green component
-             * @param {number} b
-             * the Blue component
+             * @param {number} r the Red component
+             * @param {number} g the Green component
+             * @param {number} b the Blue component
              * @param {number} a
              * @private
              */
@@ -12450,11 +11849,10 @@ var java;
                 return (this.getRGB() >> 24) & 255;
             };
             /**
-             * Returns the RGB value representing the color in the default sRGB. (Bits
-             * 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue).
+             * Returns the RGB value representing the color in the default sRGB. (Bits 24-31 are alpha, 16-23
+             * are red, 8-15 are green, 0-7 are blue).
              *
-             * @return {number} the RGB value of the color in the default sRGB
-             * <code>ColorModel</code>.
+             * @return {number} the RGB value of the color in the default sRGB <code>ColorModel</code>.
              * @see java.awt.image.ColorModel#getRGBdefault
              * @see #getRed
              * @see #getGreen
@@ -12465,18 +11863,16 @@ var java;
                 return this.value;
             };
             /**
-             * Creates a new <code>Color</code> that is a brighter version of this
-             * <code>Color</code>.
-             * <p>
-             * This method applies an arbitrary scale factor to each of the three RGB
-             * components of this <code>Color</code> to create a brighter version of
-             * this <code>Color</code>. The {@code alpha} value is preserved. Although
-             * <code>brighter</code> and <code>darker</code> are inverse operations, the
-             * results of a series of invocations of these two methods might be
-             * inconsistent because of rounding errors.
+             * Creates a new <code>Color</code> that is a brighter version of this <code>Color</code>.
              *
-             * @return {java.awt.Color} a new <code>Color</code> object that is a brighter version of
-             * this <code>Color</code> with the same {@code alpha} value.
+             * <p>This method applies an arbitrary scale factor to each of the three RGB components of this
+             * <code>Color</code> to create a brighter version of this <code>Color</code>. The {@code alpha}
+             * value is preserved. Although <code>brighter</code> and <code>darker</code> are inverse
+             * operations, the results of a series of invocations of these two methods might be inconsistent
+             * because of rounding errors.
+             *
+             * @return {java.awt.Color} a new <code>Color</code> object that is a brighter version of this <code>Color</code>
+             * with the same {@code alpha} value.
              * @see java.awt.Color#darker
              * @since JDK1.0
              */
@@ -12498,18 +11894,16 @@ var java;
                 return new Color(Math.min(((r / Color.FACTOR) | 0), 255), Math.min(((g / Color.FACTOR) | 0), 255), Math.min(((b / Color.FACTOR) | 0), 255), alpha);
             };
             /**
-             * Creates a new <code>Color</code> that is a darker version of this
-             * <code>Color</code>.
-             * <p>
-             * This method applies an arbitrary scale factor to each of the three RGB
-             * components of this <code>Color</code> to create a darker version of this
-             * <code>Color</code>. The {@code alpha} value is preserved. Although
-             * <code>brighter</code> and <code>darker</code> are inverse operations, the
-             * results of a series of invocations of these two methods might be
-             * inconsistent because of rounding errors.
+             * Creates a new <code>Color</code> that is a darker version of this <code>Color</code>.
              *
-             * @return {java.awt.Color} a new <code>Color</code> object that is a darker version of this
-             * <code>Color</code> with the same {@code alpha} value.
+             * <p>This method applies an arbitrary scale factor to each of the three RGB components of this
+             * <code>Color</code> to create a darker version of this <code>Color</code>. The {@code alpha}
+             * value is preserved. Although <code>brighter</code> and <code>darker</code> are inverse
+             * operations, the results of a series of invocations of these two methods might be inconsistent
+             * because of rounding errors.
+             *
+             * @return {java.awt.Color} a new <code>Color</code> object that is a darker version of this <code>Color</code>
+             * with the same {@code alpha} value.
              * @see java.awt.Color#brighter
              * @since JDK1.0
              */
@@ -12527,25 +11921,22 @@ var java;
             };
             /**
              * Determines whether another object is equal to this <code>Color</code>.
-             * <p>
-             * The result is <code>true</code> if and only if the argument is not
-             * <code>null</code> and is a <code>Color</code> object that has the same
-             * red, green, blue, and alpha values as this object.
              *
-             * @param {*} obj
-             * the object to test for equality with this <code>Color</code>
-             * @return {boolean} <code>true</code> if the objects are the same; <code>false</code>
-             * otherwise.
+             * <p>The result is <code>true</code> if and only if the argument is not <code>null</code> and is
+             * a <code>Color</code> object that has the same red, green, blue, and alpha values as this
+             * object.
+             *
+             * @param {*} obj the object to test for equality with this <code>Color</code>
+             * @return {boolean} <code>true</code> if the objects are the same; <code>false</code> otherwise.
              * @since JDK1.0
              */
             Color.prototype.equals = function (obj) {
                 return (obj != null && obj instanceof java.awt.Color) && obj.getRGB() === this.getRGB();
             };
             /**
-             * Returns a string representation of this <code>Color</code>. This method
-             * is intended to be used only for debugging purposes. The content and
-             * format of the returned string might vary between implementations. The
-             * returned string might be empty but cannot be <code>null</code>.
+             * Returns a string representation of this <code>Color</code>. This method is intended to be used
+             * only for debugging purposes. The content and format of the returned string might vary between
+             * implementations. The returned string might be empty but cannot be <code>null</code>.
              *
              * @return {string} a string representation of this <code>Color</code>.
              */
@@ -12553,18 +11944,15 @@ var java;
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(this.constructor) + "[r=" + this.getRed() + ",g=" + this.getGreen() + ",b=" + this.getBlue() + "]";
             };
             /**
-             * Converts a <code>String</code> to an integer and returns the specified
-             * opaque <code>Color</code>. This method handles string formats that are
-             * used to represent octal and hexadecimal numbers.
+             * Converts a <code>String</code> to an integer and returns the specified opaque <code>Color
+             * </code>. This method handles string formats that are used to represent octal and hexadecimal
+             * numbers.
              *
-             * @param {string} nm
-             * a <code>String</code> that represents an opaque color as a
-             * 24-bit integer
+             * @param {string} nm a <code>String</code> that represents an opaque color as a 24-bit integer
              * @return {java.awt.Color} the new <code>Color</code> object.
              * @see java.lang.Integer#decode
-             * @exception NumberFormatException
-             * if the specified string cannot be interpreted as a
-             * decimal, octal, or hexadecimal integer.
+             * @exception NumberFormatException if the specified string cannot be interpreted as a decimal,
+             * octal, or hexadecimal integer.
              * @since JDK1.1
              */
             Color.decode = function (nm) {
@@ -12585,21 +11973,18 @@ var java;
             };
             /**
              * Finds a color in the system properties.
-             * <p>
-             * The first argument is treated as the name of a system property to be
-             * obtained. The string value of this property is then interpreted as an
-             * integer which is then converted to a <code>Color</code> object.
-             * <p>
-             * If the specified property is not found or cannot be parsed as an integer
-             * then the <code>Color</code> specified by the second argument is returned
-             * instead.
              *
-             * @param {string} nm
-             * the name of the color property
-             * @param {java.awt.Color} v
-             * the default <code>Color</code>
-             * @return {java.awt.Color} the <code>Color</code> converted from the system property, or the
-             * specified <code>Color</code>.
+             * <p>The first argument is treated as the name of a system property to be obtained. The string
+             * value of this property is then interpreted as an integer which is then converted to a <code>
+             * Color</code> object.
+             *
+             * <p>If the specified property is not found or cannot be parsed as an integer then the <code>
+             * Color</code> specified by the second argument is returned instead.
+             *
+             * @param {string} nm the name of the color property
+             * @param {java.awt.Color} v the default <code>Color</code>
+             * @return {java.awt.Color} the <code>Color</code> converted from the system property, or the specified <code>Color
+             * </code>.
              * @see java.lang.System#getProperty(java.lang.String)
              * @see java.lang.Integer#getInteger(java.lang.String)
              * @see java.awt.Color#Color(int)
@@ -12624,30 +12009,24 @@ var java;
                 return new Color((i >> 16) & 255, (i >> 8) & 255, (i >> 0) & 255);
             };
             /**
-             * Converts the components of a color, as specified by the HSB model, to an
-             * equivalent set of values for the default RGB model.
-             * <p>
-             * The <code>saturation</code> and <code>brightness</code> components should
-             * be floating-point values between zero and one (numbers in the range
-             * 0.0-1.0). The <code>hue</code> component can be any floating-point
-             * number. The floor of this number is subtracted from it to create a
-             * fraction between 0 and 1. This fractional number is then multiplied by
-             * 360 to produce the hue angle in the HSB color model.
-             * <p>
-             * The integer that is returned by <code>HSBtoRGB</code> encodes the value
-             * of a color in bits 0-23 of an integer value that is the same format used
-             * by the method {@link #getRGB() getRGB}. This integer can be supplied as
-             * an argument to the <code>Color</code> constructor that takes a single
-             * integer argument.
+             * Converts the components of a color, as specified by the HSB model, to an equivalent set of
+             * values for the default RGB model.
              *
-             * @param {number} hue
-             * the hue component of the color
-             * @param {number} saturation
-             * the saturation of the color
-             * @param {number} brightness
-             * the brightness of the color
-             * @return {number} the RGB value of the color with the indicated hue, saturation,
-             * and brightness.
+             * <p>The <code>saturation</code> and <code>brightness</code> components should be floating-point
+             * values between zero and one (numbers in the range 0.0-1.0). The <code>hue</code> component can
+             * be any floating-point number. The floor of this number is subtracted from it to create a
+             * fraction between 0 and 1. This fractional number is then multiplied by 360 to produce the hue
+             * angle in the HSB color model.
+             *
+             * <p>The integer that is returned by <code>HSBtoRGB</code> encodes the value of a color in bits
+             * 0-23 of an integer value that is the same format used by the method {@link #getRGB() getRGB}.
+             * This integer can be supplied as an argument to the <code>Color</code> constructor that takes a
+             * single integer argument.
+             *
+             * @param {number} hue the hue component of the color
+             * @param {number} saturation the saturation of the color
+             * @param {number} brightness the brightness of the color
+             * @return {number} the RGB value of the color with the indicated hue, saturation, and brightness.
              * @see java.awt.Color#getRGB()
              * @see java.awt.Color#Color(int)
              * @see java.awt.image.ColorModel#getRGBdefault()
@@ -12702,26 +12081,19 @@ var java;
                 return -16777216 | (r << 16) | (g << 8) | (b << 0);
             };
             /**
-             * Converts the components of a color, as specified by the default RGB
-             * model, to an equivalent set of values for hue, saturation, and brightness
-             * that are the three components of the HSB model.
-             * <p>
-             * If the <code>hsbvals</code> argument is <code>null</code>, then a new
-             * array is allocated to return the result. Otherwise, the method returns
-             * the array <code>hsbvals</code>, with the values put into that array.
+             * Converts the components of a color, as specified by the default RGB model, to an equivalent set
+             * of values for hue, saturation, and brightness that are the three components of the HSB model.
              *
-             * @param {number} r
-             * the red component of the color
-             * @param {number} g
-             * the green component of the color
-             * @param {number} b
-             * the blue component of the color
-             * @param {float[]} hsbvals
-             * the array used to return the three HSB values, or
-             * <code>null</code>
-             * @return {float[]} an array of three elements containing the hue, saturation, and
-             * brightness (in that order), of the color with the indicated red,
-             * green, and blue components.
+             * <p>If the <code>hsbvals</code> argument is <code>null</code>, then a new array is allocated to
+             * return the result. Otherwise, the method returns the array <code>hsbvals</code>, with the
+             * values put into that array.
+             *
+             * @param {number} r the red component of the color
+             * @param {number} g the green component of the color
+             * @param {number} b the blue component of the color
+             * @param {float[]} hsbvals the array used to return the three HSB values, or <code>null</code>
+             * @return {float[]} an array of three elements containing the hue, saturation, and brightness (in that
+             * order), of the color with the indicated red, green, and blue components.
              * @see java.awt.Color#getRGB()
              * @see java.awt.Color#Color(int)
              * @see java.awt.image.ColorModel#getRGBdefault()
@@ -12767,40 +12139,30 @@ var java;
                 return hsbvals;
             };
             /**
-             * Creates a <code>Color</code> object based on the specified values for the
-             * HSB color model.
-             * <p>
-             * The <code>s</code> and <code>b</code> components should be floating-point
-             * values between zero and one (numbers in the range 0.0-1.0). The
-             * <code>h</code> component can be any floating-point number. The floor of
-             * this number is subtracted from it to create a fraction between 0 and 1.
-             * This fractional number is then multiplied by 360 to produce the hue angle
-             * in the HSB color model.
+             * Creates a <code>Color</code> object based on the specified values for the HSB color model.
              *
-             * @param {number} h
-             * the hue component
-             * @param {number} s
-             * the saturation of the color
-             * @param {number} b
-             * the brightness of the color
-             * @return {java.awt.Color} a <code>Color</code> object with the specified hue, saturation,
-             * and brightness.
+             * <p>The <code>s</code> and <code>b</code> components should be floating-point values between
+             * zero and one (numbers in the range 0.0-1.0). The <code>h</code> component can be any
+             * floating-point number. The floor of this number is subtracted from it to create a fraction
+             * between 0 and 1. This fractional number is then multiplied by 360 to produce the hue angle in
+             * the HSB color model.
+             *
+             * @param {number} h the hue component
+             * @param {number} s the saturation of the color
+             * @param {number} b the brightness of the color
+             * @return {java.awt.Color} a <code>Color</code> object with the specified hue, saturation, and brightness.
              * @since JDK1.0
              */
             Color.getHSBColor = function (h, s, b) {
                 return new Color(Color.HSBtoRGB(h, s, b));
             };
             /**
-             * Returns a <code>float</code> array containing the color and alpha
-             * components of the <code>Color</code>, as represented in the default sRGB
-             * color space. If <code>compArray</code> is <code>null</code>, an array of
-             * length 4 is created for the return value. Otherwise,
-             * <code>compArray</code> must have length 4 or greater, and it is filled in
-             * with the components and returned.
+             * Returns a <code>float</code> array containing the color and alpha components of the <code>Color
+             * </code>, as represented in the default sRGB color space. If <code>compArray</code> is <code>
+             * null</code>, an array of length 4 is created for the return value. Otherwise, <code>compArray
+             * </code> must have length 4 or greater, and it is filled in with the components and returned.
              *
-             * @param {float[]} compArray
-             * an array that this method fills with color and alpha
-             * components and returns
+             * @param {float[]} compArray an array that this method fills with color and alpha components and returns
              * @return {float[]} the RGBA components in a <code>float</code> array.
              */
             Color.prototype.getRGBComponents = function (compArray) {
@@ -12826,16 +12188,12 @@ var java;
                 return f;
             };
             /**
-             * Returns a <code>float</code> array containing only the color components
-             * of the <code>Color</code>, in the default sRGB color space. If
-             * <code>compArray</code> is <code>null</code>, an array of length 3 is
-             * created for the return value. Otherwise, <code>compArray</code> must have
-             * length 3 or greater, and it is filled in with the components and
-             * returned.
+             * Returns a <code>float</code> array containing only the color components of the <code>Color
+             * </code>, in the default sRGB color space. If <code>compArray</code> is <code>null</code>, an
+             * array of length 3 is created for the return value. Otherwise, <code>compArray</code> must have
+             * length 3 or greater, and it is filled in with the components and returned.
              *
-             * @param {float[]} compArray
-             * an array that this method fills with color components and
-             * returns
+             * @param {float[]} compArray an array that this method fills with color components and returns
              * @return {float[]} the RGB components in a <code>float</code> array.
              */
             Color.prototype.getRGBColorComponents = function (compArray) {
@@ -12859,18 +12217,14 @@ var java;
                 return f;
             };
             /**
-             * Returns a <code>float</code> array containing the color and alpha
-             * components of the <code>Color</code>, in the <code>ColorSpace</code> of
-             * the <code>Color</code>. If <code>compArray</code> is <code>null</code>,
-             * an array with length equal to the number of components in the associated
-             * <code>ColorSpace</code> plus one is created for the return value.
-             * Otherwise, <code>compArray</code> must have at least this length and it
-             * is filled in with the components and returned.
+             * Returns a <code>float</code> array containing the color and alpha components of the <code>Color
+             * </code>, in the <code>ColorSpace</code> of the <code>Color</code>. If <code>compArray</code> is
+             * <code>null</code>, an array with length equal to the number of components in the associated
+             * <code>ColorSpace</code> plus one is created for the return value. Otherwise, <code>compArray
+             * </code> must have at least this length and it is filled in with the components and returned.
              *
-             * @param {float[]} compArray
-             * an array that this method fills with the color and alpha
-             * components of this <code>Color</code> in its
-             * <code>ColorSpace</code> and returns
+             * @param {float[]} compArray an array that this method fills with the color and alpha components of this
+             * <code>Color</code> in its <code>ColorSpace</code> and returns
              * @return {float[]} the color and alpha components in a <code>float</code> array.
              */
             Color.prototype.getComponents = function (compArray) {
@@ -12895,18 +12249,14 @@ var java;
                 return f;
             };
             /**
-             * Returns a <code>float</code> array containing only the color components
-             * of the <code>Color</code>, in the <code>ColorSpace</code> of the
-             * <code>Color</code>. If <code>compArray</code> is <code>null</code>, an
-             * array with length equal to the number of components in the associated
-             * <code>ColorSpace</code> is created for the return value. Otherwise,
-             * <code>compArray</code> must have at least this length and it is filled in
-             * with the components and returned.
+             * Returns a <code>float</code> array containing only the color components of the <code>Color
+             * </code>, in the <code>ColorSpace</code> of the <code>Color</code>. If <code>compArray</code> is
+             * <code>null</code>, an array with length equal to the number of components in the associated
+             * <code>ColorSpace</code> is created for the return value. Otherwise, <code>compArray</code> must
+             * have at least this length and it is filled in with the components and returned.
              *
-             * @param {float[]} compArray
-             * an array that this method fills with the color components of
-             * this <code>Color</code> in its <code>ColorSpace</code> and
-             * returns
+             * @param {float[]} compArray an array that this method fills with the color components of this <code>Color
+             * </code> in its <code>ColorSpace</code> and returns
              * @return {float[]} the color components in a <code>float</code> array.
              */
             Color.prototype.getColorComponents = function (compArray) {
@@ -12930,8 +12280,8 @@ var java;
                 return f;
             };
             /**
-             * Returns the transparency mode for this <code>Color</code>. This is
-             * required to implement the <code>Paint</code> interface.
+             * Returns the transparency mode for this <code>Color</code>. This is required to implement the
+             * <code>Paint</code> interface.
              *
              * @return {number} this <code>Color</code> object's transparency mode.
              * @see Paint
@@ -13201,11 +12551,9 @@ var java;
                 return res;
             };
             /**
-             * Converts this <code>Font</code> object to a <code>String</code>
-             * representation.
+             * Converts this <code>Font</code> object to a <code>String</code> representation.
              *
-             * @return {string} a <code>String</code> representation of this <code>Font</code>
-             * object.
+             * @return {string} a <code>String</code> representation of this <code>Font</code> object.
              * @since JDK1.0
              */
             Font.prototype.toString = function () {
@@ -13219,41 +12567,36 @@ var java;
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(this.constructor) + "[family=" + this.getFamily() + ",name=" + this.name + ",style=" + strStyle + ",size=" + this.size + "]";
             };
             /**
-             * A String constant for the canonical family name of the logical font
-             * "Dialog". It is useful in Font construction to provide compile-time
-             * verification of the name.
+             * A String constant for the canonical family name of the logical font "Dialog". It is useful in
+             * Font construction to provide compile-time verification of the name.
              *
              * @since 1.6
              */
             Font.DIALOG = "Dialog";
             /**
-             * A String constant for the canonical family name of the logical font
-             * "DialogInput". It is useful in Font construction to provide compile-time
-             * verification of the name.
+             * A String constant for the canonical family name of the logical font "DialogInput". It is useful
+             * in Font construction to provide compile-time verification of the name.
              *
              * @since 1.6
              */
             Font.DIALOG_INPUT = "DialogInput";
             /**
-             * A String constant for the canonical family name of the logical font
-             * "SansSerif". It is useful in Font construction to provide compile-time
-             * verification of the name.
+             * A String constant for the canonical family name of the logical font "SansSerif". It is useful
+             * in Font construction to provide compile-time verification of the name.
              *
              * @since 1.6
              */
             Font.SANS_SERIF = "SansSerif";
             /**
-             * A String constant for the canonical family name of the logical font
-             * "Serif". It is useful in Font construction to provide compile-time
-             * verification of the name.
+             * A String constant for the canonical family name of the logical font "Serif". It is useful in
+             * Font construction to provide compile-time verification of the name.
              *
              * @since 1.6
              */
             Font.SERIF = "Serif";
             /**
-             * A String constant for the canonical family name of the logical font
-             * "Monospaced". It is useful in Font construction to provide compile-time
-             * verification of the name.
+             * A String constant for the canonical family name of the logical font "Monospaced". It is useful
+             * in Font construction to provide compile-time verification of the name.
              *
              * @since 1.6
              */
@@ -13263,13 +12606,13 @@ var java;
              */
             Font.PLAIN = 0;
             /**
-             * The bold style constant. This can be combined with the other style
-             * constants (except PLAIN) for mixed styles.
+             * The bold style constant. This can be combined with the other style constants (except PLAIN) for
+             * mixed styles.
              */
             Font.BOLD = 1;
             /**
-             * The italicized style constant. This can be combined with the other style
-             * constants (except PLAIN) for mixed styles.
+             * The italicized style constant. This can be combined with the other style constants (except
+             * PLAIN) for mixed styles.
              */
             Font.ITALIC = 2;
             /**
@@ -13277,8 +12620,8 @@ var java;
              */
             Font.ROMAN_BASELINE = 0;
             /**
-             * The baseline used in ideographic scripts like Chinese, Japanese, and
-             * Korean when laying out text.
+             * The baseline used in ideographic scripts like Chinese, Japanese, and Korean when laying out
+             * text.
              */
             Font.CENTER_BASELINE = 1;
             /**
@@ -13286,41 +12629,40 @@ var java;
              */
             Font.HANGING_BASELINE = 2;
             /**
-             * Identify a font resource of type TRUETYPE. Used to specify a TrueType
-             * font resource to the {@link #createFont} method. The TrueType format was
-             * extended to become the OpenType format, which adds support for fonts with
-             * Postscript outlines, this tag therefore references these fonts, as well
-             * as those with TrueType outlines.
+             * Identify a font resource of type TRUETYPE. Used to specify a TrueType font resource to the
+             * {@link #createFont} method. The TrueType format was extended to become the OpenType format,
+             * which adds support for fonts with Postscript outlines, this tag therefore references these
+             * fonts, as well as those with TrueType outlines.
              *
              * @since 1.3
              */
             Font.TRUETYPE_FONT = 0;
             /**
-             * Identify a font resource of type TYPE1. Used to specify a Type1 font
-             * resource to the {@link #createFont} method.
+             * Identify a font resource of type TYPE1. Used to specify a Type1 font resource to the {@link
+             * #createFont} method.
              *
              * @since 1.5
              */
             Font.TYPE1_FONT = 1;
             Font.serialVersionUID = -4206021311591459213;
             /**
-             * A flag to layoutGlyphVector indicating that text is left-to-right as
-             * determined by Bidi analysis.
+             * A flag to layoutGlyphVector indicating that text is left-to-right as determined by Bidi
+             * analysis.
              */
             Font.LAYOUT_LEFT_TO_RIGHT = 0;
             /**
-             * A flag to layoutGlyphVector indicating that text is right-to-left as
-             * determined by Bidi analysis.
+             * A flag to layoutGlyphVector indicating that text is right-to-left as determined by Bidi
+             * analysis.
              */
             Font.LAYOUT_RIGHT_TO_LEFT = 1;
             /**
-             * A flag to layoutGlyphVector indicating that text in the char array before
-             * the indicated start should not be examined.
+             * A flag to layoutGlyphVector indicating that text in the char array before the indicated start
+             * should not be examined.
              */
             Font.LAYOUT_NO_START_CONTEXT = 2;
             /**
-             * A flag to layoutGlyphVector indicating that text in the char array after
-             * the indicated limit should not be examined.
+             * A flag to layoutGlyphVector indicating that text in the char array after the indicated limit
+             * should not be examined.
              */
             Font.LAYOUT_NO_LIMIT_CONTEXT = 4;
             return Font;
@@ -13971,8 +13313,8 @@ var java;
              */
             AWTEvent.INPUT_METHOD_EVENT_MASK = 2048;
             /**
-             * The pseudo event mask for enabling input methods. We're using one bit in
-             * the eventMask so we don't need a separate field inputMethodsEnabled.
+             * The pseudo event mask for enabling input methods. We're using one bit in the eventMask so we
+             * don't need a separate field inputMethodsEnabled.
              */
             AWTEvent.INPUT_METHODS_ENABLED_MASK = 4096;
             /**
@@ -14010,8 +13352,8 @@ var java;
              */
             AWTEvent.WINDOW_FOCUS_EVENT_MASK = 524288;
             /**
-             * The maximum value for reserved AWT event IDs. Programs defining their own
-             * event IDs should use IDs greater than this value.
+             * The maximum value for reserved AWT event IDs. Programs defining their own event IDs should use
+             * IDs greater than this value.
              */
             AWTEvent.RESERVED_ID_MAX = 1999;
             return AWTEvent;
@@ -14572,23 +13914,64 @@ var java;
     var awt;
     (function (awt) {
         var GridLayout = /** @class */ (function () {
-            function GridLayout(rows, cols) {
-                this.created = false;
-                if (this.parent === undefined) {
-                    this.parent = null;
+            function GridLayout(rows, cols, hgap, vgap) {
+                if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && ((typeof hgap === 'number') || hgap === null) && ((typeof vgap === 'number') || vgap === null)) {
+                    var __args = arguments;
+                    {
+                        var __args_16 = arguments;
+                        if (this.parent === undefined) {
+                            this.parent = null;
+                        }
+                        if (this.table === undefined) {
+                            this.table = null;
+                        }
+                        if (this.cols === undefined) {
+                            this.cols = 0;
+                        }
+                        if (this.rows === undefined) {
+                            this.rows = 0;
+                        }
+                        this.created = false;
+                        this.currentPosition = 0;
+                        this.rows = rows;
+                        this.cols = cols;
+                    }
+                    if (this.parent === undefined) {
+                        this.parent = null;
+                    }
+                    if (this.table === undefined) {
+                        this.table = null;
+                    }
+                    if (this.cols === undefined) {
+                        this.cols = 0;
+                    }
+                    if (this.rows === undefined) {
+                        this.rows = 0;
+                    }
+                    this.created = false;
+                    this.currentPosition = 0;
                 }
-                if (this.table === undefined) {
-                    this.table = null;
+                else if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && hgap === undefined && vgap === undefined) {
+                    var __args = arguments;
+                    if (this.parent === undefined) {
+                        this.parent = null;
+                    }
+                    if (this.table === undefined) {
+                        this.table = null;
+                    }
+                    if (this.cols === undefined) {
+                        this.cols = 0;
+                    }
+                    if (this.rows === undefined) {
+                        this.rows = 0;
+                    }
+                    this.created = false;
+                    this.currentPosition = 0;
+                    this.rows = rows;
+                    this.cols = cols;
                 }
-                this.currentPosition = 0;
-                if (this.cols === undefined) {
-                    this.cols = 0;
-                }
-                if (this.rows === undefined) {
-                    this.rows = 0;
-                }
-                this.rows = rows;
-                this.cols = cols;
+                else
+                    throw new Error('invalid overload');
             }
             GridLayout.prototype.addLayoutComponent$java_lang_String$java_awt_Component = function (name, component) {
                 var pos = 0;
@@ -15148,10 +14531,8 @@ var java;
         /**
          * Creates a new cursor object with the specified type.
          *
-         * @param {number} type
-         * the type of cursor
-         * @throws IllegalArgumentException
-         * if the specified cursor type is invalid
+         * @param {number} type the type of cursor
+         * @throws IllegalArgumentException if the specified cursor type is invalid
          * @class
          * @author Amy Fowler
          */
@@ -15196,11 +14577,9 @@ var java;
             /**
              * Returns a cursor object with the specified predefined type.
              *
-             * @param {number} type
-             * the type of predefined cursor
+             * @param {number} type the type of predefined cursor
              * @return {java.awt.Cursor} the specified predefined cursor
-             * @throws IllegalArgumentException
-             * if the specified cursor type is invalid
+             * @throws IllegalArgumentException if the specified cursor type is invalid
              */
             Cursor.getPredefinedCursor = function (type) {
                 if (type < Cursor.DEFAULT_CURSOR || type > Cursor.MOVE_CURSOR) {
@@ -15216,15 +14595,12 @@ var java;
                 return c;
             };
             /**
-             * Returns a system-specific custom cursor object matching the specified
-             * name. Cursor names are, for example: "Invalid.16x16"
+             * Returns a system-specific custom cursor object matching the specified name. Cursor names are,
+             * for example: "Invalid.16x16"
              *
-             * @param {string} name
-             * a string describing the desired system-specific custom cursor
+             * @param {string} name a string describing the desired system-specific custom cursor
              * @return {java.awt.Cursor} the system specific custom cursor named
-             * @exception HeadlessException
-             * if <code>GraphicsEnvironment.isHeadless</code> returns
-             * true
+             * @exception HeadlessException if <code>GraphicsEnvironment.isHeadless</code> returns true
              */
             Cursor.getSystemCustomCursor = function (name) {
                 return null;
@@ -15930,11 +15306,10 @@ var java;
     var beans;
     (function (beans) {
         /**
-         * Constructor which binds the {@code PropertyChangeListener}
-         * to a specific property.
+         * Constructor which binds the {@code PropertyChangeListener} to a specific property.
          *
-         * @param {string} propertyName  the name of the property to listen on
-         * @param {*} listener      the listener object
+         * @param {string} propertyName the name of the property to listen on
+         * @param {*} listener the listener object
          * @class
          * @extends java.util.EventListenerProxy
          */
@@ -15951,7 +15326,7 @@ var java;
             /**
              * Forwards the property change event to the listener delegate.
              *
-             * @param {java.beans.PropertyChangeEvent} event  the property change event
+             * @param {java.beans.PropertyChangeEvent} event the property change event
              */
             PropertyChangeListenerProxy.prototype.propertyChange = function (event) {
                 this.getListener().propertyChange(event);
@@ -16024,8 +15399,7 @@ var java;
             /**
              * Returns the list of listeners for the specified property.
              *
-             * @param {string} name
-             * the name of the property
+             * @param {string} name the name of the property
              * @return {L[]} the corresponding list of listeners
              */
             ChangeListenerMap.prototype.get = function (name) {
@@ -16034,10 +15408,8 @@ var java;
             /**
              * Sets new list of listeners for the specified property.
              *
-             * @param {string} name
-             * the name of the property
-             * @param {L[]} listeners
-             * new list of listeners
+             * @param {string} name the name of the property
+             * @param {L[]} listeners new list of listeners
              */
             ChangeListenerMap.prototype.set = function (name, listeners) {
                 if (listeners != null) {
@@ -16098,8 +15470,7 @@ var java;
             /**
              * Returns listeners that have been associated with the named property.
              *
-             * @param {string} name
-             * the name of the property
+             * @param {string} name the name of the property
              * @return {L[]} an array of listeners for the named property
              */
             ChangeListenerMap.prototype.getListeners = function (name) {
@@ -16115,10 +15486,8 @@ var java;
             /**
              * Indicates whether the map contains at least one listener to be notified.
              *
-             * @param {string} name
-             * the name of the property
-             * @return {boolean} {@code true} if at least one listener exists or {@code false}
-             * otherwise
+             * @param {string} name the name of the property
+             * @return {boolean} {@code true} if at least one listener exists or {@code false} otherwise
              */
             ChangeListenerMap.prototype.hasListeners = function (name) {
                 if (this.map == null) {
@@ -16128,8 +15497,8 @@ var java;
                 return (array != null) || ((name != null) && (null != this.map.get(name)));
             };
             /**
-             * Returns a set of entries from the map. Each entry is a pair consisted of
-             * the property name and the corresponding list of listeners.
+             * Returns a set of entries from the map. Each entry is a pair consisted of the property name and
+             * the corresponding list of listeners.
              *
              * @return {*} a set of entries from the map
              */
@@ -16242,7 +15611,7 @@ var sun;
                     else if (((c != null && c instanceof sun.awt.geom.Curve) || c === null) && ((typeof ctag === 'number') || ctag === null) && etag === undefined) {
                         var __args = arguments;
                         {
-                            var __args_16 = arguments;
+                            var __args_17 = arguments;
                             var etag_1 = sun.awt.geom.AreaOp.ETAG_IGNORE;
                             if (this.curve === undefined) {
                                 this.curve = null;
@@ -17173,15 +16542,13 @@ var sun;
                     }
                 };
                 /**
-                 * Calculates the number of times the given path crosses the ray extending
-                 * to the right from (px,py). If the point lies on a part of the path, then
-                 * no crossings are counted for that intersection. +1 is added for each
-                 * crossing where the Y coordinate is increasing -1 is added for each
-                 * crossing where the Y coordinate is decreasing The return value is the sum
-                 * of all crossings for every segment in the path. The path must start with
-                 * a SEG_MOVETO, otherwise an exception is thrown. The caller must check
-                 * p[xy] for NaN values. The caller may also reject infinite p[xy] values as
-                 * well.
+                 * Calculates the number of times the given path crosses the ray extending to the right from
+                 * (px,py). If the point lies on a part of the path, then no crossings are counted for that
+                 * intersection. +1 is added for each crossing where the Y coordinate is increasing -1 is added
+                 * for each crossing where the Y coordinate is decreasing The return value is the sum of all
+                 * crossings for every segment in the path. The path must start with a SEG_MOVETO, otherwise an
+                 * exception is thrown. The caller must check p[xy] for NaN values. The caller may also reject
+                 * infinite p[xy] values as well.
                  * @param {*} pi
                  * @param {number} px
                  * @param {number} py
@@ -17252,11 +16619,10 @@ var sun;
                     return crossings;
                 };
                 /**
-                 * Calculates the number of times the line from (x0,y0) to (x1,y1) crosses
-                 * the ray extending to the right from (px,py). If the point lies on the
-                 * line, then no crossings are recorded. +1 is returned for a crossing where
-                 * the Y coordinate is increasing -1 is returned for a crossing where the Y
-                 * coordinate is decreasing
+                 * Calculates the number of times the line from (x0,y0) to (x1,y1) crosses the ray extending to
+                 * the right from (px,py). If the point lies on the line, then no crossings are recorded. +1 is
+                 * returned for a crossing where the Y coordinate is increasing -1 is returned for a crossing
+                 * where the Y coordinate is decreasing
                  * @param {number} px
                  * @param {number} py
                  * @param {number} x0
@@ -17280,13 +16646,11 @@ var sun;
                     return (y0 < y1) ? 1 : -1;
                 };
                 /**
-                 * Calculates the number of times the quad from (x0,y0) to (x1,y1) crosses
-                 * the ray extending to the right from (px,py). If the point lies on a part
-                 * of the curve, then no crossings are counted for that intersection. the
-                 * level parameter should be 0 at the top-level call and will count up for
-                 * each recursion level to prevent infinite recursion +1 is added for each
-                 * crossing where the Y coordinate is increasing -1 is added for each
-                 * crossing where the Y coordinate is decreasing
+                 * Calculates the number of times the quad from (x0,y0) to (x1,y1) crosses the ray extending to
+                 * the right from (px,py). If the point lies on a part of the curve, then no crossings are counted
+                 * for that intersection. the level parameter should be 0 at the top-level call and will count up
+                 * for each recursion level to prevent infinite recursion +1 is added for each crossing where the
+                 * Y coordinate is increasing -1 is added for each crossing where the Y coordinate is decreasing
                  * @param {number} px
                  * @param {number} py
                  * @param {number} x0
@@ -17330,13 +16694,11 @@ var sun;
                     return (Curve.pointCrossingsForQuad(px, py, x0, y0, x0c, y0c, xc, yc, level + 1) + Curve.pointCrossingsForQuad(px, py, xc, yc, xc1, yc1, x1, y1, level + 1));
                 };
                 /**
-                 * Calculates the number of times the cubic from (x0,y0) to (x1,y1) crosses
-                 * the ray extending to the right from (px,py). If the point lies on a part
-                 * of the curve, then no crossings are counted for that intersection. the
-                 * level parameter should be 0 at the top-level call and will count up for
-                 * each recursion level to prevent infinite recursion +1 is added for each
-                 * crossing where the Y coordinate is increasing -1 is added for each
-                 * crossing where the Y coordinate is decreasing
+                 * Calculates the number of times the cubic from (x0,y0) to (x1,y1) crosses the ray extending to
+                 * the right from (px,py). If the point lies on a part of the curve, then no crossings are counted
+                 * for that intersection. the level parameter should be 0 at the top-level call and will count up
+                 * for each recursion level to prevent infinite recursion +1 is added for each crossing where the
+                 * Y coordinate is increasing -1 is added for each crossing where the Y coordinate is decreasing
                  * @param {number} px
                  * @param {number} py
                  * @param {number} x0
@@ -17388,14 +16750,12 @@ var sun;
                     return (Curve.pointCrossingsForCubic(px, py, x0, y0, xc0, yc0, xc0m, yc0m, xmid, ymid, level + 1) + Curve.pointCrossingsForCubic(px, py, xmid, ymid, xmc1, ymc1, xc1, yc1, x1, y1, level + 1));
                 };
                 /**
-                 * Accumulate the number of times the path crosses the shadow extending to
-                 * the right of the rectangle. See the comment for the RECT_INTERSECTS
-                 * constant for more complete details. The return value is the sum of all
-                 * crossings for both the top and bottom of the shadow for every segment in
-                 * the path, or the special value RECT_INTERSECTS if the path ever enters
-                 * the interior of the rectangle. The path must start with a SEG_MOVETO,
-                 * otherwise an exception is thrown. The caller must check r[xy]{min,max}
-                 * for NaN values.
+                 * Accumulate the number of times the path crosses the shadow extending to the right of the
+                 * rectangle. See the comment for the RECT_INTERSECTS constant for more complete details. The
+                 * return value is the sum of all crossings for both the top and bottom of the shadow for every
+                 * segment in the path, or the special value RECT_INTERSECTS if the path ever enters the interior
+                 * of the rectangle. The path must start with a SEG_MOVETO, otherwise an exception is thrown. The
+                 * caller must check r[xy]{min,max} for NaN values.
                  * @param {*} pi
                  * @param {number} rxmin
                  * @param {number} rymin
@@ -17473,9 +16833,8 @@ var sun;
                     return crossings;
                 };
                 /**
-                 * Accumulate the number of times the line crosses the shadow extending to
-                 * the right of the rectangle. See the comment for the RECT_INTERSECTS
-                 * constant for more complete details.
+                 * Accumulate the number of times the line crosses the shadow extending to the right of the
+                 * rectangle. See the comment for the RECT_INTERSECTS constant for more complete details.
                  * @param {number} crossings
                  * @param {number} rxmin
                  * @param {number} rymin
@@ -17546,9 +16905,8 @@ var sun;
                     return Curve.RECT_INTERSECTS;
                 };
                 /**
-                 * Accumulate the number of times the quad crosses the shadow extending to
-                 * the right of the rectangle. See the comment for the RECT_INTERSECTS
-                 * constant for more complete details.
+                 * Accumulate the number of times the quad crosses the shadow extending to the right of the
+                 * rectangle. See the comment for the RECT_INTERSECTS constant for more complete details.
                  * @param {number} crossings
                  * @param {number} rxmin
                  * @param {number} rymin
@@ -17607,9 +16965,8 @@ var sun;
                     return crossings;
                 };
                 /**
-                 * Accumulate the number of times the cubic crosses the shadow extending to
-                 * the right of the rectangle. See the comment for the RECT_INTERSECTS
-                 * constant for more complete details.
+                 * Accumulate the number of times the cubic crosses the shadow extending to the right of the
+                 * rectangle. See the comment for the RECT_INTERSECTS constant for more complete details.
                  * @param {number} crossings
                  * @param {number} rxmin
                  * @param {number} rymin
@@ -18072,31 +17429,26 @@ var sun;
                 Curve.INCREASING = 1;
                 Curve.DECREASING = -1;
                 /**
-                 * The rectangle intersection test counts the number of times that the path
-                 * crosses through the shadow that the rectangle projects to the right
-                 * towards (x => +INFINITY).
+                 * The rectangle intersection test counts the number of times that the path crosses through the
+                 * shadow that the rectangle projects to the right towards (x => +INFINITY).
                  *
-                 * During processing of the path it actually counts every time the path
-                 * crosses either or both of the top and bottom edges of that shadow. If the
-                 * path enters from the top, the count is incremented. If it then exits back
-                 * through the top, the same way it came in, the count is decremented and
-                 * there is no impact on the winding count. If, instead, the path exits out
-                 * the bottom, then the count is incremented again and a full pass through
-                 * the shadow is indicated by the winding count having been incremented by
-                 * 2.
+                 * <p>During processing of the path it actually counts every time the path crosses either or both
+                 * of the top and bottom edges of that shadow. If the path enters from the top, the count is
+                 * incremented. If it then exits back through the top, the same way it came in, the count is
+                 * decremented and there is no impact on the winding count. If, instead, the path exits out the
+                 * bottom, then the count is incremented again and a full pass through the shadow is indicated by
+                 * the winding count having been incremented by 2.
                  *
-                 * Thus, the winding count that it accumulates is actually double the real
-                 * winding count. Since the path is continuous, the final answer should be a
-                 * multiple of 2, otherwise there is a logic error somewhere.
+                 * <p>Thus, the winding count that it accumulates is actually double the real winding count. Since
+                 * the path is continuous, the final answer should be a multiple of 2, otherwise there is a logic
+                 * error somewhere.
                  *
-                 * If the path ever has a direct hit on the rectangle, then a special value
-                 * is returned. This special value terminates all ongoing accumulation on up
-                 * through the call chain and ends up getting returned to the calling
-                 * function which can then produce an answer directly. For intersection
-                 * tests, the answer is always "true" if the path intersects the rectangle.
-                 * For containment tests, the answer is always "false" if the path
-                 * intersects the rectangle. Thus, no further processing is ever needed if
-                 * an intersection occurs.
+                 * <p>If the path ever has a direct hit on the rectangle, then a special value is returned. This
+                 * special value terminates all ongoing accumulation on up through the call chain and ends up
+                 * getting returned to the calling function which can then produce an answer directly. For
+                 * intersection tests, the answer is always "true" if the path intersects the rectangle. For
+                 * containment tests, the answer is always "false" if the path intersects the rectangle. Thus, no
+                 * further processing is ever needed if an intersection occurs.
                  */
                 Curve.RECT_INTERSECTS = -2147483648;
                 Curve.TMIN = 0.001;
@@ -18626,15 +17978,12 @@ var javax;
     (function (swing) {
         /**
          * A generic implementation of SingleSelectionModel.
-         * <p>
-         * <strong>Warning:</strong>
-         * Serialized objects of this class will not be compatible with
-         * future Swing releases. The current serialization support is
-         * appropriate for short term storage or RMI between applications running
-         * the same version of Swing.  As of 1.4, support for long term storage
-         * of all JavaBeans&trade;
-         * has been added to the <code>java.beans</code> package.
-         * Please see {@link java.beans.XMLEncoder}.
+         *
+         * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+         * Swing releases. The current serialization support is appropriate for short term storage or RMI
+         * between applications running the same version of Swing. As of 1.4, support for long term storage
+         * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+         * java.beans.XMLEncoder}.
          *
          * @author Dave Moore
          * @class
@@ -18679,25 +18028,22 @@ var javax;
                 this.listenerList.remove("javax.swing.event.ChangeListener", l);
             };
             /**
-             * Returns an array of all the change listeners
-             * registered on this <code>DefaultSingleSelectionModel</code>.
+             * Returns an array of all the change listeners registered on this <code>
+             * DefaultSingleSelectionModel</code>.
              *
-             * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s
-             * or an empty
-             * array if no change listeners are currently registered
-             *
+             * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s or an empty array if no change
+             * listeners are currently registered
              * @see #addChangeListener
              * @see #removeChangeListener
-             *
              * @since 1.4
              */
             DefaultSingleSelectionModel.prototype.getChangeListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.ChangeListener");
             };
             /**
-             * Notifies all listeners that have registered interest for
-             * notification on this event type.  The event instance
-             * is created lazily.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is created lazily.
+             *
              * @see EventListenerList
              */
             DefaultSingleSelectionModel.prototype.fireStateChanged = function () {
@@ -18714,38 +18060,26 @@ var javax;
                 }
             };
             /**
-             * Returns an array of all the objects currently registered as
-             * <code><em>Foo</em>Listener</code>s
-             * upon this model.
-             * <code><em>Foo</em>Listener</code>s
-             * are registered using the <code>add<em>Foo</em>Listener</code> method.
-             * <p>
-             * You can specify the <code>listenerType</code> argument
-             * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-             * For example, you can query a <code>DefaultSingleSelectionModel</code>
-             * instance <code>m</code>
-             * for its change listeners
-             * with the following code:
+             * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
+             * upon this model. <code><em>Foo</em>Listener</code>s are registered using the <code>
+             * add<em>Foo</em>Listener</code> method.
+             *
+             * <p>You can specify the <code>listenerType</code> argument with a class literal, such as <code>
+             * <em>Foo</em>Listener.class</code>. For example, you can query a <code>
+             * DefaultSingleSelectionModel</code> instance <code>m</code> for its change listeners with the
+             * following code:
              *
              * <pre>ChangeListener[] cls = (ChangeListener[])(m.getListeners(ChangeListener.class));</pre>
              *
-             * If no such listeners exist,
-             * this method returns an empty array.
+             * If no such listeners exist, this method returns an empty array.
              *
-             * @param {java.lang.Class} listenerType  the type of listeners requested;
-             * this parameter should specify an interface
+             * @param {java.lang.Class} listenerType the type of listeners requested; this parameter should specify an interface
              * that descends from <code>java.util.EventListener</code>
-             * @return {T[]} an array of all objects registered as
-             * <code><em>Foo</em>Listener</code>s
-             * on this model,
-             * or an empty array if no such
-             * listeners have been added
-             * @exception ClassCastException if <code>listenerType</code> doesn't
-             * specify a class or interface that implements
-             * <code>java.util.EventListener</code>
-             *
+             * @return {T[]} an array of all objects registered as <code><em>Foo</em>Listener</code>s on this model,
+             * or an empty array if no such listeners have been added
+             * @exception ClassCastException if <code>listenerType</code> doesn't specify a class or interface
+             * that implements <code>java.util.EventListener</code>
              * @see #getChangeListeners
-             *
              * @since 1.3
              */
             DefaultSingleSelectionModel.prototype.getListeners = function (listenerType) {
@@ -18872,15 +18206,14 @@ var javax;
         var event;
         (function (event) {
             /**
-             * Represents a change in selection status between {@code firstIndex} and
-             * {@code lastIndex}, inclusive. {@code firstIndex} is less than or equal to
-             * {@code lastIndex}. The selection of at least one index within the range will
-             * have changed.
+             * Represents a change in selection status between {@code firstIndex} and {@code lastIndex},
+             * inclusive. {@code firstIndex} is less than or equal to {@code lastIndex}. The selection of at
+             * least one index within the range will have changed.
              *
              * @param {number} firstIndex the first index in the range, &lt;= lastIndex
              * @param {number} lastIndex the last index in the range, &gt;= firstIndex
-             * @param {boolean} isAdjusting whether or not this is one in a series of
-             * multiple events, where changes are still being made
+             * @param {boolean} isAdjusting whether or not this is one in a series of multiple events, where changes are
+             * still being made
              * @param {*} source
              * @class
              * @extends java.util.EventObject
@@ -18905,40 +18238,36 @@ var javax;
                     return _this;
                 }
                 /**
-                 * Returns the index of the first row whose selection may have changed.
-                 * {@code getFirstIndex() &lt;= getLastIndex()}
+                 * Returns the index of the first row whose selection may have changed. {@code getFirstIndex()
+                 * &lt;= getLastIndex()}
                  *
-                 * @return {number} the first row whose selection value may have changed,
-                 * where zero is the first row
+                 * @return {number} the first row whose selection value may have changed, where zero is the first row
                  */
                 ListSelectionEvent.prototype.getFirstIndex = function () {
                     return this.firstIndex;
                 };
                 /**
-                 * Returns the index of the last row whose selection may have changed.
-                 * {@code getLastIndex() &gt;= getFirstIndex()}
+                 * Returns the index of the last row whose selection may have changed. {@code getLastIndex() &gt;=
+                 * getFirstIndex()}
                  *
-                 * @return {number} the last row whose selection value may have changed,
-                 * where zero is the first row
+                 * @return {number} the last row whose selection value may have changed, where zero is the first row
                  */
                 ListSelectionEvent.prototype.getLastIndex = function () {
                     return this.lastIndex;
                 };
                 /**
-                 * Returns whether or not this is one in a series of multiple events,
-                 * where changes are still being made. See the documentation for
-                 * {@link javax.swing.ListSelectionModel#setValueIsAdjusting} for
-                 * more details on how this is used.
+                 * Returns whether or not this is one in a series of multiple events, where changes are still
+                 * being made. See the documentation for {@link
+                 * javax.swing.ListSelectionModel#setValueIsAdjusting} for more details on how this is used.
                  *
-                 * @return {boolean} {@code true} if this is one in a series of multiple events,
-                 * where changes are still being made
+                 * @return {boolean} {@code true} if this is one in a series of multiple events, where changes are still
+                 * being made
                  */
                 ListSelectionEvent.prototype.getValueIsAdjusting = function () {
                     return this.isAdjusting;
                 };
                 /**
-                 * Returns a {@code String} that displays and identifies this
-                 * object's properties.
+                 * Returns a {@code String} that displays and identifies this object's properties.
                  *
                  * @return {string} a String representation of this object
                  */
@@ -18962,9 +18291,8 @@ var javax;
             /**
              * Constructs an UndoableEditEvent object.
              *
-             * @param {*} source  the Object that originated the event
-             * (typically <code>this</code>)
-             * @param {*} edit    an UndoableEdit object
+             * @param {*} source the Object that originated the event (typically <code>this</code>)
+             * @param {*} edit an UndoableEdit object
              * @class
              * @extends java.util.EventObject
              * @author Ray Ryan
@@ -19239,8 +18567,7 @@ var javax;
             /**
              * Constructs a MenuEvent object.
              *
-             * @param {*} source  the Object that originated the event
-             * (typically <code>this</code>)
+             * @param {*} source the Object that originated the event (typically <code>this</code>)
              * @class
              * @extends java.util.EventObject
              * @author Georges Saab
@@ -19284,8 +18611,7 @@ var javax;
             /**
              * Constructs a PopupMenuEvent object.
              *
-             * @param {*} source  the Object that originated the event
-             * (typically <code>this</code>)
+             * @param {*} source the Object that originated the event (typically <code>this</code>)
              * @class
              * @extends java.util.EventObject
              * @author Arnaud Weber
@@ -19401,7 +18727,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_17 = arguments;
+                        var __args_18 = arguments;
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -19460,8 +18786,8 @@ var javax;
                 else if (((typeof filename === 'string') || filename === null) && description === undefined) {
                     var __args = arguments;
                     {
-                        var __args_18 = arguments;
-                        var description_1 = __args_18[0];
+                        var __args_19 = arguments;
+                        var description_1 = __args_19[0];
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -19523,8 +18849,8 @@ var javax;
                     var __args = arguments;
                     var location_2 = __args[0];
                     {
-                        var __args_19 = arguments;
-                        var description_2 = __args_19[0].toString();
+                        var __args_20 = arguments;
+                        var description_2 = __args_20[0].toString();
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -19702,12 +19028,9 @@ var javax;
             var Position;
             (function (Position) {
                 /**
-                 * A typesafe enumeration to indicate bias to a position
-                 * in the model.  A position indicates a location between
-                 * two characters.  The bias can be used to indicate an
-                 * interest toward one of the two sides of the position
-                 * in boundary conditions where a simple offset is
-                 * ambiguous.
+                 * A typesafe enumeration to indicate bias to a position in the model. A position indicates a
+                 * location between two characters. The bias can be used to indicate an interest toward one of the
+                 * two sides of the position in boundary conditions where a simple offset is ambiguous.
                  * @class
                  */
                 var Bias = /** @class */ (function () {
@@ -19763,12 +19086,9 @@ var javax;
         /**
          * Creates an {@code Action} with the specified name and small icon.
          *
-         * @param {string} name
-         * the name ({@code Action.NAME}) for the action; a value of
-         * {@code null} is ignored
-         * @param {*} icon
-         * the small icon ({@code Action.SMALL_ICON}) for the action; a
-         * value of {@code null} is ignored
+         * @param {string} name the name ({@code Action.NAME}) for the action; a value of {@code null} is ignored
+         * @param {*} icon the small icon ({@code Action.SMALL_ICON}) for the action; a value of {@code null}
+         * is ignored
          * @class
          * @author Georges Saab
          */
@@ -19778,7 +19098,7 @@ var javax;
                 if (((typeof name === 'string') || name === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null)) {
                     var __args = arguments;
                     {
-                        var __args_20 = arguments;
+                        var __args_21 = arguments;
                         if (this.arrayTable === undefined) {
                             this.arrayTable = null;
                         }
@@ -19826,10 +19146,8 @@ var javax;
             /**
              * Sets the enabled state of a component from an Action.
              *
-             * @param {javax.swing.JComponent} c
-             * the Component to set the enabled state on
-             * @param {*} a
-             * the Action to set the enabled state from, may be null
+             * @param {javax.swing.JComponent} c the Component to set the enabled state on
+             * @param {*} a the Action to set the enabled state from, may be null
              */
             AbstractAction.setEnabledFromAction = function (c, a) {
                 c.setEnabled((a != null) ? a.isEnabled() : true);
@@ -19837,10 +19155,8 @@ var javax;
             /**
              * Sets the tooltip text of a component from an Action.
              *
-             * @param {javax.swing.JComponent} c
-             * the Component to set the tooltip text on
-             * @param {*} a
-             * the Action to set the tooltip text from, may be null
+             * @param {javax.swing.JComponent} c the Component to set the tooltip text on
+             * @param {*} a the Action to set the tooltip text from, may be null
              */
             AbstractAction.setToolTipTextFromAction = function (c, a) {
             };
@@ -19853,10 +19169,9 @@ var javax;
             /**
              * Gets the <code>Object</code> associated with the specified key.
              *
-             * @param {string} key
-             * a string containing the specified <code>key</code>
-             * @return {*} the binding <code>Object</code> stored with this key; if there
-             * are no keys, it will return <code>null</code>
+             * @param {string} key a string containing the specified <code>key</code>
+             * @return {*} the binding <code>Object</code> stored with this key; if there are no keys, it will
+             * return <code>null</code>
              * @see Action#getValue
              */
             AbstractAction.prototype.getValue = function (key) {
@@ -19871,10 +19186,8 @@ var javax;
             /**
              * Sets the <code>Value</code> associated with the specified key.
              *
-             * @param {string} key
-             * the <code>String</code> that identifies the stored object
-             * @param {*} newValue
-             * the <code>Object</code> to store using this key
+             * @param {string} key the <code>String</code> that identifies the stored object
+             * @param {*} newValue the <code>Object</code> to store using this key
              * @see Action#putValue
              */
             AbstractAction.prototype.putValue = function (key, newValue) {
@@ -19913,8 +19226,7 @@ var javax;
             /**
              * Sets whether the {@code Action} is enabled. The default is {@code true}.
              *
-             * @param {boolean} newValue
-             * {@code true} to enable the action, {@code false} to disable it
+             * @param {boolean} newValue {@code true} to enable the action, {@code false} to disable it
              * @see Action#setEnabled
              */
             AbstractAction.prototype.setEnabled = function (newValue) {
@@ -19925,12 +19237,10 @@ var javax;
                 }
             };
             /**
-             * Returns an array of <code>Object</code>s which are keys for which values
-             * have been set for this <code>AbstractAction</code>, or <code>null</code>
-             * if no keys have values set.
+             * Returns an array of <code>Object</code>s which are keys for which values have been set for this
+             * <code>AbstractAction</code>, or <code>null</code> if no keys have values set.
              *
-             * @return {java.lang.Object[]} an array of key objects, or <code>null</code> if no keys have
-             * values set
+             * @return {java.lang.Object[]} an array of key objects, or <code>null</code> if no keys have values set
              * @since 1.3
              */
             AbstractAction.prototype.getKeys = function () {
@@ -19943,9 +19253,8 @@ var javax;
                 return keys;
             };
             /**
-             * Supports reporting bound property changes. This method can be called when
-             * a bound property has changed and it will send the appropriate
-             * <code>PropertyChangeEvent</code> to any registered
+             * Supports reporting bound property changes. This method can be called when a bound property has
+             * changed and it will send the appropriate <code>PropertyChangeEvent</code> to any registered
              * <code>PropertyChangeListeners</code>.
              * @param {string} propertyName
              * @param {*} oldValue
@@ -19958,18 +19267,15 @@ var javax;
                 this.changeSupport.firePropertyChange$java_lang_String$java_lang_Object$java_lang_Object(propertyName, oldValue, newValue);
             };
             /**
-             * Adds a <code>PropertyChangeListener</code> to the listener list. The
-             * listener is registered for all properties.
-             * <p>
-             * A <code>PropertyChangeEvent</code> will get fired in response to setting
-             * a bound property, e.g. <code>setFont</code>, <code>setBackground</code>,
-             * or <code>setForeground</code>. Note that if the current component is
-             * inheriting its foreground, background, or font from its container, then
-             * no event will be fired in response to a change in the inherited property.
+             * Adds a <code>PropertyChangeListener</code> to the listener list. The listener is registered for
+             * all properties.
              *
-             * @param {*} listener
-             * The <code>PropertyChangeListener</code> to be added
+             * <p>A <code>PropertyChangeEvent</code> will get fired in response to setting a bound property,
+             * e.g. <code>setFont</code>, <code>setBackground</code>, or <code>setForeground</code>. Note that
+             * if the current component is inheriting its foreground, background, or font from its container,
+             * then no event will be fired in response to a change in the inherited property.
              *
+             * @param {*} listener The <code>PropertyChangeListener</code> to be added
              * @see Action#addPropertyChangeListener
              */
             AbstractAction.prototype.addPropertyChangeListener = function (listener) {
@@ -19979,13 +19285,10 @@ var javax;
                 this.changeSupport.addPropertyChangeListener$java_beans_PropertyChangeListener(listener);
             };
             /**
-             * Removes a <code>PropertyChangeListener</code> from the listener list.
-             * This removes a <code>PropertyChangeListener</code> that was registered
-             * for all properties.
+             * Removes a <code>PropertyChangeListener</code> from the listener list. This removes a <code>
+             * PropertyChangeListener</code> that was registered for all properties.
              *
-             * @param {*} listener
-             * the <code>PropertyChangeListener</code> to be removed
-             *
+             * @param {*} listener the <code>PropertyChangeListener</code> to be removed
              * @see Action#removePropertyChangeListener
              */
             AbstractAction.prototype.removePropertyChangeListener = function (listener) {
@@ -19995,11 +19298,11 @@ var javax;
                 this.changeSupport.removePropertyChangeListener$java_beans_PropertyChangeListener(listener);
             };
             /**
-             * Returns an array of all the <code>PropertyChangeListener</code>s added to
-             * this AbstractAction with addPropertyChangeListener().
+             * Returns an array of all the <code>PropertyChangeListener</code>s added to this AbstractAction
+             * with addPropertyChangeListener().
              *
-             * @return {java.beans.PropertyChangeListener[]} all of the <code>PropertyChangeListener</code>s added or an empty
-             * array if no listeners have been added
+             * @return {java.beans.PropertyChangeListener[]} all of the <code>PropertyChangeListener</code>s added or an empty array if no listeners
+             * have been added
              * @since 1.4
              */
             AbstractAction.prototype.getPropertyChangeListeners = function () {
@@ -20009,9 +19312,8 @@ var javax;
                 return this.changeSupport.getPropertyChangeListeners$();
             };
             /**
-             * Clones the abstract action. This gives the clone its own copy of the
-             * key/value list, which is not handled for you by
-             * <code>Object.clone()</code>.
+             * Clones the abstract action. This gives the clone its own copy of the key/value list, which is
+             * not handled for you by <code>Object.clone()</code>.
              * @return {*}
              */
             AbstractAction.prototype.clone = function () {
@@ -20251,9 +19553,9 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Initializes value, extent, minimum and maximum. Adjusting is false.
-         * Throws an <code>IllegalArgumentException</code> if the following
-         * constraints aren't satisfied:
+         * Initializes value, extent, minimum and maximum. Adjusting is false. Throws an <code>
+         * IllegalArgumentException</code> if the following constraints aren't satisfied:
+         *
          * <pre>
          * min &lt;= value &lt;= value+extent &lt;= max
          * </pre>
@@ -20300,6 +19602,7 @@ var javax;
             }
             /**
              * Returns the model's current value.
+             *
              * @return {number} the model's current value
              * @see #setValue
              * @see BoundedRangeModel#getValue
@@ -20309,6 +19612,7 @@ var javax;
             };
             /**
              * Returns the model's extent.
+             *
              * @return {number} the model's extent
              * @see #setExtent
              * @see BoundedRangeModel#getExtent
@@ -20318,6 +19622,7 @@ var javax;
             };
             /**
              * Returns the model's minimum.
+             *
              * @return {number} the model's minimum
              * @see #setMinimum
              * @see BoundedRangeModel#getMinimum
@@ -20327,7 +19632,8 @@ var javax;
             };
             /**
              * Returns the model's maximum.
-             * @return  {number} the model's maximum
+             *
+             * @return {number} the model's maximum
              * @see #setMaximum
              * @see BoundedRangeModel#getMaximum
              */
@@ -20335,9 +19641,9 @@ var javax;
                 return this.max;
             };
             /**
-             * Sets the current value of the model. For a slider, that
-             * determines where the knob appears. Ensures that the new
-             * value, <I>n</I> falls within the model's constraints:
+             * Sets the current value of the model. For a slider, that determines where the knob appears.
+             * Ensures that the new value, <I>n</I> falls within the model's constraints:
+             *
              * <pre>
              * minimum &lt;= value &lt;= value+extent &lt;= maximum
              * </pre>
@@ -20354,12 +19660,13 @@ var javax;
                 this.setRangeProperties(newValue, this.extent, this.min, this.max, this.isAdjusting);
             };
             /**
-             * Sets the extent to <I>n</I> after ensuring that <I>n</I>
-             * is greater than or equal to zero and falls within the model's
-             * constraints:
+             * Sets the extent to <I>n</I> after ensuring that <I>n</I> is greater than or equal to zero and
+             * falls within the model's constraints:
+             *
              * <pre>
              * minimum &lt;= value &lt;= value+extent &lt;= maximum
              * </pre>
+             *
              * @see BoundedRangeModel#setExtent
              * @param {number} n
              */
@@ -20371,11 +19678,13 @@ var javax;
                 this.setRangeProperties(this.value, newExtent, this.min, this.max, this.isAdjusting);
             };
             /**
-             * Sets the minimum to <I>n</I> after ensuring that <I>n</I>
-             * that the other three properties obey the model's constraints:
+             * Sets the minimum to <I>n</I> after ensuring that <I>n</I> that the other three properties obey
+             * the model's constraints:
+             *
              * <pre>
              * minimum &lt;= value &lt;= value+extent &lt;= maximum
              * </pre>
+             *
              * @see #getMinimum
              * @see BoundedRangeModel#setMinimum
              * @param {number} n
@@ -20387,11 +19696,13 @@ var javax;
                 this.setRangeProperties(newValue, newExtent, n, newMax, this.isAdjusting);
             };
             /**
-             * Sets the maximum to <I>n</I> after ensuring that <I>n</I>
-             * that the other three properties obey the model's constraints:
+             * Sets the maximum to <I>n</I> after ensuring that <I>n</I> that the other three properties obey
+             * the model's constraints:
+             *
              * <pre>
              * minimum &lt;= value &lt;= value+extent &lt;= maximum
              * </pre>
+             *
              * @see BoundedRangeModel#setMaximum
              * @param {number} n
              */
@@ -20413,8 +19724,8 @@ var javax;
                 this.setRangeProperties(this.value, this.extent, this.min, this.max, b);
             };
             /**
-             * Returns true if the value is in the process of changing
-             * as a result of actions being taken by the user.
+             * Returns true if the value is in the process of changing as a result of actions being taken by
+             * the user.
              *
              * @return {boolean} the value of the <code>valueIsAdjusting</code> property
              * @see #setValue
@@ -20424,13 +19735,14 @@ var javax;
                 return this.isAdjusting;
             };
             /**
-             * Sets all of the <code>BoundedRangeModel</code> properties after forcing
-             * the arguments to obey the usual constraints:
+             * Sets all of the <code>BoundedRangeModel</code> properties after forcing the arguments to obey
+             * the usual constraints:
+             *
              * <pre>
              * minimum &lt;= value &lt;= value+extent &lt;= maximum
              * </pre>
-             * <p>
-             * At most, one <code>ChangeEvent</code> is generated.
+             *
+             * <p>At most, one <code>ChangeEvent</code> is generated.
              *
              * @see BoundedRangeModel#setRangeProperties
              * @see #setValue
@@ -20471,8 +19783,8 @@ var javax;
                 }
             };
             /**
-             * Adds a <code>ChangeListener</code>.  The change listeners are run each
-             * time any one of the Bounded Range model properties changes.
+             * Adds a <code>ChangeListener</code>. The change listeners are run each time any one of the
+             * Bounded Range model properties changes.
              *
              * @param {*} l the ChangeListener to add
              * @see #removeChangeListener
@@ -20492,16 +19804,13 @@ var javax;
                 this.listenerList.remove("javax.swing.event.ChangeListener", l);
             };
             /**
-             * Returns an array of all the change listeners
-             * registered on this <code>DefaultBoundedRangeModel</code>.
+             * Returns an array of all the change listeners registered on this <code>DefaultBoundedRangeModel
+             * </code>.
              *
-             * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s
-             * or an empty
-             * array if no change listeners are currently registered
-             *
+             * @return {javax.swing.event.ChangeListener[]} all of this model's <code>ChangeListener</code>s or an empty array if no change
+             * listeners are currently registered
              * @see #addChangeListener
              * @see #removeChangeListener
-             *
              * @since 1.4
              */
             DefaultBoundedRangeModel.prototype.getChangeListeners = function () {
@@ -20528,8 +19837,7 @@ var javax;
                 }
             };
             /**
-             * Returns a string that displays all of the
-             * <code>BoundedRangeModel</code> properties.
+             * Returns a string that displays all of the <code>BoundedRangeModel</code> properties.
              * @return {string}
              */
             DefaultBoundedRangeModel.prototype.toString = function () {
@@ -20537,38 +19845,25 @@ var javax;
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(this.constructor) + "[" + modelString + "]";
             };
             /**
-             * Returns an array of all the objects currently registered as
-             * <code><em>Foo</em>Listener</code>s
-             * upon this model.
-             * <code><em>Foo</em>Listener</code>s
-             * are registered using the <code>add<em>Foo</em>Listener</code> method.
-             * <p>
-             * You can specify the <code>listenerType</code> argument
-             * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-             * For example, you can query a <code>DefaultBoundedRangeModel</code>
-             * instance <code>m</code>
-             * for its change listeners
-             * with the following code:
+             * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
+             * upon this model. <code><em>Foo</em>Listener</code>s are registered using the <code>
+             * add<em>Foo</em>Listener</code> method.
+             *
+             * <p>You can specify the <code>listenerType</code> argument with a class literal, such as <code>
+             * <em>Foo</em>Listener.class</code>. For example, you can query a <code>DefaultBoundedRangeModel
+             * </code> instance <code>m</code> for its change listeners with the following code:
              *
              * <pre>ChangeListener[] cls = (ChangeListener[])(m.getListeners(ChangeListener.class));</pre>
              *
-             * If no such listeners exist,
-             * this method returns an empty array.
+             * If no such listeners exist, this method returns an empty array.
              *
-             * @param {java.lang.Class} listenerType  the type of listeners requested;
-             * this parameter should specify an interface
+             * @param {java.lang.Class} listenerType the type of listeners requested; this parameter should specify an interface
              * that descends from <code>java.util.EventListener</code>
-             * @return {T[]} an array of all objects registered as
-             * <code><em>Foo</em>Listener</code>s
-             * on this model,
-             * or an empty array if no such
-             * listeners have been added
-             * @exception ClassCastException if <code>listenerType</code> doesn't
-             * specify a class or interface that implements
-             * <code>java.util.EventListener</code>
-             *
+             * @return {T[]} an array of all objects registered as <code><em>Foo</em>Listener</code>s on this model,
+             * or an empty array if no such listeners have been added
+             * @exception ClassCastException if <code>listenerType</code> doesn't specify a class or interface
+             * that implements <code>java.util.EventListener</code>
              * @see #getChangeListeners
-             *
              * @since 1.3
              */
             DefaultBoundedRangeModel.prototype.getListeners = function (listenerType) {
@@ -20586,15 +19881,12 @@ var javax;
     (function (swing) {
         /**
          * Default data model for list selections.
-         * <p>
-         * <strong>Warning:</strong>
-         * Serialized objects of this class will not be compatible with
-         * future Swing releases. The current serialization support is
-         * appropriate for short term storage or RMI between applications running
-         * the same version of Swing.  As of 1.4, support for long term storage
-         * of all JavaBeans&trade;
-         * has been added to the <code>java.beans</code> package.
-         * Please see {@link java.beans.XMLEncoder}.
+         *
+         * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+         * Swing releases. The current serialization support is appropriate for short term storage or RMI
+         * between applications running the same version of Swing. As of 1.4, support for long term storage
+         * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+         * java.beans.XMLEncoder}.
          *
          * @author Philip Milne
          * @author Hans Muller
@@ -20650,6 +19942,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @throws IllegalArgumentException {@inheritDoc}
              * @param {number} selectionMode
              */
@@ -20694,16 +19987,13 @@ var javax;
                 this.listenerList.remove("javax.swing.event.ListSelectionListener", l);
             };
             /**
-             * Returns an array of all the list selection listeners
-             * registered on this <code>DefaultListSelectionModel</code>.
+             * Returns an array of all the list selection listeners registered on this <code>
+             * DefaultListSelectionModel</code>.
              *
-             * @return {javax.swing.event.ListSelectionListener[]} all of this model's <code>ListSelectionListener</code>s
-             * or an empty
-             * array if no list selection listeners are currently registered
-             *
+             * @return {javax.swing.event.ListSelectionListener[]} all of this model's <code>ListSelectionListener</code>s or an empty array if no list
+             * selection listeners are currently registered
              * @see #addListSelectionListener
              * @see #removeListSelectionListener
-             *
              * @since 1.4
              */
             DefaultListSelectionModel.prototype.getListSelectionListeners = function () {
@@ -20740,8 +20030,7 @@ var javax;
             /**
              * @param {number} firstIndex the first index in the interval
              * @param {number} lastIndex the last index in the interval
-             * @param {boolean} isAdjusting true if this is the final change in a series of
-             * adjustments
+             * @param {boolean} isAdjusting true if this is the final change in a series of adjustments
              * @see EventListenerList
              */
             DefaultListSelectionModel.prototype.fireValueChanged = function (firstIndex, lastIndex, isAdjusting) {
@@ -20775,38 +20064,27 @@ var javax;
                 this.fireValueChanged$int$int(oldFirstAdjustedIndex, oldLastAdjustedIndex);
             };
             /**
-             * Returns an array of all the objects currently registered as
-             * <code><em>Foo</em>Listener</code>s
-             * upon this model.
-             * <code><em>Foo</em>Listener</code>s
-             * are registered using the <code>add<em>Foo</em>Listener</code> method.
-             * <p>
-             * You can specify the <code>listenerType</code> argument
-             * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-             * For example, you can query a <code>DefaultListSelectionModel</code>
-             * instance <code>m</code>
-             * for its list selection listeners
-             * with the following code:
+             * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
+             * upon this model. <code><em>Foo</em>Listener</code>s are registered using the <code>
+             * add<em>Foo</em>Listener</code> method.
              *
-             * <pre>ListSelectionListener[] lsls = (ListSelectionListener[])(m.getListeners(ListSelectionListener.class));</pre>
+             * <p>You can specify the <code>listenerType</code> argument with a class literal, such as <code>
+             * <em>Foo</em>Listener.class</code>. For example, you can query a <code>DefaultListSelectionModel
+             * </code> instance <code>m</code> for its list selection listeners with the following code:
              *
-             * If no such listeners exist,
-             * this method returns an empty array.
+             * <pre>
+             * ListSelectionListener[] lsls = (ListSelectionListener[])(m.getListeners(ListSelectionListener.class));
+             * </pre>
              *
-             * @param {java.lang.Class} listenerType  the type of listeners requested;
-             * this parameter should specify an interface
+             * If no such listeners exist, this method returns an empty array.
+             *
+             * @param {java.lang.Class} listenerType the type of listeners requested; this parameter should specify an interface
              * that descends from <code>java.util.EventListener</code>
-             * @return {T[]} an array of all objects registered as
-             * <code><em>Foo</em>Listener</code>s
-             * on this model,
-             * or an empty array if no such
-             * listeners have been added
-             * @exception ClassCastException if <code>listenerType</code> doesn't
-             * specify a class or interface that implements
-             * <code>java.util.EventListener</code>
-             *
+             * @return {T[]} an array of all objects registered as <code><em>Foo</em>Listener</code>s on this model,
+             * or an empty array if no such listeners have been added
+             * @exception ClassCastException if <code>listenerType</code> doesn't specify a class or interface
+             * that implements <code>java.util.EventListener</code>
              * @see #getListSelectionListeners
-             *
              * @since 1.3
              */
             DefaultListSelectionModel.prototype.getListeners = function (listenerType) {
@@ -20861,29 +20139,27 @@ var javax;
             };
             /**
              * Sets the value of the leadAnchorNotificationEnabled flag.
-             * @see             #isLeadAnchorNotificationEnabled()
+             *
+             * @see #isLeadAnchorNotificationEnabled()
              * @param {boolean} flag
              */
             DefaultListSelectionModel.prototype.setLeadAnchorNotificationEnabled = function (flag) {
                 this.leadAnchorNotificationEnabled = flag;
             };
             /**
-             * Returns the value of the <code>leadAnchorNotificationEnabled</code> flag.
-             * When <code>leadAnchorNotificationEnabled</code> is true the model
-             * generates notification events with bounds that cover all the changes to
-             * the selection plus the changes to the lead and anchor indices.
-             * Setting the flag to false causes a narrowing of the event's bounds to
-             * include only the elements that have been selected or deselected since
-             * the last change. Either way, the model continues to maintain the lead
-             * and anchor variables internally. The default is true.
-             * <p>
-             * Note: It is possible for the lead or anchor to be changed without a
-             * change to the selection. Notification of these changes is often
-             * important, such as when the new lead or anchor needs to be updated in
-             * the view. Therefore, caution is urged when changing the default value.
+             * Returns the value of the <code>leadAnchorNotificationEnabled</code> flag. When <code>
+             * leadAnchorNotificationEnabled</code> is true the model generates notification events with
+             * bounds that cover all the changes to the selection plus the changes to the lead and anchor
+             * indices. Setting the flag to false causes a narrowing of the event's bounds to include only the
+             * elements that have been selected or deselected since the last change. Either way, the model
+             * continues to maintain the lead and anchor variables internally. The default is true.
              *
-             * @return  {boolean} the value of the <code>leadAnchorNotificationEnabled</code> flag
-             * @see             #setLeadAnchorNotificationEnabled(boolean)
+             * <p>Note: It is possible for the lead or anchor to be changed without a change to the selection.
+             * Notification of these changes is often important, such as when the new lead or anchor needs to
+             * be updated in the view. Therefore, caution is urged when changing the default value.
+             *
+             * @return {boolean} the value of the <code>leadAnchorNotificationEnabled</code> flag
+             * @see #setLeadAnchorNotificationEnabled(boolean)
              */
             DefaultListSelectionModel.prototype.isLeadAnchorNotificationEnabled = function () {
                 return this.leadAnchorNotificationEnabled;
@@ -20949,24 +20225,22 @@ var javax;
                 this.removeSelectionIntervalImpl(this.minIndex, this.maxIndex, false);
             };
             /**
-             * Changes the selection to be between {@code index0} and {@code index1}
-             * inclusive. {@code index0} doesn't have to be less than or equal to
-             * {@code index1}.
-             * <p>
-             * In {@code SINGLE_SELECTION} selection mode, only the second index
-             * is used.
-             * <p>
-             * If this represents a change to the current selection, then each
-             * {@code ListSelectionListener} is notified of the change.
-             * <p>
-             * If either index is {@code -1}, this method does nothing and returns
-             * without exception. Otherwise, if either index is less than {@code -1},
-             * an {@code IndexOutOfBoundsException} is thrown.
+             * Changes the selection to be between {@code index0} and {@code index1} inclusive. {@code index0}
+             * doesn't have to be less than or equal to {@code index1}.
+             *
+             * <p>In {@code SINGLE_SELECTION} selection mode, only the second index is used.
+             *
+             * <p>If this represents a change to the current selection, then each {@code
+             * ListSelectionListener} is notified of the change.
+             *
+             * <p>If either index is {@code -1}, this method does nothing and returns without exception.
+             * Otherwise, if either index is less than {@code -1}, an {@code IndexOutOfBoundsException} is
+             * thrown.
              *
              * @param {number} index0 one end of the interval.
              * @param {number} index1 other end of the interval
-             * @throws IndexOutOfBoundsException if either index is less than {@code -1}
-             * (and neither index is {@code -1})
+             * @throws IndexOutOfBoundsException if either index is less than {@code -1} (and neither index is
+             * {@code -1})
              * @see #addListSelectionListener
              */
             DefaultListSelectionModel.prototype.setSelectionInterval = function (index0, index1) {
@@ -20984,28 +20258,27 @@ var javax;
                 this.changeSelection$int$int$int$int(clearMin, clearMax, setMin, setMax);
             };
             /**
-             * Changes the selection to be the set union of the current selection
-             * and the indices between {@code index0} and {@code index1} inclusive.
-             * <p>
-             * In {@code SINGLE_SELECTION} selection mode, this is equivalent
-             * to calling {@code setSelectionInterval}, and only the second index
-             * is used. In {@code SINGLE_INTERVAL_SELECTION} selection mode, this
-             * method behaves like {@code setSelectionInterval}, unless the given
-             * interval is immediately adjacent to or overlaps the existing selection,
-             * and can therefore be used to grow it.
-             * <p>
-             * If this represents a change to the current selection, then each
-             * {@code ListSelectionListener} is notified of the change. Note that
-             * {@code index0} doesn't have to be less than or equal to {@code index1}.
-             * <p>
-             * If either index is {@code -1}, this method does nothing and returns
-             * without exception. Otherwise, if either index is less than {@code -1},
-             * an {@code IndexOutOfBoundsException} is thrown.
+             * Changes the selection to be the set union of the current selection and the indices between
+             * {@code index0} and {@code index1} inclusive.
+             *
+             * <p>In {@code SINGLE_SELECTION} selection mode, this is equivalent to calling {@code
+             * setSelectionInterval}, and only the second index is used. In {@code SINGLE_INTERVAL_SELECTION}
+             * selection mode, this method behaves like {@code setSelectionInterval}, unless the given
+             * interval is immediately adjacent to or overlaps the existing selection, and can therefore be
+             * used to grow it.
+             *
+             * <p>If this represents a change to the current selection, then each {@code
+             * ListSelectionListener} is notified of the change. Note that {@code index0} doesn't have to be
+             * less than or equal to {@code index1}.
+             *
+             * <p>If either index is {@code -1}, this method does nothing and returns without exception.
+             * Otherwise, if either index is less than {@code -1}, an {@code IndexOutOfBoundsException} is
+             * thrown.
              *
              * @param {number} index0 one end of the interval.
              * @param {number} index1 other end of the interval
-             * @throws IndexOutOfBoundsException if either index is less than {@code -1}
-             * (and neither index is {@code -1})
+             * @throws IndexOutOfBoundsException if either index is less than {@code -1} (and neither index is
+             * {@code -1})
              * @see #addListSelectionListener
              * @see #setSelectionInterval
              */
@@ -21029,27 +20302,26 @@ var javax;
                 this.changeSelection$int$int$int$int(clearMin, clearMax, setMin, setMax);
             };
             /**
-             * Changes the selection to be the set difference of the current selection
-             * and the indices between {@code index0} and {@code index1} inclusive.
-             * {@code index0} doesn't have to be less than or equal to {@code index1}.
-             * <p>
-             * In {@code SINGLE_INTERVAL_SELECTION} selection mode, if the removal
-             * would produce two disjoint selections, the removal is extended through
-             * the greater end of the selection. For example, if the selection is
-             * {@code 0-10} and you supply indices {@code 5,6} (in any order) the
+             * Changes the selection to be the set difference of the current selection and the indices between
+             * {@code index0} and {@code index1} inclusive. {@code index0} doesn't have to be less than or
+             * equal to {@code index1}.
+             *
+             * <p>In {@code SINGLE_INTERVAL_SELECTION} selection mode, if the removal would produce two
+             * disjoint selections, the removal is extended through the greater end of the selection. For
+             * example, if the selection is {@code 0-10} and you supply indices {@code 5,6} (in any order) the
              * resulting selection is {@code 0-4}.
-             * <p>
-             * If this represents a change to the current selection, then each
-             * {@code ListSelectionListener} is notified of the change.
-             * <p>
-             * If either index is {@code -1}, this method does nothing and returns
-             * without exception. Otherwise, if either index is less than {@code -1},
-             * an {@code IndexOutOfBoundsException} is thrown.
+             *
+             * <p>If this represents a change to the current selection, then each {@code
+             * ListSelectionListener} is notified of the change.
+             *
+             * <p>If either index is {@code -1}, this method does nothing and returns without exception.
+             * Otherwise, if either index is less than {@code -1}, an {@code IndexOutOfBoundsException} is
+             * thrown.
              *
              * @param {number} index0 one end of the interval
              * @param {number} index1 other end of the interval
-             * @throws IndexOutOfBoundsException if either index is less than {@code -1}
-             * (and neither index is {@code -1})
+             * @throws IndexOutOfBoundsException if either index is less than {@code -1} (and neither index is
+             * {@code -1})
              * @see #addListSelectionListener
              */
             DefaultListSelectionModel.prototype.removeSelectionInterval = function (index0, index1) {
@@ -21080,12 +20352,10 @@ var javax;
                 }
             };
             /**
-             * Insert length indices beginning before/after index. If the value
-             * at index is itself selected and the selection mode is not
-             * SINGLE_SELECTION, set all of the newly inserted items as selected.
-             * Otherwise leave them unselected. This method is typically
-             * called to sync the selection model with a corresponding change
-             * in the data model.
+             * Insert length indices beginning before/after index. If the value at index is itself selected
+             * and the selection mode is not SINGLE_SELECTION, set all of the newly inserted items as
+             * selected. Otherwise leave them unselected. This method is typically called to sync the
+             * selection model with a corresponding change in the data model.
              * @param {number} index
              * @param {number} length
              * @param {boolean} before
@@ -21120,10 +20390,9 @@ var javax;
                 this.fireValueChanged$();
             };
             /**
-             * Remove the indices in the interval index0,index1 (inclusive) from
-             * the selection model.  This is typically called to sync the selection
-             * model width a corresponding change in the data model.  Note
-             * that (as always) index0 need not be &lt;= index1.
+             * Remove the indices in the interval index0,index1 (inclusive) from the selection model. This is
+             * typically called to sync the selection model width a corresponding change in the data model.
+             * Note that (as always) index0 need not be &lt;= index1.
              * @param {number} index0
              * @param {number} index1
              */
@@ -21171,8 +20440,7 @@ var javax;
                 }
             };
             /**
-             * Returns a string that displays and identifies this
-             * object's properties.
+             * Returns a string that displays and identifies this object's properties.
              *
              * @return {string} a <code>String</code> representation of this object
              */
@@ -21186,12 +20454,11 @@ var javax;
                 } })(this)) + " " + s;
             };
             /**
-             * Returns a clone of this selection model with the same selection.
-             * <code>listenerLists</code> are not duplicated.
+             * Returns a clone of this selection model with the same selection. <code>listenerLists</code> are
+             * not duplicated.
              *
-             * @exception CloneNotSupportedException if the selection model does not
-             * both (a) implement the Cloneable interface and (b) define a
-             * <code>clone</code> method.
+             * @exception CloneNotSupportedException if the selection model does not both (a) implement the
+             * Cloneable interface and (b) define a <code>clone</code> method.
              * @return {*}
              */
             DefaultListSelectionModel.prototype.clone = function () {
@@ -21228,9 +20495,9 @@ var javax;
                 return this.leadIndex;
             };
             /**
-             * Set the anchor selection index, leaving all selection values unchanged.
-             * If leadAnchorNotificationEnabled is true, send a notification covering
-             * the old and new anchor cells.
+             * Set the anchor selection index, leaving all selection values unchanged. If
+             * leadAnchorNotificationEnabled is true, send a notification covering the old and new anchor
+             * cells.
              *
              * @see #getAnchorSelectionIndex
              * @see #setLeadSelectionIndex
@@ -21241,16 +20508,13 @@ var javax;
                 this.fireValueChanged$();
             };
             /**
-             * Set the lead selection index, leaving all selection values unchanged.
-             * If leadAnchorNotificationEnabled is true, send a notification covering
-             * the old and new lead cells.
+             * Set the lead selection index, leaving all selection values unchanged. If
+             * leadAnchorNotificationEnabled is true, send a notification covering the old and new lead cells.
              *
              * @param {number} leadIndex the new lead selection index
-             *
              * @see #setAnchorSelectionIndex
              * @see #setLeadSelectionIndex
              * @see #getLeadSelectionIndex
-             *
              * @since 1.5
              */
             DefaultListSelectionModel.prototype.moveLeadSelectionIndex = function (leadIndex) {
@@ -21263,29 +20527,25 @@ var javax;
                 this.fireValueChanged$();
             };
             /**
-             * Sets the lead selection index, ensuring that values between the
-             * anchor and the new lead are either all selected or all deselected.
-             * If the value at the anchor index is selected, first clear all the
-             * values in the range [anchor, oldLeadIndex], then select all the values
-             * values in the range [anchor, newLeadIndex], where oldLeadIndex is the old
-             * leadIndex and newLeadIndex is the new one.
-             * <p>
-             * If the value at the anchor index is not selected, do the same thing in
-             * reverse selecting values in the old range and deselecting values in the
-             * new one.
-             * <p>
-             * Generate a single event for this change and notify all listeners.
-             * For the purposes of generating minimal bounds in this event, do the
-             * operation in a single pass; that way the first and last index inside the
-             * ListSelectionEvent that is broadcast will refer to cells that actually
-             * changed value because of this method. If, instead, this operation were
-             * done in two steps the effect on the selection state would be the same
-             * but two events would be generated and the bounds around the changed
-             * values would be wider, including cells that had been first cleared only
-             * to later be set.
-             * <p>
-             * This method can be used in the <code>mouseDragged</code> method
-             * of a UI class to extend a selection.
+             * Sets the lead selection index, ensuring that values between the anchor and the new lead are
+             * either all selected or all deselected. If the value at the anchor index is selected, first
+             * clear all the values in the range [anchor, oldLeadIndex], then select all the values values in
+             * the range [anchor, newLeadIndex], where oldLeadIndex is the old leadIndex and newLeadIndex is
+             * the new one.
+             *
+             * <p>If the value at the anchor index is not selected, do the same thing in reverse selecting
+             * values in the old range and deselecting values in the new one.
+             *
+             * <p>Generate a single event for this change and notify all listeners. For the purposes of
+             * generating minimal bounds in this event, do the operation in a single pass; that way the first
+             * and last index inside the ListSelectionEvent that is broadcast will refer to cells that
+             * actually changed value because of this method. If, instead, this operation were done in two
+             * steps the effect on the selection state would be the same but two events would be generated and
+             * the bounds around the changed values would be wider, including cells that had been first
+             * cleared only to later be set.
+             *
+             * <p>This method can be used in the <code>mouseDragged</code> method of a UI class to extend a
+             * selection.
              *
              * @see #getLeadSelectionIndex
              * @see #setAnchorSelectionIndex
@@ -21337,22 +20597,20 @@ var javax;
         var ListSelectionModel;
         (function (ListSelectionModel) {
             /**
-             * A value for the selectionMode property: select one list index
-             * at a time.
+             * A value for the selectionMode property: select one list index at a time.
              *
              * @see #setSelectionMode
              */
             ListSelectionModel.SINGLE_SELECTION = 0;
             /**
-             * A value for the selectionMode property: select one contiguous
-             * range of indices at a time.
+             * A value for the selectionMode property: select one contiguous range of indices at a time.
              *
              * @see #setSelectionMode
              */
             ListSelectionModel.SINGLE_INTERVAL_SELECTION = 1;
             /**
-             * A value for the selectionMode property: select one or more
-             * contiguous ranges of indices at a time.
+             * A value for the selectionMode property: select one or more contiguous ranges of indices at a
+             * time.
              *
              * @see #setSelectionMode
              */
@@ -21364,21 +20622,17 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * A package-private PropertyChangeListener which listens for property changes
-         * on an Action and updates the properties of an ActionEvent source.
-         * <p>
-         * Subclasses must override the actionPropertyChanged method, which is invoked
-         * from the propertyChange method as long as the target is still valid.
-         * </p>
-         * <p>
-         * WARNING WARNING WARNING WARNING WARNING WARNING:<br>
-         * Do NOT create an annonymous inner class that extends this! If you do a strong
-         * reference will be held to the containing class, which in most cases defeats
-         * the purpose of this class.
+         * A package-private PropertyChangeListener which listens for property changes on an Action and
+         * updates the properties of an ActionEvent source.
          *
-         * @param T
-         * the type of JComponent the underlying Action is attached to
+         * <p>Subclasses must override the actionPropertyChanged method, which is invoked from the
+         * propertyChange method as long as the target is still valid.
          *
+         * <p>WARNING WARNING WARNING WARNING WARNING WARNING:<br>
+         * Do NOT create an annonymous inner class that extends this! If you do a strong reference will be
+         * held to the containing class, which in most cases defeats the purpose of this class.
+         *
+         * @param T the type of JComponent the underlying Action is attached to
          * @author Georges Saab
          * @see AbstractButton
          * @param {javax.swing.JComponent} c
@@ -21425,8 +20679,8 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Drop modes, used to determine the method by which a component
-         * tracks and indicates a drop location during drag and drop.
+         * Drop modes, used to determine the method by which a component tracks and indicates a drop
+         * location during drag and drop.
          *
          * @author Shannon Hickey
          * @see JTable#setDropMode
@@ -21436,103 +20690,85 @@ var javax;
          * @since 1.6
          * @enum
          * @property {javax.swing.DropMode} USE_SELECTION
-         * A component's own internal selection mechanism (or caret for text
-         * components) should be used to track the drop location.
+         * A component's own internal selection mechanism (or caret for text components) should be used to
+         * track the drop location.
          * @property {javax.swing.DropMode} ON
-         * The drop location should be tracked in terms of the index of
-         * existing items. Useful for dropping on items in tables, lists,
-         * and trees.
+         * The drop location should be tracked in terms of the index of existing items. Useful for
+         * dropping on items in tables, lists, and trees.
          * @property {javax.swing.DropMode} INSERT
-         * The drop location should be tracked in terms of the position
-         * where new data should be inserted. For components that manage
-         * a list of items (list and tree for example), the drop location
-         * should indicate the index where new data should be inserted.
-         * For text components the location should represent a position
-         * between characters. For components that manage tabular data
-         * (table for example), the drop location should indicate
-         * where to insert new rows, columns, or both, to accommodate
-         * the dropped data.
+         * The drop location should be tracked in terms of the position where new data should be inserted.
+         * For components that manage a list of items (list and tree for example), the drop location
+         * should indicate the index where new data should be inserted. For text components the location
+         * should represent a position between characters. For components that manage tabular data (table
+         * for example), the drop location should indicate where to insert new rows, columns, or both, to
+         * accommodate the dropped data.
          * @property {javax.swing.DropMode} INSERT_ROWS
-         * The drop location should be tracked in terms of the row index
-         * where new rows should be inserted to accommodate the dropped
-         * data. This is useful for components that manage tabular data.
+         * The drop location should be tracked in terms of the row index where new rows should be inserted
+         * to accommodate the dropped data. This is useful for components that manage tabular data.
          * @property {javax.swing.DropMode} INSERT_COLS
-         * The drop location should be tracked in terms of the column index
-         * where new columns should be inserted to accommodate the dropped
-         * data. This is useful for components that manage tabular data.
+         * The drop location should be tracked in terms of the column index where new columns should be
+         * inserted to accommodate the dropped data. This is useful for components that manage tabular
+         * data.
          * @property {javax.swing.DropMode} ON_OR_INSERT
-         * This mode is a combination of <code>ON</code>
-         * and <code>INSERT</code>, specifying that data can be
-         * dropped on existing items, or in insert locations
-         * as specified by <code>INSERT</code>.
+         * This mode is a combination of <code>ON</code> and <code>INSERT</code>, specifying that data can
+         * be dropped on existing items, or in insert locations as specified by <code>INSERT</code>.
          * @property {javax.swing.DropMode} ON_OR_INSERT_ROWS
-         * This mode is a combination of <code>ON</code>
-         * and <code>INSERT_ROWS</code>, specifying that data can be
-         * dropped on existing items, or as insert rows
-         * as specified by <code>INSERT_ROWS</code>.
+         * This mode is a combination of <code>ON</code> and <code>INSERT_ROWS</code>, specifying that
+         * data can be dropped on existing items, or as insert rows as specified by <code>INSERT_ROWS
+         * </code>.
          * @property {javax.swing.DropMode} ON_OR_INSERT_COLS
-         * This mode is a combination of <code>ON</code>
-         * and <code>INSERT_COLS</code>, specifying that data can be
-         * dropped on existing items, or as insert columns
-         * as specified by <code>INSERT_COLS</code>.
+         * This mode is a combination of <code>ON</code> and <code>INSERT_COLS</code>, specifying that
+         * data can be dropped on existing items, or as insert columns as specified by <code>INSERT_COLS
+         * </code>.
          * @class
          */
         var DropMode;
         (function (DropMode) {
             /**
-             * A component's own internal selection mechanism (or caret for text
-             * components) should be used to track the drop location.
+             * A component's own internal selection mechanism (or caret for text components) should be used to
+             * track the drop location.
              */
             DropMode[DropMode["USE_SELECTION"] = 0] = "USE_SELECTION";
             /**
-             * The drop location should be tracked in terms of the index of
-             * existing items. Useful for dropping on items in tables, lists,
-             * and trees.
+             * The drop location should be tracked in terms of the index of existing items. Useful for
+             * dropping on items in tables, lists, and trees.
              */
             DropMode[DropMode["ON"] = 1] = "ON";
             /**
-             * The drop location should be tracked in terms of the position
-             * where new data should be inserted. For components that manage
-             * a list of items (list and tree for example), the drop location
-             * should indicate the index where new data should be inserted.
-             * For text components the location should represent a position
-             * between characters. For components that manage tabular data
-             * (table for example), the drop location should indicate
-             * where to insert new rows, columns, or both, to accommodate
-             * the dropped data.
+             * The drop location should be tracked in terms of the position where new data should be inserted.
+             * For components that manage a list of items (list and tree for example), the drop location
+             * should indicate the index where new data should be inserted. For text components the location
+             * should represent a position between characters. For components that manage tabular data (table
+             * for example), the drop location should indicate where to insert new rows, columns, or both, to
+             * accommodate the dropped data.
              */
             DropMode[DropMode["INSERT"] = 2] = "INSERT";
             /**
-             * The drop location should be tracked in terms of the row index
-             * where new rows should be inserted to accommodate the dropped
-             * data. This is useful for components that manage tabular data.
+             * The drop location should be tracked in terms of the row index where new rows should be inserted
+             * to accommodate the dropped data. This is useful for components that manage tabular data.
              */
             DropMode[DropMode["INSERT_ROWS"] = 3] = "INSERT_ROWS";
             /**
-             * The drop location should be tracked in terms of the column index
-             * where new columns should be inserted to accommodate the dropped
-             * data. This is useful for components that manage tabular data.
+             * The drop location should be tracked in terms of the column index where new columns should be
+             * inserted to accommodate the dropped data. This is useful for components that manage tabular
+             * data.
              */
             DropMode[DropMode["INSERT_COLS"] = 4] = "INSERT_COLS";
             /**
-             * This mode is a combination of <code>ON</code>
-             * and <code>INSERT</code>, specifying that data can be
-             * dropped on existing items, or in insert locations
-             * as specified by <code>INSERT</code>.
+             * This mode is a combination of <code>ON</code> and <code>INSERT</code>, specifying that data can
+             * be dropped on existing items, or in insert locations as specified by <code>INSERT</code>.
              */
             DropMode[DropMode["ON_OR_INSERT"] = 5] = "ON_OR_INSERT";
             /**
-             * This mode is a combination of <code>ON</code>
-             * and <code>INSERT_ROWS</code>, specifying that data can be
-             * dropped on existing items, or as insert rows
-             * as specified by <code>INSERT_ROWS</code>.
+             * This mode is a combination of <code>ON</code> and <code>INSERT_ROWS</code>, specifying that
+             * data can be dropped on existing items, or as insert rows as specified by <code>INSERT_ROWS
+             * </code>.
              */
             DropMode[DropMode["ON_OR_INSERT_ROWS"] = 6] = "ON_OR_INSERT_ROWS";
             /**
-             * This mode is a combination of <code>ON</code>
-             * and <code>INSERT_COLS</code>, specifying that data can be
-             * dropped on existing items, or as insert columns
-             * as specified by <code>INSERT_COLS</code>.
+             * This mode is a combination of <code>ON</code> and <code>INSERT_COLS</code>, specifying that
+             * data can be dropped on existing items, or as insert columns as specified by <code>INSERT_COLS
+             * </code>.
              */
             DropMode[DropMode["ON_OR_INSERT_COLS"] = 7] = "ON_OR_INSERT_COLS";
         })(DropMode = swing.DropMode || (swing.DropMode = {}));
@@ -21618,9 +20854,8 @@ var javax;
         var SwingConstants;
         (function (SwingConstants) {
             /**
-             * The central position in an area. Used for
-             * both compass-direction constants (NORTH, etc.)
-             * and box-orientation constants (TOP, etc.).
+             * The central position in an area. Used for both compass-direction constants (NORTH, etc.) and
+             * box-orientation constants (TOP, etc.).
              */
             SwingConstants.CENTER = 0;
             /**
@@ -21680,13 +20915,13 @@ var javax;
              */
             SwingConstants.VERTICAL = 1;
             /**
-             * Identifies the leading edge of text for use with left-to-right
-             * and right-to-left languages. Used by buttons and labels.
+             * Identifies the leading edge of text for use with left-to-right and right-to-left languages.
+             * Used by buttons and labels.
              */
             SwingConstants.LEADING = 10;
             /**
-             * Identifies the trailing edge of text for use with left-to-right
-             * and right-to-left languages. Used by buttons and labels.
+             * Identifies the trailing edge of text for use with left-to-right and right-to-left languages.
+             * Used by buttons and labels.
              */
             SwingConstants.TRAILING = 11;
             /**
@@ -21741,7 +20976,7 @@ var javax;
         /**
          * An example implementation of SpinnerModel that defines a sequence of numbers.
          *
-         * TODO: AI Implemented Stub. Finish
+         * <p>TODO: AI Implemented Stub. Finish
          * @param {number} value
          * @param {number} minimum
          * @param {number} maximum
@@ -21874,20 +21109,15 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * The abstract definition for the data model that provides
-         * a <code>List</code> with its contents.
-         * <p>
-         * <strong>Warning:</strong>
-         * Serialized objects of this class will not be compatible with
-         * future Swing releases. The current serialization support is
-         * appropriate for short term storage or RMI between applications running
-         * the same version of Swing.  As of 1.4, support for long term storage
-         * of all JavaBeans&trade;
-         * has been added to the <code>java.beans</code> package.
-         * Please see {@link java.beans.XMLEncoder}.
+         * The abstract definition for the data model that provides a <code>List</code> with its contents.
+         *
+         * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+         * Swing releases. The current serialization support is appropriate for short term storage or RMI
+         * between applications running the same version of Swing. As of 1.4, support for long term storage
+         * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+         * java.beans.XMLEncoder}.
          *
          * @param <E> the type of the elements of this model
-         *
          * @author Hans Muller
          * @class
          */
@@ -21896,8 +21126,7 @@ var javax;
                 this.listenerList = new javax.swing.event.EventListenerList();
             }
             /**
-             * Adds a listener to the list that's notified each time a change
-             * to the data model occurs.
+             * Adds a listener to the list that's notified each time a change to the data model occurs.
              *
              * @param {*} l the <code>ListDataListener</code> to be added
              */
@@ -21905,8 +21134,7 @@ var javax;
                 this.listenerList.add("javax.swing.event.ListDataListener", l);
             };
             /**
-             * Removes a listener from the list that's notified each time a
-             * change to the data model occurs.
+             * Removes a listener from the list that's notified each time a change to the data model occurs.
              *
              * @param {*} l the <code>ListDataListener</code> to be removed
              */
@@ -21914,28 +21142,23 @@ var javax;
                 this.listenerList.remove("javax.swing.event.ListDataListener", l);
             };
             /**
-             * Returns an array of all the list data listeners
-             * registered on this <code>AbstractListModel</code>.
+             * Returns an array of all the list data listeners registered on this <code>AbstractListModel
+             * </code>.
              *
-             * @return {javax.swing.event.ListDataListener[]} all of this model's <code>ListDataListener</code>s,
-             * or an empty array if no list data listeners
-             * are currently registered
-             *
+             * @return {javax.swing.event.ListDataListener[]} all of this model's <code>ListDataListener</code>s, or an empty array if no list data
+             * listeners are currently registered
              * @see #addListDataListener
              * @see #removeListDataListener
-             *
              * @since 1.4
              */
             AbstractListModel.prototype.getListDataListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.ListDataListener");
             };
             /**
-             * <code>AbstractListModel</code> subclasses must call this method
-             * <b>after</b>
-             * one or more elements of the list change.  The changed elements
-             * are specified by the closed interval index0, index1 -- the endpoints
-             * are included.  Note that
-             * index0 need not be less than or equal to index1.
+             * <code>AbstractListModel</code> subclasses must call this method <b>after</b> one or more
+             * elements of the list change. The changed elements are specified by the closed interval index0,
+             * index1 -- the endpoints are included. Note that index0 need not be less than or equal to
+             * index1.
              *
              * @param {*} source the <code>ListModel</code> that changed, typically "this"
              * @param {number} index0 one end of the new interval
@@ -21959,12 +21182,9 @@ var javax;
                 }
             };
             /**
-             * <code>AbstractListModel</code> subclasses must call this method
-             * <b>after</b>
-             * one or more elements are added to the model.  The new elements
-             * are specified by a closed interval index0, index1 -- the enpoints
-             * are included.  Note that
-             * index0 need not be less than or equal to index1.
+             * <code>AbstractListModel</code> subclasses must call this method <b>after</b> one or more
+             * elements are added to the model. The new elements are specified by a closed interval index0,
+             * index1 -- the enpoints are included. Note that index0 need not be less than or equal to index1.
              *
              * @param {*} source the <code>ListModel</code> that changed, typically "this"
              * @param {number} index0 one end of the new interval
@@ -21988,17 +21208,14 @@ var javax;
                 }
             };
             /**
-             * <code>AbstractListModel</code> subclasses must call this method
-             * <b>after</b> one or more elements are removed from the model.
-             * <code>index0</code> and <code>index1</code> are the end points
-             * of the interval that's been removed.  Note that <code>index0</code>
-             * need not be less than or equal to <code>index1</code>.
+             * <code>AbstractListModel</code> subclasses must call this method <b>after</b> one or more
+             * elements are removed from the model. <code>index0</code> and <code>index1</code> are the end
+             * points of the interval that's been removed. Note that <code>index0</code> need not be less than
+             * or equal to <code>index1</code>.
              *
              * @param {*} source the <code>ListModel</code> that changed, typically "this"
-             * @param {number} index0 one end of the removed interval,
-             * including <code>index0</code>
-             * @param {number} index1 the other end of the removed interval,
-             * including <code>index1</code>
+             * @param {number} index0 one end of the removed interval, including <code>index0</code>
+             * @param {number} index1 the other end of the removed interval, including <code>index1</code>
              * @see EventListenerList
              * @see DefaultListModel
              */
@@ -22018,38 +21235,26 @@ var javax;
                 }
             };
             /**
-             * Returns an array of all the objects currently registered as
-             * <code><em>Foo</em>Listener</code>s
-             * upon this model.
-             * <code><em>Foo</em>Listener</code>s
-             * are registered using the <code>add<em>Foo</em>Listener</code> method.
-             * <p>
-             * You can specify the <code>listenerType</code> argument
-             * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-             * For example, you can query a list model
-             * <code>m</code>
-             * for its list data listeners
-             * with the following code:
+             * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
+             * upon this model. <code><em>Foo</em>Listener</code>s are registered using the <code>
+             * add<em>Foo</em>Listener</code> method.
              *
-             * <pre>ListDataListener[] ldls = (ListDataListener[])(m.getListeners(ListDataListener.class));</pre>
+             * <p>You can specify the <code>listenerType</code> argument with a class literal, such as <code>
+             * <em>Foo</em>Listener.class</code>. For example, you can query a list model <code>m</code> for
+             * its list data listeners with the following code:
              *
-             * If no such listeners exist,
-             * this method returns an empty array.
+             * <pre>ListDataListener[] ldls = (ListDataListener[])(m.getListeners(ListDataListener.class));
+             * </pre>
              *
-             * @param {java.lang.Class} listenerType  the type of listeners requested;
-             * this parameter should specify an interface
+             * If no such listeners exist, this method returns an empty array.
+             *
+             * @param {java.lang.Class} listenerType the type of listeners requested; this parameter should specify an interface
              * that descends from <code>java.util.EventListener</code>
-             * @return {T[]} an array of all objects registered as
-             * <code><em>Foo</em>Listener</code>s
-             * on this model,
-             * or an empty array if no such
-             * listeners have been added
-             * @exception ClassCastException if <code>listenerType</code> doesn't
-             * specify a class or interface that implements
-             * <code>java.util.EventListener</code>
-             *
+             * @return {T[]} an array of all objects registered as <code><em>Foo</em>Listener</code>s on this model,
+             * or an empty array if no such listeners have been added
+             * @exception ClassCastException if <code>listenerType</code> doesn't specify a class or interface
+             * that implements <code>java.util.EventListener</code>
              * @see #getListDataListeners
-             *
              * @since 1.3
              */
             AbstractListModel.prototype.getListeners = function (listenerType) {
@@ -22070,8 +21275,7 @@ var javax;
             /**
              * Constructs an <code>UndoableEditSupport</code> object.
              *
-             * @param {*} r
-             * an <code>Object</code>
+             * @param {*} r an <code>Object</code>
              * @class
              * @author Ray Ryan
              */
@@ -22099,7 +21303,7 @@ var javax;
                     else if (r === undefined) {
                         var __args = arguments;
                         {
-                            var __args_21 = arguments;
+                            var __args_22 = arguments;
                             var r_3 = null;
                             if (this.updateLevel === undefined) {
                                 this.updateLevel = 0;
@@ -22135,11 +21339,10 @@ var javax;
                         throw new Error('invalid overload');
                 }
                 /**
-                 * Registers an <code>UndoableEditListener</code>. The listener is notified
-                 * whenever an edit occurs which can be undone.
+                 * Registers an <code>UndoableEditListener</code>. The listener is notified whenever an edit
+                 * occurs which can be undone.
                  *
-                 * @param {*} l
-                 * an <code>UndoableEditListener</code> object
+                 * @param {*} l an <code>UndoableEditListener</code> object
                  * @see #removeUndoableEditListener
                  */
                 UndoableEditSupport.prototype.addUndoableEditListener = function (l) {
@@ -22148,28 +21351,27 @@ var javax;
                 /**
                  * Removes an <code>UndoableEditListener</code>.
                  *
-                 * @param {*} l
-                 * the <code>UndoableEditListener</code> object to be removed
+                 * @param {*} l the <code>UndoableEditListener</code> object to be removed
                  * @see #addUndoableEditListener
                  */
                 UndoableEditSupport.prototype.removeUndoableEditListener = function (l) {
                     this.listeners.removeElement(l);
                 };
                 /**
-                 * Returns an array of all the <code>UndoableEditListener</code>s added to
-                 * this UndoableEditSupport with addUndoableEditListener().
+                 * Returns an array of all the <code>UndoableEditListener</code>s added to this
+                 * UndoableEditSupport with addUndoableEditListener().
                  *
-                 * @return {javax.swing.event.UndoableEditListener[]} all of the <code>UndoableEditListener</code>s added or an empty
-                 * array if no listeners have been added
+                 * @return {javax.swing.event.UndoableEditListener[]} all of the <code>UndoableEditListener</code>s added or an empty array if no listeners
+                 * have been added
                  * @since 1.4
                  */
                 UndoableEditSupport.prototype.getUndoableEditListeners = function () {
                     return this.listeners.toArray([]);
                 };
                 /**
-                 * Called only from <code>postEdit</code> and <code>endUpdate</code>. Calls
-                 * <code>undoableEditHappened</code> in all listeners. No synchronization is
-                 * performed here, since the two calling methods are synchronized.
+                 * Called only from <code>postEdit</code> and <code>endUpdate</code>. Calls <code>
+                 * undoableEditHappened</code> in all listeners. No synchronization is performed here, since the
+                 * two calling methods are synchronized.
                  * @param {*} e
                  */
                 UndoableEditSupport.prototype._postEdit = function (e) {
@@ -22193,9 +21395,8 @@ var javax;
                     ;
                 };
                 /**
-                 * DEADLOCK WARNING: Calling this method may call
-                 * <code>undoableEditHappened</code> in all listeners. It is unwise to call
-                 * this method from one of its listeners.
+                 * DEADLOCK WARNING: Calling this method may call <code>undoableEditHappened</code> in all
+                 * listeners. It is unwise to call this method from one of its listeners.
                  * @param {*} e
                  */
                 UndoableEditSupport.prototype.postEdit = function (e) {
@@ -22224,17 +21425,15 @@ var javax;
                     this.updateLevel++;
                 };
                 /**
-                 * Called only from <code>beginUpdate</code>. Exposed here for subclasses'
-                 * use.
+                 * Called only from <code>beginUpdate</code>. Exposed here for subclasses' use.
                  * @return {javax.swing.undo.CompoundEdit}
                  */
                 UndoableEditSupport.prototype.createCompoundEdit = function () {
                     return new javax.swing.undo.CompoundEdit();
                 };
                 /**
-                 * DEADLOCK WARNING: Calling this method may call
-                 * <code>undoableEditHappened</code> in all listeners. It is unwise to call
-                 * this method from one of its listeners.
+                 * DEADLOCK WARNING: Calling this method may call <code>undoableEditHappened</code> in all
+                 * listeners. It is unwise to call this method from one of its listeners.
                  */
                 UndoableEditSupport.prototype.endUpdate = function () {
                     this.updateLevel--;
@@ -22266,15 +21465,12 @@ var javax;
         (function (undo) {
             /**
              * Thrown when an UndoableEdit is told to <code>redo()</code> and can't.
-             * <p>
-             * <strong>Warning:</strong>
-             * Serialized objects of this class will not be compatible with
-             * future Swing releases. The current serialization support is
-             * appropriate for short term storage or RMI between applications running
-             * the same version of Swing.  As of 1.4, support for long term storage
-             * of all JavaBeans&trade;
-             * has been added to the <code>java.beans</code> package.
-             * Please see {@link java.beans.XMLEncoder}.
+             *
+             * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+             * Swing releases. The current serialization support is appropriate for short term storage or RMI
+             * between applications running the same version of Swing. As of 1.4, support for long term storage
+             * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+             * java.beans.XMLEncoder}.
              *
              * @author Ray Ryan
              * @class
@@ -22301,8 +21497,8 @@ var javax;
         var undo;
         (function (undo) {
             /**
-             * Creates an <code>AbstractUndoableEdit</code> which defaults
-             * <code>hasBeenDone</code> and <code>alive</code> to <code>true</code>.
+             * Creates an <code>AbstractUndoableEdit</code> which defaults <code>hasBeenDone</code> and <code>
+             * alive</code> to <code>true</code>.
              * @class
              * @author Ray Ryan
              */
@@ -22318,28 +21514,23 @@ var javax;
                     this.alive = true;
                 }
                 /**
-                 * Sets <code>alive</code> to false. Note that this
-                 * is a one way operation; dead edits cannot be resurrected.
-                 * Sending <code>undo</code> or <code>redo</code> to
-                 * a dead edit results in an exception being thrown.
+                 * Sets <code>alive</code> to false. Note that this is a one way operation; dead edits cannot be
+                 * resurrected. Sending <code>undo</code> or <code>redo</code> to a dead edit results in an
+                 * exception being thrown.
                  *
-                 * <p>Typically an edit is killed when it is consolidated by
-                 * another edit's <code>addEdit</code> or <code>replaceEdit</code>
-                 * method, or when it is dequeued from an <code>UndoManager</code>.
+                 * <p>Typically an edit is killed when it is consolidated by another edit's <code>addEdit</code>
+                 * or <code>replaceEdit</code> method, or when it is dequeued from an <code>UndoManager</code>.
                  */
                 AbstractUndoableEdit.prototype.die = function () {
                     this.alive = false;
                 };
                 /**
-                 * Throws <code>CannotUndoException</code> if <code>canUndo</code>
-                 * returns <code>false</code>. Sets <code>hasBeenDone</code>
-                 * to <code>false</code>. Subclasses should override to undo the
-                 * operation represented by this edit. Override should begin with
-                 * a call to super.
+                 * Throws <code>CannotUndoException</code> if <code>canUndo</code> returns <code>false</code>.
+                 * Sets <code>hasBeenDone</code> to <code>false</code>. Subclasses should override to undo the
+                 * operation represented by this edit. Override should begin with a call to super.
                  *
-                 * @exception CannotUndoException if <code>canUndo</code>
-                 * returns <code>false</code>
-                 * @see     #canUndo
+                 * @exception CannotUndoException if <code>canUndo</code> returns <code>false</code>
+                 * @see #canUndo
                  */
                 AbstractUndoableEdit.prototype.undo = function () {
                     if (!this.canUndo()) {
@@ -22348,28 +21539,25 @@ var javax;
                     this.hasBeenDone = false;
                 };
                 /**
-                 * Returns true if this edit is <code>alive</code>
-                 * and <code>hasBeenDone</code> is <code>true</code>.
+                 * Returns true if this edit is <code>alive</code> and <code>hasBeenDone</code> is <code>true
+                 * </code>.
                  *
-                 * @return {boolean} true if this edit is <code>alive</code>
-                 * and <code>hasBeenDone</code> is <code>true</code>
-                 *
-                 * @see     #die
-                 * @see     #undo
-                 * @see     #redo
+                 * @return {boolean} true if this edit is <code>alive</code> and <code>hasBeenDone</code> is <code>true
+                 * </code>
+                 * @see #die
+                 * @see #undo
+                 * @see #redo
                  */
                 AbstractUndoableEdit.prototype.canUndo = function () {
                     return this.alive && this.hasBeenDone;
                 };
                 /**
-                 * Throws <code>CannotRedoException</code> if <code>canRedo</code>
-                 * returns false. Sets <code>hasBeenDone</code> to <code>true</code>.
-                 * Subclasses should override to redo the operation represented by
-                 * this edit. Override should begin with a call to super.
+                 * Throws <code>CannotRedoException</code> if <code>canRedo</code> returns false. Sets <code>
+                 * hasBeenDone</code> to <code>true</code>. Subclasses should override to redo the operation
+                 * represented by this edit. Override should begin with a call to super.
                  *
-                 * @exception CannotRedoException if <code>canRedo</code>
-                 * returns <code>false</code>
-                 * @see     #canRedo
+                 * @exception CannotRedoException if <code>canRedo</code> returns <code>false</code>
+                 * @see #canRedo
                  */
                 AbstractUndoableEdit.prototype.redo = function () {
                     if (!this.canRedo()) {
@@ -22378,14 +21566,14 @@ var javax;
                     this.hasBeenDone = true;
                 };
                 /**
-                 * Returns <code>true</code> if this edit is <code>alive</code>
-                 * and <code>hasBeenDone</code> is <code>false</code>.
+                 * Returns <code>true</code> if this edit is <code>alive</code> and <code>hasBeenDone</code> is
+                 * <code>false</code>.
                  *
-                 * @return {boolean} <code>true</code> if this edit is <code>alive</code>
-                 * and <code>hasBeenDone</code> is <code>false</code>
-                 * @see     #die
-                 * @see     #undo
-                 * @see     #redo
+                 * @return {boolean} <code>true</code> if this edit is <code>alive</code> and <code>hasBeenDone</code> is
+                 * <code>false</code>
+                 * @see #die
+                 * @see #undo
+                 * @see #redo
                  */
                 AbstractUndoableEdit.prototype.canRedo = function () {
                     return this.alive && !this.hasBeenDone;
@@ -22395,7 +21583,6 @@ var javax;
                  *
                  * @param {*} anEdit the edit to be added
                  * @return {boolean} false
-                 *
                  * @see UndoableEdit#addEdit
                  */
                 AbstractUndoableEdit.prototype.addEdit = function (anEdit) {
@@ -22406,7 +21593,6 @@ var javax;
                  *
                  * @param {*} anEdit the edit to replace
                  * @return {boolean} false
-                 *
                  * @see UndoableEdit#replaceEdit
                  */
                 AbstractUndoableEdit.prototype.replaceEdit = function (anEdit) {
@@ -22422,34 +21608,25 @@ var javax;
                     return true;
                 };
                 /**
-                 * This default implementation returns "". Used by
-                 * <code>getUndoPresentationName</code> and
-                 * <code>getRedoPresentationName</code> to
-                 * construct the strings they return. Subclasses should override to
-                 * return an appropriate description of the operation this edit
-                 * represents.
+                 * This default implementation returns "". Used by <code>getUndoPresentationName</code> and <code>
+                 * getRedoPresentationName</code> to construct the strings they return. Subclasses should override
+                 * to return an appropriate description of the operation this edit represents.
                  *
                  * @return {string} the empty string ""
-                 *
-                 * @see     #getUndoPresentationName
-                 * @see     #getRedoPresentationName
+                 * @see #getUndoPresentationName
+                 * @see #getRedoPresentationName
                  */
                 AbstractUndoableEdit.prototype.getPresentationName = function () {
                     return "";
                 };
                 /**
-                 * Retreives the value from the defaults table with key
-                 * <code>AbstractUndoableEdit.undoText</code> and returns
-                 * that value followed by a space, followed by
-                 * <code>getPresentationName</code>.
-                 * If <code>getPresentationName</code> returns "",
-                 * then the defaults value is returned alone.
+                 * Retreives the value from the defaults table with key <code>AbstractUndoableEdit.undoText</code>
+                 * and returns that value followed by a space, followed by <code>getPresentationName</code>. If
+                 * <code>getPresentationName</code> returns "", then the defaults value is returned alone.
                  *
-                 * @return {string} the value from the defaults table with key
-                 * <code>AbstractUndoableEdit.undoText</code>, followed
-                 * by a space, followed by <code>getPresentationName</code>
-                 * unless <code>getPresentationName</code> is "" in which
-                 * case, the defaults value is returned alone.
+                 * @return {string} the value from the defaults table with key <code>AbstractUndoableEdit.undoText</code>,
+                 * followed by a space, followed by <code>getPresentationName</code> unless <code>
+                 * getPresentationName</code> is "" in which case, the defaults value is returned alone.
                  * @see #getPresentationName
                  */
                 AbstractUndoableEdit.prototype.getUndoPresentationName = function () {
@@ -22463,18 +21640,13 @@ var javax;
                     return name;
                 };
                 /**
-                 * Retreives the value from the defaults table with key
-                 * <code>AbstractUndoableEdit.redoText</code> and returns
-                 * that value followed by a space, followed by
-                 * <code>getPresentationName</code>.
-                 * If <code>getPresentationName</code> returns "",
-                 * then the defaults value is returned alone.
+                 * Retreives the value from the defaults table with key <code>AbstractUndoableEdit.redoText</code>
+                 * and returns that value followed by a space, followed by <code>getPresentationName</code>. If
+                 * <code>getPresentationName</code> returns "", then the defaults value is returned alone.
                  *
-                 * @return {string} the value from the defaults table with key
-                 * <code>AbstractUndoableEdit.redoText</code>, followed
-                 * by a space, followed by <code>getPresentationName</code>
-                 * unless <code>getPresentationName</code> is "" in which
-                 * case, the defaults value is returned alone.
+                 * @return {string} the value from the defaults table with key <code>AbstractUndoableEdit.redoText</code>,
+                 * followed by a space, followed by <code>getPresentationName</code> unless <code>
+                 * getPresentationName</code> is "" in which case, the defaults value is returned alone.
                  * @see #getPresentationName
                  */
                 AbstractUndoableEdit.prototype.getRedoPresentationName = function () {
@@ -22488,8 +21660,7 @@ var javax;
                     return name;
                 };
                 /**
-                 * Returns a string that displays and identifies this
-                 * object's properties.
+                 * Returns a string that displays and identifies this object's properties.
                  *
                  * @return {string} a String representation of this object
                  */
@@ -22497,18 +21668,16 @@ var javax;
                     return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(this.constructor) + " hasBeenDone: " + this.hasBeenDone + " alive: " + this.alive;
                 };
                 /**
-                 * String returned by <code>getUndoPresentationName</code>;
-                 * as of Java 2 platform v1.3.1 this field is no longer used. This value
-                 * is now localized and comes from the defaults table with key
+                 * String returned by <code>getUndoPresentationName</code>; as of Java 2 platform v1.3.1 this
+                 * field is no longer used. This value is now localized and comes from the defaults table with key
                  * <code>AbstractUndoableEdit.undoText</code>.
                  *
                  * @see javax.swing.UIDefaults
                  */
                 AbstractUndoableEdit.UndoName = "Undo";
                 /**
-                 * String returned by <code>getRedoPresentationName</code>;
-                 * as of Java 2 platform v1.3.1 this field is no longer used. This value
-                 * is now localized and comes from the defaults table with key
+                 * String returned by <code>getRedoPresentationName</code>; as of Java 2 platform v1.3.1 this
+                 * field is no longer used. This value is now localized and comes from the defaults table with key
                  * <code>AbstractUndoableEdit.redoText</code>.
                  *
                  * @see javax.swing.UIDefaults
@@ -22529,15 +21698,12 @@ var javax;
         (function (undo) {
             /**
              * Thrown when an UndoableEdit is told to <code>undo()</code> and can't.
-             * <p>
-             * <strong>Warning:</strong>
-             * Serialized objects of this class will not be compatible with
-             * future Swing releases. The current serialization support is
-             * appropriate for short term storage or RMI between applications running
-             * the same version of Swing.  As of 1.4, support for long term storage
-             * of all JavaBeans&trade;
-             * has been added to the <code>java.beans</code> package.
-             * Please see {@link java.beans.XMLEncoder}.
+             *
+             * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+             * Swing releases. The current serialization support is appropriate for short term storage or RMI
+             * between applications running the same version of Swing. As of 1.4, support for long term storage
+             * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+             * java.beans.XMLEncoder}.
              *
              * @author Ray Ryan
              * @class
@@ -22651,14 +21817,14 @@ var javax;
     var awt;
     (function (awt) {
         /**
-         * Constructs a <code>Dimension</code> and initializes
-         * it to the specified width and specified height.
+         * Constructs a <code>Dimension</code> and initializes it to the specified width and specified
+         * height.
          *
          * @param {number} width the specified width
          * @param {number} height the specified height
          * @class
          * @extends java.awt.geom.Dimension2D
-         * @author      Sami Shaio
+         * @author Sami Shaio
          */
         var Dimension = /** @class */ (function (_super) {
             __extends(Dimension, _super);
@@ -22680,7 +21846,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_22 = arguments;
+                        var __args_23 = arguments;
                         var width_2 = d.width;
                         var height_1 = d.height;
                         _this = _super.call(this) || this;
@@ -22703,7 +21869,7 @@ var javax;
                 else if (width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_23 = arguments;
+                        var __args_24 = arguments;
                         var width_3 = 0;
                         var height_2 = 0;
                         _this = _super.call(this) || this;
@@ -22729,6 +21895,7 @@ var javax;
             }
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @return {number}
              */
@@ -22737,6 +21904,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @return {number}
              */
@@ -22748,15 +21916,14 @@ var javax;
                 this.height = (Math.ceil(height) | 0);
             };
             /**
-             * Gets the size of this <code>Dimension</code> object.
-             * This method is included for completeness, to parallel the
-             * <code>getSize</code> method defined by <code>Component</code>.
+             * Gets the size of this <code>Dimension</code> object. This method is included for completeness,
+             * to parallel the <code>getSize</code> method defined by <code>Component</code>.
              *
-             * @return   {java.awt.Dimension} the size of this dimension, a new instance of
-             * <code>Dimension</code> with the same width and height
-             * @see      java.awt.Dimension#setSize
-             * @see      java.awt.Component#getSize
-             * @since    1.1
+             * @return {java.awt.Dimension} the size of this dimension, a new instance of <code>Dimension</code> with the same
+             * width and height
+             * @see java.awt.Dimension#setSize
+             * @see java.awt.Component#getSize
+             * @since 1.1
              */
             Dimension.prototype.getSize = function () {
                 return new Dimension(this.width, this.height);
@@ -22769,16 +21936,15 @@ var javax;
                 this.height = height;
             };
             /**
-             * Sets the size of this <code>Dimension</code> object
-             * to the specified width and height.
-             * This method is included for completeness, to parallel the
-             * <code>setSize</code> method defined by <code>Component</code>.
+             * Sets the size of this <code>Dimension</code> object to the specified width and height. This
+             * method is included for completeness, to parallel the <code>setSize</code> method defined by
+             * <code>Component</code>.
              *
-             * @param    {number} width   the new width for this <code>Dimension</code> object
-             * @param    {number} height  the new height for this <code>Dimension</code> object
-             * @see      java.awt.Dimension#getSize
-             * @see      java.awt.Component#setSize
-             * @since    1.1
+             * @param {number} width the new width for this <code>Dimension</code> object
+             * @param {number} height the new height for this <code>Dimension</code> object
+             * @see java.awt.Dimension#getSize
+             * @see java.awt.Component#setSize
+             * @since 1.1
              */
             Dimension.prototype.setSize = function (width, height) {
                 if (((typeof width === 'number') || width === null) && ((typeof height === 'number') || height === null)) {
@@ -22811,22 +21977,19 @@ var javax;
             /**
              * Returns the hash code for this <code>Dimension</code>.
              *
-             * @return    {number} a hash code for this <code>Dimension</code>
+             * @return {number} a hash code for this <code>Dimension</code>
              */
             Dimension.prototype.hashCode = function () {
                 var sum = this.width + this.height;
                 return (sum * (sum + 1) / 2 | 0) + this.width;
             };
             /**
-             * Returns a string representation of the values of this
-             * <code>Dimension</code> object's <code>height</code> and
-             * <code>width</code> fields. This method is intended to be used only
-             * for debugging purposes, and the content and format of the returned
-             * string may vary between implementations. The returned string may be
-             * empty but may not be <code>null</code>.
+             * Returns a string representation of the values of this <code>Dimension</code> object's <code>
+             * height</code> and <code>width</code> fields. This method is intended to be used only for
+             * debugging purposes, and the content and format of the returned string may vary between
+             * implementations. The returned string may be empty but may not be <code>null</code>.
              *
-             * @return  {string} a string representation of this <code>Dimension</code>
-             * object
+             * @return {string} a string representation of this <code>Dimension</code> object
              */
             Dimension.prototype.toString = function () {
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(Dimension) + "[width=" + this.width + ",height=" + this.height + "]";
@@ -22843,14 +22006,15 @@ var javax;
     var awt;
     (function (awt) {
         /**
-         * Constructs and initializes a point at the specified
-         * {@code (x,y)} location in the coordinate space.
+         * Constructs and initializes a point at the specified {@code (x,y)} location in the coordinate
+         * space.
+         *
          * @param {number} x the X coordinate of the newly constructed <code>Point</code>
          * @param {number} y the Y coordinate of the newly constructed <code>Point</code>
          * @since 1.0
          * @class
          * @extends java.awt.geom.Point2D
-         * @author      Sami Shaio
+         * @author Sami Shaio
          */
         var Point = /** @class */ (function (_super) {
             __extends(Point, _super);
@@ -22872,7 +22036,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_24 = arguments;
+                        var __args_25 = arguments;
                         var x_2 = p.x;
                         var y_2 = p.y;
                         _this = _super.call(this) || this;
@@ -22895,7 +22059,7 @@ var javax;
                 else if (x === undefined && y === undefined) {
                     var __args = arguments;
                     {
-                        var __args_25 = arguments;
+                        var __args_26 = arguments;
                         var x_3 = 0;
                         var y_3 = 0;
                         _this = _super.call(this) || this;
@@ -22921,6 +22085,7 @@ var javax;
             }
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @return {number}
              */
@@ -22929,6 +22094,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @return {number}
              */
@@ -22936,14 +22102,14 @@ var javax;
                 return this.y;
             };
             /**
-             * Returns the location of this point.
-             * This method is included for completeness, to parallel the
+             * Returns the location of this point. This method is included for completeness, to parallel the
              * <code>getLocation</code> method of <code>Component</code>.
-             * @return      {java.awt.Point} a copy of this point, at the same location
-             * @see         java.awt.Component#getLocation
-             * @see         java.awt.Point#setLocation(java.awt.Point)
-             * @see         java.awt.Point#setLocation(int, int)
-             * @since       1.1
+             *
+             * @return {java.awt.Point} a copy of this point, at the same location
+             * @see java.awt.Component#getLocation
+             * @see java.awt.Point#setLocation(java.awt.Point)
+             * @see java.awt.Point#setLocation(int, int)
+             * @since 1.1
              */
             Point.prototype.getLocation = function () {
                 return new Point(this.x, this.y);
@@ -22956,16 +22122,16 @@ var javax;
             };
             /**
              * Changes the point to have the specified location.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>setLocation</code> method of <code>Component</code>.
-             * Its behavior is identical with <code>move(int,&nbsp;int)</code>.
-             * @param       {number} x the X coordinate of the new location
-             * @param       {number} y the Y coordinate of the new location
-             * @see         java.awt.Component#setLocation(int, int)
-             * @see         java.awt.Point#getLocation
-             * @see         java.awt.Point#move(int, int)
-             * @since       1.1
+             *
+             * <p>This method is included for completeness, to parallel the <code>setLocation</code> method of
+             * <code>Component</code>. Its behavior is identical with <code>move(int,&nbsp;int)</code>.
+             *
+             * @param {number} x the X coordinate of the new location
+             * @param {number} y the Y coordinate of the new location
+             * @see java.awt.Component#setLocation(int, int)
+             * @see java.awt.Point#getLocation
+             * @see java.awt.Point#move(int, int)
+             * @since 1.1
              */
             Point.prototype.setLocation = function (x, y) {
                 if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null)) {
@@ -22988,41 +22154,36 @@ var javax;
                 this.y = (Math.floor(y + 0.5) | 0);
             };
             /**
-             * Moves this point to the specified location in the
-             * {@code (x,y)} coordinate plane. This method
+             * Moves this point to the specified location in the {@code (x,y)} coordinate plane. This method
              * is identical with <code>setLocation(int,&nbsp;int)</code>.
-             * @param       {number} x the X coordinate of the new location
-             * @param       {number} y the Y coordinate of the new location
-             * @see         java.awt.Component#setLocation(int, int)
+             *
+             * @param {number} x the X coordinate of the new location
+             * @param {number} y the Y coordinate of the new location
+             * @see java.awt.Component#setLocation(int, int)
              */
             Point.prototype.move = function (x, y) {
                 this.x = x;
                 this.y = y;
             };
             /**
-             * Translates this point, at location {@code (x,y)},
-             * by {@code dx} along the {@code x} axis and {@code dy}
-             * along the {@code y} axis so that it now represents the point
-             * {@code (x+dx,y+dy)}.
+             * Translates this point, at location {@code (x,y)}, by {@code dx} along the {@code x} axis and
+             * {@code dy} along the {@code y} axis so that it now represents the point {@code (x+dx,y+dy)}.
              *
-             * @param       {number} dx   the distance to move this point
-             * along the X axis
-             * @param       {number} dy    the distance to move this point
-             * along the Y axis
+             * @param {number} dx the distance to move this point along the X axis
+             * @param {number} dy the distance to move this point along the Y axis
              */
             Point.prototype.translate = function (dx, dy) {
                 this.x += dx;
                 this.y += dy;
             };
             /**
-             * Determines whether or not two points are equal. Two instances of
-             * <code>Point2D</code> are equal if the values of their
-             * <code>x</code> and <code>y</code> member fields, representing
-             * their position in the coordinate space, are the same.
+             * Determines whether or not two points are equal. Two instances of <code>Point2D</code> are equal
+             * if the values of their <code>x</code> and <code>y</code> member fields, representing their
+             * position in the coordinate space, are the same.
+             *
              * @param {*} obj an object to be compared with this <code>Point2D</code>
-             * @return {boolean} <code>true</code> if the object to be compared is
-             * an instance of <code>Point2D</code> and has
-             * the same values; <code>false</code> otherwise.
+             * @return {boolean} <code>true</code> if the object to be compared is an instance of <code>Point2D</code>
+             * and has the same values; <code>false</code> otherwise.
              */
             Point.prototype.equals = function (obj) {
                 if (obj != null && obj instanceof java.awt.Point) {
@@ -23032,13 +22193,12 @@ var javax;
                 return _super.prototype.equals.call(this, obj);
             };
             /**
-             * Returns a string representation of this point and its location
-             * in the {@code (x,y)} coordinate space. This method is
-             * intended to be used only for debugging purposes, and the content
-             * and format of the returned string may vary between implementations.
-             * The returned string may be empty but may not be <code>null</code>.
+             * Returns a string representation of this point and its location in the {@code (x,y)} coordinate
+             * space. This method is intended to be used only for debugging purposes, and the content and
+             * format of the returned string may vary between implementations. The returned string may be
+             * empty but may not be <code>null</code>.
              *
-             * @return  {string} a string representation of this point
+             * @return {string} a string representation of this point
              */
             Point.prototype.toString = function () {
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(Point) + "[x=" + this.x + ",y=" + this.y + "]";
@@ -23057,30 +22217,27 @@ var javax;
         var geom;
         (function (geom) {
             /**
-             * The {@code Path2D} class provides a simple, yet flexible shape which
-             * represents an arbitrary geometric path. It can fully represent any path which
-             * can be iterated by the {@link PathIterator} interface including all of its
-             * segment types and winding rules and it implements all of the basic hit
-             * testing methods of the {@link Shape} interface.
-             * <p>
-             * Use {@link Path2D.Float} when dealing with data that can be represented and
-             * used with floating point precision. Use {@link Path2D.Double} for data that
-             * requires the accuracy or range of double precision.
-             * <p>
-             * {@code Path2D} provides exactly those facilities required for basic
-             * construction and management of a geometric path and implementation of the
-             * above interfaces with little added interpretation. If it is useful to
-             * manipulate the interiors of closed geometric shapes beyond simple hit testing
-             * then the {@link Area} class provides additional capabilities specifically
-             * targeted at closed figures. While both classes nominally implement the
-             * {@code Shape} interface, they differ in purpose and together they provide two
-             * useful views of a geometric shape where {@code Path2D} deals primarily with a
-             * trajectory formed by path segments and {@code Area} deals more with
-             * interpretation and manipulation of enclosed regions of 2D geometric space.
-             * <p>
-             * The {@link PathIterator} interface has more detailed descriptions of the
-             * types of segments that make up a path and the winding rules that control how
-             * to determine which regions are inside or outside the path.
+             * The {@code Path2D} class provides a simple, yet flexible shape which represents an arbitrary
+             * geometric path. It can fully represent any path which can be iterated by the {@link PathIterator}
+             * interface including all of its segment types and winding rules and it implements all of the basic
+             * hit testing methods of the {@link Shape} interface.
+             *
+             * <p>Use {@link Path2D.Float} when dealing with data that can be represented and used with floating
+             * point precision. Use {@link Path2D.Double} for data that requires the accuracy or range of double
+             * precision.
+             *
+             * <p>{@code Path2D} provides exactly those facilities required for basic construction and
+             * management of a geometric path and implementation of the above interfaces with little added
+             * interpretation. If it is useful to manipulate the interiors of closed geometric shapes beyond
+             * simple hit testing then the {@link Area} class provides additional capabilities specifically
+             * targeted at closed figures. While both classes nominally implement the {@code Shape} interface,
+             * they differ in purpose and together they provide two useful views of a geometric shape where
+             * {@code Path2D} deals primarily with a trajectory formed by path segments and {@code Area} deals
+             * more with interpretation and manipulation of enclosed regions of 2D geometric space.
+             *
+             * <p>The {@link PathIterator} interface has more detailed descriptions of the types of segments
+             * that make up a path and the winding rules that control how to determine which regions are inside
+             * or outside the path.
              *
              * @author Jim Graham
              * @since 1.6
@@ -23148,9 +22305,8 @@ var javax;
                 Path2D.prototype.append$float$float = function (x, y) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 Path2D.prototype.append$double$double = function (x, y) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Closes the current subpath by drawing a straight line back to the
-                 * coordinates of the last {@code moveTo}. If the path is already closed
-                 * then this method has no effect.
+                 * Closes the current subpath by drawing a straight line back to the coordinates of the last
+                 * {@code moveTo}. If the path is already closed then this method has no effect.
                  *
                  * @since 1.6
                  */
@@ -23164,23 +22320,18 @@ var javax;
                     this.append$java_awt_geom_PathIterator$boolean(s['getPathIterator$java_awt_geom_AffineTransform'](null), connect);
                 };
                 /**
-                 * Appends the geometry of the specified {@code Shape} object to the path,
-                 * possibly connecting the new geometry to the existing path segments with a
-                 * line segment. If the {@code connect} parameter is {@code true} and the
-                 * path is not empty then any initial {@code moveTo} in the geometry of the
-                 * appended {@code Shape} is turned into a {@code lineTo} segment. If the
-                 * destination coordinates of such a connecting {@code lineTo} segment match
-                 * the ending coordinates of a currently open subpath then the segment is
-                 * omitted as superfluous. The winding rule of the specified {@code Shape}
-                 * is ignored and the appended geometry is governed by the winding rule
-                 * specified for this path.
+                 * Appends the geometry of the specified {@code Shape} object to the path, possibly connecting the
+                 * new geometry to the existing path segments with a line segment. If the {@code connect}
+                 * parameter is {@code true} and the path is not empty then any initial {@code moveTo} in the
+                 * geometry of the appended {@code Shape} is turned into a {@code lineTo} segment. If the
+                 * destination coordinates of such a connecting {@code lineTo} segment match the ending
+                 * coordinates of a currently open subpath then the segment is omitted as superfluous. The winding
+                 * rule of the specified {@code Shape} is ignored and the appended geometry is governed by the
+                 * winding rule specified for this path.
                  *
-                 * @param {*} s
-                 * the {@code Shape} whose geometry is appended to this path
-                 * @param {boolean} connect
-                 * a boolean to control whether or not to turn an initial
-                 * {@code moveTo} segment into a {@code lineTo} segment to
-                 * connect the new geometry to the existing path
+                 * @param {*} s the {@code Shape} whose geometry is appended to this path
+                 * @param {boolean} connect a boolean to control whether or not to turn an initial {@code moveTo} segment
+                 * into a {@code lineTo} segment to connect the new geometry to the existing path
                  * @since 1.6
                  */
                 Path2D.prototype.append = function (s, connect) {
@@ -23215,10 +22366,8 @@ var javax;
                 /**
                  * Sets the winding rule for this path to the specified value.
                  *
-                 * @param {number} rule
-                 * an integer representing the specified winding rule
-                 * @exception IllegalArgumentException
-                 * if {@code rule} is not either {@link #WIND_EVEN_ODD} or
+                 * @param {number} rule an integer representing the specified winding rule
+                 * @exception IllegalArgumentException if {@code rule} is not either {@link #WIND_EVEN_ODD} or
                  * {@link #WIND_NON_ZERO}
                  * @see #getWindingRule
                  * @since 1.6
@@ -23230,11 +22379,10 @@ var javax;
                     this.windingRule = rule;
                 };
                 /**
-                 * Returns the coordinates most recently added to the end of the path as a
-                 * {@link Point2D} object.
+                 * Returns the coordinates most recently added to the end of the path as a {@link Point2D} object.
                  *
-                 * @return {java.awt.geom.Point2D} a {@code Point2D} object containing the ending coordinates of the
-                 * path or {@code null} if there are no points in the path.
+                 * @return {java.awt.geom.Point2D} a {@code Point2D} object containing the ending coordinates of the path or {@code null}
+                 * if there are no points in the path.
                  * @since 1.6
                  */
                 Path2D.prototype.getCurrentPoint = function () {
@@ -23267,8 +22415,8 @@ var javax;
                     return this.getPoint(index - 2);
                 };
                 /**
-                 * Resets the path to empty. The append position is set back to the
-                 * beginning of the path and all coordinates and point types are forgotten.
+                 * Resets the path to empty. The append position is set back to the beginning of the path and all
+                 * coordinates and point types are forgotten.
                  *
                  * @since 1.6
                  */
@@ -23276,22 +22424,17 @@ var javax;
                     this.numTypes = this.numCoords = 0;
                 };
                 /**
-                 * Returns a new {@code Shape} representing a transformed version of this
-                 * {@code Path2D}. Note that the exact type and coordinate precision of the
-                 * return value is not specified for this method. The method will return a
-                 * Shape that contains no less precision for the transformed geometry than
-                 * this {@code Path2D} currently maintains, but it may contain no more
-                 * precision either. If the tradeoff of precision vs. storage size in the
-                 * result is important then the convenience constructors in the
-                 * {@link Path2D.Float#Path2D.Float(Shape, AffineTransform) Path2D.Float}
-                 * and {@link Path2D.Double#Path2D.Double(Shape, AffineTransform)
-                 * Path2D.Double} subclasses should be used to make the choice explicit.
+                 * Returns a new {@code Shape} representing a transformed version of this {@code Path2D}. Note
+                 * that the exact type and coordinate precision of the return value is not specified for this
+                 * method. The method will return a Shape that contains no less precision for the transformed
+                 * geometry than this {@code Path2D} currently maintains, but it may contain no more precision
+                 * either. If the tradeoff of precision vs. storage size in the result is important then the
+                 * convenience constructors in the {@link Path2D.Float#Path2D.Float(Shape, AffineTransform)
+                 * Path2D.Float} and {@link Path2D.Double#Path2D.Double(Shape, AffineTransform) Path2D.Double}
+                 * subclasses should be used to make the choice explicit.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * the {@code AffineTransform} used to transform a new
-                 * {@code Shape}.
-                 * @return {*} a new {@code Shape}, transformed with the specified
-                 * {@code AffineTransform}.
+                 * @param {java.awt.geom.AffineTransform} at the {@code AffineTransform} used to transform a new {@code Shape}.
+                 * @return {*} a new {@code Shape}, transformed with the specified {@code AffineTransform}.
                  * @since 1.6
                  */
                 Path2D.prototype.createTransformedShape = function (at) {
@@ -23360,37 +22503,29 @@ var javax;
                     return (crossings !== sun.awt.geom.Curve.RECT_INTERSECTS && (crossings & mask) !== 0);
                 };
                 /**
-                 * Tests if the specified rectangular area is entirely inside the closed
-                 * boundary of the specified {@link PathIterator}.
-                 * <p>
-                 * This method provides a basic facility for implementors of the
-                 * {@link Shape} interface to implement support for the
-                 * {@link Shape#contains(double, double, double, double)} method.
-                 * <p>
-                 * This method object may conservatively return false in cases where the
-                 * specified rectangular area intersects a segment of the path, but that
-                 * segment does not represent a boundary between the interior and exterior
-                 * of the path. Such segments could lie entirely within the interior of the
-                 * path if they are part of a path with a {@link #WIND_NON_ZERO} winding
-                 * rule or if the segments are retraced in the reverse direction such that
-                 * the two sets of segments cancel each other out without any exterior area
-                 * falling between them. To determine whether segments represent true
-                 * boundaries of the interior of the path would require extensive
-                 * calculations involving all of the segments of the path and the winding
-                 * rule and are thus beyond the scope of this implementation.
+                 * Tests if the specified rectangular area is entirely inside the closed boundary of the specified
+                 * {@link PathIterator}.
                  *
-                 * @param {*} pi
-                 * the specified {@code PathIterator}
-                 * @param {number} x
-                 * the specified X coordinate
-                 * @param {number} y
-                 * the specified Y coordinate
-                 * @param {number} w
-                 * the width of the specified rectangular area
-                 * @param {number} h
-                 * the height of the specified rectangular area
-                 * @return {boolean} {@code true} if the specified {@code PathIterator} contains the
-                 * specified rectangular area; {@code false} otherwise.
+                 * <p>This method provides a basic facility for implementors of the {@link Shape} interface to
+                 * implement support for the {@link Shape#contains(double, double, double, double)} method.
+                 *
+                 * <p>This method object may conservatively return false in cases where the specified rectangular
+                 * area intersects a segment of the path, but that segment does not represent a boundary between
+                 * the interior and exterior of the path. Such segments could lie entirely within the interior of
+                 * the path if they are part of a path with a {@link #WIND_NON_ZERO} winding rule or if the
+                 * segments are retraced in the reverse direction such that the two sets of segments cancel each
+                 * other out without any exterior area falling between them. To determine whether segments
+                 * represent true boundaries of the interior of the path would require extensive calculations
+                 * involving all of the segments of the path and the winding rule and are thus beyond the scope of
+                 * this implementation.
+                 *
+                 * @param {*} pi the specified {@code PathIterator}
+                 * @param {number} x the specified X coordinate
+                 * @param {number} y the specified Y coordinate
+                 * @param {number} w the width of the specified rectangular area
+                 * @param {number} h the height of the specified rectangular area
+                 * @return {boolean} {@code true} if the specified {@code PathIterator} contains the specified rectangular
+                 * area; {@code false} otherwise.
                  * @since 1.6
                  */
                 Path2D.contains = function (pi, x, y, w, h) {
@@ -23425,18 +22560,16 @@ var javax;
                 };
                 /**
                  * {@inheritDoc}
-                 * <p>
-                 * This method object may conservatively return false in cases where the
-                 * specified rectangular area intersects a segment of the path, but that
-                 * segment does not represent a boundary between the interior and exterior
-                 * of the path. Such segments could lie entirely within the interior of the
-                 * path if they are part of a path with a {@link #WIND_NON_ZERO} winding
-                 * rule or if the segments are retraced in the reverse direction such that
-                 * the two sets of segments cancel each other out without any exterior area
-                 * falling between them. To determine whether segments represent true
-                 * boundaries of the interior of the path would require extensive
-                 * calculations involving all of the segments of the path and the winding
-                 * rule and are thus beyond the scope of this implementation.
+                 *
+                 * <p>This method object may conservatively return false in cases where the specified rectangular
+                 * area intersects a segment of the path, but that segment does not represent a boundary between
+                 * the interior and exterior of the path. Such segments could lie entirely within the interior of
+                 * the path if they are part of a path with a {@link #WIND_NON_ZERO} winding rule or if the
+                 * segments are retraced in the reverse direction such that the two sets of segments cancel each
+                 * other out without any exterior area falling between them. To determine whether segments
+                 * represent true boundaries of the interior of the path would require extensive calculations
+                 * involving all of the segments of the path and the winding rule and are thus beyond the scope of
+                 * this implementation.
                  *
                  * @since 1.6
                  * @param {number} x
@@ -23476,37 +22609,28 @@ var javax;
                     return (crossings === sun.awt.geom.Curve.RECT_INTERSECTS || (crossings & mask) !== 0);
                 };
                 /**
-                 * Tests if the interior of the specified {@link PathIterator} intersects
-                 * the interior of a specified set of rectangular coordinates.
-                 * <p>
-                 * This method provides a basic facility for implementors of the
-                 * {@link Shape} interface to implement support for the
-                 * {@link Shape#intersects(double, double, double, double)} method.
-                 * <p>
-                 * This method object may conservatively return true in cases where the
-                 * specified rectangular area intersects a segment of the path, but that
-                 * segment does not represent a boundary between the interior and exterior
-                 * of the path. Such a case may occur if some set of segments of the path
-                 * are retraced in the reverse direction such that the two sets of segments
-                 * cancel each other out without any interior area between them. To
-                 * determine whether segments represent true boundaries of the interior of
-                 * the path would require extensive calculations involving all of the
-                 * segments of the path and the winding rule and are thus beyond the scope
-                 * of this implementation.
+                 * Tests if the interior of the specified {@link PathIterator} intersects the interior of a
+                 * specified set of rectangular coordinates.
                  *
-                 * @param {*} pi
-                 * the specified {@code PathIterator}
-                 * @param {number} x
-                 * the specified X coordinate
-                 * @param {number} y
-                 * the specified Y coordinate
-                 * @param {number} w
-                 * the width of the specified rectangular coordinates
-                 * @param {number} h
-                 * the height of the specified rectangular coordinates
-                 * @return {boolean} {@code true} if the specified {@code PathIterator} and the
-                 * interior of the specified set of rectangular coordinates
-                 * intersect each other; {@code false} otherwise.
+                 * <p>This method provides a basic facility for implementors of the {@link Shape} interface to
+                 * implement support for the {@link Shape#intersects(double, double, double, double)} method.
+                 *
+                 * <p>This method object may conservatively return true in cases where the specified rectangular
+                 * area intersects a segment of the path, but that segment does not represent a boundary between
+                 * the interior and exterior of the path. Such a case may occur if some set of segments of the
+                 * path are retraced in the reverse direction such that the two sets of segments cancel each other
+                 * out without any interior area between them. To determine whether segments represent true
+                 * boundaries of the interior of the path would require extensive calculations involving all of
+                 * the segments of the path and the winding rule and are thus beyond the scope of this
+                 * implementation.
+                 *
+                 * @param {*} pi the specified {@code PathIterator}
+                 * @param {number} x the specified X coordinate
+                 * @param {number} y the specified Y coordinate
+                 * @param {number} w the width of the specified rectangular coordinates
+                 * @param {number} h the height of the specified rectangular coordinates
+                 * @return {boolean} {@code true} if the specified {@code PathIterator} and the interior of the specified
+                 * set of rectangular coordinates intersect each other; {@code false} otherwise.
                  * @since 1.6
                  */
                 Path2D.intersects = function (pi, x, y, w, h) {
@@ -23535,17 +22659,15 @@ var javax;
                 };
                 /**
                  * {@inheritDoc}
-                 * <p>
-                 * This method object may conservatively return true in cases where the
-                 * specified rectangular area intersects a segment of the path, but that
-                 * segment does not represent a boundary between the interior and exterior
-                 * of the path. Such a case may occur if some set of segments of the path
-                 * are retraced in the reverse direction such that the two sets of segments
-                 * cancel each other out without any interior area between them. To
-                 * determine whether segments represent true boundaries of the interior of
-                 * the path would require extensive calculations involving all of the
-                 * segments of the path and the winding rule and are thus beyond the scope
-                 * of this implementation.
+                 *
+                 * <p>This method object may conservatively return true in cases where the specified rectangular
+                 * area intersects a segment of the path, but that segment does not represent a boundary between
+                 * the interior and exterior of the path. Such a case may occur if some set of segments of the
+                 * path are retraced in the reverse direction such that the two sets of segments cancel each other
+                 * out without any interior area between them. To determine whether segments represent true
+                 * boundaries of the interior of the path would require extensive calculations involving all of
+                 * the segments of the path and the winding rule and are thus beyond the scope of this
+                 * implementation.
                  *
                  * @since 1.6
                  * @param {number} x
@@ -23572,11 +22694,10 @@ var javax;
                 };
                 /**
                  * {@inheritDoc}
-                 * <p>
-                 * The iterator for this class is not multi-threaded safe, which means that
-                 * this {@code Path2D} class does not guarantee that modifications to the
-                 * geometry of this {@code Path2D} object do not affect any iterations of
-                 * that geometry that are already in process.
+                 *
+                 * <p>The iterator for this class is not multi-threaded safe, which means that this {@code Path2D}
+                 * class does not guarantee that modifications to the geometry of this {@code Path2D} object do
+                 * not affect any iterations of that geometry that are already in process.
                  *
                  * @since 1.6
                  * @param {java.awt.geom.AffineTransform} at
@@ -23630,16 +22751,13 @@ var javax;
                 Iterator["__class"] = "java.awt.geom.Path2D.Iterator";
                 Iterator["__interfaces"] = ["java.awt.geom.PathIterator"];
                 /**
-                 * Constructs a new empty single precision {@code Path2D} object with
-                 * the specified winding rule and the specified initial capacity to
-                 * store path segments. This number is an initial guess as to how many
-                 * path segments will be added to the path, but the storage is expanded
-                 * as needed to store whatever path segments are added.
+                 * Constructs a new empty single precision {@code Path2D} object with the specified winding rule
+                 * and the specified initial capacity to store path segments. This number is an initial guess as
+                 * to how many path segments will be added to the path, but the storage is expanded as needed to
+                 * store whatever path segments are added.
                  *
-                 * @param {number} rule
-                 * the winding rule
-                 * @param {number} initialCapacity
-                 * the estimate for the number of path segments in the path
+                 * @param {number} rule the winding rule
+                 * @param {number} initialCapacity the estimate for the number of path segments in the path
                  * @see #WIND_EVEN_ODD
                  * @see #WIND_NON_ZERO
                  * @since 1.6
@@ -23688,7 +22806,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_26 = arguments;
+                                var __args_27 = arguments;
                                 var at_1 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.floatCoords === undefined) {
@@ -23720,7 +22838,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_27 = arguments;
+                                var __args_28 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.floatCoords === undefined) {
@@ -23736,7 +22854,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_28 = arguments;
+                                var __args_29 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -23842,16 +22960,13 @@ var javax;
                         }
                     };
                     /**
-                     * Adds a point to the path by moving to the specified coordinates
-                     * specified in float precision.
-                     * <p>
-                     * This method provides a single precision variant of the double
-                     * precision {@code moveTo()} method on the base {@code Path2D} class.
+                     * Adds a point to the path by moving to the specified coordinates specified in float precision.
                      *
-                     * @param {number} x
-                     * the specified X coordinate
-                     * @param {number} y
-                     * the specified Y coordinate
+                     * <p>This method provides a single precision variant of the double precision {@code moveTo()}
+                     * method on the base {@code Path2D} class.
+                     *
+                     * @param {number} x the specified X coordinate
+                     * @param {number} y the specified Y coordinate
                      * @see Path2D#moveTo
                      * @since 1.6
                      */
@@ -23878,17 +22993,14 @@ var javax;
                         this.floatCoords[this.numCoords++] = y;
                     };
                     /**
-                     * Adds a point to the path by drawing a straight line from the current
-                     * coordinates to the new specified coordinates specified in float
-                     * precision.
-                     * <p>
-                     * This method provides a single precision variant of the double
-                     * precision {@code lineTo()} method on the base {@code Path2D} class.
+                     * Adds a point to the path by drawing a straight line from the current coordinates to the new
+                     * specified coordinates specified in float precision.
                      *
-                     * @param {number} x
-                     * the specified X coordinate
-                     * @param {number} y
-                     * the specified Y coordinate
+                     * <p>This method provides a single precision variant of the double precision {@code lineTo()}
+                     * method on the base {@code Path2D} class.
+                     *
+                     * @param {number} x the specified X coordinate
+                     * @param {number} y the specified Y coordinate
                      * @see Path2D#lineTo
                      * @since 1.6
                      */
@@ -23919,23 +23031,18 @@ var javax;
                         this.floatCoords[this.numCoords++] = y2;
                     };
                     /**
-                     * Adds a curved segment, defined by two new points, to the path by
-                     * drawing a Quadratic curve that intersects both the current
-                     * coordinates and the specified coordinates {@code (x2,y2)}, using the
-                     * specified point {@code (x1,y1)} as a quadratic parametric control
-                     * point. All coordinates are specified in float precision.
-                     * <p>
-                     * This method provides a single precision variant of the double
-                     * precision {@code quadTo()} method on the base {@code Path2D} class.
+                     * Adds a curved segment, defined by two new points, to the path by drawing a Quadratic curve
+                     * that intersects both the current coordinates and the specified coordinates {@code (x2,y2)},
+                     * using the specified point {@code (x1,y1)} as a quadratic parametric control point. All
+                     * coordinates are specified in float precision.
                      *
-                     * @param {number} x1
-                     * the X coordinate of the quadratic control point
-                     * @param {number} y1
-                     * the Y coordinate of the quadratic control point
-                     * @param {number} x2
-                     * the X coordinate of the final end point
-                     * @param {number} y2
-                     * the Y coordinate of the final end point
+                     * <p>This method provides a single precision variant of the double precision {@code quadTo()}
+                     * method on the base {@code Path2D} class.
+                     *
+                     * @param {number} x1 the X coordinate of the quadratic control point
+                     * @param {number} y1 the Y coordinate of the quadratic control point
+                     * @param {number} x2 the X coordinate of the final end point
+                     * @param {number} y2 the Y coordinate of the final end point
                      * @see Path2D#quadTo
                      * @since 1.6
                      */
@@ -23970,27 +23077,20 @@ var javax;
                         this.floatCoords[this.numCoords++] = y3;
                     };
                     /**
-                     * Adds a curved segment, defined by three new points, to the path by
-                     * drawing a B&eacute;zier curve that intersects both the current
-                     * coordinates and the specified coordinates {@code (x3,y3)}, using the
-                     * specified points {@code (x1,y1)} and {@code (x2,y2)} as B&eacute;zier
+                     * Adds a curved segment, defined by three new points, to the path by drawing a B&eacute;zier
+                     * curve that intersects both the current coordinates and the specified coordinates {@code
+                     * (x3,y3)}, using the specified points {@code (x1,y1)} and {@code (x2,y2)} as B&eacute;zier
                      * control points. All coordinates are specified in float precision.
-                     * <p>
-                     * This method provides a single precision variant of the double
-                     * precision {@code curveTo()} method on the base {@code Path2D} class.
                      *
-                     * @param {number} x1
-                     * the X coordinate of the first B&eacute;zier control point
-                     * @param {number} y1
-                     * the Y coordinate of the first B&eacute;zier control point
-                     * @param {number} x2
-                     * the X coordinate of the second B&eacute;zier control point
-                     * @param {number} y2
-                     * the Y coordinate of the second B&eacute;zier control point
-                     * @param {number} x3
-                     * the X coordinate of the final end point
-                     * @param {number} y3
-                     * the Y coordinate of the final end point
+                     * <p>This method provides a single precision variant of the double precision {@code curveTo()}
+                     * method on the base {@code Path2D} class.
+                     *
+                     * @param {number} x1 the X coordinate of the first B&eacute;zier control point
+                     * @param {number} y1 the Y coordinate of the first B&eacute;zier control point
+                     * @param {number} x2 the X coordinate of the second B&eacute;zier control point
+                     * @param {number} y2 the Y coordinate of the second B&eacute;zier control point
+                     * @param {number} x3 the X coordinate of the final end point
+                     * @param {number} y3 the Y coordinate of the final end point
                      * @see Path2D#curveTo
                      * @since 1.6
                      */
@@ -24214,11 +23314,10 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
-                     * <p>
-                     * The iterator for this class is not multi-threaded safe, which means that
-                     * this {@code Path2D} class does not guarantee that modifications to the
-                     * geometry of this {@code Path2D} object do not affect any iterations of
-                     * that geometry that are already in process.
+                     *
+                     * <p>The iterator for this class is not multi-threaded safe, which means that this {@code Path2D}
+                     * class does not guarantee that modifications to the geometry of this {@code Path2D} object do
+                     * not affect any iterations of that geometry that are already in process.
                      *
                      * @since 1.6
                      * @param {java.awt.geom.AffineTransform} at
@@ -24247,8 +23346,7 @@ var javax;
                      * Creates a new object of the same class as this object.
                      *
                      * @return {*} a clone of this instance.
-                     * @exception OutOfMemoryError
-                     * if there is not enough memory.
+                     * @exception OutOfMemoryError if there is not enough memory.
                      * @see java.lang.Cloneable
                      * @since 1.6
                      */
@@ -24360,16 +23458,13 @@ var javax;
                     TxIterator["__interfaces"] = ["java.awt.geom.PathIterator"];
                 })(Float = Path2D.Float || (Path2D.Float = {}));
                 /**
-                 * Constructs a new empty double precision {@code Path2D} object with
-                 * the specified winding rule and the specified initial capacity to
-                 * store path segments. This number is an initial guess as to how many
-                 * path segments are in the path, but the storage is expanded as needed
-                 * to store whatever path segments are added to this path.
+                 * Constructs a new empty double precision {@code Path2D} object with the specified winding rule
+                 * and the specified initial capacity to store path segments. This number is an initial guess as
+                 * to how many path segments are in the path, but the storage is expanded as needed to store
+                 * whatever path segments are added to this path.
                  *
-                 * @param {number} rule
-                 * the winding rule
-                 * @param {number} initialCapacity
-                 * the estimate for the number of path segments in the path
+                 * @param {number} rule the winding rule
+                 * @param {number} initialCapacity the estimate for the number of path segments in the path
                  * @see #WIND_EVEN_ODD
                  * @see #WIND_NON_ZERO
                  * @since 1.6
@@ -24418,7 +23513,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_29 = arguments;
+                                var __args_30 = arguments;
                                 var at_2 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -24450,7 +23545,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_30 = arguments;
+                                var __args_31 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -24466,7 +23561,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_31 = arguments;
+                                var __args_32 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -24829,11 +23924,10 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
-                     * <p>
-                     * The iterator for this class is not multi-threaded safe, which means that
-                     * this {@code Path2D} class does not guarantee that modifications to the
-                     * geometry of this {@code Path2D} object do not affect any iterations of
-                     * that geometry that are already in process.
+                     *
+                     * <p>The iterator for this class is not multi-threaded safe, which means that this {@code Path2D}
+                     * class does not guarantee that modifications to the geometry of this {@code Path2D} object do
+                     * not affect any iterations of that geometry that are already in process.
                      *
                      * @since 1.6
                      * @param {java.awt.geom.AffineTransform} at
@@ -24862,8 +23956,7 @@ var javax;
                      * Creates a new object of the same class as this object.
                      *
                      * @return {*} a clone of this instance.
-                     * @exception OutOfMemoryError
-                     * if there is not enough memory.
+                     * @exception OutOfMemoryError if there is not enough memory.
                      * @see java.lang.Cloneable
                      * @since 1.6
                      */
@@ -24979,13 +24072,12 @@ var javax;
         var geom;
         (function (geom) {
             /**
-             * The <code>RoundRectangle2D</code> class defines a rectangle with rounded
-             * corners defined by a location {@code (x,y)}, a dimension {@code (w x h)}, and
-             * the width and height of an arc with which to round the corners.
-             * <p>
-             * This class is the abstract superclass for all objects that store a 2D rounded
-             * rectangle. The actual storage representation of the coordinates is left to
-             * the subclass.
+             * The <code>RoundRectangle2D</code> class defines a rectangle with rounded corners defined by a
+             * location {@code (x,y)}, a dimension {@code (w x h)}, and the width and height of an arc with
+             * which to round the corners.
+             *
+             * <p>This class is the abstract superclass for all objects that store a 2D rounded rectangle. The
+             * actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -24999,26 +24091,15 @@ var javax;
                 }
                 RoundRectangle2D.prototype.setRoundRect$double$double$double$double$double$double = function (x, y, w, h, arcWidth, arcHeight) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location, size, and corner radii of this
-                 * <code>RoundRectangle2D</code> to the specified <code>double</code>
-                 * values.
+                 * Sets the location, size, and corner radii of this <code>RoundRectangle2D</code> to the
+                 * specified <code>double</code> values.
                  *
-                 * @param {number} x
-                 * the X coordinate to which to set the location of this
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate to which to set the location of this
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} w
-                 * the width to which to set this <code>RoundRectangle2D</code>
-                 * @param {number} h
-                 * the height to which to set this <code>RoundRectangle2D</code>
-                 * @param {number} arcWidth
-                 * the width to which to set the arc of this
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} arcHeight
-                 * the height to which to set the arc of this
-                 * <code>RoundRectangle2D</code>
+                 * @param {number} x the X coordinate to which to set the location of this <code>RoundRectangle2D</code>
+                 * @param {number} y the Y coordinate to which to set the location of this <code>RoundRectangle2D</code>
+                 * @param {number} w the width to which to set this <code>RoundRectangle2D</code>
+                 * @param {number} h the height to which to set this <code>RoundRectangle2D</code>
+                 * @param {number} arcWidth the width to which to set the arc of this <code>RoundRectangle2D</code>
+                 * @param {number} arcHeight the height to which to set the arc of this <code>RoundRectangle2D</code>
                  * @since 1.2
                  */
                 RoundRectangle2D.prototype.setRoundRect = function (x, y, w, h, arcWidth, arcHeight) {
@@ -25181,30 +24262,23 @@ var javax;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Returns an iterator object that iterates along the <code>Shape</code>
-                 * object's boundary and provides access to a flattened view of the outline
-                 * of the <code>Shape</code> object's geometry.
-                 * <p>
-                 * Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned
-                 * by the iterator.
-                 * <p>
-                 * The amount of subdivision of the curved segments is controlled by the
-                 * <code>flatness</code> parameter, which specifies the maximum distance
-                 * that any point on the unflattened transformed curve can deviate from the
-                 * returned flattened path segments. An optional {@link AffineTransform} can
-                 * be specified so that the coordinates returned in the iteration are
+                 * Returns an iterator object that iterates along the <code>Shape</code> object's boundary and
+                 * provides access to a flattened view of the outline of the <code>Shape</code> object's geometry.
+                 *
+                 * <p>Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned by the iterator.
+                 *
+                 * <p>The amount of subdivision of the curved segments is controlled by the <code>flatness</code>
+                 * parameter, which specifies the maximum distance that any point on the unflattened transformed
+                 * curve can deviate from the returned flattened path segments. An optional {@link
+                 * AffineTransform} can be specified so that the coordinates returned in the iteration are
                  * transformed accordingly.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired.
-                 * @param {number} flatness
-                 * the maximum distance that the line segments used to
-                 * approximate the curved segments are allowed to deviate from
-                 * any point on the original curve
-                 * @return {*} a <code>PathIterator</code> object that provides access to the
-                 * <code>Shape</code> object's flattened geometry.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired.
+                 * @param {number} flatness the maximum distance that the line segments used to approximate the curved
+                 * segments are allowed to deviate from any point on the original curve
+                 * @return {*} a <code>PathIterator</code> object that provides access to the <code>Shape</code>
+                 * object's flattened geometry.
                  * @since 1.2
                  */
                 RoundRectangle2D.prototype.getPathIterator = function (at, flatness) {
@@ -25236,18 +24310,14 @@ var javax;
                     return (((bits | 0)) ^ (((bits >> 32) | 0)));
                 };
                 /**
-                 * Determines whether or not the specified <code>Object</code> is equal to
-                 * this <code>RoundRectangle2D</code>. The specified <code>Object</code> is
-                 * equal to this <code>RoundRectangle2D</code> if it is an instance of
-                 * <code>RoundRectangle2D</code> and if its location, size, and corner arc
-                 * dimensions are the same as this <code>RoundRectangle2D</code>.
+                 * Determines whether or not the specified <code>Object</code> is equal to this <code>
+                 * RoundRectangle2D</code>. The specified <code>Object</code> is equal to this <code>
+                 * RoundRectangle2D</code> if it is an instance of <code>RoundRectangle2D</code> and if its
+                 * location, size, and corner arc dimensions are the same as this <code>RoundRectangle2D</code>.
                  *
-                 * @param {*} obj
-                 * an <code>Object</code> to be compared with this
-                 * <code>RoundRectangle2D</code>.
-                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of
-                 * <code>RoundRectangle2D</code> and has the same values;
-                 * <code>false</code> otherwise.
+                 * @param {*} obj an <code>Object</code> to be compared with this <code>RoundRectangle2D</code>.
+                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of <code>RoundRectangle2D</code>
+                 * and has the same values; <code>false</code> otherwise.
                  * @since 1.6
                  */
                 RoundRectangle2D.prototype.equals = function (obj) {
@@ -25267,27 +24337,17 @@ var javax;
             RoundRectangle2D["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable"];
             (function (RoundRectangle2D) {
                 /**
-                 * Constructs and initializes a <code>RoundRectangle2D</code> from the
-                 * specified <code>float</code> coordinates.
+                 * Constructs and initializes a <code>RoundRectangle2D</code> from the specified <code>float
+                 * </code> coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the newly constructed
+                 * @param {number} x the X coordinate of the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} y the Y coordinate of the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} w the width to which to set the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} h the height to which to set the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} arcw the width of the arc to use to round off the corners of the newly constructed
                  * <code>RoundRectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the newly constructed
+                 * @param {number} arch the height of the arc to use to round off the corners of the newly constructed
                  * <code>RoundRectangle2D</code>
-                 * @param {number} w
-                 * the width to which to set the newly constructed
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} h
-                 * the height to which to set the newly constructed
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} arcw
-                 * the width of the arc to use to round off the corners of
-                 * the newly constructed <code>RoundRectangle2D</code>
-                 * @param {number} arch
-                 * the height of the arc to use to round off the corners of
-                 * the newly constructed <code>RoundRectangle2D</code>
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.RoundRectangle2D
@@ -25417,28 +24477,15 @@ var javax;
                         this.archeight = arch;
                     };
                     /**
-                     * Sets the location, size, and corner radii of this
-                     * <code>RoundRectangle2D</code> to the specified <code>float</code>
-                     * values.
+                     * Sets the location, size, and corner radii of this <code>RoundRectangle2D</code> to the
+                     * specified <code>float</code> values.
                      *
-                     * @param {number} x
-                     * the X coordinate to which to set the location of this
-                     * <code>RoundRectangle2D</code>
-                     * @param {number} y
-                     * the Y coordinate to which to set the location of this
-                     * <code>RoundRectangle2D</code>
-                     * @param {number} w
-                     * the width to which to set this
-                     * <code>RoundRectangle2D</code>
-                     * @param {number} h
-                     * the height to which to set this
-                     * <code>RoundRectangle2D</code>
-                     * @param {number} arcw
-                     * the width to which to set the arc of this
-                     * <code>RoundRectangle2D</code>
-                     * @param {number} arch
-                     * the height to which to set the arc of this
-                     * <code>RoundRectangle2D</code>
+                     * @param {number} x the X coordinate to which to set the location of this <code>RoundRectangle2D</code>
+                     * @param {number} y the Y coordinate to which to set the location of this <code>RoundRectangle2D</code>
+                     * @param {number} w the width to which to set this <code>RoundRectangle2D</code>
+                     * @param {number} h the height to which to set this <code>RoundRectangle2D</code>
+                     * @param {number} arcw the width to which to set the arc of this <code>RoundRectangle2D</code>
+                     * @param {number} arch the height to which to set the arc of this <code>RoundRectangle2D</code>
                      * @since 1.2
                      */
                     Float.prototype.setRoundRect = function (x, y, w, h, arcw, arch) {
@@ -25486,27 +24533,17 @@ var javax;
                 Float["__class"] = "java.awt.geom.RoundRectangle2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes a <code>RoundRectangle2D</code> from the
-                 * specified <code>double</code> coordinates.
+                 * Constructs and initializes a <code>RoundRectangle2D</code> from the specified <code>double
+                 * </code> coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the newly constructed
+                 * @param {number} x the X coordinate of the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} y the Y coordinate of the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} w the width to which to set the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} h the height to which to set the newly constructed <code>RoundRectangle2D</code>
+                 * @param {number} arcw the width of the arc to use to round off the corners of the newly constructed
                  * <code>RoundRectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the newly constructed
+                 * @param {number} arch the height of the arc to use to round off the corners of the newly constructed
                  * <code>RoundRectangle2D</code>
-                 * @param {number} w
-                 * the width to which to set the newly constructed
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} h
-                 * the height to which to set the newly constructed
-                 * <code>RoundRectangle2D</code>
-                 * @param {number} arcw
-                 * the width of the arc to use to round off the corners of
-                 * the newly constructed <code>RoundRectangle2D</code>
-                 * @param {number} arch
-                 * the height of the arc to use to round off the corners of
-                 * the newly constructed <code>RoundRectangle2D</code>
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.RoundRectangle2D
@@ -25689,12 +24726,11 @@ var javax;
         var geom;
         (function (geom) {
             /**
-             * The <code>Rectangle2D</code> class describes a rectangle defined by a
-             * location {@code (x,y)} and dimension {@code (w x h)}.
-             * <p>
-             * This class is only the abstract superclass for all objects that store a 2D
-             * rectangle. The actual storage representation of the coordinates is left to
-             * the subclass.
+             * The <code>Rectangle2D</code> class describes a rectangle defined by a location {@code (x,y)} and
+             * dimension {@code (w x h)}.
+             *
+             * <p>This class is only the abstract superclass for all objects that store a 2D rectangle. The
+             * actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -25708,19 +24744,13 @@ var javax;
                 }
                 Rectangle2D.prototype.setRect$double$double$double$double = function (x, y, w, h) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location and size of this <code>Rectangle2D</code> to the
-                 * specified <code>double</code> values.
+                 * Sets the location and size of this <code>Rectangle2D</code> to the specified <code>double
+                 * </code> values.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of this
-                 * <code>Rectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of this
-                 * <code>Rectangle2D</code>
-                 * @param {number} w
-                 * the width of this <code>Rectangle2D</code>
-                 * @param {number} h
-                 * the height of this <code>Rectangle2D</code>
+                 * @param {number} x the X coordinate of the upper-left corner of this <code>Rectangle2D</code>
+                 * @param {number} y the Y coordinate of the upper-left corner of this <code>Rectangle2D</code>
+                 * @param {number} w the width of this <code>Rectangle2D</code>
+                 * @param {number} h the height of this <code>Rectangle2D</code>
                  * @since 1.2
                  */
                 Rectangle2D.prototype.setRect = function (x, y, w, h) {
@@ -25769,24 +24799,14 @@ var javax;
                     return true;
                 };
                 /**
-                 * Tests if the specified line segment intersects the interior of this
-                 * <code>Rectangle2D</code>.
+                 * Tests if the specified line segment intersects the interior of this <code>Rectangle2D</code>.
                  *
-                 * @param {number} x1
-                 * the X coordinate of the start point of the specified line
-                 * segment
-                 * @param {number} y1
-                 * the Y coordinate of the start point of the specified line
-                 * segment
-                 * @param {number} x2
-                 * the X coordinate of the end point of the specified line
-                 * segment
-                 * @param {number} y2
-                 * the Y coordinate of the end point of the specified line
-                 * segment
-                 * @return {boolean} <code>true</code> if the specified line segment intersects the
-                 * interior of this <code>Rectangle2D</code>; <code>false</code>
-                 * otherwise.
+                 * @param {number} x1 the X coordinate of the start point of the specified line segment
+                 * @param {number} y1 the Y coordinate of the start point of the specified line segment
+                 * @param {number} x2 the X coordinate of the end point of the specified line segment
+                 * @param {number} y2 the Y coordinate of the end point of the specified line segment
+                 * @return {boolean} <code>true</code> if the specified line segment intersects the interior of this <code>
+                 * Rectangle2D</code>; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Rectangle2D.prototype.intersectsLine = function (x1, y1, x2, y2) {
@@ -25804,16 +24824,13 @@ var javax;
                 };
                 Rectangle2D.prototype.outcode$double$double = function (x, y) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Determines where the specified coordinates lie with respect to this
-                 * <code>Rectangle2D</code>. This method computes a binary OR of the
-                 * appropriate mask values indicating, for each side of this
-                 * <code>Rectangle2D</code>, whether or not the specified coordinates are on
-                 * the same side of the edge as the rest of this <code>Rectangle2D</code>.
+                 * Determines where the specified coordinates lie with respect to this <code>Rectangle2D</code>.
+                 * This method computes a binary OR of the appropriate mask values indicating, for each side of
+                 * this <code>Rectangle2D</code>, whether or not the specified coordinates are on the same side of
+                 * the edge as the rest of this <code>Rectangle2D</code>.
                  *
-                 * @param {number} x
-                 * the specified X coordinate
-                 * @param {number} y
-                 * the specified Y coordinate
+                 * @param {number} x the specified X coordinate
+                 * @param {number} y the specified Y coordinate
                  * @return {number} the logical OR of all appropriate out codes.
                  * @see #OUT_LEFT
                  * @see #OUT_TOP
@@ -25838,19 +24855,13 @@ var javax;
                     this.setRect$double$double$double$double(x, y, w, h);
                 };
                 /**
-                 * Sets the location and size of the outer bounds of this
-                 * <code>Rectangle2D</code> to the specified rectangular values.
+                 * Sets the location and size of the outer bounds of this <code>Rectangle2D</code> to the
+                 * specified rectangular values.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of this
-                 * <code>Rectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of this
-                 * <code>Rectangle2D</code>
-                 * @param {number} w
-                 * the width of this <code>Rectangle2D</code>
-                 * @param {number} h
-                 * the height of this <code>Rectangle2D</code>
+                 * @param {number} x the X coordinate of the upper-left corner of this <code>Rectangle2D</code>
+                 * @param {number} y the Y coordinate of the upper-left corner of this <code>Rectangle2D</code>
+                 * @param {number} w the width of this <code>Rectangle2D</code>
+                 * @param {number} h the height of this <code>Rectangle2D</code>
                  * @since 1.2
                  */
                 Rectangle2D.prototype.setFrame = function (x, y, w, h) {
@@ -25953,22 +24964,17 @@ var javax;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Intersects the pair of specified source <code>Rectangle2D</code> objects
-                 * and puts the result into the specified destination
-                 * <code>Rectangle2D</code> object. One of the source rectangles can also be
-                 * the destination to avoid creating a third Rectangle2D object, but in this
-                 * case the original points of this source rectangle will be overwritten by
-                 * this method.
+                 * Intersects the pair of specified source <code>Rectangle2D</code> objects and puts the result
+                 * into the specified destination <code>Rectangle2D</code> object. One of the source rectangles
+                 * can also be the destination to avoid creating a third Rectangle2D object, but in this case the
+                 * original points of this source rectangle will be overwritten by this method.
                  *
-                 * @param {java.awt.geom.Rectangle2D} src1
-                 * the first of a pair of <code>Rectangle2D</code> objects to be
-                 * intersected with each other
-                 * @param {java.awt.geom.Rectangle2D} src2
-                 * the second of a pair of <code>Rectangle2D</code> objects to be
-                 * intersected with each other
-                 * @param {java.awt.geom.Rectangle2D} dest
-                 * the <code>Rectangle2D</code> that holds the results of the
-                 * intersection of <code>src1</code> and <code>src2</code>
+                 * @param {java.awt.geom.Rectangle2D} src1 the first of a pair of <code>Rectangle2D</code> objects to be intersected with each
+                 * other
+                 * @param {java.awt.geom.Rectangle2D} src2 the second of a pair of <code>Rectangle2D</code> objects to be intersected with
+                 * each other
+                 * @param {java.awt.geom.Rectangle2D} dest the <code>Rectangle2D</code> that holds the results of the intersection of <code>
+                 * src1</code> and <code>src2</code>
                  * @since 1.2
                  */
                 Rectangle2D.intersect = function (src1, src2, dest) {
@@ -25979,21 +24985,17 @@ var javax;
                     dest.setFrame$double$double$double$double(x1, y1, x2 - x1, y2 - y1);
                 };
                 /**
-                 * Unions the pair of source <code>Rectangle2D</code> objects and puts the
-                 * result into the specified destination <code>Rectangle2D</code> object.
-                 * One of the source rectangles can also be the destination to avoid
-                 * creating a third Rectangle2D object, but in this case the original points
-                 * of this source rectangle will be overwritten by this method.
+                 * Unions the pair of source <code>Rectangle2D</code> objects and puts the result into the
+                 * specified destination <code>Rectangle2D</code> object. One of the source rectangles can also be
+                 * the destination to avoid creating a third Rectangle2D object, but in this case the original
+                 * points of this source rectangle will be overwritten by this method.
                  *
-                 * @param {java.awt.geom.Rectangle2D} src1
-                 * the first of a pair of <code>Rectangle2D</code> objects to be
-                 * combined with each other
-                 * @param {java.awt.geom.Rectangle2D} src2
-                 * the second of a pair of <code>Rectangle2D</code> objects to be
-                 * combined with each other
-                 * @param {java.awt.geom.Rectangle2D} dest
-                 * the <code>Rectangle2D</code> that holds the results of the
-                 * union of <code>src1</code> and <code>src2</code>
+                 * @param {java.awt.geom.Rectangle2D} src1 the first of a pair of <code>Rectangle2D</code> objects to be combined with each
+                 * other
+                 * @param {java.awt.geom.Rectangle2D} src2 the second of a pair of <code>Rectangle2D</code> objects to be combined with each
+                 * other
+                 * @param {java.awt.geom.Rectangle2D} dest the <code>Rectangle2D</code> that holds the results of the union of <code>src1
+                 * </code> and <code>src2</code>
                  * @since 1.2
                  */
                 Rectangle2D.union = function (src1, src2, dest) {
@@ -26011,23 +25013,19 @@ var javax;
                     this.setRect$double$double$double$double(x1, y1, x2 - x1, y2 - y1);
                 };
                 /**
-                 * Adds a point, specified by the double precision arguments
-                 * <code>newx</code> and <code>newy</code>, to this <code>Rectangle2D</code>
-                 * . The resulting <code>Rectangle2D</code> is the smallest
-                 * <code>Rectangle2D</code> that contains both the original
-                 * <code>Rectangle2D</code> and the specified point.
-                 * <p>
-                 * After adding a point, a call to <code>contains</code> with the added
-                 * point as an argument does not necessarily return <code>true</code>. The
-                 * <code>contains</code> method does not return <code>true</code> for points
-                 * on the right or bottom edges of a rectangle. Therefore, if the added
-                 * point falls on the left or bottom edge of the enlarged rectangle,
-                 * <code>contains</code> returns <code>false</code> for that point.
+                 * Adds a point, specified by the double precision arguments <code>newx</code> and <code>newy
+                 * </code>, to this <code>Rectangle2D</code> . The resulting <code>Rectangle2D</code> is the
+                 * smallest <code>Rectangle2D</code> that contains both the original <code>Rectangle2D</code> and
+                 * the specified point.
                  *
-                 * @param {number} newx
-                 * the X coordinate of the new point
-                 * @param {number} newy
-                 * the Y coordinate of the new point
+                 * <p>After adding a point, a call to <code>contains</code> with the added point as an argument
+                 * does not necessarily return <code>true</code>. The <code>contains</code> method does not return
+                 * <code>true</code> for points on the right or bottom edges of a rectangle. Therefore, if the
+                 * added point falls on the left or bottom edge of the enlarged rectangle, <code>contains</code>
+                 * returns <code>false</code> for that point.
+                 *
+                 * @param {number} newx the X coordinate of the new point
+                 * @param {number} newy the Y coordinate of the new point
                  * @since 1.2
                  */
                 Rectangle2D.prototype.add = function (newx, newy) {
@@ -26060,26 +25058,19 @@ var javax;
                     return new java.awt.geom.RectIterator(this, at);
                 };
                 /**
-                 * Returns an iteration object that defines the boundary of the flattened
-                 * <code>Rectangle2D</code>. Since rectangles are already flat, the
-                 * <code>flatness</code> parameter is ignored. The iterator for this class
-                 * is multi-threaded safe, which means that this <code>Rectangle2D</code>
-                 * class guarantees that modifications to the geometry of this
-                 * <code>Rectangle2D</code> object do not affect any iterations of that
-                 * geometry that are already in process.
+                 * Returns an iteration object that defines the boundary of the flattened <code>Rectangle2D</code>
+                 * . Since rectangles are already flat, the <code>flatness</code> parameter is ignored. The
+                 * iterator for this class is multi-threaded safe, which means that this <code>Rectangle2D</code>
+                 * class guarantees that modifications to the geometry of this <code>Rectangle2D</code> object do
+                 * not affect any iterations of that geometry that are already in process.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired
-                 * @param {number} flatness
-                 * the maximum distance that the line segments used to
-                 * approximate the curved segments are allowed to deviate from
-                 * any point on the original curve. Since rectangles are already
-                 * flat, the <code>flatness</code> parameter is ignored.
-                 * @return {*} the <code>PathIterator</code> object that returns the geometry of
-                 * the outline of this <code>Rectangle2D</code>, one segment at a
-                 * time.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired
+                 * @param {number} flatness the maximum distance that the line segments used to approximate the curved
+                 * segments are allowed to deviate from any point on the original curve. Since rectangles are
+                 * already flat, the <code>flatness</code> parameter is ignored.
+                 * @return {*} the <code>PathIterator</code> object that returns the geometry of the outline of this
+                 * <code>Rectangle2D</code>, one segment at a time.
                  * @since 1.2
                  */
                 Rectangle2D.prototype.getPathIterator = function (at, flatness) {
@@ -26106,18 +25097,14 @@ var javax;
                     return (((bits | 0)) ^ (((bits >> 32) | 0)));
                 };
                 /**
-                 * Determines whether or not the specified <code>Object</code> is equal to
-                 * this <code>Rectangle2D</code>. The specified <code>Object</code> is equal
-                 * to this <code>Rectangle2D</code> if it is an instance of
-                 * <code>Rectangle2D</code> and if its location and size are the same as
-                 * this <code>Rectangle2D</code>.
-                 *
-                 * @param {*} obj
-                 * an <code>Object</code> to be compared with this
+                 * Determines whether or not the specified <code>Object</code> is equal to this <code>Rectangle2D
+                 * </code>. The specified <code>Object</code> is equal to this <code>Rectangle2D</code> if it is
+                 * an instance of <code>Rectangle2D</code> and if its location and size are the same as this
                  * <code>Rectangle2D</code>.
-                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of
-                 * <code>Rectangle2D</code> and has the same values;
-                 * <code>false</code> otherwise.
+                 *
+                 * @param {*} obj an <code>Object</code> to be compared with this <code>Rectangle2D</code>.
+                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of <code>Rectangle2D</code> and
+                 * has the same values; <code>false</code> otherwise.
                  * @since 1.2
                  */
                 Rectangle2D.prototype.equals = function (obj) {
@@ -26131,29 +25118,25 @@ var javax;
                     return false;
                 };
                 /**
-                 * The bitmask that indicates that a point lies to the left of this
-                 * <code>Rectangle2D</code>.
+                 * The bitmask that indicates that a point lies to the left of this <code>Rectangle2D</code>.
                  *
                  * @since 1.2
                  */
                 Rectangle2D.OUT_LEFT = 1;
                 /**
-                 * The bitmask that indicates that a point lies above this
-                 * <code>Rectangle2D</code>.
+                 * The bitmask that indicates that a point lies above this <code>Rectangle2D</code>.
                  *
                  * @since 1.2
                  */
                 Rectangle2D.OUT_TOP = 2;
                 /**
-                 * The bitmask that indicates that a point lies to the right of this
-                 * <code>Rectangle2D</code>.
+                 * The bitmask that indicates that a point lies to the right of this <code>Rectangle2D</code>.
                  *
                  * @since 1.2
                  */
                 Rectangle2D.OUT_RIGHT = 4;
                 /**
-                 * The bitmask that indicates that a point lies below this
-                 * <code>Rectangle2D</code>.
+                 * The bitmask that indicates that a point lies below this <code>Rectangle2D</code>.
                  *
                  * @since 1.2
                  */
@@ -26165,21 +25148,15 @@ var javax;
             Rectangle2D["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable"];
             (function (Rectangle2D) {
                 /**
-                 * Constructs and initializes a <code>Rectangle2D</code> from the
-                 * specified <code>float</code> coordinates.
+                 * Constructs and initializes a <code>Rectangle2D</code> from the specified <code>float</code>
+                 * coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of the newly
-                 * constructed <code>Rectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of the newly
-                 * constructed <code>Rectangle2D</code>
-                 * @param {number} w
-                 * the width of the newly constructed
-                 * <code>Rectangle2D</code>
-                 * @param {number} h
-                 * the height of the newly constructed
-                 * <code>Rectangle2D</code>
+                 * @param {number} x the X coordinate of the upper-left corner of the newly constructed <code>Rectangle2D
+                 * </code>
+                 * @param {number} y the Y coordinate of the upper-left corner of the newly constructed <code>Rectangle2D
+                 * </code>
+                 * @param {number} w the width of the newly constructed <code>Rectangle2D</code>
+                 * @param {number} h the height of the newly constructed <code>Rectangle2D</code>
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Rectangle2D
@@ -26277,19 +25254,13 @@ var javax;
                         this.height = h;
                     };
                     /**
-                     * Sets the location and size of this <code>Rectangle2D</code> to the
-                     * specified <code>float</code> values.
+                     * Sets the location and size of this <code>Rectangle2D</code> to the specified <code>float
+                     * </code> values.
                      *
-                     * @param {number} x
-                     * the X coordinate of the upper-left corner of this
-                     * <code>Rectangle2D</code>
-                     * @param {number} y
-                     * the Y coordinate of the upper-left corner of this
-                     * <code>Rectangle2D</code>
-                     * @param {number} w
-                     * the width of this <code>Rectangle2D</code>
-                     * @param {number} h
-                     * the height of this <code>Rectangle2D</code>
+                     * @param {number} x the X coordinate of the upper-left corner of this <code>Rectangle2D</code>
+                     * @param {number} y the Y coordinate of the upper-left corner of this <code>Rectangle2D</code>
+                     * @param {number} w the width of this <code>Rectangle2D</code>
+                     * @param {number} h the height of this <code>Rectangle2D</code>
                      * @since 1.2
                      */
                     Float.prototype.setRect = function (x, y, w, h) {
@@ -26403,11 +25374,9 @@ var javax;
                         return dest;
                     };
                     /**
-                     * Returns the <code>String</code> representation of this
-                     * <code>Rectangle2D</code>.
+                     * Returns the <code>String</code> representation of this <code>Rectangle2D</code>.
                      *
-                     * @return {string} a <code>String</code> representing this
-                     * <code>Rectangle2D</code>.
+                     * @return {string} a <code>String</code> representing this <code>Rectangle2D</code>.
                      * @since 1.2
                      */
                     Float.prototype.toString = function () {
@@ -26420,21 +25389,15 @@ var javax;
                 Float["__class"] = "java.awt.geom.Rectangle2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes a <code>Rectangle2D</code> from the
-                 * specified <code>double</code> coordinates.
+                 * Constructs and initializes a <code>Rectangle2D</code> from the specified <code>double</code>
+                 * coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of the newly
-                 * constructed <code>Rectangle2D</code>
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of the newly
-                 * constructed <code>Rectangle2D</code>
-                 * @param {number} w
-                 * the width of the newly constructed
-                 * <code>Rectangle2D</code>
-                 * @param {number} h
-                 * the height of the newly constructed
-                 * <code>Rectangle2D</code>
+                 * @param {number} x the X coordinate of the upper-left corner of the newly constructed <code>Rectangle2D
+                 * </code>
+                 * @param {number} y the Y coordinate of the upper-left corner of the newly constructed <code>Rectangle2D
+                 * </code>
+                 * @param {number} w the width of the newly constructed <code>Rectangle2D</code>
+                 * @param {number} h the height of the newly constructed <code>Rectangle2D</code>
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Rectangle2D
@@ -26630,11 +25593,9 @@ var javax;
                         return dest;
                     };
                     /**
-                     * Returns the <code>String</code> representation of this
-                     * <code>Rectangle2D</code>.
+                     * Returns the <code>String</code> representation of this <code>Rectangle2D</code>.
                      *
-                     * @return {string} a <code>String</code> representing this
-                     * <code>Rectangle2D</code>.
+                     * @return {string} a <code>String</code> representing this <code>Rectangle2D</code>.
                      * @since 1.2
                      */
                     Double.prototype.toString = function () {
@@ -26656,12 +25617,10 @@ var javax;
         var geom;
         (function (geom) {
             /**
-             * The <code>Ellipse2D</code> class describes an ellipse that is defined by a
-             * framing rectangle.
-             * <p>
-             * This class is only the abstract superclass for all objects which store a 2D
-             * ellipse. The actual storage representation of the coordinates is left to the
-             * subclass.
+             * The <code>Ellipse2D</code> class describes an ellipse that is defined by a framing rectangle.
+             *
+             * <p>This class is only the abstract superclass for all objects which store a 2D ellipse. The
+             * actual storage representation of the coordinates is left to the subclass.
              *
              * @author Jim Graham
              * @since 1.2
@@ -26774,30 +25733,23 @@ var javax;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Returns an iterator object that iterates along the <code>Shape</code>
-                 * object's boundary and provides access to a flattened view of the outline
-                 * of the <code>Shape</code> object's geometry.
-                 * <p>
-                 * Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned
-                 * by the iterator.
-                 * <p>
-                 * The amount of subdivision of the curved segments is controlled by the
-                 * <code>flatness</code> parameter, which specifies the maximum distance
-                 * that any point on the unflattened transformed curve can deviate from the
-                 * returned flattened path segments. An optional {@link AffineTransform} can
-                 * be specified so that the coordinates returned in the iteration are
+                 * Returns an iterator object that iterates along the <code>Shape</code> object's boundary and
+                 * provides access to a flattened view of the outline of the <code>Shape</code> object's geometry.
+                 *
+                 * <p>Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned by the iterator.
+                 *
+                 * <p>The amount of subdivision of the curved segments is controlled by the <code>flatness</code>
+                 * parameter, which specifies the maximum distance that any point on the unflattened transformed
+                 * curve can deviate from the returned flattened path segments. An optional {@link
+                 * AffineTransform} can be specified so that the coordinates returned in the iteration are
                  * transformed accordingly.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired.
-                 * @param {number} flatness
-                 * the maximum distance that the line segments used to
-                 * approximate the curved segments are allowed to deviate from
-                 * any point on the original curve
-                 * @return {*} a <code>PathIterator</code> object that provides access to the
-                 * <code>Shape</code> object's flattened geometry.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired.
+                 * @param {number} flatness the maximum distance that the line segments used to approximate the curved
+                 * segments are allowed to deviate from any point on the original curve
+                 * @return {*} a <code>PathIterator</code> object that provides access to the <code>Shape</code>
+                 * object's flattened geometry.
                  * @since 1.2
                  */
                 Ellipse2D.prototype.getPathIterator = function (at, flatness) {
@@ -26827,18 +25779,14 @@ var javax;
                     return (((bits | 0)) ^ (((bits >> 32) | 0)));
                 };
                 /**
-                 * Determines whether or not the specified <code>Object</code> is equal to
-                 * this <code>Ellipse2D</code>. The specified <code>Object</code> is equal
-                 * to this <code>Ellipse2D</code> if it is an instance of
-                 * <code>Ellipse2D</code> and if its location and size are the same as this
-                 * <code>Ellipse2D</code>.
+                 * Determines whether or not the specified <code>Object</code> is equal to this <code>Ellipse2D
+                 * </code>. The specified <code>Object</code> is equal to this <code>Ellipse2D</code> if it is an
+                 * instance of <code>Ellipse2D</code> and if its location and size are the same as this <code>
+                 * Ellipse2D</code>.
                  *
-                 * @param {*} obj
-                 * an <code>Object</code> to be compared with this
-                 * <code>Ellipse2D</code>.
-                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of
-                 * <code>Ellipse2D</code> and has the same values;
-                 * <code>false</code> otherwise.
+                 * @param {*} obj an <code>Object</code> to be compared with this <code>Ellipse2D</code>.
+                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of <code>Ellipse2D</code> and has
+                 * the same values; <code>false</code> otherwise.
                  * @since 1.6
                  */
                 Ellipse2D.prototype.equals = function (obj) {
@@ -26858,19 +25806,12 @@ var javax;
             Ellipse2D["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable"];
             (function (Ellipse2D) {
                 /**
-                 * Constructs and initializes an <code>Ellipse2D</code> from the
-                 * specified coordinates.
+                 * Constructs and initializes an <code>Ellipse2D</code> from the specified coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of the framing
-                 * rectangle
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of the framing
-                 * rectangle
-                 * @param {number} w
-                 * the width of the framing rectangle
-                 * @param {number} h
-                 * the height of the framing rectangle
+                 * @param {number} x the X coordinate of the upper-left corner of the framing rectangle
+                 * @param {number} y the Y coordinate of the upper-left corner of the framing rectangle
+                 * @param {number} w the width of the framing rectangle
+                 * @param {number} h the height of the framing rectangle
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Ellipse2D
@@ -26968,19 +25909,13 @@ var javax;
                         this.height = h;
                     };
                     /**
-                     * Sets the location and size of the framing rectangle of this
-                     * <code>Shape</code> to the specified rectangular values.
+                     * Sets the location and size of the framing rectangle of this <code>Shape</code> to the
+                     * specified rectangular values.
                      *
-                     * @param {number} x
-                     * the X coordinate of the upper-left corner of the specified
-                     * rectangular shape
-                     * @param {number} y
-                     * the Y coordinate of the upper-left corner of the specified
-                     * rectangular shape
-                     * @param {number} w
-                     * the width of the specified rectangular shape
-                     * @param {number} h
-                     * the height of the specified rectangular shape
+                     * @param {number} x the X coordinate of the upper-left corner of the specified rectangular shape
+                     * @param {number} y the Y coordinate of the upper-left corner of the specified rectangular shape
+                     * @param {number} w the width of the specified rectangular shape
+                     * @param {number} h the height of the specified rectangular shape
                      * @since 1.2
                      */
                     Float.prototype.setFrame = function (x, y, w, h) {
@@ -27021,19 +25956,12 @@ var javax;
                 Float["__class"] = "java.awt.geom.Ellipse2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs and initializes an <code>Ellipse2D</code> from the
-                 * specified coordinates.
+                 * Constructs and initializes an <code>Ellipse2D</code> from the specified coordinates.
                  *
-                 * @param {number} x
-                 * the X coordinate of the upper-left corner of the framing
-                 * rectangle
-                 * @param {number} y
-                 * the Y coordinate of the upper-left corner of the framing
-                 * rectangle
-                 * @param {number} w
-                 * the width of the framing rectangle
-                 * @param {number} h
-                 * the height of the framing rectangle
+                 * @param {number} x the X coordinate of the upper-left corner of the framing rectangle
+                 * @param {number} y the Y coordinate of the upper-left corner of the framing rectangle
+                 * @param {number} w the width of the framing rectangle
+                 * @param {number} h the height of the framing rectangle
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Ellipse2D
@@ -27177,29 +26105,21 @@ var javax;
         var geom;
         (function (geom) {
             /**
-             * <CODE>Arc2D</CODE> is the abstract superclass for all objects that
-             * store a 2D arc defined by a framing rectangle,
-             * start angle, angular extent (length of the arc), and a closure type
-             * (<CODE>OPEN</CODE>, <CODE>CHORD</CODE>, or <CODE>PIE</CODE>).
-             * <p>
-             * <a name="inscribes">
-             * The arc is a partial section of a full ellipse which
-             * inscribes the framing rectangle of its parent {@link RectangularShape}.
-             * </a>
-             * <a name="angles">
-             * The angles are specified relative to the non-square
-             * framing rectangle such that 45 degrees always falls on the line from
-             * the center of the ellipse to the upper right corner of the framing
-             * rectangle.
-             * As a result, if the framing rectangle is noticeably longer along one
-             * axis than the other, the angles to the start and end of the arc segment
-             * will be skewed farther along the longer axis of the frame.
-             * </a>
-             * <p>
-             * The actual storage representation of the coordinates is left to
-             * the subclass.
+             * <CODE>Arc2D</CODE> is the abstract superclass for all objects that store a 2D arc defined by a
+             * framing rectangle, start angle, angular extent (length of the arc), and a closure type (<CODE>
+             * OPEN</CODE>, <CODE>CHORD</CODE>, or <CODE>PIE</CODE>).
              *
-             * @author      Jim Graham
+             * <p><a name="inscribes"> The arc is a partial section of a full ellipse which inscribes the
+             * framing rectangle of its parent {@link RectangularShape}. </a> <a name="angles"> The angles are
+             * specified relative to the non-square framing rectangle such that 45 degrees always falls on the
+             * line from the center of the ellipse to the upper right corner of the framing rectangle. As a
+             * result, if the framing rectangle is noticeably longer along one axis than the other, the angles
+             * to the start and end of the arc segment will be skewed farther along the longer axis of the
+             * frame. </a>
+             *
+             * <p>The actual storage representation of the coordinates is left to the subclass.
+             *
+             * @author Jim Graham
              * @since 1.2
              * @extends java.awt.geom.RectangularShape
              * @class
@@ -27219,7 +26139,7 @@ var javax;
                     else if (type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_32 = arguments;
+                            var __args_33 = arguments;
                             var type_1 = Arc2D.OPEN;
                             _this = _super.call(this) || this;
                             if (_this.type === undefined) {
@@ -27236,10 +26156,9 @@ var javax;
                     return _this;
                 }
                 /**
-                 * Returns the arc closure type of the arc: {@link #OPEN},
-                 * {@link #CHORD}, or {@link #PIE}.
-                 * @return {number} One of the integer constant closure types defined
-                 * in this class.
+                 * Returns the arc closure type of the arc: {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+                 *
+                 * @return {number} One of the integer constant closure types defined in this class.
                  * @see #setArcType
                  * @since 1.2
                  */
@@ -27247,12 +26166,11 @@ var javax;
                     return this.type;
                 };
                 /**
-                 * Returns the starting point of the arc.  This point is the
-                 * intersection of the ray from the center defined by the
-                 * starting angle and the elliptical boundary of the arc.
+                 * Returns the starting point of the arc. This point is the intersection of the ray from the
+                 * center defined by the starting angle and the elliptical boundary of the arc.
                  *
-                 * @return {java.awt.geom.Point2D} A <CODE>Point2D</CODE> object representing the
-                 * x,y coordinates of the starting point of the arc.
+                 * @return {java.awt.geom.Point2D} A <CODE>Point2D</CODE> object representing the x,y coordinates of the starting point of
+                 * the arc.
                  * @since 1.2
                  */
                 Arc2D.prototype.getStartPoint = function () {
@@ -27262,13 +26180,12 @@ var javax;
                     return new java.awt.geom.Point2D.Double(x, y);
                 };
                 /**
-                 * Returns the ending point of the arc.  This point is the
-                 * intersection of the ray from the center defined by the
-                 * starting angle plus the angular extent of the arc and the
-                 * elliptical boundary of the arc.
+                 * Returns the ending point of the arc. This point is the intersection of the ray from the center
+                 * defined by the starting angle plus the angular extent of the arc and the elliptical boundary of
+                 * the arc.
                  *
-                 * @return {java.awt.geom.Point2D} A <CODE>Point2D</CODE> object representing the
-                 * x,y coordinates  of the ending point of the arc.
+                 * @return {java.awt.geom.Point2D} A <CODE>Point2D</CODE> object representing the x,y coordinates of the ending point of
+                 * the arc.
                  * @since 1.2
                  */
                 Arc2D.prototype.getEndPoint = function () {
@@ -27279,19 +26196,16 @@ var javax;
                 };
                 Arc2D.prototype.setArc$double$double$double$double$double$double$int = function (x, y, w, h, angSt, angExt, closure) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
                 /**
-                 * Sets the location, size, angular extents, and closure type of
-                 * this arc to the specified double values.
+                 * Sets the location, size, angular extents, and closure type of this arc to the specified double
+                 * values.
                  *
                  * @param {number} x The X coordinate of the upper-left corner of the arc.
                  * @param {number} y The Y coordinate of the upper-left corner of the arc.
-                 * @param {number} w The overall width of the full ellipse of which
-                 * this arc is a partial section.
-                 * @param {number} h The overall height of the full ellipse of which
-                 * this arc is a partial section.
+                 * @param {number} w The overall width of the full ellipse of which this arc is a partial section.
+                 * @param {number} h The overall height of the full ellipse of which this arc is a partial section.
                  * @param {number} angSt The starting angle of the arc in degrees.
                  * @param {number} angExt The angular extent of the arc in degrees.
-                 * @param {number} closure The closure type for the arc:
-                 * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+                 * @param {number} closure The closure type for the arc: {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
                  * @since 1.2
                  */
                 Arc2D.prototype.setArc = function (x, y, w, h, angSt, angExt, closure) {
@@ -27320,37 +26234,33 @@ var javax;
                     this.setArc$double$double$double$double$double$double$int(a.getX(), a.getY(), a.getWidth(), a.getHeight(), a.getAngleStart(), a.getAngleExtent(), a.type);
                 };
                 /**
-                 * Sets the position, bounds, angular extents, and closure type of
-                 * this arc to the specified values. The arc is defined by a center
-                 * point and a radius rather than a framing rectangle for the full ellipse.
+                 * Sets the position, bounds, angular extents, and closure type of this arc to the specified
+                 * values. The arc is defined by a center point and a radius rather than a framing rectangle for
+                 * the full ellipse.
                  *
                  * @param {number} x The X coordinate of the center of the arc.
                  * @param {number} y The Y coordinate of the center of the arc.
                  * @param {number} radius The radius of the arc.
                  * @param {number} angSt The starting angle of the arc in degrees.
                  * @param {number} angExt The angular extent of the arc in degrees.
-                 * @param {number} closure The closure type for the arc:
-                 * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+                 * @param {number} closure The closure type for the arc: {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
                  * @since 1.2
                  */
                 Arc2D.prototype.setArcByCenter = function (x, y, radius, angSt, angExt, closure) {
                     this.setArc$double$double$double$double$double$double$int(x - radius, y - radius, radius * 2.0, radius * 2.0, angSt, angExt, closure);
                 };
                 /**
-                 * Sets the position, bounds, and angular extents of this arc to the
-                 * specified value. The starting angle of the arc is tangent to the
-                 * line specified by points (p1, p2), the ending angle is tangent to
-                 * the line specified by points (p2, p3), and the arc has the
-                 * specified radius.
+                 * Sets the position, bounds, and angular extents of this arc to the specified value. The starting
+                 * angle of the arc is tangent to the line specified by points (p1, p2), the ending angle is
+                 * tangent to the line specified by points (p2, p3), and the arc has the specified radius.
                  *
-                 * @param {java.awt.geom.Point2D} p1 The first point that defines the arc. The starting
-                 * angle of the arc is tangent to the line specified by points (p1, p2).
-                 * @param {java.awt.geom.Point2D} p2 The second point that defines the arc. The starting
-                 * angle of the arc is tangent to the line specified by points (p1, p2).
-                 * The ending angle of the arc is tangent to the line specified by
-                 * points (p2, p3).
-                 * @param {java.awt.geom.Point2D} p3 The third point that defines the arc. The ending angle
-                 * of the arc is tangent to the line specified by points (p2, p3).
+                 * @param {java.awt.geom.Point2D} p1 The first point that defines the arc. The starting angle of the arc is tangent to the
+                 * line specified by points (p1, p2).
+                 * @param {java.awt.geom.Point2D} p2 The second point that defines the arc. The starting angle of the arc is tangent to
+                 * the line specified by points (p1, p2). The ending angle of the arc is tangent to the line
+                 * specified by points (p2, p3).
+                 * @param {java.awt.geom.Point2D} p3 The third point that defines the arc. The ending angle of the arc is tangent to the
+                 * line specified by points (p2, p3).
                  * @param {number} radius The radius of the arc.
                  * @since 1.2
                  */
@@ -27395,9 +26305,8 @@ var javax;
                     this.setAngleStart$double(-(function (x) { return x * 180 / Math.PI; })(Math.atan2(dy, dx)));
                 };
                 /**
-                 * Sets the starting angle of this arc to the angle that the
-                 * specified point defines relative to the center of this arc.
-                 * The angular extent of the arc will remain the same.
+                 * Sets the starting angle of this arc to the angle that the specified point defines relative to
+                 * the center of this arc. The angular extent of the arc will remain the same.
                  *
                  * @param {java.awt.geom.Point2D} p The <CODE>Point2D</CODE> that defines the starting angle.
                  * @see #getAngleStart
@@ -27428,13 +26337,11 @@ var javax;
                     this.setAngleExtent(/* toDegrees */ (function (x) { return x * 180 / Math.PI; })(ang2));
                 };
                 /**
-                 * Sets the starting angle and angular extent of this arc using two
-                 * sets of coordinates. The first set of coordinates is used to
-                 * determine the angle of the starting point relative to the arc's
-                 * center. The second set of coordinates is used to determine the
-                 * angle of the end point relative to the arc's center.
-                 * The arc will always be non-empty and extend counterclockwise
-                 * from the first point around to the second point.
+                 * Sets the starting angle and angular extent of this arc using two sets of coordinates. The first
+                 * set of coordinates is used to determine the angle of the starting point relative to the arc's
+                 * center. The second set of coordinates is used to determine the angle of the end point relative
+                 * to the arc's center. The arc will always be non-empty and extend counterclockwise from the
+                 * first point around to the second point.
                  *
                  * @param {number} x1 The X coordinate of the arc's starting point.
                  * @param {number} y1 The Y coordinate of the arc's starting point.
@@ -27456,15 +26363,12 @@ var javax;
                     this.setAngles$double$double$double$double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
                 };
                 /**
-                 * Sets the closure type of this arc to the specified value:
-                 * <CODE>OPEN</CODE>, <CODE>CHORD</CODE>, or <CODE>PIE</CODE>.
+                 * Sets the closure type of this arc to the specified value: <CODE>OPEN</CODE>, <CODE>CHORD</CODE>
+                 * , or <CODE>PIE</CODE>.
                  *
-                 * @param {number} type The integer constant that represents the closure
-                 * type of this arc: {@link #OPEN}, {@link #CHORD}, or
-                 * {@link #PIE}.
-                 *
-                 * @throws IllegalArgumentException if <code>type</code> is not
-                 * 0, 1, or 2.+
+                 * @param {number} type The integer constant that represents the closure type of this arc: {@link #OPEN},
+                 * {@link #CHORD}, or {@link #PIE}.
+                 * @throws IllegalArgumentException if <code>type</code> is not 0, 1, or 2.+
                  * @see #getArcType
                  * @since 1.2
                  */
@@ -27478,10 +26382,8 @@ var javax;
                     this.setArc$double$double$double$double$double$double$int(x, y, w, h, this.getAngleStart(), this.getAngleExtent(), this.type);
                 };
                 /**
-                 * {@inheritDoc}
-                 * Note that the arc
-                 * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                 * the framing rectangle of this {@code RectangularShape}.
+                 * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                 * framing rectangle of this {@code RectangularShape}.
                  *
                  * @since 1.2
                  * @param {number} x
@@ -27503,19 +26405,15 @@ var javax;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Returns the high-precision framing rectangle of the arc.  The framing
-                 * rectangle contains only the part of this <code>Arc2D</code> that is
-                 * in between the starting and ending angles and contains the pie
-                 * wedge, if this <code>Arc2D</code> has a <code>PIE</code> closure type.
-                 * <p>
-                 * This method differs from the
-                 * {@link RectangularShape#getBounds() getBounds} in that the
-                 * <code>getBounds</code> method only returns the bounds of the
-                 * enclosing ellipse of this <code>Arc2D</code> without considering
-                 * the starting and ending angles of this <code>Arc2D</code>.
+                 * Returns the high-precision framing rectangle of the arc. The framing rectangle contains only
+                 * the part of this <code>Arc2D</code> that is in between the starting and ending angles and
+                 * contains the pie wedge, if this <code>Arc2D</code> has a <code>PIE</code> closure type.
                  *
-                 * @return {java.awt.geom.Rectangle2D} the <CODE>Rectangle2D</CODE> that represents the arc's
-                 * framing rectangle.
+                 * <p>This method differs from the {@link RectangularShape#getBounds() getBounds} in that the
+                 * <code>getBounds</code> method only returns the bounds of the enclosing ellipse of this <code>
+                 * Arc2D</code> without considering the starting and ending angles of this <code>Arc2D</code>.
+                 *
+                 * @return {java.awt.geom.Rectangle2D} the <CODE>Rectangle2D</CODE> that represents the arc's framing rectangle.
                  * @since 1.2
                  */
                 Arc2D.prototype.getBounds2D = function () {
@@ -27592,13 +26490,11 @@ var javax;
                     return angle;
                 };
                 /**
-                 * Determines whether or not the specified angle is within the
-                 * angular extents of the arc.
+                 * Determines whether or not the specified angle is within the angular extents of the arc.
                  *
                  * @param {number} angle The angle to test.
-                 *
-                 * @return {boolean} <CODE>true</CODE> if the arc contains the angle,
-                 * <CODE>false</CODE> if the arc doesn't contain the angle.
+                 * @return {boolean} <CODE>true</CODE> if the arc contains the angle, <CODE>false</CODE> if the arc doesn't
+                 * contain the angle.
                  * @since 1.2
                  */
                 Arc2D.prototype.containsAngle = function (angle) {
@@ -27715,16 +26611,15 @@ var javax;
                     return false;
                 };
                 /**
-                 * Determines whether or not the interior of the arc intersects
-                 * the interior of the specified rectangle.
+                 * Determines whether or not the interior of the arc intersects the interior of the specified
+                 * rectangle.
                  *
                  * @param {number} x The X coordinate of the rectangle's upper-left corner.
                  * @param {number} y The Y coordinate of the rectangle's upper-left corner.
                  * @param {number} w The width of the rectangle.
                  * @param {number} h The height of the rectangle.
-                 *
-                 * @return {boolean} <CODE>true</CODE> if the arc intersects the rectangle,
-                 * <CODE>false</CODE> if the arc doesn't intersect the rectangle.
+                 * @return {boolean} <CODE>true</CODE> if the arc intersects the rectangle, <CODE>false</CODE> if the arc
+                 * doesn't intersect the rectangle.
                  * @since 1.2
                  */
                 Arc2D.prototype.intersects = function (x, y, w, h) {
@@ -27788,30 +26683,23 @@ var javax;
                         throw new Error('invalid overload');
                 };
                 /**
-                 * Returns an iterator object that iterates along the <code>Shape</code>
-                 * object's boundary and provides access to a flattened view of the outline
-                 * of the <code>Shape</code> object's geometry.
-                 * <p>
-                 * Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned
-                 * by the iterator.
-                 * <p>
-                 * The amount of subdivision of the curved segments is controlled by the
-                 * <code>flatness</code> parameter, which specifies the maximum distance
-                 * that any point on the unflattened transformed curve can deviate from the
-                 * returned flattened path segments. An optional {@link AffineTransform} can
-                 * be specified so that the coordinates returned in the iteration are
+                 * Returns an iterator object that iterates along the <code>Shape</code> object's boundary and
+                 * provides access to a flattened view of the outline of the <code>Shape</code> object's geometry.
+                 *
+                 * <p>Only SEG_MOVETO, SEG_LINETO, and SEG_CLOSE point types will be returned by the iterator.
+                 *
+                 * <p>The amount of subdivision of the curved segments is controlled by the <code>flatness</code>
+                 * parameter, which specifies the maximum distance that any point on the unflattened transformed
+                 * curve can deviate from the returned flattened path segments. An optional {@link
+                 * AffineTransform} can be specified so that the coordinates returned in the iteration are
                  * transformed accordingly.
                  *
-                 * @param {java.awt.geom.AffineTransform} at
-                 * an optional <code>AffineTransform</code> to be applied to the
-                 * coordinates as they are returned in the iteration, or
-                 * <code>null</code> if untransformed coordinates are desired.
-                 * @param {number} flatness
-                 * the maximum distance that the line segments used to
-                 * approximate the curved segments are allowed to deviate from
-                 * any point on the original curve
-                 * @return {*} a <code>PathIterator</code> object that provides access to the
-                 * <code>Shape</code> object's flattened geometry.
+                 * @param {java.awt.geom.AffineTransform} at an optional <code>AffineTransform</code> to be applied to the coordinates as they are
+                 * returned in the iteration, or <code>null</code> if untransformed coordinates are desired.
+                 * @param {number} flatness the maximum distance that the line segments used to approximate the curved
+                 * segments are allowed to deviate from any point on the original curve
+                 * @return {*} a <code>PathIterator</code> object that provides access to the <code>Shape</code>
+                 * object's flattened geometry.
                  * @since 1.2
                  */
                 Arc2D.prototype.getPathIterator = function (at, flatness) {
@@ -27829,6 +26717,7 @@ var javax;
                 };
                 /**
                  * Returns the hashcode for this <code>Arc2D</code>.
+                 *
                  * @return {number} the hashcode for this <code>Arc2D</code>.
                  * @since 1.6
                  */
@@ -27843,17 +26732,14 @@ var javax;
                     return (((bits | 0)) ^ (((bits >> 32) | 0)));
                 };
                 /**
-                 * Determines whether or not the specified <code>Object</code> is
-                 * equal to this <code>Arc2D</code>.  The specified
-                 * <code>Object</code> is equal to this <code>Arc2D</code>
-                 * if it is an instance of <code>Arc2D</code> and if its
-                 * location, size, arc extents and type are the same as this
-                 * <code>Arc2D</code>.
-                 * @param {*} obj  an <code>Object</code> to be compared with this
-                 * <code>Arc2D</code>.
-                 * @return  {boolean} <code>true</code> if <code>obj</code> is an instance
-                 * of <code>Arc2D</code> and has the same values;
-                 * <code>false</code> otherwise.
+                 * Determines whether or not the specified <code>Object</code> is equal to this <code>Arc2D</code>
+                 * . The specified <code>Object</code> is equal to this <code>Arc2D</code> if it is an instance of
+                 * <code>Arc2D</code> and if its location, size, arc extents and type are the same as this <code>
+                 * Arc2D</code>.
+                 *
+                 * @param {*} obj an <code>Object</code> to be compared with this <code>Arc2D</code>.
+                 * @return {boolean} <code>true</code> if <code>obj</code> is an instance of <code>Arc2D</code> and has the
+                 * same values; <code>false</code> otherwise.
                  * @since 1.6
                  */
                 Arc2D.prototype.equals = function (obj) {
@@ -27867,22 +26753,23 @@ var javax;
                     return false;
                 };
                 /**
-                 * The closure type for an open arc with no path segments
-                 * connecting the two ends of the arc segment.
+                 * The closure type for an open arc with no path segments connecting the two ends of the arc
+                 * segment.
+                 *
                  * @since 1.2
                  */
                 Arc2D.OPEN = 0;
                 /**
-                 * The closure type for an arc closed by drawing a straight
-                 * line segment from the start of the arc segment to the end of the
-                 * arc segment.
+                 * The closure type for an arc closed by drawing a straight line segment from the start of the arc
+                 * segment to the end of the arc segment.
+                 *
                  * @since 1.2
                  */
                 Arc2D.CHORD = 1;
                 /**
-                 * The closure type for an arc closed by drawing straight line
-                 * segments from the start of the arc segment to the center
-                 * of the full ellipse and from that point to the end of the arc segment.
+                 * The closure type for an arc closed by drawing straight line segments from the start of the arc
+                 * segment to the center of the full ellipse and from that point to the end of the arc segment.
+                 *
                  * @since 1.2
                  */
                 Arc2D.PIE = 2;
@@ -27893,21 +26780,16 @@ var javax;
             Arc2D["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable"];
             (function (Arc2D) {
                 /**
-                 * Constructs a new arc, initialized to the specified location,
-                 * size, angular extents, and closure type.
+                 * Constructs a new arc, initialized to the specified location, size, angular extents, and
+                 * closure type.
                  *
-                 * @param {number} x The X coordinate of the upper-left corner of
-                 * the arc's framing rectangle.
-                 * @param {number} y The Y coordinate of the upper-left corner of
-                 * the arc's framing rectangle.
-                 * @param {number} w The overall width of the full ellipse of which
-                 * this arc is a partial section.
-                 * @param {number} h The overall height of the full ellipse of which this
-                 * arc is a partial section.
+                 * @param {number} x The X coordinate of the upper-left corner of the arc's framing rectangle.
+                 * @param {number} y The Y coordinate of the upper-left corner of the arc's framing rectangle.
+                 * @param {number} w The overall width of the full ellipse of which this arc is a partial section.
+                 * @param {number} h The overall height of the full ellipse of which this arc is a partial section.
                  * @param {number} start The starting angle of the arc in degrees.
                  * @param {number} extent The angular extent of the arc in degrees.
-                 * @param {number} type The closure type for the arc:
-                 * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+                 * @param {number} type The closure type for the arc: {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Arc2D
@@ -28026,10 +26908,8 @@ var javax;
                         return _this;
                     }
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28038,10 +26918,8 @@ var javax;
                         return this.x;
                     };
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28050,10 +26928,8 @@ var javax;
                         return this.y;
                     };
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28062,10 +26938,8 @@ var javax;
                         return this.width;
                     };
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28075,6 +26949,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @return {number}
                      */
@@ -28083,6 +26958,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @return {number}
                      */
@@ -28091,6 +26967,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @return {boolean}
                      */
@@ -28108,6 +26985,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @param {number} x
                      * @param {number} y
@@ -28134,9 +27012,8 @@ var javax;
                             throw new Error('invalid overload');
                     };
                     /**
-                     * Sets the starting angle of this arc to the angle that the
-                     * specified point defines relative to the center of this arc.
-                     * The angular extent of the arc will remain the same.
+                     * Sets the starting angle of this arc to the angle that the specified point defines relative to
+                     * the center of this arc. The angular extent of the arc will remain the same.
                      *
                      * @param {java.awt.geom.Point2D} p The <CODE>Point2D</CODE> that defines the starting angle.
                      * @see #getAngleStart
@@ -28157,6 +27034,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @param {number} angExt
                      */
@@ -28165,6 +27043,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @param {number} x
                      * @param {number} y
@@ -28182,21 +27061,16 @@ var javax;
                 Float["__class"] = "java.awt.geom.Arc2D.Float";
                 Float["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
                 /**
-                 * Constructs a new arc, initialized to the specified location,
-                 * size, angular extents, and closure type.
+                 * Constructs a new arc, initialized to the specified location, size, angular extents, and
+                 * closure type.
                  *
-                 * @param {number} x The X coordinate of the upper-left corner
-                 * of the arc's framing rectangle.
-                 * @param {number} y The Y coordinate of the upper-left corner
-                 * of the arc's framing rectangle.
-                 * @param {number} w The overall width of the full ellipse of which this
-                 * arc is a partial section.
-                 * @param {number} h The overall height of the full ellipse of which this
-                 * arc is a partial section.
+                 * @param {number} x The X coordinate of the upper-left corner of the arc's framing rectangle.
+                 * @param {number} y The Y coordinate of the upper-left corner of the arc's framing rectangle.
+                 * @param {number} w The overall width of the full ellipse of which this arc is a partial section.
+                 * @param {number} h The overall height of the full ellipse of which this arc is a partial section.
                  * @param {number} start The starting angle of the arc in degrees.
                  * @param {number} extent The angular extent of the arc in degrees.
-                 * @param {number} type The closure type for the arc:
-                 * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+                 * @param {number} type The closure type for the arc: {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
                  * @since 1.2
                  * @class
                  * @extends java.awt.geom.Arc2D
@@ -28315,10 +27189,8 @@ var javax;
                         return _this;
                     }
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28327,10 +27199,8 @@ var javax;
                         return this.x;
                     };
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28339,10 +27209,8 @@ var javax;
                         return this.y;
                     };
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28351,10 +27219,8 @@ var javax;
                         return this.width;
                     };
                     /**
-                     * {@inheritDoc}
-                     * Note that the arc
-                     * <a href="Arc2D.html#inscribes">partially inscribes</a>
-                     * the framing rectangle of this {@code RectangularShape}.
+                     * {@inheritDoc} Note that the arc <a href="Arc2D.html#inscribes">partially inscribes</a> the
+                     * framing rectangle of this {@code RectangularShape}.
                      *
                      * @since 1.2
                      * @return {number}
@@ -28364,6 +27230,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @return {number}
                      */
@@ -28372,6 +27239,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @return {number}
                      */
@@ -28380,6 +27248,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @return {boolean}
                      */
@@ -28397,6 +27266,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @param {number} x
                      * @param {number} y
@@ -28423,9 +27293,8 @@ var javax;
                             throw new Error('invalid overload');
                     };
                     /**
-                     * Sets the starting angle of this arc to the angle that the
-                     * specified point defines relative to the center of this arc.
-                     * The angular extent of the arc will remain the same.
+                     * Sets the starting angle of this arc to the angle that the specified point defines relative to
+                     * the center of this arc. The angular extent of the arc will remain the same.
                      *
                      * @param {java.awt.geom.Point2D} p The <CODE>Point2D</CODE> that defines the starting angle.
                      * @see #getAngleStart
@@ -28446,6 +27315,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @param {number} angExt
                      */
@@ -28454,6 +27324,7 @@ var javax;
                     };
                     /**
                      * {@inheritDoc}
+                     *
                      * @since 1.2
                      * @param {number} x
                      * @param {number} y
@@ -28637,14 +27508,12 @@ var javax;
         (function (event) {
             /**
              * Constructs a <code>TextEvent</code> object.
-             * <p> This method throws an
-             * <code>IllegalArgumentException</code> if <code>source</code>
-             * is <code>null</code>.
              *
-             * @param {*} source The (<code>TextComponent</code>) object that
-             * originated the event
-             * @param {number} id     An integer that identifies the event type.
-             * For information on allowable values, see
+             * <p>This method throws an <code>IllegalArgumentException</code> if <code>source</code> is <code>
+             * null</code>.
+             *
+             * @param {*} source The (<code>TextComponent</code>) object that originated the event
+             * @param {number} id An integer that identifies the event type. For information on allowable values, see
              * the class description for {@link TextEvent}
              * @throws IllegalArgumentException if <code>source</code> is null
              * @see #getSource()
@@ -28662,8 +27531,8 @@ var javax;
                     TextEvent.TEXT_VALUE_CHANGED = TextEvent.TEXT_FIRST;
                 } return TextEvent.TEXT_VALUE_CHANGED; };
                 /**
-                 * Returns a parameter string identifying this text event.
-                 * This method is useful for event-logging and for debugging.
+                 * Returns a parameter string identifying this text event. This method is useful for event-logging
+                 * and for debugging.
                  *
                  * @return {string} a string identifying the event and its attributes
                  */
@@ -28724,7 +27593,7 @@ var javax;
                         var __args = arguments;
                         var modifiers_2 = __args[3];
                         {
-                            var __args_33 = arguments;
+                            var __args_34 = arguments;
                             var when_2 = 0;
                             _this = _super.call(this, source, id) || this;
                             if (_this.actionCommand === undefined) {
@@ -28753,10 +27622,10 @@ var javax;
                     else if (((source != null) || source === null) && ((typeof id === 'number') || id === null) && ((typeof command === 'string') || command === null) && when === undefined && modifiers === undefined) {
                         var __args = arguments;
                         {
-                            var __args_34 = arguments;
+                            var __args_35 = arguments;
                             var modifiers_3 = 0;
                             {
-                                var __args_35 = arguments;
+                                var __args_36 = arguments;
                                 var when_3 = 0;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.actionCommand === undefined) {
@@ -28905,24 +27774,20 @@ var javax;
         var event;
         (function (event) {
             /**
-             * Constructs an <code>AdjustmentEvent</code> object with the
-             * specified Adjustable source, event type, adjustment type, and value.
-             * <p> This method throws an
-             * <code>IllegalArgumentException</code> if <code>source</code>
-             * is <code>null</code>.
+             * Constructs an <code>AdjustmentEvent</code> object with the specified Adjustable source, event
+             * type, adjustment type, and value.
              *
-             * @param {*} source The <code>Adjustable</code> object where the
-             * event originated
-             * @param {number} id     An integer indicating the type of event.
-             * For information on allowable values, see
+             * <p>This method throws an <code>IllegalArgumentException</code> if <code>source</code> is <code>
+             * null</code>.
+             *
+             * @param {*} source The <code>Adjustable</code> object where the event originated
+             * @param {number} id An integer indicating the type of event. For information on allowable values, see the
+             * class description for {@link AdjustmentEvent}
+             * @param {number} type An integer indicating the adjustment type. For information on allowable values, see
              * the class description for {@link AdjustmentEvent}
-             * @param {number} type   An integer indicating the adjustment type.
-             * For information on allowable values, see
-             * the class description for {@link AdjustmentEvent}
-             * @param {number} value  The current value of the adjustment
-             * @param {boolean} isAdjusting A boolean that equals <code>true</code> if the event is one
-             * of a series of multiple adjusting events,
-             * otherwise <code>false</code>
+             * @param {number} value The current value of the adjustment
+             * @param {boolean} isAdjusting A boolean that equals <code>true</code> if the event is one of a series of
+             * multiple adjusting events, otherwise <code>false</code>
              * @throws IllegalArgumentException if <code>source</code> is null
              * @since 1.4
              * @see #getSource()
@@ -28961,7 +27826,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("java.awt.Adjustable") >= 0)) || source === null) && ((typeof id === 'number') || id === null) && ((typeof type === 'number') || type === null) && ((typeof value === 'number') || value === null) && isAdjusting === undefined) {
                         var __args = arguments;
                         {
-                            var __args_36 = arguments;
+                            var __args_37 = arguments;
                             var isAdjusting_1 = false;
                             _this = _super.call(this, source, id) || this;
                             if (_this.adjustable === undefined) {
@@ -29018,8 +27883,9 @@ var javax;
                     return this.value;
                 };
                 /**
-                 * Returns the type of adjustment which caused the value changed
-                 * event.  It will have one of the following values:
+                 * Returns the type of adjustment which caused the value changed event. It will have one of the
+                 * following values:
+                 *
                  * <ul>
                  * <li>{@link #UNIT_INCREMENT}
                  * <li>{@link #UNIT_DECREMENT}
@@ -29027,17 +27893,17 @@ var javax;
                  * <li>{@link #BLOCK_DECREMENT}
                  * <li>{@link #TRACK}
                  * </ul>
+                 *
                  * @return {number} one of the adjustment values listed above
                  */
                 AdjustmentEvent.prototype.getAdjustmentType = function () {
                     return this.adjustmentType;
                 };
                 /**
-                 * Returns <code>true</code> if this is one of multiple
-                 * adjustment events.
+                 * Returns <code>true</code> if this is one of multiple adjustment events.
                  *
-                 * @return {boolean} <code>true</code> if this is one of multiple
-                 * adjustment events, otherwise returns <code>false</code>
+                 * @return {boolean} <code>true</code> if this is one of multiple adjustment events, otherwise returns
+                 * <code>false</code>
                  * @since 1.4
                  */
                 AdjustmentEvent.prototype.getValueIsAdjusting = function () {
@@ -29115,8 +27981,9 @@ var javax;
     var awt;
     (function (awt) {
         /**
-         * Constructs a new scroll bar with the specified orientation, initial value,
-         * visible amount, and minimum and maximum values.
+         * Constructs a new scroll bar with the specified orientation, initial value, visible amount, and
+         * minimum and maximum values.
+         *
          * @param {number} orientation either {@link #VERTICAL} or {@link #HORIZONTAL}
          * @param {number} value the initial value of the scroll bar
          * @param {number} visible the visible amount of the scroll bar
@@ -29162,7 +28029,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_37 = arguments;
+                        var __args_38 = arguments;
                         var value_1 = 0;
                         var visible_1 = 10;
                         var minimum_1 = 0;
@@ -29220,7 +28087,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_38 = arguments;
+                        var __args_39 = arguments;
                         var orientation_1 = Scrollbar.VERTICAL;
                         var value_2 = 0;
                         var visible_2 = 10;
@@ -29848,7 +28715,7 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((group != null && group instanceof java.awt.CheckboxGroup) || group === null) && ((typeof state === 'boolean') || state === null)) {
                     var __args = arguments;
                     {
-                        var __args_39 = arguments;
+                        var __args_40 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
                             _this.label = null;
@@ -29930,7 +28797,7 @@ var javax;
                     var __args = arguments;
                     var state_2 = __args[1];
                     {
-                        var __args_40 = arguments;
+                        var __args_41 = arguments;
                         var group_2 = null;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -29981,7 +28848,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_41 = arguments;
+                        var __args_42 = arguments;
                         var state_3 = false;
                         var group_3 = null;
                         _this = _super.call(this) || this;
@@ -30033,7 +28900,7 @@ var javax;
                 else if (label === undefined && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_42 = arguments;
+                        var __args_43 = arguments;
                         var label_1 = "";
                         var state_4 = false;
                         var group_4 = null;
@@ -30340,7 +29207,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_43 = arguments;
+                        var __args_44 = arguments;
                         var alignment_1 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
@@ -30358,7 +29225,7 @@ var javax;
                 else if (text === undefined && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_44 = arguments;
+                        var __args_45 = arguments;
                         var text_1 = "";
                         var alignment_2 = Label.LEFT;
                         _this = _super.call(this) || this;
@@ -30379,8 +29246,7 @@ var javax;
                 return _this;
             }
             /**
-             * Construct a name for this component. Called by getName() when the name is
-             * <code>null</code>.
+             * Construct a name for this component. Called by getName() when the name is <code>null</code>.
              * @return {string}
              */
             Label.prototype.constructComponentName = function () {
@@ -30470,9 +29336,8 @@ var javax;
     var awt;
     (function (awt) {
         /**
-         * Constructs a new Canvas given a GraphicsConfiguration object.
-         * This constructor is largely ignored in a typical JSweet browser context
-         * as GraphicsConfiguration is a native AWT concept.
+         * Constructs a new Canvas given a GraphicsConfiguration object. This constructor is largely
+         * ignored in a typical JSweet browser context as GraphicsConfiguration is a native AWT concept.
          *
          * @param {*} config a reference to a GraphicsConfiguration object.
          * @class
@@ -30486,7 +29351,7 @@ var javax;
                 if (((config != null) || config === null)) {
                     var __args = arguments;
                     {
-                        var __args_45 = arguments;
+                        var __args_46 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvasElement === undefined) {
                             _this.htmlCanvasElement = null;
@@ -30517,18 +29382,16 @@ var javax;
                 return _this;
             }
             /**
-             * Construct a name for this component. Called by getName() when the
-             * name is null.
+             * Construct a name for this component. Called by getName() when the name is null.
              * @return {string}
              */
             Canvas.prototype.constructComponentName = function () {
                 return Canvas.base + Canvas.nameCounter++;
             };
             /**
-             * Creates the peer of the canvas. In the JSweet context, this means
-             * creating the underlying HTML &lt;canvas&gt; element and appending it
-             * to the component's HTML element.
-             * It also initializes the 2D rendering context.
+             * Creates the peer of the canvas. In the JSweet context, this means creating the underlying HTML
+             * &lt;canvas&gt; element and appending it to the component's HTML element. It also initializes
+             * the 2D rendering context.
              */
             Canvas.prototype.addNotify = function () {
                 if (this.htmlElement == null) {
@@ -30551,8 +29414,8 @@ var javax;
                 }
             };
             /**
-             * Sets the size of this component. Overrides Component's setSize
-             * to also update the underlying HTML canvas element's width and height.
+             * Sets the size of this component. Overrides Component's setSize to also update the underlying
+             * HTML canvas element's width and height.
              *
              * @param {number} width The new width.
              * @param {number} height The new height.
@@ -30569,12 +29432,10 @@ var javax;
             };
             /**
              * Paints this canvas.
-             * <p>
-             * Most applications that subclass <code>Canvas</code> should
-             * override this method in order to perform some useful operation
-             * (typically, custom painting of the canvas).
-             * The default operation is simply to clear the canvas.
-             * Applications that override this method need not call
+             *
+             * <p>Most applications that subclass <code>Canvas</code> should override this method in order to
+             * perform some useful operation (typically, custom painting of the canvas). The default operation
+             * is simply to clear the canvas. Applications that override this method need not call
              * super.paint(g).
              *
              * @param {java.awt.Graphics} g the specified Graphics context (expected to be WebGraphics2D or similar)
@@ -30586,11 +29447,10 @@ var javax;
             };
             /**
              * Updates this canvas.
-             * <p>
-             * This method is called in response to a call to <code>repaint</code>.
-             * The canvas is first cleared by filling it with the background
-             * color, and then completely redrawn by calling this canvas's
-             * <code>paint</code> method.
+             *
+             * <p>This method is called in response to a call to <code>repaint</code>. The canvas is first
+             * cleared by filling it with the background color, and then completely redrawn by calling this
+             * canvas's <code>paint</code> method.
              *
              * @param {java.awt.Graphics} g the specified Graphics context (expected to be WebGraphics2D or similar)
              */
@@ -30616,17 +29476,15 @@ var javax;
                 console.warn("createBufferStrategy with capabilities is a no-op in JSweet Canvas port.");
             };
             /**
-             * Creates a new strategy for multi-buffering on this component with the
-             * required buffer capabilities.
-             * In a browser environment, this is often a no-op.
+             * Creates a new strategy for multi-buffering on this component with the required buffer
+             * capabilities. In a browser environment, this is often a no-op.
              *
              * @param {number} numBuffers number of buffers to create
-             * @param {*} caps the required capabilities for creating the buffer strategy;
-             * cannot be <code>null</code>
-             * @exception AWTException if the capabilities supplied could not be
-             * supported or met.
-             * @exception IllegalArgumentException if numBuffers is less than 1, or if
-             * caps is <code>null</code>
+             * @param {*} caps the required capabilities for creating the buffer strategy; cannot be <code>null
+             * </code>
+             * @exception AWTException if the capabilities supplied could not be supported or met.
+             * @exception IllegalArgumentException if numBuffers is less than 1, or if caps is <code>null
+             * </code>
              */
             Canvas.prototype.createBufferStrategy = function (numBuffers, caps) {
                 if (((typeof numBuffers === 'number') || numBuffers === null) && ((caps != null) || caps === null)) {
@@ -30639,9 +29497,8 @@ var javax;
                     throw new Error('invalid overload');
             };
             /**
-             * Returns the <code>BufferStrategy</code> used by this component.
-             * In a browser environment, this will typically return null or a dummy
-             * object as direct buffer strategies are not applicable.
+             * Returns the <code>BufferStrategy</code> used by this component. In a browser environment, this
+             * will typically return null or a dummy object as direct buffer strategies are not applicable.
              *
              * @return {*} the buffer strategy used by this component (or null)
              */
@@ -30649,9 +29506,9 @@ var javax;
                 return null;
             };
             /**
-             * Creates the primary HTML element for this component.
-             * For a Canvas, this creates an HTML &lt;canvas&gt; element.
-             * This method is typically called by the framework when the component is added to a parent.
+             * Creates the primary HTML element for this component. For a Canvas, this creates an HTML
+             * &lt;canvas&gt; element. This method is typically called by the framework when the component is
+             * added to a parent.
              */
             Canvas.prototype.createHTML = function () {
                 this.htmlCanvasElement = document.createElement("canvas");
@@ -31027,11 +29884,10 @@ var javax;
         /**
          * Constructs a new <code>IndexedPropertyChangeEvent</code> object.
          *
-         * @param {*} source  The bean that fired the event.
-         * @param {string} propertyName  The programmatic name of the property that
-         * was changed.
-         * @param {*} oldValue      The old value of the property.
-         * @param {*} newValue      The new value of the property.
+         * @param {*} source The bean that fired the event.
+         * @param {string} propertyName The programmatic name of the property that was changed.
+         * @param {*} oldValue The old value of the property.
+         * @param {*} newValue The new value of the property.
          * @param {number} index index of the property element that was changed.
          * @class
          * @extends java.beans.PropertyChangeEvent
@@ -31050,8 +29906,7 @@ var javax;
             /**
              * Gets the index of the property that was changed.
              *
-             * @return {number} The index specifying the property element that was
-             * changed.
+             * @return {number} The index specifying the property element that was changed.
              */
             IndexedPropertyChangeEvent.prototype.getIndex = function () {
                 return this.index;
@@ -32338,10 +31193,9 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Constructs a DefaultComboBoxModel object initialized with
-         * an array of objects.
+         * Constructs a DefaultComboBoxModel object initialized with an array of objects.
          *
-         * @param {E[]} items  an array of Object objects
+         * @param {E[]} items an array of Object objects
          * @class
          * @extends javax.swing.AbstractListModel
          * @author Arnaud Weber
@@ -32426,8 +31280,7 @@ var javax;
              * Returns the index-position of the specified object in the list.
              *
              * @param {*} anObject
-             * @return {number} an int representing the index position, where 0 is
-             * the first position
+             * @return {number} an int representing the index position, where 0 is the first position
              */
             DefaultComboBoxModel.prototype.getIndexOf = function (anObject) {
                 return this.objects.indexOf(anObject);
@@ -32493,7 +31346,6 @@ var javax;
              *
              * @param {*} anObject The object to watch for changing state
              * @param {string} name The presentation name to be used for this edit
-             *
              * @see StateEdit
              * @class
              * @extends javax.swing.undo.AbstractUndoableEdit
@@ -32549,8 +31401,7 @@ var javax;
                     this.undoRedoName = name;
                 };
                 /**
-                 * Gets the post-edit state of the StateEditable object and
-                 * ends the edit.
+                 * Gets the post-edit state of the StateEditable object and ends the edit.
                  */
                 StateEdit.prototype.end = function () {
                     this.postState = (new java.util.Hashtable(11));
@@ -32617,8 +31468,8 @@ var javax;
         var undo;
         (function (undo) {
             /**
-             * A concrete subclass of AbstractUndoableEdit, used to assemble little
-             * UndoableEdits into great big ones.
+             * A concrete subclass of AbstractUndoableEdit, used to assemble little UndoableEdits into great big
+             * ones.
              *
              * @author Ray Ryan
              * @class
@@ -32639,9 +31490,8 @@ var javax;
                     return _this;
                 }
                 /**
-                 * Sends <code>undo</code> to all contained
-                 * <code>UndoableEdits</code> in the reverse of
-                 * the order in which they were added.
+                 * Sends <code>undo</code> to all contained <code>UndoableEdits</code> in the reverse of the order
+                 * in which they were added.
                  */
                 CompoundEdit.prototype.undo = function () {
                     _super.prototype.undo.call(this);
@@ -32655,9 +31505,8 @@ var javax;
                     ;
                 };
                 /**
-                 * Sends <code>redo</code> to all contained
-                 * <code>UndoableEdit</code>s in the order in
-                 * which they were added.
+                 * Sends <code>redo</code> to all contained <code>UndoableEdit</code>s in the order in which they
+                 * were added.
                  */
                 CompoundEdit.prototype.redo = function () {
                     _super.prototype.redo.call(this);
@@ -32670,9 +31519,8 @@ var javax;
                     ;
                 };
                 /**
-                 * Returns the last <code>UndoableEdit</code> in
-                 * <code>edits</code>, or <code>null</code>
-                 * if <code>edits</code> is empty.
+                 * Returns the last <code>UndoableEdit</code> in <code>edits</code>, or <code>null</code> if
+                 * <code>edits</code> is empty.
                  * @return {*}
                  */
                 CompoundEdit.prototype.lastEdit = function () {
@@ -32683,8 +31531,7 @@ var javax;
                         return null;
                 };
                 /**
-                 * Sends <code>die</code> to each subedit,
-                 * in the reverse of the order that they were added.
+                 * Sends <code>die</code> to each subedit, in the reverse of the order that they were added.
                  */
                 CompoundEdit.prototype.die = function () {
                     var size = this.edits.size();
@@ -32698,19 +31545,15 @@ var javax;
                     _super.prototype.die.call(this);
                 };
                 /**
-                 * If this edit is <code>inProgress</code>,
-                 * accepts <code>anEdit</code> and returns true.
+                 * If this edit is <code>inProgress</code>, accepts <code>anEdit</code> and returns true.
                  *
-                 * <p>The last edit added to this <code>CompoundEdit</code>
-                 * is given a chance to <code>addEdit(anEdit)</code>.
-                 * If it refuses (returns false), <code>anEdit</code> is
-                 * given a chance to <code>replaceEdit</code> the last edit.
-                 * If <code>anEdit</code> returns false here,
-                 * it is added to <code>edits</code>.
+                 * <p>The last edit added to this <code>CompoundEdit</code> is given a chance to <code>
+                 * addEdit(anEdit)</code>. If it refuses (returns false), <code>anEdit</code> is given a chance to
+                 * <code>replaceEdit</code> the last edit. If <code>anEdit</code> returns false here, it is added
+                 * to <code>edits</code>.
                  *
                  * @param {*} anEdit the edit to be added
-                 * @return {boolean} true if the edit is <code>inProgress</code>;
-                 * otherwise returns false
+                 * @return {boolean} true if the edit is <code>inProgress</code>; otherwise returns false
                  */
                 CompoundEdit.prototype.addEdit = function (anEdit) {
                     if (!this.inProgress) {
@@ -32740,40 +31583,36 @@ var javax;
                     this.inProgress = false;
                 };
                 /**
-                 * Returns false if <code>isInProgress</code> or if super
-                 * returns false.
+                 * Returns false if <code>isInProgress</code> or if super returns false.
                  *
-                 * @see     #isInProgress
+                 * @see #isInProgress
                  * @return {boolean}
                  */
                 CompoundEdit.prototype.canUndo = function () {
                     return !this.isInProgress() && _super.prototype.canUndo.call(this);
                 };
                 /**
-                 * Returns false if <code>isInProgress</code> or if super
-                 * returns false.
+                 * Returns false if <code>isInProgress</code> or if super returns false.
                  *
-                 * @see     #isInProgress
+                 * @see #isInProgress
                  * @return {boolean}
                  */
                 CompoundEdit.prototype.canRedo = function () {
                     return !this.isInProgress() && _super.prototype.canRedo.call(this);
                 };
                 /**
-                 * Returns true if this edit is in progress--that is, it has not
-                 * received end. This generally means that edits are still being
-                 * added to it.
+                 * Returns true if this edit is in progress--that is, it has not received end. This generally
+                 * means that edits are still being added to it.
                  *
-                 * @see     #end
+                 * @see #end
                  * @return {boolean}
                  */
                 CompoundEdit.prototype.isInProgress = function () {
                     return this.inProgress;
                 };
                 /**
-                 * Returns true if any of the <code>UndoableEdit</code>s
-                 * in <code>edits</code> do.
-                 * Returns false if they all return false.
+                 * Returns true if any of the <code>UndoableEdit</code>s in <code>edits</code> do. Returns false
+                 * if they all return false.
                  * @return {boolean}
                  */
                 CompoundEdit.prototype.isSignificant = function () {
@@ -32789,10 +31628,8 @@ var javax;
                     return false;
                 };
                 /**
-                 * Returns <code>getPresentationName</code> from the
-                 * last <code>UndoableEdit</code> added to
-                 * <code>edits</code>. If <code>edits</code> is empty,
-                 * calls super.
+                 * Returns <code>getPresentationName</code> from the last <code>UndoableEdit</code> added to
+                 * <code>edits</code>. If <code>edits</code> is empty, calls super.
                  * @return {string}
                  */
                 CompoundEdit.prototype.getPresentationName = function () {
@@ -32805,10 +31642,8 @@ var javax;
                     }
                 };
                 /**
-                 * Returns <code>getUndoPresentationName</code>
-                 * from the last <code>UndoableEdit</code>
-                 * added to <code>edits</code>.
-                 * If <code>edits</code> is empty, calls super.
+                 * Returns <code>getUndoPresentationName</code> from the last <code>UndoableEdit</code> added to
+                 * <code>edits</code>. If <code>edits</code> is empty, calls super.
                  * @return {string}
                  */
                 CompoundEdit.prototype.getUndoPresentationName = function () {
@@ -32821,10 +31656,8 @@ var javax;
                     }
                 };
                 /**
-                 * Returns <code>getRedoPresentationName</code>
-                 * from the last <code>UndoableEdit</code>
-                 * added to <code>edits</code>.
-                 * If <code>edits</code> is empty, calls super.
+                 * Returns <code>getRedoPresentationName</code> from the last <code>UndoableEdit</code> added to
+                 * <code>edits</code>. If <code>edits</code> is empty, calls super.
                  * @return {string}
                  */
                 CompoundEdit.prototype.getRedoPresentationName = function () {
@@ -32837,8 +31670,7 @@ var javax;
                     }
                 };
                 /**
-                 * Returns a string that displays and identifies this
-                 * object's properties.
+                 * Returns a string that displays and identifies this object's properties.
                  *
                  * @return {string} a String representation of this object
                  */
@@ -32859,16 +31691,13 @@ var javax;
         var geom;
         (function (geom) {
             /**
-             * Constructs a new <code>GeneralPath</code> object with the specified
-             * winding rule and the specified initial capacity to store path
-             * coordinates. This number is an initial guess as to how many path segments
-             * will be added to the path, but the storage is expanded as needed to store
+             * Constructs a new <code>GeneralPath</code> object with the specified winding rule and the
+             * specified initial capacity to store path coordinates. This number is an initial guess as to how
+             * many path segments will be added to the path, but the storage is expanded as needed to store
              * whatever path segments are added.
              *
-             * @param {number} rule
-             * the winding rule
-             * @param {number} initialCapacity
-             * the estimate for the number of path segments in the path
+             * @param {number} rule the winding rule
+             * @param {number} initialCapacity the estimate for the number of path segments in the path
              * @see #WIND_EVEN_ODD
              * @see #WIND_NON_ZERO
              * @since 1.2
@@ -32926,18 +31755,17 @@ var javax;
     var awt;
     (function (awt) {
         /**
-         * Constructs a new <code>Rectangle</code> whose upper-left corner is
-         * specified as
-         * {@code (x,y)} and whose width and height
-         * are specified by the arguments of the same name.
-         * @param     {number} x the specified X coordinate
-         * @param     {number} y the specified Y coordinate
-         * @param     {number} width    the width of the <code>Rectangle</code>
-         * @param     {number} height   the height of the <code>Rectangle</code>
+         * Constructs a new <code>Rectangle</code> whose upper-left corner is specified as {@code (x,y)}
+         * and whose width and height are specified by the arguments of the same name.
+         *
+         * @param {number} x the specified X coordinate
+         * @param {number} y the specified Y coordinate
+         * @param {number} width the width of the <code>Rectangle</code>
+         * @param {number} height the height of the <code>Rectangle</code>
          * @since 1.0
          * @class
          * @extends java.awt.geom.Rectangle2D
-         * @author      Sami Shaio
+         * @author Sami Shaio
          */
         var Rectangle = /** @class */ (function (_super) {
             __extends(Rectangle, _super);
@@ -32968,7 +31796,7 @@ var javax;
                     var p = __args[0];
                     var d = __args[1];
                     {
-                        var __args_46 = arguments;
+                        var __args_47 = arguments;
                         var x_4 = p.x;
                         var y_4 = p.y;
                         var width_4 = d.width;
@@ -33009,7 +31837,7 @@ var javax;
                     var width_5 = __args[0];
                     var height_4 = __args[1];
                     {
-                        var __args_47 = arguments;
+                        var __args_48 = arguments;
                         var x_5 = 0;
                         var y_5 = 0;
                         _this = _super.call(this) || this;
@@ -33047,7 +31875,7 @@ var javax;
                     var __args = arguments;
                     var r = __args[0];
                     {
-                        var __args_48 = arguments;
+                        var __args_49 = arguments;
                         var x_6 = r.x;
                         var y_6 = r.y;
                         var width_6 = r.width;
@@ -33087,7 +31915,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_49 = arguments;
+                        var __args_50 = arguments;
                         var x_7 = p.x;
                         var y_7 = p.y;
                         var width_7 = 0;
@@ -33127,7 +31955,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_50 = arguments;
+                        var __args_51 = arguments;
                         var x_8 = 0;
                         var y_8 = 0;
                         var width_8 = d.width;
@@ -33166,7 +31994,7 @@ var javax;
                 else if (x === undefined && y === undefined && width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_51 = arguments;
+                        var __args_52 = arguments;
                         var x_9 = 0;
                         var y_9 = 0;
                         var width_9 = 0;
@@ -33207,32 +32035,34 @@ var javax;
                 return _this;
             }
             /**
-             * Returns the X coordinate of the bounding <code>Rectangle</code> in
-             * <code>double</code> precision.
+             * Returns the X coordinate of the bounding <code>Rectangle</code> in <code>double</code>
+             * precision.
+             *
              * @return {number} the X coordinate of the bounding <code>Rectangle</code>.
              */
             Rectangle.prototype.getX = function () {
                 return this.x;
             };
             /**
-             * Returns the Y coordinate of the bounding <code>Rectangle</code> in
-             * <code>double</code> precision.
+             * Returns the Y coordinate of the bounding <code>Rectangle</code> in <code>double</code>
+             * precision.
+             *
              * @return {number} the Y coordinate of the bounding <code>Rectangle</code>.
              */
             Rectangle.prototype.getY = function () {
                 return this.y;
             };
             /**
-             * Returns the width of the bounding <code>Rectangle</code> in
-             * <code>double</code> precision.
+             * Returns the width of the bounding <code>Rectangle</code> in <code>double</code> precision.
+             *
              * @return {number} the width of the bounding <code>Rectangle</code>.
              */
             Rectangle.prototype.getWidth = function () {
                 return this.width;
             };
             /**
-             * Returns the height of the bounding <code>Rectangle</code> in
-             * <code>double</code> precision.
+             * Returns the height of the bounding <code>Rectangle</code> in <code>double</code> precision.
+             *
              * @return {number} the height of the bounding <code>Rectangle</code>.
              */
             Rectangle.prototype.getHeight = function () {
@@ -33240,22 +32070,23 @@ var javax;
             };
             /**
              * Gets the bounding <code>Rectangle</code> of this <code>Rectangle</code>.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>getBounds</code> method of
+             *
+             * <p>This method is included for completeness, to parallel the <code>getBounds</code> method of
              * {@link Component}.
-             * @return    {java.awt.Rectangle} a new <code>Rectangle</code>, equal to the
-             * bounding <code>Rectangle</code> for this <code>Rectangle</code>.
-             * @see       java.awt.Component#getBounds
-             * @see       #setBounds(Rectangle)
-             * @see       #setBounds(int, int, int, int)
-             * @since     1.1
+             *
+             * @return {java.awt.Rectangle} a new <code>Rectangle</code>, equal to the bounding <code>Rectangle</code> for this
+             * <code>Rectangle</code>.
+             * @see java.awt.Component#getBounds
+             * @see #setBounds(Rectangle)
+             * @see #setBounds(int, int, int, int)
+             * @since 1.1
              */
             Rectangle.prototype.getBounds = function () {
                 return new Rectangle(this.x, this.y, this.width, this.height);
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @return {java.awt.geom.Rectangle2D}
              */
@@ -33269,22 +32100,19 @@ var javax;
                 this.reshape(x, y, width, height);
             };
             /**
-             * Sets the bounding <code>Rectangle</code> of this
-             * <code>Rectangle</code> to the specified
-             * <code>x</code>, <code>y</code>, <code>width</code>,
-             * and <code>height</code>.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>setBounds</code> method of <code>Component</code>.
-             * @param {number} x the new X coordinate for the upper-left
-             * corner of this <code>Rectangle</code>
-             * @param {number} y the new Y coordinate for the upper-left
-             * corner of this <code>Rectangle</code>
+             * Sets the bounding <code>Rectangle</code> of this <code>Rectangle</code> to the specified <code>
+             * x</code>, <code>y</code>, <code>width</code>, and <code>height</code>.
+             *
+             * <p>This method is included for completeness, to parallel the <code>setBounds</code> method of
+             * <code>Component</code>.
+             *
+             * @param {number} x the new X coordinate for the upper-left corner of this <code>Rectangle</code>
+             * @param {number} y the new Y coordinate for the upper-left corner of this <code>Rectangle</code>
              * @param {number} width the new width for this <code>Rectangle</code>
              * @param {number} height the new height for this <code>Rectangle</code>
-             * @see       #getBounds
-             * @see       java.awt.Component#setBounds(int, int, int, int)
-             * @since     1.1
+             * @see #getBounds
+             * @see java.awt.Component#setBounds(int, int, int, int)
+             * @since 1.1
              */
             Rectangle.prototype.setBounds = function (x, y, width, height) {
                 if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof width === 'number') || width === null) && ((typeof height === 'number') || height === null)) {
@@ -33324,17 +32152,13 @@ var javax;
                 this.reshape(newx, newy, neww, newh);
             };
             /**
-             * Sets the bounds of this {@code Rectangle} to the integer bounds
-             * which encompass the specified {@code x}, {@code y}, {@code width},
-             * and {@code height}.
-             * If the parameters specify a {@code Rectangle} that exceeds the
-             * maximum range of integers, the result will be the best
-             * representation of the specified {@code Rectangle} intersected
-             * with the maximum integer bounds.
-             * @param {number} x the X coordinate of the upper-left corner of
-             * the specified rectangle
-             * @param {number} y the Y coordinate of the upper-left corner of
-             * the specified rectangle
+             * Sets the bounds of this {@code Rectangle} to the integer bounds which encompass the specified
+             * {@code x}, {@code y}, {@code width}, and {@code height}. If the parameters specify a {@code
+             * Rectangle} that exceeds the maximum range of integers, the result will be the best
+             * representation of the specified {@code Rectangle} intersected with the maximum integer bounds.
+             *
+             * @param {number} x the X coordinate of the upper-left corner of the specified rectangle
+             * @param {number} y the Y coordinate of the upper-left corner of the specified rectangle
              * @param {number} width the width of the specified rectangle
              * @param {number} height the new height of the specified rectangle
              */
@@ -33358,19 +32182,16 @@ var javax;
                 return ((doceil ? Math.ceil(v) : Math.floor(v)) | 0);
             };
             /**
-             * Sets the bounding <code>Rectangle</code> of this
-             * <code>Rectangle</code> to the specified
-             * <code>x</code>, <code>y</code>, <code>width</code>,
-             * and <code>height</code>.
+             * Sets the bounding <code>Rectangle</code> of this <code>Rectangle</code> to the specified <code>
+             * x</code>, <code>y</code>, <code>width</code>, and <code>height</code>.
+             *
              * <p>
-             * @param {number} x the new X coordinate for the upper-left
-             * corner of this <code>Rectangle</code>
-             * @param {number} y the new Y coordinate for the upper-left
-             * corner of this <code>Rectangle</code>
+             *
+             * @param {number} x the new X coordinate for the upper-left corner of this <code>Rectangle</code>
+             * @param {number} y the new Y coordinate for the upper-left corner of this <code>Rectangle</code>
              * @param {number} width the new width for this <code>Rectangle</code>
              * @param {number} height the new height for this <code>Rectangle</code>
-             * @deprecated As of JDK version 1.1,
-             * replaced by <code>setBounds(int, int, int, int)</code>.
+             * @deprecated As of JDK version 1.1, replaced by <code>setBounds(int, int, int, int)</code>.
              */
             Rectangle.prototype.reshape = function (x, y, width, height) {
                 this.x = x;
@@ -33380,15 +32201,15 @@ var javax;
             };
             /**
              * Returns the location of this <code>Rectangle</code>.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>getLocation</code> method of <code>Component</code>.
-             * @return {java.awt.Point} the <code>Point</code> that is the upper-left corner of
-             * this <code>Rectangle</code>.
-             * @see       java.awt.Component#getLocation
-             * @see       #setLocation(Point)
-             * @see       #setLocation(int, int)
-             * @since     1.1
+             *
+             * <p>This method is included for completeness, to parallel the <code>getLocation</code> method of
+             * <code>Component</code>.
+             *
+             * @return {java.awt.Point} the <code>Point</code> that is the upper-left corner of this <code>Rectangle</code>.
+             * @see java.awt.Component#getLocation
+             * @see #setLocation(Point)
+             * @see #setLocation(int, int)
+             * @since 1.1
              */
             Rectangle.prototype.getLocation = function () {
                 return new java.awt.Point(this.x, this.y);
@@ -33401,14 +32222,15 @@ var javax;
             };
             /**
              * Moves this <code>Rectangle</code> to the specified location.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>setLocation</code> method of <code>Component</code>.
+             *
+             * <p>This method is included for completeness, to parallel the <code>setLocation</code> method of
+             * <code>Component</code>.
+             *
              * @param {number} x the X coordinate of the new location
              * @param {number} y the Y coordinate of the new location
-             * @see       #getLocation
-             * @see       java.awt.Component#setLocation(int, int)
-             * @since     1.1
+             * @see #getLocation
+             * @see java.awt.Component#setLocation(int, int)
+             * @since 1.1
              */
             Rectangle.prototype.setLocation = function (x, y) {
                 if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null)) {
@@ -33422,26 +32244,25 @@ var javax;
             };
             /**
              * Moves this <code>Rectangle</code> to the specified location.
+             *
              * <p>
+             *
              * @param {number} x the X coordinate of the new location
              * @param {number} y the Y coordinate of the new location
-             * @deprecated As of JDK version 1.1,
-             * replaced by <code>setLocation(int, int)</code>.
+             * @deprecated As of JDK version 1.1, replaced by <code>setLocation(int, int)</code>.
              */
             Rectangle.prototype.move = function (x, y) {
                 this.x = x;
                 this.y = y;
             };
             /**
-             * Translates this <code>Rectangle</code> the indicated distance,
-             * to the right along the X coordinate axis, and
-             * downward along the Y coordinate axis.
-             * @param {number} dx the distance to move this <code>Rectangle</code>
-             * along the X axis
-             * @param {number} dy the distance to move this <code>Rectangle</code>
-             * along the Y axis
-             * @see       java.awt.Rectangle#setLocation(int, int)
-             * @see       java.awt.Rectangle#setLocation(java.awt.Point)
+             * Translates this <code>Rectangle</code> the indicated distance, to the right along the X
+             * coordinate axis, and downward along the Y coordinate axis.
+             *
+             * @param {number} dx the distance to move this <code>Rectangle</code> along the X axis
+             * @param {number} dy the distance to move this <code>Rectangle</code> along the Y axis
+             * @see java.awt.Rectangle#setLocation(int, int)
+             * @see java.awt.Rectangle#setLocation(java.awt.Point)
              */
             Rectangle.prototype.translate = function (dx, dy) {
                 var oldv = this.x;
@@ -33488,17 +32309,17 @@ var javax;
                 this.y = newv;
             };
             /**
-             * Gets the size of this <code>Rectangle</code>, represented by
-             * the returned <code>Dimension</code>.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>getSize</code> method of <code>Component</code>.
-             * @return {java.awt.Dimension} a <code>Dimension</code>, representing the size of
-             * this <code>Rectangle</code>.
-             * @see       java.awt.Component#getSize
-             * @see       #setSize(Dimension)
-             * @see       #setSize(int, int)
-             * @since     1.1
+             * Gets the size of this <code>Rectangle</code>, represented by the returned <code>Dimension
+             * </code>.
+             *
+             * <p>This method is included for completeness, to parallel the <code>getSize</code> method of
+             * <code>Component</code>.
+             *
+             * @return {java.awt.Dimension} a <code>Dimension</code>, representing the size of this <code>Rectangle</code>.
+             * @see java.awt.Component#getSize
+             * @see #setSize(Dimension)
+             * @see #setSize(int, int)
+             * @since 1.1
              */
             Rectangle.prototype.getSize = function () {
                 return new java.awt.Dimension(this.width, this.height);
@@ -33510,16 +32331,16 @@ var javax;
                 this.resize(width, height);
             };
             /**
-             * Sets the size of this <code>Rectangle</code> to the specified
-             * width and height.
-             * <p>
-             * This method is included for completeness, to parallel the
-             * <code>setSize</code> method of <code>Component</code>.
+             * Sets the size of this <code>Rectangle</code> to the specified width and height.
+             *
+             * <p>This method is included for completeness, to parallel the <code>setSize</code> method of
+             * <code>Component</code>.
+             *
              * @param {number} width the new width for this <code>Rectangle</code>
              * @param {number} height the new height for this <code>Rectangle</code>
-             * @see       java.awt.Component#setSize(int, int)
-             * @see       #getSize
-             * @since     1.1
+             * @see java.awt.Component#setSize(int, int)
+             * @see #getSize
+             * @since 1.1
              */
             Rectangle.prototype.setSize = function (width, height) {
                 if (((typeof width === 'number') || width === null) && ((typeof height === 'number') || height === null)) {
@@ -33532,13 +32353,13 @@ var javax;
                     throw new Error('invalid overload');
             };
             /**
-             * Sets the size of this <code>Rectangle</code> to the specified
-             * width and height.
+             * Sets the size of this <code>Rectangle</code> to the specified width and height.
+             *
              * <p>
+             *
              * @param {number} width the new width for this <code>Rectangle</code>
              * @param {number} height the new height for this <code>Rectangle</code>
-             * @deprecated As of JDK version 1.1,
-             * replaced by <code>setSize(int, int)</code>.
+             * @deprecated As of JDK version 1.1, replaced by <code>setSize(int, int)</code>.
              */
             Rectangle.prototype.resize = function (width, height) {
                 this.width = width;
@@ -33587,19 +32408,16 @@ var javax;
                 return true;
             };
             /**
-             * Checks whether this <code>Rectangle</code> entirely contains
-             * the <code>Rectangle</code>
-             * at the specified location {@code (X,Y)} with the
-             * specified dimensions {@code (W,H)}.
-             * @param     {number} X the specified X coordinate
-             * @param     {number} Y the specified Y coordinate
-             * @param     {number} W   the width of the <code>Rectangle</code>
-             * @param     {number} H   the height of the <code>Rectangle</code>
-             * @return    {boolean} <code>true</code> if the <code>Rectangle</code> specified by
-             * {@code (X, Y, W, H)}
-             * is entirely enclosed inside this <code>Rectangle</code>;
-             * <code>false</code> otherwise.
-             * @since     1.1
+             * Checks whether this <code>Rectangle</code> entirely contains the <code>Rectangle</code> at the
+             * specified location {@code (X,Y)} with the specified dimensions {@code (W,H)}.
+             *
+             * @param {number} X the specified X coordinate
+             * @param {number} Y the specified Y coordinate
+             * @param {number} W the width of the <code>Rectangle</code>
+             * @param {number} H the height of the <code>Rectangle</code>
+             * @return {boolean} <code>true</code> if the <code>Rectangle</code> specified by {@code (X, Y, W, H)} is
+             * entirely enclosed inside this <code>Rectangle</code>; <code>false</code> otherwise.
+             * @since 1.1
              */
             Rectangle.prototype.contains = function (X, Y, W, H) {
                 if (((typeof X === 'number') || X === null) && ((typeof Y === 'number') || Y === null) && ((typeof W === 'number') || W === null) && ((typeof H === 'number') || H === null)) {
@@ -33630,17 +32448,14 @@ var javax;
                     throw new Error('invalid overload');
             };
             /**
-             * Checks whether or not this <code>Rectangle</code> contains the
-             * point at the specified location {@code (X,Y)}.
+             * Checks whether or not this <code>Rectangle</code> contains the point at the specified location
+             * {@code (X,Y)}.
              *
-             * @param  {number} X the specified X coordinate
-             * @param  {number} Y the specified Y coordinate
-             * @return    {boolean} <code>true</code> if the point
-             * {@code (X,Y)} is inside this
-             * <code>Rectangle</code>;
+             * @param {number} X the specified X coordinate
+             * @param {number} Y the specified Y coordinate
+             * @return {boolean} <code>true</code> if the point {@code (X,Y)} is inside this <code>Rectangle</code>;
              * <code>false</code> otherwise.
-             * @deprecated As of JDK version 1.1,
-             * replaced by <code>contains(int, int)</code>.
+             * @deprecated As of JDK version 1.1, replaced by <code>contains(int, int)</code>.
              */
             Rectangle.prototype.inside = function (X, Y) {
                 var w = this.width;
@@ -33699,17 +32514,14 @@ var javax;
                 return ((rw < rx || rw > tx) && (rh < ry || rh > ty) && (tw < tx || tw > rx) && (th < ty || th > ry));
             };
             /**
-             * Computes the intersection of this <code>Rectangle</code> with the
-             * specified <code>Rectangle</code>. Returns a new <code>Rectangle</code>
-             * that represents the intersection of the two rectangles.
-             * If the two rectangles do not intersect, the result will be
-             * an empty rectangle.
+             * Computes the intersection of this <code>Rectangle</code> with the specified <code>Rectangle
+             * </code>. Returns a new <code>Rectangle</code> that represents the intersection of the two
+             * rectangles. If the two rectangles do not intersect, the result will be an empty rectangle.
              *
-             * @param     {java.awt.Rectangle} r   the specified <code>Rectangle</code>
-             * @return    {java.awt.Rectangle} the largest <code>Rectangle</code> contained in both the
-             * specified <code>Rectangle</code> and in
-             * this <code>Rectangle</code>; or if the rectangles
-             * do not intersect, an empty rectangle.
+             * @param {java.awt.Rectangle} r the specified <code>Rectangle</code>
+             * @return {java.awt.Rectangle} the largest <code>Rectangle</code> contained in both the specified <code>Rectangle
+             * </code> and in this <code>Rectangle</code>; or if the rectangles do not intersect, an empty
+             * rectangle.
              */
             Rectangle.prototype.intersection = function (r) {
                 var tx1 = this.x;
@@ -33741,27 +32553,21 @@ var javax;
                 return new Rectangle(tx1, ty1, (tx2 | 0), (ty2 | 0));
             };
             /**
-             * Computes the union of this <code>Rectangle</code> with the
-             * specified <code>Rectangle</code>. Returns a new
-             * <code>Rectangle</code> that
-             * represents the union of the two rectangles.
-             * <p>
-             * If either {@code Rectangle} has any dimension less than zero
-             * the rules for <a href=#NonExistant>non-existant</a> rectangles
-             * apply.
-             * If only one has a dimension less than zero, then the result
-             * will be a copy of the other {@code Rectangle}.
-             * If both have dimension less than zero, then the result will
-             * have at least one dimension less than zero.
-             * <p>
-             * If the resulting {@code Rectangle} would have a dimension
-             * too large to be expressed as an {@code int}, the result
-             * will have a dimension of {@code Integer.MAX_VALUE} along
-             * that dimension.
+             * Computes the union of this <code>Rectangle</code> with the specified <code>Rectangle</code>.
+             * Returns a new <code>Rectangle</code> that represents the union of the two rectangles.
+             *
+             * <p>If either {@code Rectangle} has any dimension less than zero the rules for <a
+             * href=#NonExistant>non-existant</a> rectangles apply. If only one has a dimension less than
+             * zero, then the result will be a copy of the other {@code Rectangle}. If both have dimension
+             * less than zero, then the result will have at least one dimension less than zero.
+             *
+             * <p>If the resulting {@code Rectangle} would have a dimension too large to be expressed as an
+             * {@code int}, the result will have a dimension of {@code Integer.MAX_VALUE} along that
+             * dimension.
+             *
              * @param {java.awt.Rectangle} r the specified <code>Rectangle</code>
-             * @return    {java.awt.Rectangle} the smallest <code>Rectangle</code> containing both
-             * the specified <code>Rectangle</code> and this
-             * <code>Rectangle</code>.
+             * @return {java.awt.Rectangle} the smallest <code>Rectangle</code> containing both the specified <code>Rectangle
+             * </code> and this <code>Rectangle</code>.
              */
             Rectangle.prototype.union = function (r) {
                 var tx2 = this.width;
@@ -33828,29 +32634,26 @@ var javax;
                 this.reshape(x1, y1, (x2 | 0), (y2 | 0));
             };
             /**
-             * Adds a point, specified by the integer arguments {@code newx,newy}
-             * to the bounds of this {@code Rectangle}.
-             * <p>
-             * If this {@code Rectangle} has any dimension less than zero,
-             * the rules for <a href=#NonExistant>non-existant</a>
-             * rectangles apply.
-             * In that case, the new bounds of this {@code Rectangle} will
-             * have a location equal to the specified coordinates and
-             * width and height equal to zero.
-             * <p>
-             * After adding a point, a call to <code>contains</code> with the
-             * added point as an argument does not necessarily return
-             * <code>true</code>. The <code>contains</code> method does not
-             * return <code>true</code> for points on the right or bottom
-             * edges of a <code>Rectangle</code>. Therefore, if the added point
-             * falls on the right or bottom edge of the enlarged
-             * <code>Rectangle</code>, <code>contains</code> returns
-             * <code>false</code> for that point.
-             * If the specified point must be contained within the new
-             * {@code Rectangle}, a 1x1 rectangle should be added instead:
+             * Adds a point, specified by the integer arguments {@code newx,newy} to the bounds of this {@code
+             * Rectangle}.
+             *
+             * <p>If this {@code Rectangle} has any dimension less than zero, the rules for <a
+             * href=#NonExistant>non-existant</a> rectangles apply. In that case, the new bounds of this
+             * {@code Rectangle} will have a location equal to the specified coordinates and width and height
+             * equal to zero.
+             *
+             * <p>After adding a point, a call to <code>contains</code> with the added point as an argument
+             * does not necessarily return <code>true</code>. The <code>contains</code> method does not return
+             * <code>true</code> for points on the right or bottom edges of a <code>Rectangle</code>.
+             * Therefore, if the added point falls on the right or bottom edge of the enlarged <code>Rectangle
+             * </code>, <code>contains</code> returns <code>false</code> for that point. If the specified
+             * point must be contained within the new {@code Rectangle}, a 1x1 rectangle should be added
+             * instead:
+             *
              * <pre>
              * r.add(newx, newy, 1, 1);
              * </pre>
+             *
              * @param {number} newx the X coordinate of the new point
              * @param {number} newy the Y coordinate of the new point
              */
@@ -33916,24 +32719,18 @@ var javax;
             };
             /**
              * Resizes the <code>Rectangle</code> both horizontally and vertically.
-             * <p>
-             * This method modifies the <code>Rectangle</code> so that it is
-             * <code>h</code> units larger on both the left and right side,
-             * and <code>v</code> units larger at both the top and bottom.
-             * <p>
-             * The new <code>Rectangle</code> has {@code (x - h, y - v)}
-             * as its upper-left corner,
-             * width of {@code (width + 2h)},
-             * and a height of {@code (height + 2v)}.
-             * <p>
-             * If negative values are supplied for <code>h</code> and
-             * <code>v</code>, the size of the <code>Rectangle</code>
-             * decreases accordingly.
-             * The {@code grow} method will check for integer overflow
-             * and underflow, but does not check whether the resulting
-             * values of {@code width} and {@code height} grow
-             * from negative to non-negative or shrink from non-negative
-             * to negative.
+             *
+             * <p>This method modifies the <code>Rectangle</code> so that it is <code>h</code> units larger on
+             * both the left and right side, and <code>v</code> units larger at both the top and bottom.
+             *
+             * <p>The new <code>Rectangle</code> has {@code (x - h, y - v)} as its upper-left corner, width of
+             * {@code (width + 2h)}, and a height of {@code (height + 2v)}.
+             *
+             * <p>If negative values are supplied for <code>h</code> and <code>v</code>, the size of the
+             * <code>Rectangle</code> decreases accordingly. The {@code grow} method will check for integer
+             * overflow and underflow, but does not check whether the resulting values of {@code width} and
+             * {@code height} grow from negative to non-negative or shrink from non-negative to negative.
+             *
              * @param {number} h the horizontal expansion
              * @param {number} v the vertical expansion
              */
@@ -33992,6 +32789,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @return {boolean}
              */
@@ -34022,6 +32820,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @param {number} x
              * @param {number} y
@@ -34039,6 +32838,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @param {java.awt.geom.Rectangle2D} r
              * @return {java.awt.geom.Rectangle2D}
@@ -34053,6 +32853,7 @@ var javax;
             };
             /**
              * {@inheritDoc}
+             *
              * @since 1.2
              * @param {java.awt.geom.Rectangle2D} r
              * @return {java.awt.geom.Rectangle2D}
@@ -34067,15 +32868,13 @@ var javax;
             };
             /**
              * Checks whether two rectangles are equal.
-             * <p>
-             * The result is <code>true</code> if and only if the argument is not
-             * <code>null</code> and is a <code>Rectangle</code> object that has the
-             * same upper-left corner, width, and height as
-             * this <code>Rectangle</code>.
-             * @param {*} obj the <code>Object</code> to compare with
-             * this <code>Rectangle</code>
-             * @return    {boolean} <code>true</code> if the objects are equal;
-             * <code>false</code> otherwise.
+             *
+             * <p>The result is <code>true</code> if and only if the argument is not <code>null</code> and is
+             * a <code>Rectangle</code> object that has the same upper-left corner, width, and height as this
+             * <code>Rectangle</code>.
+             *
+             * @param {*} obj the <code>Object</code> to compare with this <code>Rectangle</code>
+             * @return {boolean} <code>true</code> if the objects are equal; <code>false</code> otherwise.
              */
             Rectangle.prototype.equals = function (obj) {
                 if (obj != null && obj instanceof java.awt.Rectangle) {
@@ -34085,10 +32884,10 @@ var javax;
                 return _super.prototype.equals.call(this, obj);
             };
             /**
-             * Returns a <code>String</code> representing this
-             * <code>Rectangle</code> and its values.
-             * @return {string} a <code>String</code> representing this
-             * <code>Rectangle</code> object's coordinate and size values.
+             * Returns a <code>String</code> representing this <code>Rectangle</code> and its values.
+             *
+             * @return {string} a <code>String</code> representing this <code>Rectangle</code> object's coordinate and
+             * size values.
              */
             Rectangle.prototype.toString = function () {
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(Rectangle) + "[x=" + this.x + ",y=" + this.y + ",width=" + this.width + ",height=" + this.height + "]";
@@ -34965,21 +33764,19 @@ var javax;
         (function (event) {
             /**
              * Constructs a <code>WindowEvent</code> object.
-             * <p>This method throws an
-             * <code>IllegalArgumentException</code> if <code>source</code>
-             * is <code>null</code>.
              *
-             * @param {java.awt.Window} source    The <code>Window</code> object
-             * that originated the event
-             * @param {number} id        An integer indicating the type of event.
-             * For information on allowable values, see
-             * the class description for {@link WindowEvent}
-             * @param {java.awt.Window} opposite  The other window involved in the focus or activation
-             * change, or <code>null</code>
-             * @param {number} oldState  Previous state of the window for window state change event.
-             * See {@code #getOldState()} for allowable values
-             * @param {number} newState  New state of the window for window state change event.
-             * See {@code #getNewState()} for allowable values
+             * <p>This method throws an <code>IllegalArgumentException</code> if <code>source</code> is <code>
+             * null</code>.
+             *
+             * @param {java.awt.Window} source The <code>Window</code> object that originated the event
+             * @param {number} id An integer indicating the type of event. For information on allowable values, see the
+             * class description for {@link WindowEvent}
+             * @param {java.awt.Window} opposite The other window involved in the focus or activation change, or <code>null
+             * </code>
+             * @param {number} oldState Previous state of the window for window state change event. See {@code
+             * #getOldState()} for allowable values
+             * @param {number} newState New state of the window for window state change event. See {@code
+             * #getNewState()} for allowable values
              * @throws IllegalArgumentException if <code>source</code> is null
              * @see #getWindow()
              * @see #getID()
@@ -35016,7 +33813,7 @@ var javax;
                         var oldState_1 = __args[2];
                         var newState_1 = __args[3];
                         {
-                            var __args_52 = arguments;
+                            var __args_53 = arguments;
                             var opposite_1 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.opposite === undefined) {
@@ -35045,7 +33842,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && ((opposite != null && opposite instanceof java.awt.Window) || opposite === null) && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_53 = arguments;
+                            var __args_54 = arguments;
                             var oldState_2 = 0;
                             var newState_2 = 0;
                             _this = _super.call(this, source, id) || this;
@@ -35075,7 +33872,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && opposite === undefined && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_54 = arguments;
+                            var __args_55 = arguments;
                             var opposite_2 = null;
                             var oldState_3 = 0;
                             var newState_3 = 0;
@@ -35149,34 +33946,31 @@ var javax;
                     return (this.source != null && this.source instanceof java.awt.Window) ? this.source : null;
                 };
                 /**
-                 * Returns the other Window involved in this focus or activation change.
-                 * For a WINDOW_ACTIVATED or WINDOW_GAINED_FOCUS event, this is the Window
-                 * that lost activation or focus. For a WINDOW_DEACTIVATED or
-                 * WINDOW_LOST_FOCUS event, this is the Window that gained activation or
-                 * focus. For any other type of WindowEvent, or if the focus or activation
-                 * change occurs with a native application, with a Java application in a
-                 * different VM or context, or with no other Window, null is returned.
+                 * Returns the other Window involved in this focus or activation change. For a WINDOW_ACTIVATED or
+                 * WINDOW_GAINED_FOCUS event, this is the Window that lost activation or focus. For a
+                 * WINDOW_DEACTIVATED or WINDOW_LOST_FOCUS event, this is the Window that gained activation or
+                 * focus. For any other type of WindowEvent, or if the focus or activation change occurs with a
+                 * native application, with a Java application in a different VM or context, or with no other
+                 * Window, null is returned.
                  *
-                 * @return {java.awt.Window} the other Window involved in the focus or activation change, or
-                 * null
+                 * @return {java.awt.Window} the other Window involved in the focus or activation change, or null
                  * @since 1.4
                  */
                 WindowEvent.prototype.getOppositeWindow = function () {
                     return this.opposite;
                 };
                 /**
-                 * For <code>WINDOW_STATE_CHANGED</code> events returns the
-                 * previous state of the window. The state is
-                 * represented as a bitwise mask.
+                 * For <code>WINDOW_STATE_CHANGED</code> events returns the previous state of the window. The
+                 * state is represented as a bitwise mask.
+                 *
                  * <ul>
-                 * <li><code>NORMAL</code>
-                 * <br>Indicates that no state bits are set.
+                 * <li><code>NORMAL</code> <br>
+                 * Indicates that no state bits are set.
                  * <li><code>ICONIFIED</code>
                  * <li><code>MAXIMIZED_HORIZ</code>
                  * <li><code>MAXIMIZED_VERT</code>
-                 * <li><code>MAXIMIZED_BOTH</code>
-                 * <br>Concatenates <code>MAXIMIZED_HORIZ</code>
-                 * and <code>MAXIMIZED_VERT</code>.
+                 * <li><code>MAXIMIZED_BOTH</code> <br>
+                 * Concatenates <code>MAXIMIZED_HORIZ</code> and <code>MAXIMIZED_VERT</code>.
                  * </ul>
                  *
                  * @return {number} a bitwise mask of the previous window state
@@ -35187,18 +33981,17 @@ var javax;
                     return this.oldState;
                 };
                 /**
-                 * For <code>WINDOW_STATE_CHANGED</code> events returns the
-                 * new state of the window. The state is
+                 * For <code>WINDOW_STATE_CHANGED</code> events returns the new state of the window. The state is
                  * represented as a bitwise mask.
+                 *
                  * <ul>
-                 * <li><code>NORMAL</code>
-                 * <br>Indicates that no state bits are set.
+                 * <li><code>NORMAL</code> <br>
+                 * Indicates that no state bits are set.
                  * <li><code>ICONIFIED</code>
                  * <li><code>MAXIMIZED_HORIZ</code>
                  * <li><code>MAXIMIZED_VERT</code>
-                 * <li><code>MAXIMIZED_BOTH</code>
-                 * <br>Concatenates <code>MAXIMIZED_HORIZ</code>
-                 * and <code>MAXIMIZED_VERT</code>.
+                 * <li><code>MAXIMIZED_BOTH</code> <br>
+                 * Concatenates <code>MAXIMIZED_HORIZ</code> and <code>MAXIMIZED_VERT</code>.
                  * </ul>
                  *
                  * @return {number} a bitwise mask of the new window state
@@ -35209,8 +34002,8 @@ var javax;
                     return this.newState;
                 };
                 /**
-                 * Returns a parameter string identifying this event.
-                 * This method is useful for event-logging and for debugging.
+                 * Returns a parameter string identifying this event. This method is useful for event-logging and
+                 * for debugging.
                  *
                  * @return {string} a string identifying the event and its attributes
                  */
@@ -35272,29 +34065,23 @@ var javax;
         var event;
         (function (event) {
             /**
-             * Constructs a <code>FocusEvent</code> object with the
-             * specified temporary state and opposite <code>Component</code>.
-             * The opposite <code>Component</code> is the other
-             * <code>Component</code> involved in this focus change.
-             * For a <code>FOCUS_GAINED</code> event, this is the
-             * <code>Component</code> that lost focus. For a
-             * <code>FOCUS_LOST</code> event, this is the <code>Component</code>
-             * that gained focus. If this focus change occurs with a native
-             * application, with a Java application in a different VM,
-             * or with no other <code>Component</code>, then the opposite
-             * <code>Component</code> is <code>null</code>.
-             * <p> This method throws an
-             * <code>IllegalArgumentException</code> if <code>source</code>
-             * is <code>null</code>.
+             * Constructs a <code>FocusEvent</code> object with the specified temporary state and opposite
+             * <code>Component</code>. The opposite <code>Component</code> is the other <code>Component</code>
+             * involved in this focus change. For a <code>FOCUS_GAINED</code> event, this is the <code>
+             * Component</code> that lost focus. For a <code>FOCUS_LOST</code> event, this is the <code>
+             * Component</code> that gained focus. If this focus change occurs with a native application, with
+             * a Java application in a different VM, or with no other <code>Component</code>, then the
+             * opposite <code>Component</code> is <code>null</code>.
              *
-             * @param {java.awt.Component} source     The <code>Component</code> that originated the event
-             * @param {number} id         An integer indicating the type of event.
-             * For information on allowable values, see
-             * the class description for {@link FocusEvent}
-             * @param {boolean} temporary  Equals <code>true</code> if the focus change is temporary;
-             * <code>false</code> otherwise
-             * @param {java.awt.Component} opposite   The other Component involved in the focus change,
-             * or <code>null</code>
+             * <p>This method throws an <code>IllegalArgumentException</code> if <code>source</code> is <code>
+             * null</code>.
+             *
+             * @param {java.awt.Component} source The <code>Component</code> that originated the event
+             * @param {number} id An integer indicating the type of event. For information on allowable values, see the
+             * class description for {@link FocusEvent}
+             * @param {boolean} temporary Equals <code>true</code> if the focus change is temporary; <code>false</code>
+             * otherwise
+             * @param {java.awt.Component} opposite The other Component involved in the focus change, or <code>null</code>
              * @throws IllegalArgumentException if <code>source</code> equals {@code null}
              * @see #getSource()
              * @see #getID()
@@ -35324,7 +34111,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof temporary === 'boolean') || temporary === null) && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_55 = arguments;
+                            var __args_56 = arguments;
                             var opposite_3 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.temporary === undefined) {
@@ -35346,10 +34133,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && temporary === undefined && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_56 = arguments;
+                            var __args_57 = arguments;
                             var temporary_1 = false;
                             {
-                                var __args_57 = arguments;
+                                var __args_58 = arguments;
                                 var opposite_4 = null;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.temporary === undefined) {
@@ -35388,19 +34175,16 @@ var javax;
                 /**
                  * Identifies the focus change event as temporary or permanent.
                  *
-                 * @return {boolean} <code>true</code> if the focus change is temporary;
-                 * <code>false</code> otherwise
+                 * @return {boolean} <code>true</code> if the focus change is temporary; <code>false</code> otherwise
                  */
                 FocusEvent.prototype.isTemporary = function () {
                     return this.temporary;
                 };
                 /**
-                 * Returns the other Component involved in this focus change. For a
-                 * FOCUS_GAINED event, this is the Component that lost focus. For a
-                 * FOCUS_LOST event, this is the Component that gained focus. If this
-                 * focus change occurs with a native application, with a Java application
-                 * in a different VM or context, or with no other Component, then null is
-                 * returned.
+                 * Returns the other Component involved in this focus change. For a FOCUS_GAINED event, this is
+                 * the Component that lost focus. For a FOCUS_LOST event, this is the Component that gained focus.
+                 * If this focus change occurs with a native application, with a Java application in a different
+                 * VM or context, or with no other Component, then null is returned.
                  *
                  * @return {java.awt.Component} the other Component involved in the focus change, or null
                  * @since 1.4
@@ -35409,8 +34193,8 @@ var javax;
                     return this.opposite;
                 };
                 /**
-                 * Returns a parameter string identifying this event.
-                 * This method is useful for event-logging and for debugging.
+                 * Returns a parameter string identifying this event. This method is useful for event-logging and
+                 * for debugging.
                  *
                  * @return {string} a string identifying the event and its attributes
                  */
@@ -35452,16 +34236,14 @@ var javax;
         (function (event) {
             /**
              * Constructs a <code>ContainerEvent</code> object.
-             * <p> This method throws an
-             * <code>IllegalArgumentException</code> if <code>source</code>
-             * is <code>null</code>.
              *
-             * @param {java.awt.Component} source The <code>Component</code> object (container)
-             * that originated the event
-             * @param {number} id     An integer indicating the type of event.
-             * For information on allowable values, see
-             * the class description for {@link ContainerEvent}
-             * @param {java.awt.Component} child  the component that was added or removed
+             * <p>This method throws an <code>IllegalArgumentException</code> if <code>source</code> is <code>
+             * null</code>.
+             *
+             * @param {java.awt.Component} source The <code>Component</code> object (container) that originated the event
+             * @param {number} id An integer indicating the type of event. For information on allowable values, see the
+             * class description for {@link ContainerEvent}
+             * @param {java.awt.Component} child the component that was added or removed
              * @throws IllegalArgumentException if <code>source</code> is null
              * @see #getContainer()
              * @see #getID()
@@ -35489,9 +34271,8 @@ var javax;
                 /**
                  * Returns the originator of the event.
                  *
-                 * @return {java.awt.Container} the <code>Container</code> object that originated
-                 * the event, or <code>null</code> if the object is not a
-                 * <code>Container</code>.
+                 * @return {java.awt.Container} the <code>Container</code> object that originated the event, or <code>null</code> if
+                 * the object is not a <code>Container</code>.
                  */
                 ContainerEvent.prototype.getContainer = function () {
                     return (this.source != null && this.source instanceof java.awt.Container) ? this.source : null;
@@ -35505,8 +34286,8 @@ var javax;
                     return this.child;
                 };
                 /**
-                 * Returns a parameter string identifying this event.
-                 * This method is useful for event-logging and for debugging.
+                 * Returns a parameter string identifying this event. This method is useful for event-logging and
+                 * for debugging.
                  *
                  * @return {string} a string identifying the event and its attributes
                  */
@@ -35559,7 +34340,7 @@ var javax;
                 else if (layout === undefined) {
                     var __args = arguments;
                     {
-                        var __args_58 = arguments;
+                        var __args_59 = arguments;
                         var layout_1 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -36085,26 +34866,24 @@ var javax;
                 /**
                  * Represents a <i>normal</i> window.
                  *
-                 * This is the default type for objects of the {@code Window} class or
-                 * its descendants. Use this type for regular top-level windows.
+                 * <p>This is the default type for objects of the {@code Window} class or its descendants. Use
+                 * this type for regular top-level windows.
                  */
                 Type[Type["NORMAL"] = 0] = "NORMAL";
                 /**
                  * Represents a <i>utility</i> window.
                  *
-                 * A utility window is usually a small window such as a toolbar or a
-                 * palette. The native system may render the window with smaller
-                 * title-bar if the window is either a {@code Frame} or a {@code
-                 * Dialog} object, and if it has its decorations enabled.
+                 * <p>A utility window is usually a small window such as a toolbar or a palette. The native
+                 * system may render the window with smaller title-bar if the window is either a {@code Frame}
+                 * or a {@code Dialog} object, and if it has its decorations enabled.
                  */
                 Type[Type["UTILITY"] = 1] = "UTILITY";
                 /**
                  * Represents a <i>popup</i> window.
                  *
-                 * A popup window is a temporary window such as a drop-down menu or a
-                 * tooltip. On some platforms, windows of that type may be forcibly made
-                 * undecorated even if they are instances of the {@code Frame} or
-                 * {@code Dialog} class, and have decorations enabled.
+                 * <p>A popup window is a temporary window such as a drop-down menu or a tooltip. On some
+                 * platforms, windows of that type may be forcibly made undecorated even if they are instances
+                 * of the {@code Frame} or {@code Dialog} class, and have decorations enabled.
                  */
                 Type[Type["POPUP"] = 2] = "POPUP";
             })(Type = Window.Type || (Window.Type = {}));
@@ -36138,14 +34917,9 @@ var javax;
             /**
              * Constructs a SwingPropertyChangeSupport object.
              *
-             * @param {*} sourceBean
-             * the bean to be given as the source for any events
-             * @param {boolean} notifyOnEDT
-             * whether to notify listeners on the <i>Event Dispatch
-             * Thread</i> only
-             *
-             * @throws NullPointerException
-             * if {@code sourceBean} is {@code null}
+             * @param {*} sourceBean the bean to be given as the source for any events
+             * @param {boolean} notifyOnEDT whether to notify listeners on the <i>Event Dispatch Thread</i> only
+             * @throws NullPointerException if {@code sourceBean} is {@code null}
              * @since 1.6
              * @class
              * @extends java.beans.PropertyChangeSupport
@@ -36166,7 +34940,7 @@ var javax;
                     else if (((sourceBean != null) || sourceBean === null) && notifyOnEDT === undefined) {
                         var __args = arguments;
                         {
-                            var __args_59 = arguments;
+                            var __args_60 = arguments;
                             var notifyOnEDT_1 = false;
                             _this = _super.call(this, sourceBean) || this;
                             if (_this.notifyOnEDT === undefined) {
@@ -36250,9 +35024,8 @@ var javax;
                     return _this;
                 }
                 /**
-                 * Returns the maximum number of edits this {@code UndoManager}
-                 * holds. A value less than 0 indicates the number of edits is not
-                 * limited.
+                 * Returns the maximum number of edits this {@code UndoManager} holds. A value less than 0
+                 * indicates the number of edits is not limited.
                  *
                  * @return {number} the maximum number of edits this {@code UndoManager} holds
                  * @see #addEdit
@@ -36262,8 +35035,7 @@ var javax;
                     return this.limit;
                 };
                 /**
-                 * Empties the undo manager sending each edit a <code>die</code> message
-                 * in the process.
+                 * Empties the undo manager sending each edit a <code>die</code> message in the process.
                  *
                  * @see AbstractUndoableEdit#die
                  */
@@ -36278,8 +35050,8 @@ var javax;
                     this.indexOfNextAdd = 0;
                 };
                 /**
-                 * Reduces the number of queued edits to a range of size limit,
-                 * centered on the index of the next edit.
+                 * Reduces the number of queued edits to a range of size limit, centered on the index of the next
+                 * edit.
                  */
                 UndoManager.prototype.trimForLimit = function () {
                     if (this.limit >= 0) {
@@ -36306,11 +35078,9 @@ var javax;
                     }
                 };
                 /**
-                 * Removes edits in the specified range.
-                 * All edits in the given range (inclusive, and in reverse order)
-                 * will have <code>die</code> invoked on them and are removed from
-                 * the list of edits. This has no effect if
-                 * <code>from</code> &gt; <code>to</code>.
+                 * Removes edits in the specified range. All edits in the given range (inclusive, and in reverse
+                 * order) will have <code>die</code> invoked on them and are removed from the list of edits. This
+                 * has no effect if <code>from</code> &gt; <code>to</code>.
                  *
                  * @param {number} from the minimum index to remove
                  * @param {number} to the maximum index to remove
@@ -36334,15 +35104,14 @@ var javax;
                     }
                 };
                 /**
-                 * Sets the maximum number of edits this <code>UndoManager</code>
-                 * holds. A value less than 0 indicates the number of edits is not
-                 * limited. If edits need to be discarded to shrink the limit,
-                 * <code>die</code> will be invoked on them in the reverse
-                 * order they were added.  The default is 100.
+                 * Sets the maximum number of edits this <code>UndoManager</code> holds. A value less than 0
+                 * indicates the number of edits is not limited. If edits need to be discarded to shrink the
+                 * limit, <code>die</code> will be invoked on them in the reverse order they were added. The
+                 * default is 100.
                  *
                  * @param {number} l the new limit
-                 * @throws RuntimeException if this {@code UndoManager} is not in progress
-                 * ({@code end} has been invoked)
+                 * @throws RuntimeException if this {@code UndoManager} is not in progress ({@code end} has been
+                 * invoked)
                  * @see #isInProgress
                  * @see #end
                  * @see #addEdit
@@ -36355,9 +35124,8 @@ var javax;
                     this.trimForLimit();
                 };
                 /**
-                 * Returns the the next significant edit to be undone if <code>undo</code>
-                 * is invoked. This returns <code>null</code> if there are no edits
-                 * to be undone.
+                 * Returns the the next significant edit to be undone if <code>undo</code> is invoked. This
+                 * returns <code>null</code> if there are no edits to be undone.
                  *
                  * @return {*} the next significant edit to be undone
                  */
@@ -36375,9 +35143,8 @@ var javax;
                     return null;
                 };
                 /**
-                 * Returns the the next significant edit to be redone if <code>redo</code>
-                 * is invoked. This returns <code>null</code> if there are no edits
-                 * to be redone.
+                 * Returns the the next significant edit to be redone if <code>redo</code> is invoked. This
+                 * returns <code>null</code> if there are no edits to be redone.
                  *
                  * @return {*} the next significant edit to be redone
                  */
@@ -36396,11 +35163,10 @@ var javax;
                     return null;
                 };
                 /**
-                 * Undoes all changes from the index of the next edit to
-                 * <code>edit</code>, updating the index of the next edit appropriately.
+                 * Undoes all changes from the index of the next edit to <code>edit</code>, updating the index of
+                 * the next edit appropriately.
                  *
-                 * @throws CannotUndoException if one of the edits throws
-                 * <code>CannotUndoException</code>
+                 * @throws CannotUndoException if one of the edits throws <code>CannotUndoException</code>
                  * @param {*} edit
                  */
                 UndoManager.prototype.undoTo = function (edit) {
@@ -36415,11 +35181,10 @@ var javax;
                     ;
                 };
                 /**
-                 * Redoes all changes from the index of the next edit to
-                 * <code>edit</code>, updating the index of the next edit appropriately.
+                 * Redoes all changes from the index of the next edit to <code>edit</code>, updating the index of
+                 * the next edit appropriately.
                  *
-                 * @throws CannotRedoException if one of the edits throws
-                 * <code>CannotRedoException</code>
+                 * @throws CannotRedoException if one of the edits throws <code>CannotRedoException</code>
                  * @param {*} edit
                  */
                 UndoManager.prototype.redoTo = function (edit) {
@@ -36434,17 +35199,14 @@ var javax;
                     ;
                 };
                 /**
-                 * Convenience method that invokes one of <code>undo</code> or
-                 * <code>redo</code>. If any edits have been undone (the index of
-                 * the next edit is less than the length of the edits list) this
+                 * Convenience method that invokes one of <code>undo</code> or <code>redo</code>. If any edits
+                 * have been undone (the index of the next edit is less than the length of the edits list) this
                  * invokes <code>redo</code>, otherwise it invokes <code>undo</code>.
                  *
                  * @see #canUndoOrRedo
                  * @see #getUndoOrRedoPresentationName
-                 * @throws CannotUndoException if one of the edits throws
-                 * <code>CannotUndoException</code>
-                 * @throws CannotRedoException if one of the edits throws
-                 * <code>CannotRedoException</code>
+                 * @throws CannotUndoException if one of the edits throws <code>CannotUndoException</code>
+                 * @throws CannotRedoException if one of the edits throws <code>CannotRedoException</code>
                  */
                 UndoManager.prototype.undoOrRedo = function () {
                     if (this.indexOfNextAdd === this.edits.size()) {
@@ -36455,8 +35217,7 @@ var javax;
                     }
                 };
                 /**
-                 * Returns true if it is possible to invoke <code>undo</code> or
-                 * <code>redo</code>.
+                 * Returns true if it is possible to invoke <code>undo</code> or <code>redo</code>.
                  *
                  * @return {boolean} true if invoking <code>canUndoOrRedo</code> is valid
                  * @see #undoOrRedo
@@ -36470,15 +35231,12 @@ var javax;
                     }
                 };
                 /**
-                 * Undoes the appropriate edits.  If <code>end</code> has been
-                 * invoked this calls through to the superclass, otherwise
-                 * this invokes <code>undo</code> on all edits between the
-                 * index of the next edit and the last significant edit, updating
-                 * the index of the next edit appropriately.
+                 * Undoes the appropriate edits. If <code>end</code> has been invoked this calls through to the
+                 * superclass, otherwise this invokes <code>undo</code> on all edits between the index of the next
+                 * edit and the last significant edit, updating the index of the next edit appropriately.
                  *
-                 * @throws CannotUndoException if one of the edits throws
-                 * <code>CannotUndoException</code> or there are no edits
-                 * to be undone
+                 * @throws CannotUndoException if one of the edits throws <code>CannotUndoException</code> or
+                 * there are no edits to be undone
                  * @see CompoundEdit#end
                  * @see #canUndo
                  * @see #editToBeUndone
@@ -36496,10 +35254,9 @@ var javax;
                     }
                 };
                 /**
-                 * Returns true if edits may be undone.  If <code>end</code> has
-                 * been invoked, this returns the value from super.  Otherwise
-                 * this returns true if there are any edits to be undone
-                 * (<code>editToBeUndone</code> returns non-<code>null</code>).
+                 * Returns true if edits may be undone. If <code>end</code> has been invoked, this returns the
+                 * value from super. Otherwise this returns true if there are any edits to be undone (<code>
+                 * editToBeUndone</code> returns non-<code>null</code>).
                  *
                  * @return {boolean} true if there are edits to be undone
                  * @see CompoundEdit#canUndo
@@ -36515,15 +35272,12 @@ var javax;
                     }
                 };
                 /**
-                 * Redoes the appropriate edits.  If <code>end</code> has been
-                 * invoked this calls through to the superclass.  Otherwise
-                 * this invokes <code>redo</code> on all edits between the
-                 * index of the next edit and the next significant edit, updating
-                 * the index of the next edit appropriately.
+                 * Redoes the appropriate edits. If <code>end</code> has been invoked this calls through to the
+                 * superclass. Otherwise this invokes <code>redo</code> on all edits between the index of the next
+                 * edit and the next significant edit, updating the index of the next edit appropriately.
                  *
-                 * @throws CannotRedoException if one of the edits throws
-                 * <code>CannotRedoException</code> or there are no edits
-                 * to be redone
+                 * @throws CannotRedoException if one of the edits throws <code>CannotRedoException</code> or
+                 * there are no edits to be redone
                  * @see CompoundEdit#end
                  * @see #canRedo
                  * @see #editToBeRedone
@@ -36541,10 +35295,9 @@ var javax;
                     }
                 };
                 /**
-                 * Returns true if edits may be redone.  If <code>end</code> has
-                 * been invoked, this returns the value from super.  Otherwise,
-                 * this returns true if there are any edits to be redone
-                 * (<code>editToBeRedone</code> returns non-<code>null</code>).
+                 * Returns true if edits may be redone. If <code>end</code> has been invoked, this returns the
+                 * value from super. Otherwise, this returns true if there are any edits to be redone (<code>
+                 * editToBeRedone</code> returns non-<code>null</code>).
                  *
                  * @return {boolean} true if there are edits to be redone
                  * @see CompoundEdit#canRedo
@@ -36560,16 +35313,13 @@ var javax;
                     }
                 };
                 /**
-                 * Adds an <code>UndoableEdit</code> to this
-                 * <code>UndoManager</code>, if it's possible.  This removes all
-                 * edits from the index of the next edit to the end of the edits
-                 * list.  If <code>end</code> has been invoked the edit is not added
-                 * and <code>false</code> is returned.  If <code>end</code> hasn't
-                 * been invoked this returns <code>true</code>.
+                 * Adds an <code>UndoableEdit</code> to this <code>UndoManager</code>, if it's possible. This
+                 * removes all edits from the index of the next edit to the end of the edits list. If <code>end
+                 * </code> has been invoked the edit is not added and <code>false</code> is returned. If <code>end
+                 * </code> hasn't been invoked this returns <code>true</code>.
                  *
                  * @param {*} anEdit the edit to be added
-                 * @return {boolean} true if <code>anEdit</code> can be incorporated into this
-                 * edit
+                 * @return {boolean} true if <code>anEdit</code> can be incorporated into this edit
                  * @see CompoundEdit#end
                  * @see CompoundEdit#addEdit
                  */
@@ -36585,9 +35335,8 @@ var javax;
                     return retVal;
                 };
                 /**
-                 * Turns this <code>UndoManager</code> into a normal
-                 * <code>CompoundEdit</code>.  This removes all edits that have
-                 * been undone.
+                 * Turns this <code>UndoManager</code> into a normal <code>CompoundEdit</code>. This removes all
+                 * edits that have been undone.
                  *
                  * @see CompoundEdit#end
                  */
@@ -36596,12 +35345,10 @@ var javax;
                     this.trimEdits(this.indexOfNextAdd, this.edits.size() - 1);
                 };
                 /**
-                 * Convenience method that returns either
-                 * <code>getUndoPresentationName</code> or
-                 * <code>getRedoPresentationName</code>.  If the index of the next
-                 * edit equals the size of the edits list,
-                 * <code>getUndoPresentationName</code> is returned, otherwise
-                 * <code>getRedoPresentationName</code> is returned.
+                 * Convenience method that returns either <code>getUndoPresentationName</code> or <code>
+                 * getRedoPresentationName</code>. If the index of the next edit equals the size of the edits
+                 * list, <code>getUndoPresentationName</code> is returned, otherwise <code>getRedoPresentationName
+                 * </code> is returned.
                  *
                  * @return {string} undo or redo name
                  */
@@ -36614,17 +35361,15 @@ var javax;
                     }
                 };
                 /**
-                 * Returns a description of the undoable form of this edit.
-                 * If <code>end</code> has been invoked this calls into super.
-                 * Otherwise if there are edits to be undone, this returns
-                 * the value from the next significant edit that will be undone.
-                 * If there are no edits to be undone and <code>end</code> has not
-                 * been invoked this returns the value from the <code>UIManager</code>
-                 * property "AbstractUndoableEdit.undoText".
+                 * Returns a description of the undoable form of this edit. If <code>end</code> has been invoked
+                 * this calls into super. Otherwise if there are edits to be undone, this returns the value from
+                 * the next significant edit that will be undone. If there are no edits to be undone and <code>end
+                 * </code> has not been invoked this returns the value from the <code>UIManager</code> property
+                 * "AbstractUndoableEdit.undoText".
                  *
                  * @return {string} a description of the undoable form of this edit
-                 * @see     #undo
-                 * @see     CompoundEdit#getUndoPresentationName
+                 * @see #undo
+                 * @see CompoundEdit#getUndoPresentationName
                  */
                 UndoManager.prototype.getUndoPresentationName = function () {
                     if (this.inProgress) {
@@ -36640,17 +35385,15 @@ var javax;
                     }
                 };
                 /**
-                 * Returns a description of the redoable form of this edit.
-                 * If <code>end</code> has been invoked this calls into super.
-                 * Otherwise if there are edits to be redone, this returns
-                 * the value from the next significant edit that will be redone.
-                 * If there are no edits to be redone and <code>end</code> has not
-                 * been invoked this returns the value from the <code>UIManager</code>
-                 * property "AbstractUndoableEdit.redoText".
+                 * Returns a description of the redoable form of this edit. If <code>end</code> has been invoked
+                 * this calls into super. Otherwise if there are edits to be redone, this returns the value from
+                 * the next significant edit that will be redone. If there are no edits to be redone and <code>end
+                 * </code> has not been invoked this returns the value from the <code>UIManager</code> property
+                 * "AbstractUndoableEdit.redoText".
                  *
                  * @return {string} a description of the redoable form of this edit
-                 * @see     #redo
-                 * @see     CompoundEdit#getRedoPresentationName
+                 * @see #redo
+                 * @see CompoundEdit#getRedoPresentationName
                  */
                 UndoManager.prototype.getRedoPresentationName = function () {
                     if (this.inProgress) {
@@ -36666,19 +35409,18 @@ var javax;
                     }
                 };
                 /**
-                 * An <code>UndoableEditListener</code> method. This invokes
-                 * <code>addEdit</code> with <code>e.getEdit()</code>.
+                 * An <code>UndoableEditListener</code> method. This invokes <code>addEdit</code> with <code>
+                 * e.getEdit()</code>.
                  *
-                 * @param {javax.swing.event.UndoableEditEvent} e the <code>UndoableEditEvent</code> the
-                 * <code>UndoableEditEvent</code> will be added from
+                 * @param {javax.swing.event.UndoableEditEvent} e the <code>UndoableEditEvent</code> the <code>UndoableEditEvent</code> will be added
+                 * from
                  * @see #addEdit
                  */
                 UndoManager.prototype.undoableEditHappened = function (e) {
                     this.addEdit(e.getEdit());
                 };
                 /**
-                 * Returns a string that displays and identifies this
-                 * object's properties.
+                 * Returns a string that displays and identifies this object's properties.
                  *
                  * @return {string} a String representation of this object
                  */
@@ -36760,7 +35502,7 @@ var javax;
                         var popupTrigger_1 = __args[7];
                         var button_1 = __args[8];
                         {
-                            var __args_60 = arguments;
+                            var __args_61 = arguments;
                             var xAbs_1 = 0;
                             var yAbs_1 = 0;
                             _this = _super.call(this, source, id, when, modifiers) || this;
@@ -36855,10 +35597,10 @@ var javax;
                         var clickCount_2 = __args[6];
                         var popupTrigger_2 = __args[7];
                         {
-                            var __args_61 = arguments;
+                            var __args_62 = arguments;
                             var button_2 = MouseEvent.NOBUTTON;
                             {
-                                var __args_62 = arguments;
+                                var __args_63 = arguments;
                                 var xAbs_2 = 0;
                                 var yAbs_2 = 0;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
@@ -37258,7 +36000,7 @@ var javax;
                     if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && ((typeof keyLocation === 'number') || keyLocation === null) && ((typeof isProxyActive === 'boolean') || isProxyActive === null)) {
                         var __args = arguments;
                         {
-                            var __args_63 = arguments;
+                            var __args_64 = arguments;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
                                 _this.isProxyActive = false;
@@ -37365,7 +36107,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_64 = arguments;
+                            var __args_65 = arguments;
                             var keyLocation_1 = KeyEvent.KEY_LOCATION_UNKNOWN;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
@@ -37427,10 +36169,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && keyChar === undefined && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_65 = arguments;
-                            var keyChar_1 = String.fromCharCode(__args_65[4]);
+                            var __args_66 = arguments;
+                            var keyChar_1 = String.fromCharCode(__args_66[4]);
                             {
-                                var __args_66 = arguments;
+                                var __args_67 = arguments;
                                 var keyLocation_2 = KeyEvent.KEY_LOCATION_UNKNOWN;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
                                 if (_this.isProxyActive === undefined) {
@@ -38037,12 +36779,10 @@ var javax;
                 /**
                  * Returns an extended key code for a unicode character.
                  *
-                 * @return {number} for a unicode character with a corresponding {@code VK_} constant
-                 * -- this {@code VK_} constant; for a character appearing on the
-                 * primary level of a known keyboard layout -- a unique integer. If
-                 * a character does not appear on the primary level of a known
-                 * keyboard, {@code VK_UNDEFINED} is returned.
-                 *
+                 * @return {number} for a unicode character with a corresponding {@code VK_} constant -- this {@code VK_}
+                 * constant; for a character appearing on the primary level of a known keyboard layout -- a
+                 * unique integer. If a character does not appear on the primary level of a known keyboard,
+                 * {@code VK_UNDEFINED} is returned.
                  * @since 1.7
                  * @param {number} c
                  */
@@ -38050,8 +36790,7 @@ var javax;
                     return sun.awt.ExtendedKeyCodes.getExtendedKeyCodeForChar(c);
                 };
                 /**
-                 * Sets new modifiers by the old ones. The key modifiers override overlaping
-                 * mouse modifiers.
+                 * Sets new modifiers by the old ones. The key modifiers override overlaping mouse modifiers.
                  * @private
                  */
                 /*private*/ KeyEvent.prototype.setNewModifiers = function () {
@@ -38335,6 +37074,8 @@ var javax;
                         }
                         var applet_3 = (new constructor());
                         applet_3.setSize(javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-width")), javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-height")));
+                        div.innerHTML = "";
+                        div.style.position = "relative";
                         applet_3.bindHTML(div);
                         applet_3.init();
                         applet_3.doPaintInternal();
@@ -38364,8 +37105,8 @@ var javax;
                 return null;
             };
             /**
-             * Gets the base URL. This is the URL of the directory which contains this applet.
-             * In a web environment, this typically corresponds to the base URL of the HTML page.
+             * Gets the base URL. This is the URL of the directory which contains this applet. In a web
+             * environment, this typically corresponds to the base URL of the HTML page.
              *
              * @return {java.net.URL} The base URL of the applet.
              */
@@ -38384,8 +37125,8 @@ var javax;
                 }
             };
             /**
-             * Gets the URL of the document in which this applet is embedded.
-             * In a web environment, this is simply the current page's URL.
+             * Gets the URL of the document in which this applet is embedded. In a web environment, this is
+             * simply the current page's URL.
              *
              * @return {java.net.URL} The URL of the document containing this applet.
              */
@@ -38399,11 +37140,10 @@ var javax;
                 }
             };
             /**
-             * Requests that the argument string be displayed in the "status window".
-             * In a browser, this attempts to update the browser's status bar.
-             * Note: Modern browsers severely restrict direct manipulation of the status bar
-             * for security reasons. For reliable status display in a web app, it's better
-             * to update a dedicated DOM element (e.g., a div with id="applet-status").
+             * Requests that the argument string be displayed in the "status window". In a browser, this
+             * attempts to update the browser's status bar. Note: Modern browsers severely restrict direct
+             * manipulation of the status bar for security reasons. For reliable status display in a web app,
+             * it's better to update a dedicated DOM element (e.g., a div with id="applet-status").
              *
              * @param {string} msg A string to display in the status window.
              */
@@ -38463,7 +37203,7 @@ var javax;
                 else if (title === undefined) {
                     var __args = arguments;
                     {
-                        var __args_67 = arguments;
+                        var __args_68 = arguments;
                         var title_1 = "";
                         _this = _super.call(this) || this;
                         if (_this.maximizedBounds === undefined) {
@@ -38589,11 +37329,9 @@ var javax;
                 return this.undecorated;
             };
             /**
-             * Returns a string representing the state of this <code>Frame</code>. This
-             * method is intended to be used only for debugging purposes, and the
-             * content and format of the returned string may vary between
-             * implementations. The returned string may be empty but may not be
-             * <code>null</code>.
+             * Returns a string representing the state of this <code>Frame</code>. This method is intended to
+             * be used only for debugging purposes, and the content and format of the returned string may vary
+             * between implementations. The returned string may be empty but may not be <code>null</code>.
              *
              * @return {string} the parameter string of this frame
              */
@@ -38625,8 +37363,8 @@ var javax;
                 return str;
             };
             /**
-             * Frame is in the "normal" state. This symbolic constant names a frame
-             * state with all state bits cleared.
+             * Frame is in the "normal" state. This symbolic constant names a frame state with all state bits
+             * cleared.
              *
              * @see #setExtendedState(int)
              * @see #getExtendedState
@@ -38640,8 +37378,7 @@ var javax;
              */
             Frame.ICONIFIED = 1;
             /**
-             * This state bit indicates that frame is maximized in the horizontal
-             * direction.
+             * This state bit indicates that frame is maximized in the horizontal direction.
              *
              * @see #setExtendedState(int)
              * @see #getExtendedState
@@ -38649,8 +37386,7 @@ var javax;
              */
             Frame.MAXIMIZED_HORIZ = 2;
             /**
-             * This state bit indicates that frame is maximized in the vertical
-             * direction.
+             * This state bit indicates that frame is maximized in the vertical direction.
              *
              * @see #setExtendedState(int)
              * @see #getExtendedState
@@ -38689,14 +37425,11 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Constructs a {@code JList} that displays elements from the specified,
-         * {@code non-null}, model. All {@code JList} constructors delegate to this
-         * one.
+         * Constructs a {@code JList} that displays elements from the specified, {@code non-null}, model.
+         * All {@code JList} constructors delegate to this one.
          *
-         * @param {*} dataModel
-         * the model for the list
-         * @exception IllegalArgumentException
-         * if the model is {@code null}
+         * @param {*} dataModel the model for the list
+         * @exception IllegalArgumentException if the model is {@code null}
          * @class
          * @extends javax.swing.JComponent
          * @author Hans Muller
@@ -38751,7 +37484,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_68 = arguments;
+                        var __args_69 = arguments;
                         var dataModel_1 = new JList.JList$0(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -38830,7 +37563,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_69 = arguments;
+                        var __args_70 = arguments;
                         var dataModel_2 = new JList.JList$1(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -38908,7 +37641,7 @@ var javax;
                 else if (dataModel === undefined) {
                     var __args = arguments;
                     {
-                        var __args_70 = arguments;
+                        var __args_71 = arguments;
                         var dataModel_3 = new JList.JList$2(_this);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39003,9 +37736,8 @@ var javax;
                 }
             };
             /**
-             * Returns the "prototypical" cell value -- a value used to calculate a
-             * fixed width and height for cells. This can be {@code null} if there is no
-             * such value.
+             * Returns the "prototypical" cell value -- a value used to calculate a fixed width and height for
+             * cells. This can be {@code null} if there is no such value.
              *
              * @return {*} the value of the {@code prototypeCellValue} property
              * @see #setPrototypeCellValue
@@ -39014,38 +37746,34 @@ var javax;
                 return this.prototypeCellValue;
             };
             /**
-             * Sets the {@code prototypeCellValue} property, and then (if the new value
-             * is {@code non-null}), computes the {@code fixedCellWidth} and
-             * {@code fixedCellHeight} properties by requesting the cell renderer
-             * component for the given value (and index 0) from the cell renderer, and
-             * using that component's preferred size.
-             * <p>
-             * This method is useful when the list is too long to allow the
-             * {@code ListUI} to compute the width/height of each cell, and there is a
-             * single cell value that is known to occupy as much space as any of the
-             * others, a so-called prototype.
-             * <p>
-             * While all three of the {@code prototypeCellValue},
-             * {@code fixedCellHeight}, and {@code fixedCellWidth} properties may be
-             * modified by this method, {@code PropertyChangeEvent} notifications are
-             * only sent when the {@code prototypeCellValue} property changes.
-             * <p>
-             * To see an example which sets this property, see the
-             * <a href="#prototype_example">class description</a> above.
-             * <p>
-             * The default value of this property is <code>null</code>.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets the {@code prototypeCellValue} property, and then (if the new value is {@code non-null}),
+             * computes the {@code fixedCellWidth} and {@code fixedCellHeight} properties by requesting the
+             * cell renderer component for the given value (and index 0) from the cell renderer, and using
+             * that component's preferred size.
              *
-             * @param {*} prototypeCellValue
-             * the value on which to base <code>fixedCellWidth</code> and
-             * <code>fixedCellHeight</code>
+             * <p>This method is useful when the list is too long to allow the {@code ListUI} to compute the
+             * width/height of each cell, and there is a single cell value that is known to occupy as much
+             * space as any of the others, a so-called prototype.
+             *
+             * <p>While all three of the {@code prototypeCellValue}, {@code fixedCellHeight}, and {@code
+             * fixedCellWidth} properties may be modified by this method, {@code PropertyChangeEvent}
+             * notifications are only sent when the {@code prototypeCellValue} property changes.
+             *
+             * <p>To see an example which sets this property, see the <a href="#prototype_example">class
+             * description</a> above.
+             *
+             * <p>The default value of this property is <code>null</code>.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {*} prototypeCellValue the value on which to base <code>fixedCellWidth</code> and <code>
+             * fixedCellHeight</code>
              * @see #getPrototypeCellValue
              * @see #setFixedCellWidth
              * @see #setFixedCellHeight
              * @see JComponent#addPropertyChangeListener
-             * @beaninfo bound: true attribute: visualUpdate true description: The cell
-             * prototype value, used to compute cell width and height.
+             * @beaninfo bound: true attribute: visualUpdate true description: The cell prototype value, used
+             * to compute cell width and height.
              */
             JList.prototype.setPrototypeCellValue = function (prototypeCellValue) {
                 var oldValue = this.prototypeCellValue;
@@ -39065,22 +37793,20 @@ var javax;
                 return this.fixedCellWidth;
             };
             /**
-             * Sets a fixed value to be used for the width of every cell in the list. If
-             * {@code width} is -1, cell widths are computed in the {@code ListUI} by
-             * applying <code>getPreferredSize</code> to the cell renderer component for
-             * each list element.
-             * <p>
-             * The default value of this property is {@code -1}.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets a fixed value to be used for the width of every cell in the list. If {@code width} is -1,
+             * cell widths are computed in the {@code ListUI} by applying <code>getPreferredSize</code> to the
+             * cell renderer component for each list element.
              *
-             * @param {number} width
-             * the width to be used for all cells in the list
+             * <p>The default value of this property is {@code -1}.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {number} width the width to be used for all cells in the list
              * @see #setPrototypeCellValue
              * @see #setFixedCellWidth
              * @see JComponent#addPropertyChangeListener
-             * @beaninfo bound: true attribute: visualUpdate true description: Defines a
-             * fixed cell width when greater than zero.
+             * @beaninfo bound: true attribute: visualUpdate true description: Defines a fixed cell width when
+             * greater than zero.
              */
             JList.prototype.setFixedCellWidth = function (width) {
                 var oldValue = this.fixedCellWidth;
@@ -39097,22 +37823,20 @@ var javax;
                 return this.fixedCellHeight;
             };
             /**
-             * Sets a fixed value to be used for the height of every cell in the list.
-             * If {@code height} is -1, cell heights are computed in the {@code ListUI}
-             * by applying <code>getPreferredSize</code> to the cell renderer component
-             * for each list element.
-             * <p>
-             * The default value of this property is {@code -1}.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets a fixed value to be used for the height of every cell in the list. If {@code height} is
+             * -1, cell heights are computed in the {@code ListUI} by applying <code>getPreferredSize</code>
+             * to the cell renderer component for each list element.
              *
-             * @param {number} height
-             * the height to be used for for all cells in the list
+             * <p>The default value of this property is {@code -1}.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {number} height the height to be used for for all cells in the list
              * @see #setPrototypeCellValue
              * @see #setFixedCellWidth
              * @see JComponent#addPropertyChangeListener
-             * @beaninfo bound: true attribute: visualUpdate true description: Defines a
-             * fixed cell height when greater than zero.
+             * @beaninfo bound: true attribute: visualUpdate true description: Defines a fixed cell height
+             * when greater than zero.
              */
             JList.prototype.setFixedCellHeight = function (height) {
                 var oldValue = this.fixedCellHeight;
@@ -39129,26 +37853,23 @@ var javax;
                 return this.cellRenderer;
             };
             /**
-             * Sets the delegate that is used to paint each cell in the list. The job of
-             * a cell renderer is discussed in detail in the <a href="#renderer">class
-             * level documentation</a>.
-             * <p>
-             * If the {@code prototypeCellValue} property is {@code non-null}, setting
-             * the cell renderer also causes the {@code fixedCellWidth} and
-             * {@code fixedCellHeight} properties to be re-calculated. Only one
-             * <code>PropertyChangeEvent</code> is generated however - for the
-             * <code>cellRenderer</code> property.
-             * <p>
-             * The default value of this property is provided by the {@code ListUI}
-             * delegate, i.e. by the look and feel implementation.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets the delegate that is used to paint each cell in the list. The job of a cell renderer is
+             * discussed in detail in the <a href="#renderer">class level documentation</a>.
              *
-             * @param {*} cellRenderer
-             * the <code>ListCellRenderer</code> that paints list cells
+             * <p>If the {@code prototypeCellValue} property is {@code non-null}, setting the cell renderer
+             * also causes the {@code fixedCellWidth} and {@code fixedCellHeight} properties to be
+             * re-calculated. Only one <code>PropertyChangeEvent</code> is generated however - for the <code>
+             * cellRenderer</code> property.
+             *
+             * <p>The default value of this property is provided by the {@code ListUI} delegate, i.e. by the
+             * look and feel implementation.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {*} cellRenderer the <code>ListCellRenderer</code> that paints list cells
              * @see #getCellRenderer
-             * @beaninfo bound: true attribute: visualUpdate true description: The
-             * component used to draw the cells.
+             * @beaninfo bound: true attribute: visualUpdate true description: The component used to draw the
+             * cells.
              */
             JList.prototype.setCellRenderer = function (cellRenderer) {
                 var oldValue = this.cellRenderer;
@@ -39164,10 +37885,9 @@ var javax;
                 this.firePropertyChange("cellRenderer", oldValue, cellRenderer);
             };
             /**
-             * Returns the color used to draw the foreground of selected items.
-             * {@code DefaultListCellRenderer} uses this color to draw the foreground of
-             * items in the selected state, as do the renderers installed by most
-             * {@code ListUI} implementations.
+             * Returns the color used to draw the foreground of selected items. {@code
+             * DefaultListCellRenderer} uses this color to draw the foreground of items in the selected state,
+             * as do the renderers installed by most {@code ListUI} implementations.
              *
              * @return {java.awt.Color} the color to draw the foreground of selected items
              * @see #setSelectionForeground
@@ -39177,28 +37897,24 @@ var javax;
                 return this.selectionForeground;
             };
             /**
-             * Sets the color used to draw the foreground of selected items, which cell
-             * renderers can use to render text and graphics.
-             * {@code DefaultListCellRenderer} uses this color to draw the foreground of
-             * items in the selected state, as do the renderers installed by most
-             * {@code ListUI} implementations.
-             * <p>
-             * The default value of this property is defined by the look and feel
-             * implementation.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets the color used to draw the foreground of selected items, which cell renderers can use to
+             * render text and graphics. {@code DefaultListCellRenderer} uses this color to draw the
+             * foreground of items in the selected state, as do the renderers installed by most {@code ListUI}
+             * implementations.
              *
-             * @param {java.awt.Color} selectionForeground
-             * the {@code Color} to use in the foreground for selected list
-             * items
+             * <p>The default value of this property is defined by the look and feel implementation.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {java.awt.Color} selectionForeground the {@code Color} to use in the foreground for selected list items
              * @see #getSelectionForeground
              * @see #setSelectionBackground
              * @see #setForeground
              * @see #setBackground
              * @see #setFont
              * @see DefaultListCellRenderer
-             * @beaninfo bound: true attribute: visualUpdate true description: The
-             * foreground color of selected cells.
+             * @beaninfo bound: true attribute: visualUpdate true description: The foreground color of
+             * selected cells.
              */
             JList.prototype.setSelectionForeground = function (selectionForeground) {
                 var oldValue = this.selectionForeground;
@@ -39206,10 +37922,9 @@ var javax;
                 this.firePropertyChange("selectionForeground", oldValue, selectionForeground);
             };
             /**
-             * Returns the color used to draw the background of selected items.
-             * {@code DefaultListCellRenderer} uses this color to draw the background of
-             * items in the selected state, as do the renderers installed by most
-             * {@code ListUI} implementations.
+             * Returns the color used to draw the background of selected items. {@code
+             * DefaultListCellRenderer} uses this color to draw the background of items in the selected state,
+             * as do the renderers installed by most {@code ListUI} implementations.
              *
              * @return {java.awt.Color} the color to draw the background of selected items
              * @see #setSelectionBackground
@@ -39219,26 +37934,23 @@ var javax;
                 return this.selectionBackground;
             };
             /**
-             * Sets the color used to draw the background of selected items, which cell
-             * renderers can use fill selected cells. {@code DefaultListCellRenderer}
-             * uses this color to fill the background of items in the selected state, as
-             * do the renderers installed by most {@code ListUI} implementations.
-             * <p>
-             * The default value of this property is defined by the look and feel
-             * implementation.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets the color used to draw the background of selected items, which cell renderers can use fill
+             * selected cells. {@code DefaultListCellRenderer} uses this color to fill the background of items
+             * in the selected state, as do the renderers installed by most {@code ListUI} implementations.
              *
-             * @param {java.awt.Color} selectionBackground
-             * the {@code Color} to use for the background of selected cells
+             * <p>The default value of this property is defined by the look and feel implementation.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {java.awt.Color} selectionBackground the {@code Color} to use for the background of selected cells
              * @see #getSelectionBackground
              * @see #setSelectionForeground
              * @see #setForeground
              * @see #setBackground
              * @see #setFont
              * @see DefaultListCellRenderer
-             * @beaninfo bound: true attribute: visualUpdate true description: The
-             * background color of selected cells.
+             * @beaninfo bound: true attribute: visualUpdate true description: The background color of
+             * selected cells.
              */
             JList.prototype.setSelectionBackground = function (selectionBackground) {
                 var oldValue = this.selectionBackground;
@@ -39246,9 +37958,8 @@ var javax;
                 this.firePropertyChange("selectionBackground", oldValue, selectionBackground);
             };
             /**
-             * Returns the value of the {@code visibleRowCount} property. See the
-             * documentation for {@link #setVisibleRowCount} for details on how to
-             * interpret this value.
+             * Returns the value of the {@code visibleRowCount} property. See the documentation for {@link
+             * #setVisibleRowCount} for details on how to interpret this value.
              *
              * @return {number} the value of the {@code visibleRowCount} property.
              * @see #setVisibleRowCount
@@ -39257,39 +37968,35 @@ var javax;
                 return this.visibleRowCount;
             };
             /**
-             * Sets the {@code visibleRowCount} property, which has different meanings
-             * depending on the layout orientation: For a {@code VERTICAL} layout
-             * orientation, this sets the preferred number of rows to display without
-             * requiring scrolling; for other orientations, it affects the wrapping of
+             * Sets the {@code visibleRowCount} property, which has different meanings depending on the layout
+             * orientation: For a {@code VERTICAL} layout orientation, this sets the preferred number of rows
+             * to display without requiring scrolling; for other orientations, it affects the wrapping of
              * cells.
-             * <p>
-             * In {@code VERTICAL} orientation:<br>
-             * Setting this property affects the return value of the
-             * {@link #getPreferredScrollableViewportSize} method, which is used to
-             * calculate the preferred size of an enclosing viewport. See that method's
-             * documentation for more details.
-             * <p>
-             * In {@code HORIZONTAL_WRAP} and {@code VERTICAL_WRAP} orientations:<br>
-             * This affects how cells are wrapped. See the documentation of
-             * {@link #setLayoutOrientation} for more details.
-             * <p>
-             * The default value of this property is {@code 8}.
-             * <p>
-             * Calling this method with a negative value results in the property being
-             * set to {@code 0}.
-             * <p>
-             * This is a JavaBeans bound property.
              *
-             * @param {number} visibleRowCount
-             * an integer specifying the preferred number of rows to display
-             * without requiring scrolling
+             * <p>In {@code VERTICAL} orientation:<br>
+             * Setting this property affects the return value of the {@link
+             * #getPreferredScrollableViewportSize} method, which is used to calculate the preferred size of
+             * an enclosing viewport. See that method's documentation for more details.
+             *
+             * <p>In {@code HORIZONTAL_WRAP} and {@code VERTICAL_WRAP} orientations:<br>
+             * This affects how cells are wrapped. See the documentation of {@link #setLayoutOrientation} for
+             * more details.
+             *
+             * <p>The default value of this property is {@code 8}.
+             *
+             * <p>Calling this method with a negative value results in the property being set to {@code 0}.
+             *
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {number} visibleRowCount an integer specifying the preferred number of rows to display without
+             * requiring scrolling
              * @see #getVisibleRowCount
              * @see #getPreferredScrollableViewportSize
              * @see #setLayoutOrientation
              * @see JComponent#getVisibleRect
              * @see JViewport
-             * @beaninfo bound: true attribute: visualUpdate true description: The
-             * preferred number of rows to display without requiring scrolling
+             * @beaninfo bound: true attribute: visualUpdate true description: The preferred number of rows to
+             * display without requiring scrolling
              */
             JList.prototype.setVisibleRowCount = function (visibleRowCount) {
                 var oldValue = this.visibleRowCount;
@@ -39297,11 +38004,10 @@ var javax;
                 this.firePropertyChange("visibleRowCount", oldValue, visibleRowCount);
             };
             /**
-             * Returns the layout orientation property for the list: {@code VERTICAL} if
-             * the layout is a single column of cells, {@code VERTICAL_WRAP} if the
-             * layout is "newspaper style" with the content flowing vertically then
-             * horizontally, or {@code HORIZONTAL_WRAP} if the layout is "newspaper
-             * style" with the content flowing horizontally then vertically.
+             * Returns the layout orientation property for the list: {@code VERTICAL} if the layout is a
+             * single column of cells, {@code VERTICAL_WRAP} if the layout is "newspaper style" with the
+             * content flowing vertically then horizontally, or {@code HORIZONTAL_WRAP} if the layout is
+             * "newspaper style" with the content flowing horizontally then vertically.
              *
              * @return {number} the value of the {@code layoutOrientation} property
              * @see #setLayoutOrientation
@@ -39311,8 +38017,8 @@ var javax;
                 return this.layoutOrientation;
             };
             /**
-             * Defines the way list cells are layed out. Consider a {@code JList} with
-             * five cells. Cells can be layed out in one of the following ways:
+             * Defines the way list cells are layed out. Consider a {@code JList} with five cells. Cells can
+             * be layed out in one of the following ways:
              *
              * <pre>
              * VERTICAL:          0
@@ -39328,8 +38034,8 @@ var javax;
              * 1  4
              * 2
              * </pre>
-             * <p>
-             * A description of these layouts follows:
+             *
+             * <p>A description of these layouts follows:
              *
              * <table border="1" summary=
              * "Describes layouts VERTICAL, HORIZONTAL_WRAP, and VERTICAL_WRAP">
@@ -39361,24 +38067,20 @@ var javax;
              * to zero, wrapping is determined by the height of the list; otherwise
              * wrapping is done at {@code visibleRowCount} rows.
              * </table>
-             * <p>
-             * The default value of this property is <code>VERTICAL</code>.
              *
-             * @param {number} layoutOrientation
-             * the new layout orientation, one of: {@code VERTICAL},
-             * {@code HORIZONTAL_WRAP} or {@code VERTICAL_WRAP}
+             * <p>The default value of this property is <code>VERTICAL</code>.
+             *
+             * @param {number} layoutOrientation the new layout orientation, one of: {@code VERTICAL}, {@code
+             * HORIZONTAL_WRAP} or {@code VERTICAL_WRAP}
              * @see #getLayoutOrientation
              * @see #setVisibleRowCount
              * @see #getScrollableTracksViewportHeight
              * @see #getScrollableTracksViewportWidth
-             * @throws IllegalArgumentException
-             * if {@code layoutOrientation} isn't one of the allowable
-             * values
+             * @throws IllegalArgumentException if {@code layoutOrientation} isn't one of the allowable values
              * @since 1.4
-             * @beaninfo bound: true attribute: visualUpdate true description: Defines
-             * the way list cells are layed out. enum: VERTICAL JList.VERTICAL
-             * HORIZONTAL_WRAP JList.HORIZONTAL_WRAP VERTICAL_WRAP
-             * JList.VERTICAL_WRAP
+             * @beaninfo bound: true attribute: visualUpdate true description: Defines the way list cells are
+             * layed out. enum: VERTICAL JList.VERTICAL HORIZONTAL_WRAP JList.HORIZONTAL_WRAP
+             * VERTICAL_WRAP JList.VERTICAL_WRAP
              */
             JList.prototype.setLayoutOrientation = function (layoutOrientation) {
                 var oldValue = this.layoutOrientation;
@@ -39394,16 +38096,13 @@ var javax;
                 }
             };
             /**
-             * Scrolls the list within an enclosing viewport to make the specified cell
-             * completely visible. This calls {@code scrollRectToVisible} with the
-             * bounds of the specified cell. For this method to work, the {@code JList}
-             * must be within a <code>JViewport</code>.
-             * <p>
-             * If the given index is outside the list's range of cells, this method
-             * results in nothing.
+             * Scrolls the list within an enclosing viewport to make the specified cell completely visible.
+             * This calls {@code scrollRectToVisible} with the bounds of the specified cell. For this method
+             * to work, the {@code JList} must be within a <code>JViewport</code>.
              *
-             * @param {number} index
-             * the index of the cell to make visible
+             * <p>If the given index is outside the list's range of cells, this method results in nothing.
+             *
+             * @param {number} index the index of the cell to make visible
              * @see JComponent#scrollRectToVisible
              * @see #getVisibleRect
              */
@@ -39413,33 +38112,27 @@ var javax;
                 }
             };
             /**
-             * Turns on or off automatic drag handling. In order to enable automatic
-             * drag handling, this property should be set to {@code true}, and the
-             * list's {@code TransferHandler} needs to be {@code non-null}. The default
-             * value of the {@code dragEnabled} property is {@code false}.
-             * <p>
-             * The job of honoring this property, and recognizing a user drag gesture,
-             * lies with the look and feel implementation, and in particular, the list's
-             * {@code ListUI}. When automatic drag handling is enabled, most look and
-             * feels (including those that subclass {@code BasicLookAndFeel}) begin a
-             * drag and drop operation whenever the user presses the mouse button over
-             * an item and then moves the mouse a few pixels. Setting this property to
-             * {@code true} can therefore have a subtle effect on how selections behave.
-             * <p>
-             * If a look and feel is used that ignores this property, you can still
-             * begin a drag and drop operation by calling {@code exportAsDrag} on the
-             * list's {@code TransferHandler}.
+             * Turns on or off automatic drag handling. In order to enable automatic drag handling, this
+             * property should be set to {@code true}, and the list's {@code TransferHandler} needs to be
+             * {@code non-null}. The default value of the {@code dragEnabled} property is {@code false}.
              *
-             * @param {boolean} b
-             * whether or not to enable automatic drag handling
+             * <p>The job of honoring this property, and recognizing a user drag gesture, lies with the look
+             * and feel implementation, and in particular, the list's {@code ListUI}. When automatic drag
+             * handling is enabled, most look and feels (including those that subclass {@code
+             * BasicLookAndFeel}) begin a drag and drop operation whenever the user presses the mouse button
+             * over an item and then moves the mouse a few pixels. Setting this property to {@code true} can
+             * therefore have a subtle effect on how selections behave.
+             *
+             * <p>If a look and feel is used that ignores this property, you can still begin a drag and drop
+             * operation by calling {@code exportAsDrag} on the list's {@code TransferHandler}.
+             *
+             * @param {boolean} b whether or not to enable automatic drag handling
              * @see java.awt.GraphicsEnvironment#isHeadless
              * @see #getDragEnabled
              * @see #setTransferHandler
              * @see TransferHandler
              * @since 1.4
-             *
-             * @beaninfo description: determines whether automatic drag handling is
-             * enabled bound: false
+             * @beaninfo description: determines whether automatic drag handling is enabled bound: false
              */
             JList.prototype.setDragEnabled = function (b) {
                 this.dragEnabled = b;
@@ -39455,27 +38148,26 @@ var javax;
                 return this.dragEnabled;
             };
             /**
-             * Sets the drop mode for this component. For backward compatibility, the
-             * default for this property is <code>DropMode.USE_SELECTION</code>. Usage
-             * of one of the other modes is recommended, however, for an improved user
-             * experience. <code>DropMode.ON</code>, for instance, offers similar
-             * behavior of showing items as selected, but does so without affecting the
-             * actual selection in the list.
-             * <p>
-             * <code>JList</code> supports the following drop modes:
-             * <ul>
-             * <li><code>DropMode.USE_SELECTION</code></li>
-             * <li><code>DropMode.ON</code></li>
-             * <li><code>DropMode.INSERT</code></li>
-             * <li><code>DropMode.ON_OR_INSERT</code></li>
-             * </ul>
-             * The drop mode is only meaningful if this component has a
-             * <code>TransferHandler</code> that accepts drops.
+             * Sets the drop mode for this component. For backward compatibility, the default for this
+             * property is <code>DropMode.USE_SELECTION</code>. Usage of one of the other modes is
+             * recommended, however, for an improved user experience. <code>DropMode.ON</code>, for instance,
+             * offers similar behavior of showing items as selected, but does so without affecting the actual
+             * selection in the list.
              *
-             * @param {javax.swing.DropMode} dropMode
-             * the drop mode to use
-             * @throws IllegalArgumentException
-             * if the drop mode is unsupported or <code>null</code>
+             * <p><code>JList</code> supports the following drop modes:
+             *
+             * <ul>
+             * <li><code>DropMode.USE_SELECTION</code>
+             * <li><code>DropMode.ON</code>
+             * <li><code>DropMode.INSERT</code>
+             * <li><code>DropMode.ON_OR_INSERT</code>
+             * </ul>
+             *
+             * The drop mode is only meaningful if this component has a <code>TransferHandler</code> that
+             * accepts drops.
+             *
+             * @param {javax.swing.DropMode} dropMode the drop mode to use
+             * @throws IllegalArgumentException if the drop mode is unsupported or <code>null</code>
              * @see #getDropMode
              * @see #getDropLocation
              * @see #setTransferHandler
@@ -39506,20 +38198,13 @@ var javax;
                 return this.dropMode;
             };
             /**
-             * Returns the next list element whose {@code toString} value starts with
-             * the given prefix.
+             * Returns the next list element whose {@code toString} value starts with the given prefix.
              *
-             * @param {string} prefix
-             * the string to test for a match
-             * @param {number} startIndex
-             * the index for starting the search
-             * @param {javax.swing.text.Position.Bias} bias
-             * the search direction, either Position.Bias.Forward or
-             * Position.Bias.Backward.
-             * @return {number} the index of the next list element that starts with the prefix;
-             * otherwise {@code -1}
-             * @exception IllegalArgumentException
-             * if prefix is {@code null} or startIndex is out of bounds
+             * @param {string} prefix the string to test for a match
+             * @param {number} startIndex the index for starting the search
+             * @param {javax.swing.text.Position.Bias} bias the search direction, either Position.Bias.Forward or Position.Bias.Backward.
+             * @return {number} the index of the next list element that starts with the prefix; otherwise {@code -1}
+             * @exception IllegalArgumentException if prefix is {@code null} or startIndex is out of bounds
              * @since 1.4
              */
             JList.prototype.getNextMatch = function (prefix, startIndex, bias) {
@@ -39561,87 +38246,73 @@ var javax;
                 return -1;
             };
             /**
-             * Returns the cell index closest to the given location in the list's
-             * coordinate system. To determine if the cell actually contains the
-             * specified location, compare the point against the cell's bounds, as
-             * provided by {@code getCellBounds}. This method returns {@code -1} if the
+             * Returns the cell index closest to the given location in the list's coordinate system. To
+             * determine if the cell actually contains the specified location, compare the point against the
+             * cell's bounds, as provided by {@code getCellBounds}. This method returns {@code -1} if the
              * model is empty
-             * <p>
-             * This is a cover method that delegates to the method of the same name in
-             * the list's {@code ListUI}. It returns {@code -1} if the list has no
-             * {@code ListUI}.
              *
-             * @param {java.awt.Point} location
-             * the coordinates of the point
+             * <p>This is a cover method that delegates to the method of the same name in the list's {@code
+             * ListUI}. It returns {@code -1} if the list has no {@code ListUI}.
+             *
+             * @param {java.awt.Point} location the coordinates of the point
              * @return {number} the cell index closest to the given location, or {@code -1}
              */
             JList.prototype.locationToIndex = function (location) {
                 throw new java.lang.RuntimeException("not supported");
             };
             /**
-             * Returns the origin of the specified item in the list's coordinate system.
-             * This method returns {@code null} if the index isn't valid.
-             * <p>
-             * This is a cover method that delegates to the method of the same name in
-             * the list's {@code ListUI}. It returns {@code null} if the list has no
-             * {@code ListUI}.
+             * Returns the origin of the specified item in the list's coordinate system. This method returns
+             * {@code null} if the index isn't valid.
              *
-             * @param {number} index
-             * the cell index
+             * <p>This is a cover method that delegates to the method of the same name in the list's {@code
+             * ListUI}. It returns {@code null} if the list has no {@code ListUI}.
+             *
+             * @param {number} index the cell index
              * @return {java.awt.Point} the origin of the cell, or {@code null}
              */
             JList.prototype.indexToLocation = function (index) {
                 throw new java.lang.RuntimeException("not supported");
             };
             /**
-             * Returns the bounding rectangle, in the list's coordinate system, for the
-             * range of cells specified by the two indices. These indices can be
-             * supplied in any order.
-             * <p>
-             * If the smaller index is outside the list's range of cells, this method
-             * returns {@code null}. If the smaller index is valid, but the larger index
-             * is outside the list's range, the bounds of just the first index is
-             * returned. Otherwise, the bounds of the valid range is returned.
-             * <p>
-             * This is a cover method that delegates to the method of the same name in
-             * the list's {@code ListUI}. It returns {@code null} if the list has no
-             * {@code ListUI}.
+             * Returns the bounding rectangle, in the list's coordinate system, for the range of cells
+             * specified by the two indices. These indices can be supplied in any order.
              *
-             * @param {number} index0
-             * the first index in the range
-             * @param {number} index1
-             * the second index in the range
+             * <p>If the smaller index is outside the list's range of cells, this method returns {@code null}.
+             * If the smaller index is valid, but the larger index is outside the list's range, the bounds of
+             * just the first index is returned. Otherwise, the bounds of the valid range is returned.
+             *
+             * <p>This is a cover method that delegates to the method of the same name in the list's {@code
+             * ListUI}. It returns {@code null} if the list has no {@code ListUI}.
+             *
+             * @param {number} index0 the first index in the range
+             * @param {number} index1 the second index in the range
              * @return {java.awt.Rectangle} the bounding rectangle for the range of cells, or {@code null}
              */
             JList.prototype.getCellBounds = function (index0, index1) {
                 throw new java.lang.RuntimeException("not supported");
             };
             /**
-             * Returns the data model that holds the list of items displayed by the
-             * <code>JList</code> component.
+             * Returns the data model that holds the list of items displayed by the <code>JList</code>
+             * component.
              *
-             * @return {*} the <code>ListModel</code> that provides the displayed list of
-             * items
+             * @return {*} the <code>ListModel</code> that provides the displayed list of items
              * @see #setModel
              */
             JList.prototype.getModel = function () {
                 return this.dataModel;
             };
             /**
-             * Sets the model that represents the contents or "value" of the list,
-             * notifies property change listeners, and then clears the list's selection.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets the model that represents the contents or "value" of the list, notifies property change
+             * listeners, and then clears the list's selection.
              *
-             * @param {*} model
-             * the <code>ListModel</code> that provides the list of items for
-             * display
-             * @exception IllegalArgumentException
-             * if <code>model</code> is <code>null</code>
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {*} model the <code>ListModel</code> that provides the list of items for display
+             * @exception IllegalArgumentException if <code>model</code> is <code>null</code>
              * @see #getModel
              * @see #clearSelection
-             * @beaninfo bound: true attribute: visualUpdate true description: The
-             * object that contains the data to be drawn by this JList.
+             * @beaninfo bound: true attribute: visualUpdate true description: The object that contains the
+             * data to be drawn by this JList.
              */
             JList.prototype.setModel = function (model) {
                 if (model == null) {
@@ -39656,17 +38327,14 @@ var javax;
                 this.setModel(new JList.JList$3(this, listData));
             };
             /**
-             * Constructs a read-only <code>ListModel</code> from an array of items, and
-             * calls {@code setModel} with this model.
-             * <p>
-             * Attempts to pass a {@code null} value to this method results in undefined
-             * behavior and, most likely, exceptions. The created model references the
-             * given array directly. Attempts to modify the array after invoking this
-             * method results in undefined behavior.
+             * Constructs a read-only <code>ListModel</code> from an array of items, and calls {@code
+             * setModel} with this model.
              *
-             * @param {E[]} listData
-             * an array of {@code E} containing the items to display in the
-             * list
+             * <p>Attempts to pass a {@code null} value to this method results in undefined behavior and, most
+             * likely, exceptions. The created model references the given array directly. Attempts to modify
+             * the array after invoking this method results in undefined behavior.
+             *
+             * @param {E[]} listData an array of {@code E} containing the items to display in the list
              * @see #setModel
              */
             JList.prototype.setListData = function (listData) {
@@ -39683,11 +38351,11 @@ var javax;
                 this.setModel(new JList.JList$4(this, listData));
             };
             /**
-             * Returns an instance of {@code DefaultListSelectionModel}; called during
-             * construction to initialize the list's selection model property.
+             * Returns an instance of {@code DefaultListSelectionModel}; called during construction to
+             * initialize the list's selection model property.
              *
-             * @return {*} a {@code DefaultListSelecitonModel}, used to initialize the
-             * list's selection model property during construction
+             * @return {*} a {@code DefaultListSelecitonModel}, used to initialize the list's selection model
+             * property during construction
              * @see #setSelectionModel
              * @see DefaultListSelectionModel
              */
@@ -39695,13 +38363,10 @@ var javax;
                 return new javax.swing.DefaultListSelectionModel();
             };
             /**
-             * Returns the current selection model. The selection model maintains the
-             * selection state of the list. See the class level documentation for more
-             * details.
+             * Returns the current selection model. The selection model maintains the selection state of the
+             * list. See the class level documentation for more details.
              *
-             * @return {*} the <code>ListSelectionModel</code> that maintains the list's
-             * selections
-             *
+             * @return {*} the <code>ListSelectionModel</code> that maintains the list's selections
              * @see #setSelectionModel
              * @see ListSelectionModel
              */
@@ -39709,24 +38374,18 @@ var javax;
                 return this.selectionModel;
             };
             /**
-             * Notifies {@code ListSelectionListener}s added directly to the list of
-             * selection changes made to the selection model. {@code JList} listens for
-             * changes made to the selection in the selection model, and forwards
-             * notification to listeners added to the list directly, by calling this
+             * Notifies {@code ListSelectionListener}s added directly to the list of selection changes made to
+             * the selection model. {@code JList} listens for changes made to the selection in the selection
+             * model, and forwards notification to listeners added to the list directly, by calling this
              * method.
-             * <p>
-             * This method constructs a {@code ListSelectionEvent} with this list as the
-             * source, and the specified arguments, and sends it to the registered
-             * {@code ListSelectionListeners}.
              *
-             * @param {number} firstIndex
-             * the first index in the range, {@code <= lastIndex}
-             * @param {number} lastIndex
-             * the last index in the range, {@code >= firstIndex}
-             * @param {boolean} isAdjusting
-             * whether or not this is one in a series of multiple events,
-             * where changes are still being made
+             * <p>This method constructs a {@code ListSelectionEvent} with this list as the source, and the
+             * specified arguments, and sends it to the registered {@code ListSelectionListeners}.
              *
+             * @param {number} firstIndex the first index in the range, {@code <= lastIndex}
+             * @param {number} lastIndex the last index in the range, {@code >= firstIndex}
+             * @param {boolean} isAdjusting whether or not this is one in a series of multiple events, where changes are
+             * still being made
              * @see #addListSelectionListener
              * @see #removeListSelectionListener
              * @see javax.swing.event.ListSelectionEvent
@@ -39748,15 +38407,13 @@ var javax;
                 }
             };
             /**
-             * Adds a listener to the list, to be notified each time a change to the
-             * selection occurs; the preferred way of listening for selection state
-             * changes. {@code JList} takes care of listening for selection state
-             * changes in the selection model, and notifies the given listener of each
-             * change. {@code ListSelectionEvent}s sent to the listener have a
-             * {@code source} property set to this list.
+             * Adds a listener to the list, to be notified each time a change to the selection occurs; the
+             * preferred way of listening for selection state changes. {@code JList} takes care of listening
+             * for selection state changes in the selection model, and notifies the given listener of each
+             * change. {@code ListSelectionEvent}s sent to the listener have a {@code source} property set to
+             * this list.
              *
-             * @param {*} listener
-             * the {@code ListSelectionListener} to add
+             * @param {*} listener the {@code ListSelectionListener} to add
              * @see #getSelectionModel
              * @see #getListSelectionListeners
              */
@@ -39770,8 +38427,7 @@ var javax;
             /**
              * Removes a selection listener from the list.
              *
-             * @param {*} listener
-             * the {@code ListSelectionListener} to remove
+             * @param {*} listener the {@code ListSelectionListener} to remove
              * @see #addListSelectionListener
              * @see #getSelectionModel
              */
@@ -39779,11 +38435,11 @@ var javax;
                 this.listenerList.remove("javax.swing.event.ListSelectionListener", listener);
             };
             /**
-             * Returns an array of all the {@code ListSelectionListener}s added to this
-             * {@code JList} by way of {@code addListSelectionListener}.
+             * Returns an array of all the {@code ListSelectionListener}s added to this {@code JList} by way
+             * of {@code addListSelectionListener}.
              *
-             * @return {javax.swing.event.ListSelectionListener[]} all of the {@code ListSelectionListener}s on this list, or an
-             * empty array if no listeners have been added
+             * @return {javax.swing.event.ListSelectionListener[]} all of the {@code ListSelectionListener}s on this list, or an empty array if no
+             * listeners have been added
              * @see #addListSelectionListener
              * @since 1.4
              */
@@ -39791,21 +38447,16 @@ var javax;
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.ListSelectionListener");
             };
             /**
-             * Sets the <code>selectionModel</code> for the list to a non-
-             * <code>null</code> <code>ListSelectionModel</code> implementation. The
-             * selection model handles the task of making single selections, selections
-             * of contiguous ranges, and non-contiguous selections.
-             * <p>
-             * This is a JavaBeans bound property.
+             * Sets the <code>selectionModel</code> for the list to a non- <code>null</code> <code>
+             * ListSelectionModel</code> implementation. The selection model handles the task of making single
+             * selections, selections of contiguous ranges, and non-contiguous selections.
              *
-             * @param {*} selectionModel
-             * the <code>ListSelectionModel</code> that implements the
-             * selections
-             * @exception IllegalArgumentException
-             * if <code>selectionModel</code> is <code>null</code>
+             * <p>This is a JavaBeans bound property.
+             *
+             * @param {*} selectionModel the <code>ListSelectionModel</code> that implements the selections
+             * @exception IllegalArgumentException if <code>selectionModel</code> is <code>null</code>
              * @see #getSelectionModel
-             * @beaninfo bound: true description: The selection model, recording which
-             * cells are selected.
+             * @beaninfo bound: true description: The selection model, recording which cells are selected.
              */
             JList.prototype.setSelectionModel = function (selectionModel) {
                 if (selectionModel == null) {
@@ -39820,44 +38471,39 @@ var javax;
                 this.firePropertyChange("selectionModel", oldValue, selectionModel);
             };
             /**
-             * Sets the selection mode for the list. This is a cover method that sets
-             * the selection mode directly on the selection model.
-             * <p>
-             * The following list describes the accepted selection modes:
+             * Sets the selection mode for the list. This is a cover method that sets the selection mode
+             * directly on the selection model.
+             *
+             * <p>The following list describes the accepted selection modes:
+             *
              * <ul>
-             * <li>{@code ListSelectionModel.SINGLE_SELECTION} - Only one list index can
-             * be selected at a time. In this mode, {@code setSelectionInterval} and
-             * {@code addSelectionInterval} are equivalent, both replacing the current
-             * selection with the index represented by the second argument (the "lead").
-             * <li>{@code ListSelectionModel.SINGLE_INTERVAL_SELECTION} - Only one
-             * contiguous interval can be selected at a time. In this mode,
-             * {@code addSelectionInterval} behaves like {@code setSelectionInterval}
-             * (replacing the current selection}, unless the given interval is
-             * immediately adjacent to or overlaps the existing selection, and can be
-             * used to grow the selection.
-             * <li>{@code ListSelectionModel.MULTIPLE_INTERVAL_SELECTION} - In this
-             * mode, there's no restriction on what can be selected. This mode is the
-             * default.
+             * <li>{@code ListSelectionModel.SINGLE_SELECTION} - Only one list index can be selected at a
+             * time. In this mode, {@code setSelectionInterval} and {@code addSelectionInterval} are
+             * equivalent, both replacing the current selection with the index represented by the second
+             * argument (the "lead").
+             * <li>{@code ListSelectionModel.SINGLE_INTERVAL_SELECTION} - Only one contiguous interval can
+             * be selected at a time. In this mode, {@code addSelectionInterval} behaves like {@code
+             * setSelectionInterval} (replacing the current selection}, unless the given interval is
+             * immediately adjacent to or overlaps the existing selection, and can be used to grow the
+             * selection.
+             * <li>{@code ListSelectionModel.MULTIPLE_INTERVAL_SELECTION} - In this mode, there's no
+             * restriction on what can be selected. This mode is the default.
              * </ul>
              *
-             * @param {number} selectionMode
-             * the selection mode
+             * @param {number} selectionMode the selection mode
              * @see #getSelectionMode
-             * @throws IllegalArgumentException
-             * if the selection mode isn't one of those allowed
+             * @throws IllegalArgumentException if the selection mode isn't one of those allowed
              * @beaninfo description: The selection mode. enum: SINGLE_SELECTION
              * ListSelectionModel.SINGLE_SELECTION SINGLE_INTERVAL_SELECTION
-             * ListSelectionModel.SINGLE_INTERVAL_SELECTION
-             * MULTIPLE_INTERVAL_SELECTION
+             * ListSelectionModel.SINGLE_INTERVAL_SELECTION MULTIPLE_INTERVAL_SELECTION
              * ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
              */
             JList.prototype.setSelectionMode = function (selectionMode) {
                 this.getSelectionModel().setSelectionMode(selectionMode);
             };
             /**
-             * Returns the current selection mode for the list. This is a cover method
-             * that delegates to the method of the same name on the list's selection
-             * model.
+             * Returns the current selection mode for the list. This is a cover method that delegates to the
+             * method of the same name on the list's selection model.
              *
              * @return {number} the current selection mode
              * @see #setSelectionMode
@@ -39866,8 +38512,8 @@ var javax;
                 return this.getSelectionModel().getSelectionMode();
             };
             /**
-             * Returns the anchor selection index. This is a cover method that delegates
-             * to the method of the same name on the list's selection model.
+             * Returns the anchor selection index. This is a cover method that delegates to the method of the
+             * same name on the list's selection model.
              *
              * @return {number} the anchor selection index
              * @see ListSelectionModel#getAnchorSelectionIndex
@@ -39876,8 +38522,8 @@ var javax;
                 return this.getSelectionModel().getAnchorSelectionIndex();
             };
             /**
-             * Returns the lead selection index. This is a cover method that delegates
-             * to the method of the same name on the list's selection model.
+             * Returns the lead selection index. This is a cover method that delegates to the method of the
+             * same name on the list's selection model.
              *
              * @return {number} the lead selection index
              * @see ListSelectionModel#getLeadSelectionIndex
@@ -39887,9 +38533,8 @@ var javax;
                 return this.getSelectionModel().getLeadSelectionIndex();
             };
             /**
-             * Returns the smallest selected cell index, or {@code -1} if the selection
-             * is empty. This is a cover method that delegates to the method of the same
-             * name on the list's selection model.
+             * Returns the smallest selected cell index, or {@code -1} if the selection is empty. This is a
+             * cover method that delegates to the method of the same name on the list's selection model.
              *
              * @return {number} the smallest selected cell index, or {@code -1}
              * @see ListSelectionModel#getMinSelectionIndex
@@ -39898,9 +38543,8 @@ var javax;
                 return this.getSelectionModel().getMinSelectionIndex();
             };
             /**
-             * Returns the largest selected cell index, or {@code -1} if the selection
-             * is empty. This is a cover method that delegates to the method of the same
-             * name on the list's selection model.
+             * Returns the largest selected cell index, or {@code -1} if the selection is empty. This is a
+             * cover method that delegates to the method of the same name on the list's selection model.
              *
              * @return {number} the largest selected cell index
              * @see ListSelectionModel#getMaxSelectionIndex
@@ -39909,14 +38553,11 @@ var javax;
                 return this.getSelectionModel().getMaxSelectionIndex();
             };
             /**
-             * Returns {@code true} if the specified index is selected, else
-             * {@code false}. This is a cover method that delegates to the method of the
-             * same name on the list's selection model.
+             * Returns {@code true} if the specified index is selected, else {@code false}. This is a cover
+             * method that delegates to the method of the same name on the list's selection model.
              *
-             * @param {number} index
-             * index to be queried for selection state
-             * @return {boolean} {@code true} if the specified index is selected, else
-             * {@code false}
+             * @param {number} index index to be queried for selection state
+             * @return {boolean} {@code true} if the specified index is selected, else {@code false}
              * @see ListSelectionModel#isSelectedIndex
              * @see #setSelectedIndex
              */
@@ -39924,9 +38565,8 @@ var javax;
                 return this.getSelectionModel().isSelectedIndex(index);
             };
             /**
-             * Returns {@code true} if nothing is selected, else {@code false}. This is
-             * a cover method that delegates to the method of the same name on the
-             * list's selection model.
+             * Returns {@code true} if nothing is selected, else {@code false}. This is a cover method that
+             * delegates to the method of the same name on the list's selection model.
              *
              * @return {boolean} {@code true} if nothing is selected, else {@code false}
              * @see ListSelectionModel#isSelectionEmpty
@@ -39936,9 +38576,9 @@ var javax;
                 return this.getSelectionModel().isSelectionEmpty();
             };
             /**
-             * Clears the selection; after calling this method, {@code isSelectionEmpty}
-             * will return {@code true}. This is a cover method that delegates to the
-             * method of the same name on the list's selection model.
+             * Clears the selection; after calling this method, {@code isSelectionEmpty} will return {@code
+             * true}. This is a cover method that delegates to the method of the same name on the list's
+             * selection model.
              *
              * @see ListSelectionModel#clearSelection
              * @see #isSelectionEmpty
@@ -39947,18 +38587,15 @@ var javax;
                 this.getSelectionModel().clearSelection();
             };
             /**
-             * Selects the specified interval. Both {@code anchor} and {@code lead}
-             * indices are included. {@code anchor} doesn't have to be less than or
-             * equal to {@code lead}. This is a cover method that delegates to the
-             * method of the same name on the list's selection model.
-             * <p>
-             * Refer to the documentation of the selection model class being used for
-             * details on how values less than {@code 0} are handled.
+             * Selects the specified interval. Both {@code anchor} and {@code lead} indices are included.
+             * {@code anchor} doesn't have to be less than or equal to {@code lead}. This is a cover method
+             * that delegates to the method of the same name on the list's selection model.
              *
-             * @param {number} anchor
-             * the first index to select
-             * @param {number} lead
-             * the last index to select
+             * <p>Refer to the documentation of the selection model class being used for details on how values
+             * less than {@code 0} are handled.
+             *
+             * @param {number} anchor the first index to select
+             * @param {number} lead the last index to select
              * @see ListSelectionModel#setSelectionInterval
              * @see DefaultListSelectionModel#setSelectionInterval
              * @see #createSelectionModel
@@ -39969,19 +38606,16 @@ var javax;
                 this.getSelectionModel().setSelectionInterval(anchor, lead);
             };
             /**
-             * Sets the selection to be the union of the specified interval with current
-             * selection. Both the {@code anchor} and {@code lead} indices are included.
-             * {@code anchor} doesn't have to be less than or equal to {@code lead}.
-             * This is a cover method that delegates to the method of the same name on
-             * the list's selection model.
-             * <p>
-             * Refer to the documentation of the selection model class being used for
-             * details on how values less than {@code 0} are handled.
+             * Sets the selection to be the union of the specified interval with current selection. Both the
+             * {@code anchor} and {@code lead} indices are included. {@code anchor} doesn't have to be less
+             * than or equal to {@code lead}. This is a cover method that delegates to the method of the same
+             * name on the list's selection model.
              *
-             * @param {number} anchor
-             * the first index to add to the selection
-             * @param {number} lead
-             * the last index to add to the selection
+             * <p>Refer to the documentation of the selection model class being used for details on how values
+             * less than {@code 0} are handled.
+             *
+             * @param {number} anchor the first index to add to the selection
+             * @param {number} lead the last index to add to the selection
              * @see ListSelectionModel#addSelectionInterval
              * @see DefaultListSelectionModel#addSelectionInterval
              * @see #createSelectionModel
@@ -39992,19 +38626,16 @@ var javax;
                 this.getSelectionModel().addSelectionInterval(anchor, lead);
             };
             /**
-             * Sets the selection to be the set difference of the specified interval and
-             * the current selection. Both the {@code index0} and {@code index1} indices
-             * are removed. {@code index0} doesn't have to be less than or equal to
-             * {@code index1}. This is a cover method that delegates to the method of
-             * the same name on the list's selection model.
-             * <p>
-             * Refer to the documentation of the selection model class being used for
-             * details on how values less than {@code 0} are handled.
+             * Sets the selection to be the set difference of the specified interval and the current
+             * selection. Both the {@code index0} and {@code index1} indices are removed. {@code index0}
+             * doesn't have to be less than or equal to {@code index1}. This is a cover method that delegates
+             * to the method of the same name on the list's selection model.
              *
-             * @param {number} index0
-             * the first index to remove from the selection
-             * @param {number} index1
-             * the last index to remove from the selection
+             * <p>Refer to the documentation of the selection model class being used for details on how values
+             * less than {@code 0} are handled.
+             *
+             * @param {number} index0 the first index to remove from the selection
+             * @param {number} index1 the last index to remove from the selection
              * @see ListSelectionModel#removeSelectionInterval
              * @see DefaultListSelectionModel#removeSelectionInterval
              * @see #createSelectionModel
@@ -40015,25 +38646,22 @@ var javax;
                 this.getSelectionModel().removeSelectionInterval(index0, index1);
             };
             /**
-             * Sets the selection model's {@code valueIsAdjusting} property. When
-             * {@code true}, upcoming changes to selection should be considered part of
-             * a single change. This property is used internally and developers
-             * typically need not call this method. For example, when the model is being
-             * updated in response to a user drag, the value of the property is set to
-             * {@code true} when the drag is initiated and set to {@code false} when the
-             * drag is finished. This allows listeners to update only when a change has
-             * been finalized, rather than handling all of the intermediate values.
-             * <p>
-             * You may want to use this directly if making a series of changes that
-             * should be considered part of a single change.
-             * <p>
-             * This is a cover method that delegates to the method of the same name on
-             * the list's selection model. See the documentation for
-             * {@link javax.swing.ListSelectionModel#setValueIsAdjusting} for more
-             * details.
+             * Sets the selection model's {@code valueIsAdjusting} property. When {@code true}, upcoming
+             * changes to selection should be considered part of a single change. This property is used
+             * internally and developers typically need not call this method. For example, when the model is
+             * being updated in response to a user drag, the value of the property is set to {@code true} when
+             * the drag is initiated and set to {@code false} when the drag is finished. This allows listeners
+             * to update only when a change has been finalized, rather than handling all of the intermediate
+             * values.
              *
-             * @param {boolean} b
-             * the new value for the property
+             * <p>You may want to use this directly if making a series of changes that should be considered
+             * part of a single change.
+             *
+             * <p>This is a cover method that delegates to the method of the same name on the list's selection
+             * model. See the documentation for {@link javax.swing.ListSelectionModel#setValueIsAdjusting} for
+             * more details.
+             *
+             * @param {boolean} b the new value for the property
              * @see ListSelectionModel#setValueIsAdjusting
              * @see javax.swing.event.ListSelectionEvent#getValueIsAdjusting
              * @see #getValueIsAdjusting
@@ -40043,12 +38671,11 @@ var javax;
             };
             /**
              * Returns the value of the selection model's {@code isAdjusting} property.
-             * <p>
-             * This is a cover method that delegates to the method of the same name on
-             * the list's selection model.
+             *
+             * <p>This is a cover method that delegates to the method of the same name on the list's selection
+             * model.
              *
              * @return {boolean} the value of the selection model's {@code isAdjusting} property.
-             *
              * @see #setValueIsAdjusting
              * @see ListSelectionModel#getValueIsAdjusting
              */
@@ -40058,8 +38685,8 @@ var javax;
             /**
              * Returns an array of all of the selected indices, in increasing order.
              *
-             * @return {int[]} all of the selected indices, in increasing order, or an empty
-             * array if nothing is selected
+             * @return {int[]} all of the selected indices, in increasing order, or an empty array if nothing is
+             * selected
              * @see #removeSelectionInterval
              * @see #addListSelectionListener
              */
@@ -40087,14 +38714,12 @@ var javax;
                 return rv;
             };
             /**
-             * Selects a single cell. Does nothing if the given index is greater than or
-             * equal to the model size. This is a convenience method that uses
-             * {@code setSelectionInterval} on the selection model. Refer to the
-             * documentation for the selection model class being used for details on how
+             * Selects a single cell. Does nothing if the given index is greater than or equal to the model
+             * size. This is a convenience method that uses {@code setSelectionInterval} on the selection
+             * model. Refer to the documentation for the selection model class being used for details on how
              * values less than {@code 0} are handled.
              *
-             * @param {number} index
-             * the index of the cell to select
+             * @param {number} index the index of the cell to select
              * @see ListSelectionModel#setSelectionInterval
              * @see #isSelectedIndex
              * @see #addListSelectionListener
@@ -40107,21 +38732,17 @@ var javax;
                 this.getSelectionModel().setSelectionInterval(index, index);
             };
             /**
-             * Changes the selection to be the set of indices specified by the given
-             * array. Indices greater than or equal to the model size are ignored. This
-             * is a convenience method that clears the selection and then uses
-             * {@code addSelectionInterval} on the selection model to add the indices.
-             * Refer to the documentation of the selection model class being used for
-             * details on how values less than {@code 0} are handled.
+             * Changes the selection to be the set of indices specified by the given array. Indices greater
+             * than or equal to the model size are ignored. This is a convenience method that clears the
+             * selection and then uses {@code addSelectionInterval} on the selection model to add the indices.
+             * Refer to the documentation of the selection model class being used for details on how values
+             * less than {@code 0} are handled.
              *
-             * @param {int[]} indices
-             * an array of the indices of the cells to select,
-             * {@code non-null}
+             * @param {int[]} indices an array of the indices of the cells to select, {@code non-null}
              * @see ListSelectionModel#addSelectionInterval
              * @see #isSelectedIndex
              * @see #addListSelectionListener
-             * @throws NullPointerException
-             * if the given array is {@code null}
+             * @throws NullPointerException if the given array is {@code null}
              */
             JList.prototype.setSelectedIndices = function (indices) {
                 var sm = this.getSelectionModel();
@@ -40137,14 +38758,13 @@ var javax;
                 }
             };
             /**
-             * Returns an array of all the selected values, in increasing order based on
-             * their indices in the list.
+             * Returns an array of all the selected values, in increasing order based on their indices in the
+             * list.
              *
              * @return {java.lang.Object[]} the selected values, or an empty array if nothing is selected
              * @see #isSelectedIndex
              * @see #getModel
              * @see #addListSelectionListener
-             *
              * @deprecated As of JDK 1.7, replaced by {@link #getSelectedValuesList()}
              */
             JList.prototype.getSelectedValues = function () {
@@ -40172,14 +38792,13 @@ var javax;
                 return rv;
             };
             /**
-             * Returns a list of all the selected items, in increasing order based on
-             * their indices in the list.
+             * Returns a list of all the selected items, in increasing order based on their indices in the
+             * list.
              *
              * @return {*} the selected items, or an empty list if nothing is selected
              * @see #isSelectedIndex
              * @see #getModel
              * @see #addListSelectionListener
-             *
              * @since 1.7
              */
             JList.prototype.getSelectedValuesList = function () {
@@ -40202,12 +38821,11 @@ var javax;
                 return selectedItems;
             };
             /**
-             * Returns the smallest selected cell index; <i>the selection</i> when only
-             * a single item is selected in the list. When multiple items are selected,
-             * it is simply the smallest selected index. Returns {@code -1} if there is
-             * no selection.
-             * <p>
-             * This method is a cover that delegates to {@code getMinSelectionIndex}.
+             * Returns the smallest selected cell index; <i>the selection</i> when only a single item is
+             * selected in the list. When multiple items are selected, it is simply the smallest selected
+             * index. Returns {@code -1} if there is no selection.
+             *
+             * <p>This method is a cover that delegates to {@code getMinSelectionIndex}.
              *
              * @return {number} the smallest selected cell index
              * @see #getMinSelectionIndex
@@ -40217,13 +38835,12 @@ var javax;
                 return this.getMinSelectionIndex();
             };
             /**
-             * Returns the value for the smallest selected cell index; <i>the selected
-             * value</i> when only a single item is selected in the list. When multiple
-             * items are selected, it is simply the value for the smallest selected
-             * index. Returns {@code null} if there is no selection.
-             * <p>
-             * This is a convenience method that simply returns the model value for
-             * {@code getMinSelectionIndex}.
+             * Returns the value for the smallest selected cell index; <i>the selected value</i> when only a
+             * single item is selected in the list. When multiple items are selected, it is simply the value
+             * for the smallest selected index. Returns {@code null} if there is no selection.
+             *
+             * <p>This is a convenience method that simply returns the model value for {@code
+             * getMinSelectionIndex}.
              *
              * @return {*} the first selected value
              * @see #getMinSelectionIndex
@@ -40237,11 +38854,9 @@ var javax;
             /**
              * Selects the specified object from the list.
              *
-             * @param {*} anObject
-             * the object to select
-             * @param {boolean} shouldScroll
-             * {@code true} if the list should scroll to display the selected
-             * object, if one exists; otherwise {@code false}
+             * @param {*} anObject the object to select
+             * @param {boolean} shouldScroll {@code true} if the list should scroll to display the selected object, if
+             * one exists; otherwise {@code false}
              */
             JList.prototype.setSelectedValue = function (anObject, shouldScroll) {
                 if (anObject == null)
@@ -40263,11 +38878,10 @@ var javax;
                 }
             };
             /**
-             * Returns a {@code String} representation of this {@code JList}. This
-             * method is intended to be used only for debugging purposes, and the
-             * content and format of the returned {@code String} may vary between
-             * implementations. The returned {@code String} may be empty, but may not be
-             * {@code null}.
+             * Returns a {@code String} representation of this {@code JList}. This method is intended to be
+             * used only for debugging purposes, and the content and format of the returned {@code String} may
+             * vary between implementations. The returned {@code String} may be empty, but may not be {@code
+             * null}.
              *
              * @return {string} a {@code String} representation of this {@code JList}.
              */
@@ -40277,24 +38891,21 @@ var javax;
                 return _super.prototype.paramString.call(this) + ",fixedCellHeight=" + this.fixedCellHeight + ",fixedCellWidth=" + this.fixedCellWidth + ",horizontalScrollIncrement=" + this.horizontalScrollIncrement + ",selectionBackground=" + selectionBackgroundString + ",selectionForeground=" + selectionForegroundString + ",visibleRowCount=" + this.visibleRowCount + ",layoutOrientation=" + this.layoutOrientation;
             };
             /**
-             * Indicates a vertical layout of cells, in a single column; the default
-             * layout.
+             * Indicates a vertical layout of cells, in a single column; the default layout.
              *
              * @see #setLayoutOrientation
              * @since 1.4
              */
             JList.VERTICAL = 0;
             /**
-             * Indicates a "newspaper style" layout with cells flowing vertically then
-             * horizontally.
+             * Indicates a "newspaper style" layout with cells flowing vertically then horizontally.
              *
              * @see #setLayoutOrientation
              * @since 1.4
              */
             JList.VERTICAL_WRAP = 1;
             /**
-             * Indicates a "newspaper style" layout with cells flowing horizontally then
-             * vertically.
+             * Indicates a "newspaper style" layout with cells flowing horizontally then vertically.
              *
              * @see #setLayoutOrientation
              * @since 1.4
@@ -40414,15 +39025,12 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Creates a new separator with the specified horizontal or
-         * vertical orientation.
+         * Creates a new separator with the specified horizontal or vertical orientation.
          *
-         * @param {number} orientation an integer specifying
-         * <code>SwingConstants.HORIZONTAL</code> or
-         * <code>SwingConstants.VERTICAL</code>
-         * @exception IllegalArgumentException if <code>orientation</code>
-         * is neither <code>SwingConstants.HORIZONTAL</code> nor
-         * <code>SwingConstants.VERTICAL</code>
+         * @param {number} orientation an integer specifying <code>SwingConstants.HORIZONTAL</code> or <code>
+         * SwingConstants.VERTICAL</code>
+         * @exception IllegalArgumentException if <code>orientation</code> is neither <code>
+         * SwingConstants.HORIZONTAL</code> nor <code>SwingConstants.VERTICAL</code>
          * @class
          * @extends javax.swing.JComponent
          * @author Georges Saab
@@ -40441,7 +39049,7 @@ var javax;
                 else if (orientation === undefined) {
                     var __args = arguments;
                     {
-                        var __args_71 = arguments;
+                        var __args_72 = arguments;
                         var orientation_2 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         _this.orientation = javax.swing.SwingConstants.HORIZONTAL;
@@ -40472,11 +39080,8 @@ var javax;
             /**
              * Returns the orientation of this separator.
              *
-             * @return   {number} The value of the orientation property, one of the
-             * following constants defined in <code>SwingConstants</code>:
-             * <code>VERTICAL</code>, or
-             * <code>HORIZONTAL</code>.
-             *
+             * @return {number} The value of the orientation property, one of the following constants defined in <code>
+             * SwingConstants</code>: <code>VERTICAL</code>, or <code>HORIZONTAL</code>.
              * @see SwingConstants
              * @see #setOrientation
              */
@@ -40484,23 +39089,17 @@ var javax;
                 return this.orientation;
             };
             /**
-             * Sets the orientation of the separator.
-             * The default value of this property is HORIZONTAL.
-             * @param {number} orientation  either <code>SwingConstants.HORIZONTAL</code>
-             * or <code>SwingConstants.VERTICAL</code>
-             * @exception IllegalArgumentException  if <code>orientation</code>
-             * is neither <code>SwingConstants.HORIZONTAL</code>
-             * nor <code>SwingConstants.VERTICAL</code>
+             * Sets the orientation of the separator. The default value of this property is HORIZONTAL.
              *
+             * @param {number} orientation either <code>SwingConstants.HORIZONTAL</code> or <code>
+             * SwingConstants.VERTICAL</code>
+             * @exception IllegalArgumentException if <code>orientation</code> is neither <code>
+             * SwingConstants.HORIZONTAL</code> nor <code>SwingConstants.VERTICAL</code>
              * @see SwingConstants
              * @see #getOrientation
-             * @beaninfo
-             * bound: true
-             * preferred: true
-             * enum: HORIZONTAL SwingConstants.HORIZONTAL
-             * VERTICAL   SwingConstants.VERTICAL
-             * attribute: visualUpdate true
-             * description: The orientation of the separator.
+             * @beaninfo bound: true preferred: true enum: HORIZONTAL SwingConstants.HORIZONTAL VERTICAL
+             * SwingConstants.VERTICAL attribute: visualUpdate true description: The orientation of the
+             * separator.
              */
             JSeparator.prototype.setOrientation = function (orientation) {
                 if (this.orientation === orientation) {
@@ -40523,14 +39122,11 @@ var javax;
                 }
             };
             /**
-             * Returns a string representation of this <code>JSeparator</code>.
-             * This method
-             * is intended to be used only for debugging purposes, and the
-             * content and format of the returned string may vary between
-             * implementations. The returned string may be empty but may not
-             * be <code>null</code>.
+             * Returns a string representation of this <code>JSeparator</code>. This method is intended to be
+             * used only for debugging purposes, and the content and format of the returned string may vary
+             * between implementations. The returned string may be empty but may not be <code>null</code>.
              *
-             * @return  {string} a string representation of this <code>JSeparator</code>
+             * @return {string} a string representation of this <code>JSeparator</code>
              */
             JSeparator.prototype.paramString = function () {
                 var orientationString = (this.orientation === javax.swing.SwingConstants.HORIZONTAL ? "HORIZONTAL" : "VERTICAL");
@@ -40552,8 +39148,8 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Creates a <code>JRootPane</code>, setting up its <code>glassPane</code>,
-         * <code>layeredPane</code>, and <code>contentPane</code>.
+         * Creates a <code>JRootPane</code>, setting up its <code>glassPane</code>, <code>layeredPane
+         * </code>, and <code>contentPane</code>.
          * @class
          * @extends javax.swing.JComponent
          */
@@ -40618,14 +39214,13 @@ var javax;
                 return c;
             };
             /**
-             * Returns a constant identifying the type of Window decorations the
-             * <code>JRootPane</code> is providing.
+             * Returns a constant identifying the type of Window decorations the <code>JRootPane</code> is
+             * providing.
              *
-             * @return {number} One of <code>NONE</code>, <code>FRAME</code>,
-             * <code>PLAIN_DIALOG</code>, <code>INFORMATION_DIALOG</code>,
-             * <code>ERROR_DIALOG</code>, <code>COLOR_CHOOSER_DIALOG</code>,
-             * <code>FILE_CHOOSER_DIALOG</code>, <code>QUESTION_DIALOG</code> or
-             * <code>WARNING_DIALOG</code>.
+             * @return {number} One of <code>NONE</code>, <code>FRAME</code>, <code>PLAIN_DIALOG</code>, <code>
+             * INFORMATION_DIALOG</code>, <code>ERROR_DIALOG</code>, <code>COLOR_CHOOSER_DIALOG</code>,
+             * <code>FILE_CHOOSER_DIALOG</code>, <code>QUESTION_DIALOG</code> or <code>WARNING_DIALOG
+             * </code>.
              * @see #setWindowDecorationStyle
              * @since 1.4
              */
@@ -40641,11 +39236,9 @@ var javax;
                 this.firePropertyChange("windowDecorationStyle", oldWindowDecorationStyle, windowDecorationStyle);
             };
             /**
-             * Returns a string that specifies the name of the L&amp;F class that
-             * renders this component.
+             * Returns a string that specifies the name of the L&amp;F class that renders this component.
              *
              * @return {string} the string "RootPaneUI"
-             *
              * @see JComponent#getUIClassID
              * @see UIDefaults#getUI
              */
@@ -40659,19 +39252,15 @@ var javax;
                 return c;
             };
             /**
-             * Sets the content pane -- the container that holds the components parented
-             * by the root pane.
-             * <p>
-             * Swing's painting architecture requires an opaque <code>JComponent</code>
-             * in the containment hierarchy. This is typically provided by the content
-             * pane. If you replace the content pane it is recommended you replace it
-             * with an opaque <code>JComponent</code>.
+             * Sets the content pane -- the container that holds the components parented by the root pane.
              *
-             * @param {java.awt.Container} content
-             * the <code>Container</code> to use for component-contents
-             * @exception java.awt.IllegalComponentStateException
-             * (a runtime exception) if the content pane parameter is
-             * <code>null</code>
+             * <p>Swing's painting architecture requires an opaque <code>JComponent</code> in the containment
+             * hierarchy. This is typically provided by the content pane. If you replace the content pane it
+             * is recommended you replace it with an opaque <code>JComponent</code>.
+             *
+             * @param {java.awt.Container} content the <code>Container</code> to use for component-contents
+             * @exception java.awt.IllegalComponentStateException (a runtime exception) if the content pane
+             * parameter is <code>null</code>
              */
             JRootPane.prototype.setContentPane = function (content) {
                 if (content == null)
@@ -40680,8 +39269,7 @@ var javax;
                 this.add$java_awt_Component(this.contentPane);
             };
             /**
-             * Returns the content pane -- the container that holds the components
-             * parented by the root pane.
+             * Returns the content pane -- the container that holds the components parented by the root pane.
              *
              * @return {java.awt.Container} the <code>Container</code> that holds the component-contents
              */
@@ -40689,21 +39277,16 @@ var javax;
                 return this.contentPane;
             };
             /**
-             * Sets the <code>defaultButton</code> property, which determines the
-             * current default button for this <code>JRootPane</code>. The default
-             * button is the button which will be activated when a UI-defined activation
-             * event (typically the <b>Enter</b> key) occurs in the root pane regardless
-             * of whether or not the button has keyboard focus (unless there is another
-             * component within the root pane which consumes the activation event, such
-             * as a <code>JTextPane</code>). For default activation to work, the button
-             * must be an enabled descendent of the root pane when activation occurs. To
-             * remove a default button from this root pane, set this property to
-             * <code>null</code>.
+             * Sets the <code>defaultButton</code> property, which determines the current default button for
+             * this <code>JRootPane</code>. The default button is the button which will be activated when a
+             * UI-defined activation event (typically the <b>Enter</b> key) occurs in the root pane regardless
+             * of whether or not the button has keyboard focus (unless there is another component within the
+             * root pane which consumes the activation event, such as a <code>JTextPane</code>). For default
+             * activation to work, the button must be an enabled descendent of the root pane when activation
+             * occurs. To remove a default button from this root pane, set this property to <code>null</code>.
              *
              * @see JButton#isDefaultButton
-             * @param {javax.swing.JButton} defaultButton
-             * the <code>JButton</code> which is to be the default button
-             *
+             * @param {javax.swing.JButton} defaultButton the <code>JButton</code> which is to be the default button
              * @beaninfo description: The button activated by default in this root pane
              */
             JRootPane.prototype.setDefaultButton = function (defaultButton) {
@@ -40730,72 +39313,66 @@ var javax;
             };
             JRootPane.uiClassID = "RootPaneUI";
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should not provide any sort of Window decorations.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should not provide any sort of Window decorations.
              *
              * @since 1.4
              */
             JRootPane.NONE = 0;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Frame.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Frame.
              *
              * @since 1.4
              */
             JRootPane.FRAME = 1;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog.
              *
              * @since 1.4
              */
             JRootPane.PLAIN_DIALOG = 2;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog used to display an informational message.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog used to display an informational message.
              *
              * @since 1.4
              */
             JRootPane.INFORMATION_DIALOG = 3;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog used to display an error message.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog used to display an error message.
              *
              * @since 1.4
              */
             JRootPane.ERROR_DIALOG = 4;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog used to display a <code>JColorChooser</code>.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog used to display a <code>JColorChooser
+             * </code>.
              *
              * @since 1.4
              */
             JRootPane.COLOR_CHOOSER_DIALOG = 5;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog used to display a <code>JFileChooser</code>.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog used to display a <code>JFileChooser</code>
+             * .
              *
              * @since 1.4
              */
             JRootPane.FILE_CHOOSER_DIALOG = 6;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog used to present a question to the user.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog used to present a question to the user.
              *
              * @since 1.4
              */
             JRootPane.QUESTION_DIALOG = 7;
             /**
-             * Constant used for the windowDecorationStyle property. Indicates that the
-             * <code>JRootPane</code> should provide decorations appropriate for a
-             * Dialog used to display a warning message.
+             * Constant used for the windowDecorationStyle property. Indicates that the <code>JRootPane</code>
+             * should provide decorations appropriate for a Dialog used to display a warning message.
              *
              * @since 1.4
              */
@@ -40847,7 +39424,7 @@ var javax;
                     var max_1 = __args[1];
                     var value_3 = __args[2];
                     {
-                        var __args_72 = arguments;
+                        var __args_73 = arguments;
                         var orientation_3 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
@@ -40900,9 +39477,9 @@ var javax;
                     var min_2 = __args[0];
                     var max_2 = __args[1];
                     {
-                        var __args_73 = arguments;
+                        var __args_74 = arguments;
                         var orientation_4 = javax.swing.SwingConstants.HORIZONTAL;
-                        var value_4 = ((__args_73[1] + __args_73[2]) / 2 | 0);
+                        var value_4 = ((__args_74[1] + __args_74[2]) / 2 | 0);
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
@@ -40979,7 +39556,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_74 = arguments;
+                        var __args_75 = arguments;
                         var min_3 = 0;
                         var max_3 = 100;
                         var value_5 = 50;
@@ -41032,7 +39609,7 @@ var javax;
                 else if (orientation === undefined && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_75 = arguments;
+                        var __args_76 = arguments;
                         var orientation_5 = javax.swing.SwingConstants.HORIZONTAL;
                         var min_4 = 0;
                         var max_4 = 100;
@@ -41246,8 +39823,7 @@ var javax;
             /**
              * Return this slider's vertical or horizontal orientation.
              *
-             * @return {number} {@code SwingConstants.VERTICAL} or
-             * {@code SwingConstants.HORIZONTAL}
+             * @return {number} {@code SwingConstants.VERTICAL} or {@code SwingConstants.HORIZONTAL}
              * @see #setOrientation
              */
             JSlider.prototype.getOrientation = function () {
@@ -41274,10 +39850,9 @@ var javax;
                 _super.prototype.setFont.call(this, font);
             };
             /**
-             * Returns a string representation of this JSlider. This method is intended
-             * to be used only for debugging purposes, and the content and format of the
-             * returned string may vary between implementations. The returned string may
-             * be empty but may not be <code>null</code>.
+             * Returns a string representation of this JSlider. This method is intended to be used only for
+             * debugging purposes, and the content and format of the returned string may vary between
+             * implementations. The returned string may be empty but may not be <code>null</code>.
              *
              * @return {string} a string representation of this JSlider.
              */
@@ -41380,13 +39955,14 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * [cite_start]Creates a scrollbar with the specified orientation, value, extent, minimum, and maximum. [cite: 454]
+         * [cite_start]Creates a scrollbar with the specified orientation, value, extent, minimum, and
+         * maximum. [cite: 454]
          *
          * @param {number} orientation either {@link #VERTICAL} or {@link #HORIZONTAL}
-         * @param {number} value       the initial value of the scrollbar
-         * [cite_start]@param extent      the size of the viewable area, also known as the visible amount [cite: 455]
-         * @param {number} min         the minimum value
-         * @param {number} max         the maximum value
+         * @param {number} value the initial value of the scrollbar [cite_start]@param extent the size of the
+         * viewable area, also known as the visible amount [cite: 455]
+         * @param {number} min the minimum value
+         * @param {number} max the maximum value
          * @param {number} extent
          * @class
          * @extends javax.swing.JComponent
@@ -41416,7 +39992,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_76 = arguments;
+                        var __args_77 = arguments;
                         var value_7 = 0;
                         var extent_3 = 10;
                         var min_5 = 0;
@@ -41453,7 +40029,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_77 = arguments;
+                        var __args_78 = arguments;
                         var orientation_6 = java.awt.Adjustable.VERTICAL;
                         var value_8 = 0;
                         var extent_4 = 10;
@@ -41595,14 +40171,11 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Creates a new JPanel with the specified layout manager and buffering
-         * strategy.
+         * Creates a new JPanel with the specified layout manager and buffering strategy.
          *
-         * @param {*} layout
-         * the LayoutManager to use
-         * @param {boolean} isDoubleBuffered
-         * a boolean, true for double-buffering, which uses additional
-         * memory space to achieve fast, flicker-free updates
+         * @param {*} layout the LayoutManager to use
+         * @param {boolean} isDoubleBuffered a boolean, true for double-buffering, which uses additional memory
+         * space to achieve fast, flicker-free updates
          * @class
          * @extends javax.swing.JComponent
          */
@@ -41621,7 +40194,7 @@ var javax;
                 else if (((layout != null && (layout.constructor != null && layout.constructor["__interfaces"] != null && layout.constructor["__interfaces"].indexOf("java.awt.LayoutManager") >= 0)) || layout === null) && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_78 = arguments;
+                        var __args_79 = arguments;
                         var isDoubleBuffered_1 = true;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -41637,7 +40210,7 @@ var javax;
                     var __args = arguments;
                     var isDoubleBuffered_2 = __args[0];
                     {
-                        var __args_79 = arguments;
+                        var __args_80 = arguments;
                         var layout_2 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -41652,10 +40225,10 @@ var javax;
                 else if (layout === undefined && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_80 = arguments;
+                        var __args_81 = arguments;
                         var isDoubleBuffered_3 = true;
                         {
-                            var __args_81 = arguments;
+                            var __args_82 = arguments;
                             var layout_3 = new java.awt.FlowLayout();
                             _this = _super.call(this) || this;
                             if (_this.htmlCanvas === undefined) {
@@ -41748,14 +40321,12 @@ var javax;
                 }
             };
             /**
-             * Returns a string that specifies the name of the L&amp;F class that
-             * renders this component.
+             * Returns a string that specifies the name of the L&amp;F class that renders this component.
              *
              * @return {string} "PanelUI"
              * @see JComponent#getUIClassID
              * @see UIDefaults#getUI
-             * @beaninfo expert: true description: A string that specifies the name of
-             * the L&amp;F class.
+             * @beaninfo expert: true description: A string that specifies the name of the L&amp;F class.
              */
             JPanel.prototype.getUIClassID = function () {
                 return JPanel.uiClassID;
@@ -41800,8 +40371,8 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Constructs a spinner for the given model. The spinner has a set of previous/next
-         * buttons, and an editor appropriate for the model.
+         * Constructs a spinner for the given model. The spinner has a set of previous/next buttons, and
+         * an editor appropriate for the model.
          *
          * @param {*} model the SpinnerModel that defines the sequence of values.
          * @class
@@ -41841,7 +40412,7 @@ var javax;
                 else if (model === undefined) {
                     var __args = arguments;
                     {
-                        var __args_82 = arguments;
+                        var __args_83 = arguments;
                         var model_1 = new javax.swing.SpinnerNumberModel(0, null, null, 1);
                         _this = _super.call(this) || this;
                         if (_this.model === undefined) {
@@ -41954,6 +40525,7 @@ var javax;
             };
             /**
              * Returns the current value of the model.
+             *
              * @return {*} the current value
              */
             JSpinner.prototype.getValue = function () {
@@ -41961,6 +40533,7 @@ var javax;
             };
             /**
              * Changes the current value of the model.
+             *
              * @param {*} value the new value
              */
             JSpinner.prototype.setValue = function (value) {
@@ -42062,8 +40635,8 @@ var javax;
             /**
              * Returns the margin between the button's border and the label.
              *
-             * @return {java.awt.Insets} an <code>Insets</code> object specifying the margin between the
-             * botton's border and the label
+             * @return {java.awt.Insets} an <code>Insets</code> object specifying the margin between the botton's border and the
+             * label
              * @see #setMargin
              */
             AbstractButton.prototype.getMargin = function () {
@@ -42309,8 +40882,7 @@ var javax;
             /**
              * Adds a <code>ChangeListener</code> to the button.
              *
-             * @param {*} l
-             * the listener to be added
+             * @param {*} l the listener to be added
              */
             AbstractButton.prototype.addChangeListener = function (l) {
                 this.listenerList.add("javax.swing.event.ChangeListener", l);
@@ -42318,26 +40890,25 @@ var javax;
             /**
              * Removes a ChangeListener from the button.
              *
-             * @param {*} l
-             * the listener to be removed
+             * @param {*} l the listener to be removed
              */
             AbstractButton.prototype.removeChangeListener = function (l) {
                 this.listenerList.remove("javax.swing.event.ChangeListener", l);
             };
             /**
-             * Returns an array of all the <code>ChangeListener</code>s added to this
-             * AbstractButton with addChangeListener().
+             * Returns an array of all the <code>ChangeListener</code>s added to this AbstractButton with
+             * addChangeListener().
              *
-             * @return {javax.swing.event.ChangeListener[]} all of the <code>ChangeListener</code>s added or an empty array
-             * if no listeners have been added
+             * @return {javax.swing.event.ChangeListener[]} all of the <code>ChangeListener</code>s added or an empty array if no listeners have
+             * been added
              * @since 1.4
              */
             AbstractButton.prototype.getChangeListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.ChangeListener");
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is lazily created.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is lazily created.
              *
              * @see EventListenerList
              */
@@ -42357,19 +40928,16 @@ var javax;
             /**
              * Adds an <code>ActionListener</code> to the button.
              *
-             * @param {*} l
-             * the <code>ActionListener</code> to be added
+             * @param {*} l the <code>ActionListener</code> to be added
              */
             AbstractButton.prototype.addActionListener = function (l) {
                 this.listenerList.add("java.awt.event.ActionListener", l);
             };
             /**
-             * Removes an <code>ActionListener</code> from the button. If the listener
-             * is the currently set <code>Action</code> for the button, then the
-             * <code>Action</code> is set to <code>null</code>.
+             * Removes an <code>ActionListener</code> from the button. If the listener is the currently set
+             * <code>Action</code> for the button, then the <code>Action</code> is set to <code>null</code>.
              *
-             * @param {*} l
-             * the listener to be removed
+             * @param {*} l the listener to be removed
              */
             AbstractButton.prototype.removeActionListener = function (l) {
                 if ((l != null) && (this.getAction() === l)) {
@@ -42380,20 +40948,19 @@ var javax;
                 }
             };
             /**
-             * Returns an array of all the <code>ActionListener</code>s added to this
-             * AbstractButton with addActionListener().
+             * Returns an array of all the <code>ActionListener</code>s added to this AbstractButton with
+             * addActionListener().
              *
-             * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array
-             * if no listeners have been added
+             * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array if no listeners have
+             * been added
              * @since 1.4
              */
             AbstractButton.prototype.getActionListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("java.awt.event.ActionListener");
             };
             /**
-             * Subclasses that want to handle <code>ChangeEvents</code> differently can
-             * override this to return another <code>ChangeListener</code>
-             * implementation.
+             * Subclasses that want to handle <code>ChangeEvents</code> differently can override this to
+             * return another <code>ChangeListener</code> implementation.
              *
              * @return {*} the new <code>ChangeListener</code>
              */
@@ -42401,12 +40968,10 @@ var javax;
                 return this.getHandler();
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is lazily created using the
-             * <code>event</code> parameter.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is lazily created using the <code>event</code> parameter.
              *
-             * @param {java.awt.event.ActionEvent} event
-             * the <code>ActionEvent</code> object
+             * @param {java.awt.event.ActionEvent} event the <code>ActionEvent</code> object
              * @see EventListenerList
              */
             AbstractButton.prototype.fireActionPerformed = function (event) {
@@ -42429,12 +40994,10 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is lazily created using the
-             * <code>event</code> parameter.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is lazily created using the <code>event</code> parameter.
              *
-             * @param {java.awt.event.ItemEvent} event
-             * the <code>ItemEvent</code> object
+             * @param {java.awt.event.ItemEvent} event the <code>ItemEvent</code> object
              * @see EventListenerList
              */
             AbstractButton.prototype.fireItemStateChanged = function (event) {
@@ -42461,8 +41024,7 @@ var javax;
             /**
              * Enables (or disables) the button.
              *
-             * @param {boolean} b
-             * true to enable the button, otherwise false
+             * @param {boolean} b true to enable the button, otherwise false
              */
             AbstractButton.prototype.setEnabled = function (b) {
                 _super.prototype.setEnabled.call(this, b);
@@ -42479,8 +41041,7 @@ var javax;
             /**
              * Sets the label text.
              *
-             * @param {string} label
-             * a <code>String</code> containing the text
+             * @param {string} label a <code>String</code> containing the text
              * @deprecated - Replaced by <code>setText(text)</code>
              * @beaninfo bound: true description: Replace by setText(text)
              */
@@ -42490,8 +41051,7 @@ var javax;
             /**
              * Adds an <code>ItemListener</code> to the <code>checkbox</code>.
              *
-             * @param {*} l
-             * the <code>ItemListener</code> to be added
+             * @param {*} l the <code>ItemListener</code> to be added
              */
             AbstractButton.prototype.addItemListener = function (l) {
                 this.listenerList.add("java.awt.event.ItemListener", l);
@@ -42499,29 +41059,28 @@ var javax;
             /**
              * Removes an <code>ItemListener</code> from the button.
              *
-             * @param {*} l
-             * the <code>ItemListener</code> to be removed
+             * @param {*} l the <code>ItemListener</code> to be removed
              */
             AbstractButton.prototype.removeItemListener = function (l) {
                 this.listenerList.remove("java.awt.event.ItemListener", l);
             };
             /**
-             * Returns an array of all the <code>ItemListener</code>s added to this
-             * AbstractButton with addItemListener().
+             * Returns an array of all the <code>ItemListener</code>s added to this AbstractButton with
+             * addItemListener().
              *
-             * @return {java.awt.event.ItemListener[]} all of the <code>ItemListener</code>s added or an empty array if
-             * no listeners have been added
+             * @return {java.awt.event.ItemListener[]} all of the <code>ItemListener</code>s added or an empty array if no listeners have been
+             * added
              * @since 1.4
              */
             AbstractButton.prototype.getItemListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("java.awt.event.ItemListener");
             };
             /**
-             * Returns an array (length 1) containing the label or <code>null</code> if
-             * the button is not selected.
+             * Returns an array (length 1) containing the label or <code>null</code> if the button is not
+             * selected.
              *
-             * @return {java.lang.Object[]} an array containing 1 Object: the text of the button, if the item
-             * is selected; otherwise <code>null</code>
+             * @return {java.lang.Object[]} an array containing 1 Object: the text of the button, if the item is selected;
+             * otherwise <code>null</code>
              */
             AbstractButton.prototype.getSelectedObjects = function () {
                 if (this.isSelected() === false) {
@@ -42600,8 +41159,7 @@ var javax;
              */
             AbstractButton.BORDER_PAINTED_CHANGED_PROPERTY = "borderPainted";
             /**
-             * Identifies a change to having the border highlighted when focused, or
-             * not.
+             * Identifies a change to having the border highlighted when focused, or not.
              */
             AbstractButton.FOCUS_PAINTED_CHANGED_PROPERTY = "focusPainted";
             /**
@@ -42629,8 +41187,8 @@ var javax;
              */
             AbstractButton.ROLLOVER_ICON_CHANGED_PROPERTY = "rolloverIcon";
             /**
-             * Identifies a change to the icon used when the cursor is over the button
-             * and it has been selected.
+             * Identifies a change to the icon used when the cursor is over the button and it has been
+             * selected.
              */
             AbstractButton.ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY = "rolloverSelectedIcon";
             /**
@@ -42638,8 +41196,7 @@ var javax;
              */
             AbstractButton.DISABLED_ICON_CHANGED_PROPERTY = "disabledIcon";
             /**
-             * Identifies a change to the icon used when the button has been disabled
-             * and selected.
+             * Identifies a change to the icon used when the button has been disabled and selected.
              */
             AbstractButton.DISABLED_SELECTED_ICON_CHANGED_PROPERTY = "disabledSelectedIcon";
             return AbstractButton;
@@ -42650,13 +41207,12 @@ var javax;
         (function (AbstractButton) {
             /**
              * Extends <code>ChangeListener</code> to be serializable.
-             * <p>
-             * <strong>Warning:</strong> Serialized objects of this class will not be
-             * compatible with future Swing releases. The current serialization support
-             * is appropriate for short term storage or RMI between applications running
-             * the same version of Swing. As of 1.4, support for long term storage of
-             * all JavaBeans&trade; has been added to the <code>java.beans</code>
-             * package. Please see {@link java.beans.XMLEncoder}.
+             *
+             * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with
+             * future Swing releases. The current serialization support is appropriate for short term storage
+             * or RMI between applications running the same version of Swing. As of 1.4, support for long term
+             * storage of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please
+             * see {@link java.beans.XMLEncoder}.
              * @class
              */
             var ButtonChangeListener = /** @class */ (function () {
@@ -42920,8 +41476,7 @@ var javax;
             /**
              * Returns the data model currently used by the <code>JComboBox</code>.
              *
-             * @return {*} the <code>ComboBoxModel</code> that provides the displayed list
-             * of items
+             * @return {*} the <code>ComboBoxModel</code> that provides the displayed list of items
              */
             JComboBox.prototype.getModel = function () {
                 return this.dataModel;
@@ -43508,7 +42063,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_83 = arguments;
+                        var __args_84 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -43618,7 +42173,7 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_84 = arguments;
+                        var __args_85 = arguments;
                         var text_4 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
@@ -43727,7 +42282,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_85 = arguments;
+                        var __args_86 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -43837,7 +42392,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_86 = arguments;
+                        var __args_87 = arguments;
                         var text_5 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
@@ -43947,7 +42502,7 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_87 = arguments;
+                        var __args_88 = arguments;
                         var text_6 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
@@ -44337,47 +42892,38 @@ var javax;
         var event;
         (function (event) {
             /**
-             * Constructs a <code>MouseWheelEvent</code> object with the specified
-             * source component, type, modifiers, coordinates, absolute coordinates,
-             * scroll type, scroll amount, and wheel rotation.
-             * <p>Note that passing in an invalid <code>id</code> parameter results
-             * in unspecified behavior. This method throws an
-             * <code>IllegalArgumentException</code> if <code>source</code> equals
+             * Constructs a <code>MouseWheelEvent</code> object with the specified source component, type,
+             * modifiers, coordinates, absolute coordinates, scroll type, scroll amount, and wheel rotation.
+             *
+             * <p>Note that passing in an invalid <code>id</code> parameter results in unspecified behavior.
+             * This method throws an <code>IllegalArgumentException</code> if <code>source</code> equals
              * <code>null</code>.
-             * <p>Even if inconsistent values for relative and absolute coordinates
-             * are passed to the constructor, a <code>MouseWheelEvent</code> instance
-             * is still created and no exception is thrown.
              *
-             * @param {java.awt.Component} source         the <code>Component</code> that originated the event
-             * @param {number} id             the integer value that identifies the event
-             * @param {number} when           a long value that gives the time when the event occurred
-             * @param {number} modifiers      the modifier keys down during event
-             * (shift, ctrl, alt, meta)
-             * @param {number} x              the horizontal <code>x</code> coordinate for the
-             * mouse location
-             * @param {number} y              the vertical <code>y</code> coordinate for the
-             * mouse location
-             * @param {number} xAbs           the absolute horizontal <code>x</code> coordinate for
-             * the mouse location
-             * @param {number} yAbs           the absolute vertical <code>y</code> coordinate for
-             * the mouse location
-             * @param {number} clickCount     the number of mouse clicks associated with the event
-             * @param {boolean} popupTrigger   a boolean value, <code>true</code> if this event is a trigger
-             * for a popup-menu
-             * @param {number} scrollType     the type of scrolling which should take place in
-             * response to this event;  valid values are
-             * <code>WHEEL_UNIT_SCROLL</code> and
-             * <code>WHEEL_BLOCK_SCROLL</code>
-             * @param  {number} scrollAmount  for scrollType <code>WHEEL_UNIT_SCROLL</code>,
-             * the number of units to be scrolled
-             * @param {number} wheelRotation  the integer number of "clicks" by which the mouse wheel
-             * was rotated
-             * @param {number} preciseWheelRotation the double number of "clicks" by which the mouse wheel
-             * was rotated
+             * <p>Even if inconsistent values for relative and absolute coordinates are passed to the
+             * constructor, a <code>MouseWheelEvent</code> instance is still created and no exception is
+             * thrown.
              *
+             * @param {java.awt.Component} source the <code>Component</code> that originated the event
+             * @param {number} id the integer value that identifies the event
+             * @param {number} when a long value that gives the time when the event occurred
+             * @param {number} modifiers the modifier keys down during event (shift, ctrl, alt, meta)
+             * @param {number} x the horizontal <code>x</code> coordinate for the mouse location
+             * @param {number} y the vertical <code>y</code> coordinate for the mouse location
+             * @param {number} xAbs the absolute horizontal <code>x</code> coordinate for the mouse location
+             * @param {number} yAbs the absolute vertical <code>y</code> coordinate for the mouse location
+             * @param {number} clickCount the number of mouse clicks associated with the event
+             * @param {boolean} popupTrigger a boolean value, <code>true</code> if this event is a trigger for a
+             * popup-menu
+             * @param {number} scrollType the type of scrolling which should take place in response to this event;
+             * valid values are <code>WHEEL_UNIT_SCROLL</code> and <code>WHEEL_BLOCK_SCROLL</code>
+             * @param {number} scrollAmount for scrollType <code>WHEEL_UNIT_SCROLL</code>, the number of units to be
+             * scrolled
+             * @param {number} wheelRotation the integer number of "clicks" by which the mouse wheel was rotated
+             * @param {number} preciseWheelRotation the double number of "clicks" by which the mouse wheel was rotated
              * @throws IllegalArgumentException if <code>source</code> is null
              * @see MouseEvent#MouseEvent(java.awt.Component, int, long, int, int, int, int, boolean)
-             * @see MouseEvent#MouseEvent(java.awt.Component, int, long, int, int, int, int, int, int, boolean, int)
+             * @see MouseEvent#MouseEvent(java.awt.Component, int, long, int, int, int, int, int, int,
+             * boolean, int)
              * @since 1.7
              * @class
              * @extends java.awt.event.MouseEvent
@@ -44410,8 +42956,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_88 = arguments;
-                            var preciseWheelRotation_1 = __args_88[12];
+                            var __args_89 = arguments;
+                            var preciseWheelRotation_1 = __args_89[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -44451,12 +42997,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_89 = arguments;
+                            var __args_90 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_90 = arguments;
-                                var preciseWheelRotation_2 = __args_90[12];
+                                var __args_91 = arguments;
+                                var preciseWheelRotation_2 = __args_91[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -44506,16 +43052,16 @@ var javax;
                     return _this;
                 }
                 /**
-                 * Returns the type of scrolling that should take place in response to this
-                 * event.  This is determined by the native platform.  Legal values are:
+                 * Returns the type of scrolling that should take place in response to this event. This is
+                 * determined by the native platform. Legal values are:
+                 *
                  * <ul>
-                 * <li> MouseWheelEvent.WHEEL_UNIT_SCROLL
-                 * <li> MouseWheelEvent.WHEEL_BLOCK_SCROLL
+                 * <li>MouseWheelEvent.WHEEL_UNIT_SCROLL
+                 * <li>MouseWheelEvent.WHEEL_BLOCK_SCROLL
                  * </ul>
                  *
-                 * @return {number} either MouseWheelEvent.WHEEL_UNIT_SCROLL or
-                 * MouseWheelEvent.WHEEL_BLOCK_SCROLL, depending on the configuration of
-                 * the native platform.
+                 * @return {number} either MouseWheelEvent.WHEEL_UNIT_SCROLL or MouseWheelEvent.WHEEL_BLOCK_SCROLL,
+                 * depending on the configuration of the native platform.
                  * @see java.awt.Adjustable#getUnitIncrement
                  * @see java.awt.Adjustable#getBlockIncrement
                  * @see javax.swing.Scrollable#getScrollableUnitIncrement
@@ -44525,13 +43071,10 @@ var javax;
                     return this.scrollType;
                 };
                 /**
-                 * Returns the number of units that should be scrolled per
-                 * click of mouse wheel rotation.
-                 * Only valid if <code>getScrollType</code> returns
-                 * <code>MouseWheelEvent.WHEEL_UNIT_SCROLL</code>
+                 * Returns the number of units that should be scrolled per click of mouse wheel rotation. Only
+                 * valid if <code>getScrollType</code> returns <code>MouseWheelEvent.WHEEL_UNIT_SCROLL</code>
                  *
-                 * @return {number} number of units to scroll, or an undefined value if
-                 * <code>getScrollType</code> returns
+                 * @return {number} number of units to scroll, or an undefined value if <code>getScrollType</code> returns
                  * <code>MouseWheelEvent.WHEEL_BLOCK_SCROLL</code>
                  * @see #getScrollType
                  */
@@ -44539,26 +43082,24 @@ var javax;
                     return this.scrollAmount;
                 };
                 /**
-                 * Returns the number of "clicks" the mouse wheel was rotated, as an integer.
-                 * A partial rotation may occur if the mouse supports a high-resolution wheel.
-                 * In this case, the method returns zero until a full "click" has been accumulated.
+                 * Returns the number of "clicks" the mouse wheel was rotated, as an integer. A partial rotation
+                 * may occur if the mouse supports a high-resolution wheel. In this case, the method returns zero
+                 * until a full "click" has been accumulated.
                  *
-                 * @return {number} negative values if the mouse wheel was rotated up/away from
-                 * the user, and positive values if the mouse wheel was rotated down/
-                 * towards the user
+                 * @return {number} negative values if the mouse wheel was rotated up/away from the user, and positive
+                 * values if the mouse wheel was rotated down/ towards the user
                  * @see #getPreciseWheelRotation
                  */
                 MouseWheelEvent.prototype.getWheelRotation = function () {
                     return this.wheelRotation;
                 };
                 /**
-                 * Returns the number of "clicks" the mouse wheel was rotated, as a double.
-                 * A partial rotation may occur if the mouse supports a high-resolution wheel.
-                 * In this case, the return value will include a fractional "click".
+                 * Returns the number of "clicks" the mouse wheel was rotated, as a double. A partial rotation may
+                 * occur if the mouse supports a high-resolution wheel. In this case, the return value will
+                 * include a fractional "click".
                  *
-                 * @return {number} negative values if the mouse wheel was rotated up or away from
-                 * the user, and positive values if the mouse wheel was rotated down or
-                 * towards the user
+                 * @return {number} negative values if the mouse wheel was rotated up or away from the user, and positive
+                 * values if the mouse wheel was rotated down or towards the user
                  * @see #getWheelRotation
                  * @since 1.7
                  */
@@ -44566,24 +43107,21 @@ var javax;
                     return this.preciseWheelRotation;
                 };
                 /**
-                 * This is a convenience method to aid in the implementation of
-                 * the common-case MouseWheelListener - to scroll a ScrollPane or
-                 * JScrollPane by an amount which conforms to the platform settings.
-                 * (Note, however, that <code>ScrollPane</code> and
-                 * <code>JScrollPane</code> already have this functionality built in.)
-                 * <P>
-                 * This method returns the number of units to scroll when scroll type is
-                 * MouseWheelEvent.WHEEL_UNIT_SCROLL, and should only be called if
-                 * <code>getScrollType</code> returns MouseWheelEvent.WHEEL_UNIT_SCROLL.
-                 * <P>
-                 * Direction of scroll, amount of wheel movement,
-                 * and platform settings for wheel scrolling are all accounted for.
-                 * This method does not and cannot take into account value of the
-                 * Adjustable/Scrollable unit increment, as this will vary among
-                 * scrolling components.
-                 * <P>
-                 * A simplified example of how this method might be used in a
-                 * listener:
+                 * This is a convenience method to aid in the implementation of the common-case MouseWheelListener
+                 * - to scroll a ScrollPane or JScrollPane by an amount which conforms to the platform settings.
+                 * (Note, however, that <code>ScrollPane</code> and <code>JScrollPane</code> already have this
+                 * functionality built in.)
+                 *
+                 * <p>This method returns the number of units to scroll when scroll type is
+                 * MouseWheelEvent.WHEEL_UNIT_SCROLL, and should only be called if <code>getScrollType</code>
+                 * returns MouseWheelEvent.WHEEL_UNIT_SCROLL.
+                 *
+                 * <p>Direction of scroll, amount of wheel movement, and platform settings for wheel scrolling are
+                 * all accounted for. This method does not and cannot take into account value of the
+                 * Adjustable/Scrollable unit increment, as this will vary among scrolling components.
+                 *
+                 * <p>A simplified example of how this method might be used in a listener:
+                 *
                  * <pre>
                  * mouseWheelMoved(MouseWheelEvent event) {
                  * ScrollPane sp = getScrollPaneFromSomewhere();
@@ -44597,9 +43135,8 @@ var javax;
                  * }
                  * </pre>
                  *
-                 * @return {number} the number of units to scroll based on the direction and amount
-                 * of mouse wheel rotation, and on the wheel scrolling settings of the
-                 * native platform
+                 * @return {number} the number of units to scroll based on the direction and amount of mouse wheel
+                 * rotation, and on the wheel scrolling settings of the native platform
                  * @see #getScrollType
                  * @see #getScrollAmount
                  * @see MouseWheelListener
@@ -44616,8 +43153,8 @@ var javax;
                     return this.scrollAmount * this.wheelRotation;
                 };
                 /**
-                 * Returns a parameter string identifying this event.
-                 * This method is useful for event-logging and for debugging.
+                 * Returns a parameter string identifying this event. This method is useful for event-logging and
+                 * for debugging.
                  *
                  * @return {string} a string identifying the event and its attributes
                  */
@@ -44635,15 +43172,13 @@ var javax;
                     return _super.prototype.paramString.call(this) + ",scrollType=" + scrollTypeStr + ",scrollAmount=" + this.getScrollAmount() + ",wheelRotation=" + this.getWheelRotation() + ",preciseWheelRotation=" + this.getPreciseWheelRotation();
                 };
                 /**
-                 * Constant representing scrolling by "units" (like scrolling with the
-                 * arrow keys)
+                 * Constant representing scrolling by "units" (like scrolling with the arrow keys)
                  *
                  * @see #getScrollType
                  */
                 MouseWheelEvent.WHEEL_UNIT_SCROLL = 0;
                 /**
-                 * Constant representing scrolling by a "block" (like scrolling
-                 * with page-up, page-down keys)
+                 * Constant representing scrolling by a "block" (like scrolling with page-up, page-down keys)
                  *
                  * @see #getScrollType
                  */
@@ -45308,19 +43843,16 @@ var javax;
             /**
              * Constructs a MenuKeyEvent object.
              *
-             * @param {java.awt.Component} source     the Component that originated the event
-             * (typically <code>this</code>)
-             * @param {number} id         an int specifying the type of event, as defined
-             * in {@link java.awt.event.KeyEvent}
-             * @param {number} when       a long identifying the time the event occurred
-             * @param {number} modifiers     an int specifying any modifier keys held down,
-             * as specified in {@link java.awt.event.InputEvent}
-             * @param {number} keyCode    an int specifying the specific key that was pressed
-             * @param {string} keyChar    a char specifying the key's character value, if any
-             * -- null if the key has no character value
-             * @param {javax.swing.MenuElement[]} p          an array of MenuElement objects specifying a path
-             * to a menu item affected by the drag
-             * @param {javax.swing.MenuSelectionManager} m          a MenuSelectionManager object that handles selections
+             * @param {java.awt.Component} source the Component that originated the event (typically <code>this</code>)
+             * @param {number} id an int specifying the type of event, as defined in {@link java.awt.event.KeyEvent}
+             * @param {number} when a long identifying the time the event occurred
+             * @param {number} modifiers an int specifying any modifier keys held down, as specified in {@link
+             * java.awt.event.InputEvent}
+             * @param {number} keyCode an int specifying the specific key that was pressed
+             * @param {string} keyChar a char specifying the key's character value, if any -- null if the key has no
+             * character value
+             * @param {javax.swing.MenuElement[]} p an array of MenuElement objects specifying a path to a menu item affected by the drag
+             * @param {javax.swing.MenuSelectionManager} m a MenuSelectionManager object that handles selections
              * @class
              * @extends java.awt.event.KeyEvent
              * @author Georges Saab
@@ -45368,12 +43900,11 @@ var javax;
     (function (swing) {
         /**
          * Creates a swing applet instance.
-         * <p>
-         * This constructor sets the component's locale property to the value
-         * returned by <code>JComponent.getDefaultLocale</code>.
          *
-         * @exception java.awt.HeadlessException
-         * if GraphicsEnvironment.isHeadless() returns true.
+         * <p>This constructor sets the component's locale property to the value returned by <code>
+         * JComponent.getDefaultLocale</code>.
+         *
+         * @exception java.awt.HeadlessException if GraphicsEnvironment.isHeadless() returns true.
          * @see java.awt.GraphicsEnvironment#isHeadless
          * @see JComponent#getDefaultLocale
          * @class
@@ -45411,8 +43942,8 @@ var javax;
                 }
             };
             /**
-             * Just calls <code>paint(g)</code>. This method was overridden to prevent
-             * an unnecessary call to clear the background.
+             * Just calls <code>paint(g)</code>. This method was overridden to prevent an unnecessary call to
+             * clear the background.
              * @param {java.awt.Graphics} g
              */
             JApplet.prototype.update = function (g) {
@@ -45427,15 +43958,13 @@ var javax;
                 }
             };
             /**
-             * Removes the specified component from the container. If <code>comp</code>
-             * is not the <code>rootPane</code>, this will forward the call to the
-             * <code>contentPane</code>. This will do nothing if <code>comp</code> is
-             * not a child of the <code>JFrame</code> or <code>contentPane</code>.
+             * Removes the specified component from the container. If <code>comp</code> is not the <code>
+             * rootPane</code>, this will forward the call to the <code>contentPane</code>. This will do
+             * nothing if <code>comp</code> is not a child of the <code>JFrame</code> or <code>contentPane
+             * </code>.
              *
-             * @param {java.awt.Component} comp
-             * the component to be removed
-             * @throws NullPointerException
-             * if <code>comp</code> is null
+             * @param {java.awt.Component} comp the component to be removed
+             * @throws NullPointerException if <code>comp</code> is null
              * @see #add
              * @see javax.swing.RootPaneContainer
              */
@@ -45450,12 +43979,10 @@ var javax;
                     throw new Error('invalid overload');
             };
             /**
-             * Sets the <code>LayoutManager</code>. Overridden to conditionally forward
-             * the call to the <code>contentPane</code>. Refer to
-             * {@link javax.swing.RootPaneContainer} for more information.
+             * Sets the <code>LayoutManager</code>. Overridden to conditionally forward the call to the <code>
+             * contentPane</code>. Refer to {@link javax.swing.RootPaneContainer} for more information.
              *
-             * @param {*} manager
-             * the <code>LayoutManager</code>
+             * @param {*} manager the <code>LayoutManager</code>
              * @see #setRootPaneCheckingEnabled
              * @see javax.swing.RootPaneContainer
              */
@@ -45480,11 +44007,8 @@ var javax;
             /**
              * Sets the rootPane property. This method is called by the constructor.
              *
-             * @param {javax.swing.JRootPane} root
-             * the rootPane object for this applet
-             *
+             * @param {javax.swing.JRootPane} root the rootPane object for this applet
              * @see #getRootPane
-             *
              * @beaninfo hidden: true description: the RootPane object for this applet.
              */
             JApplet.prototype.setRootPane = function (root) {
@@ -45514,26 +44038,21 @@ var javax;
             /**
              * Sets the contentPane property. This method is called by the constructor.
              *
-             * @param {java.awt.Container} contentPane
-             * the contentPane object for this applet
-             *
-             * @exception java.awt.IllegalComponentStateException
-             * (a runtime exception) if the content pane parameter is
-             * null
+             * @param {java.awt.Container} contentPane the contentPane object for this applet
+             * @exception java.awt.IllegalComponentStateException (a runtime exception) if the content pane
+             * parameter is null
              * @see #getContentPane
              * @see RootPaneContainer#setContentPane
-             *
-             * @beaninfo hidden: true description: The client area of the applet where
-             * child components are normally inserted.
+             * @beaninfo hidden: true description: The client area of the applet where child components are
+             * normally inserted.
              */
             JApplet.prototype.setContentPane = function (contentPane) {
                 this.getRootPane().setContentPane(contentPane);
             };
             /**
-             * Returns a string representation of this JApplet. This method is intended
-             * to be used only for debugging purposes, and the content and format of the
-             * returned string may vary between implementations. The returned string may
-             * be empty but may not be <code>null</code>.
+             * Returns a string representation of this JApplet. This method is intended to be used only for
+             * debugging purposes, and the content and format of the returned string may vary between
+             * implementations. The returned string may be empty but may not be <code>null</code>.
              *
              * @return {string} a string representation of this JApplet.
              */
@@ -45694,7 +44213,7 @@ var javax;
                     var rows_1 = __args[1];
                     var columns_1 = __args[2];
                     {
-                        var __args_91 = arguments;
+                        var __args_92 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -45751,7 +44270,7 @@ var javax;
                     var rows_2 = __args[0];
                     var columns_2 = __args[1];
                     {
-                        var __args_92 = arguments;
+                        var __args_93 = arguments;
                         var doc_2 = null;
                         var text_9 = null;
                         _this = _super.call(this) || this;
@@ -45808,7 +44327,7 @@ var javax;
                     var __args = arguments;
                     var text_10 = __args[0];
                     {
-                        var __args_93 = arguments;
+                        var __args_94 = arguments;
                         var doc_3 = null;
                         var rows_3 = 0;
                         var columns_3 = 0;
@@ -45865,7 +44384,7 @@ var javax;
                 else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_94 = arguments;
+                        var __args_95 = arguments;
                         var doc_4 = null;
                         var text_11 = null;
                         var rows_4 = 0;
@@ -46070,7 +44589,7 @@ var javax;
                     var text_12 = __args[0];
                     var columns_5 = __args[1];
                     {
-                        var __args_95 = arguments;
+                        var __args_96 = arguments;
                         var doc_5 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -46118,7 +44637,7 @@ var javax;
                     var __args = arguments;
                     var text_13 = __args[0];
                     {
-                        var __args_96 = arguments;
+                        var __args_97 = arguments;
                         var doc_6 = null;
                         var columns_6 = 0;
                         _this = _super.call(this) || this;
@@ -46167,7 +44686,7 @@ var javax;
                     var __args = arguments;
                     var columns_7 = __args[0];
                     {
-                        var __args_97 = arguments;
+                        var __args_98 = arguments;
                         var doc_7 = null;
                         var text_14 = null;
                         _this = _super.call(this) || this;
@@ -46215,7 +44734,7 @@ var javax;
                 else if (doc === undefined && text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_98 = arguments;
+                        var __args_99 = arguments;
                         var doc_8 = null;
                         var text_15 = null;
                         var columns_8 = 0;
@@ -46344,6 +44863,7 @@ var javax;
             };
             /**
              * Returns the horizontal alignment of the text. Valid keys are:
+             *
              * <ul>
              * <li><code>JTextField.LEFT</code>
              * <li><code>JTextField.CENTER</code>
@@ -46380,13 +44900,10 @@ var javax;
                 return this.columns;
             };
             /**
-             * Sets the number of columns in this <code>TextField</code>, and then
-             * invalidate the layout.
+             * Sets the number of columns in this <code>TextField</code>, and then invalidate the layout.
              *
-             * @param {number} columns
-             * the number of columns &gt;= 0
-             * @exception IllegalArgumentException
-             * if <code>columns</code> is less than 0
+             * @param {number} columns the number of columns &gt;= 0
+             * @exception IllegalArgumentException if <code>columns</code> is less than 0
              * @beaninfo description: the number of columns preferred for display
              */
             JTextField.prototype.setColumns = function (columns) {
@@ -46400,9 +44917,9 @@ var javax;
                 }
             };
             /**
-             * Returns the preferred size <code>Dimensions</code> needed for this
-             * <code>TextField</code>. If a non-zero number of columns has been set, the
-             * width is set to the columns multiplied by the column width.
+             * Returns the preferred size <code>Dimensions</code> needed for this <code>TextField</code>. If a
+             * non-zero number of columns has been set, the width is set to the columns multiplied by the
+             * column width.
              *
              * @return {java.awt.Dimension} the dimension of this textfield
              */
@@ -46411,33 +44928,28 @@ var javax;
                 return size;
             };
             /**
-             * Sets the current font. This removes cached row height and column width so
-             * the new font will be reflected. <code>revalidate</code> is called after
-             * setting the font.
+             * Sets the current font. This removes cached row height and column width so the new font will be
+             * reflected. <code>revalidate</code> is called after setting the font.
              *
-             * @param {java.awt.Font} f
-             * the new font
+             * @param {java.awt.Font} f the new font
              */
             JTextField.prototype.setFont = function (f) {
                 _super.prototype.setFont.call(this, f);
                 this.columnWidth = 0;
             };
             /**
-             * Adds the specified action listener to receive action events from this
-             * textfield.
+             * Adds the specified action listener to receive action events from this textfield.
              *
-             * @param {*} l
-             * the action listener to be added
+             * @param {*} l the action listener to be added
              */
             JTextField.prototype.addActionListener = function (l) {
                 this.listenerList.add("java.awt.event.ActionListener", l);
             };
             /**
-             * Removes the specified action listener so that it no longer receives
-             * action events from this textfield.
+             * Removes the specified action listener so that it no longer receives action events from this
+             * textfield.
              *
-             * @param {*} l
-             * the action listener to be removed
+             * @param {*} l the action listener to be removed
              */
             JTextField.prototype.removeActionListener = function (l) {
                 if ((l != null) && (this.getAction() === l)) {
@@ -46448,20 +44960,19 @@ var javax;
                 }
             };
             /**
-             * Returns an array of all the <code>ActionListener</code>s added to this
-             * JTextField with addActionListener().
+             * Returns an array of all the <code>ActionListener</code>s added to this JTextField with
+             * addActionListener().
              *
-             * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array
-             * if no listeners have been added
+             * @return {java.awt.event.ActionListener[]} all of the <code>ActionListener</code>s added or an empty array if no listeners have
+             * been added
              * @since 1.4
              */
             JTextField.prototype.getActionListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("java.awt.event.ActionListener");
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is lazily created. The listener list
-             * is processed in last to first order.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is lazily created. The listener list is processed in last to first order.
              *
              * @see EventListenerList
              */
@@ -46574,10 +45085,9 @@ var javax;
                 return new JTextField.TextFieldActionPropertyChangeListener(this, a);
             };
             /**
-             * Fetches the command list for the editor. This is the list of commands
-             * supported by the plugged-in UI augmented by the collection of commands
-             * that the editor itself supports. These are useful for binding to events,
-             * such as in a keymap.
+             * Fetches the command list for the editor. This is the list of commands supported by the
+             * plugged-in UI augmented by the collection of commands that the editor itself supports. These
+             * are useful for binding to events, such as in a keymap.
              *
              * @return {javax.swing.Action[]} the command list
              */
@@ -46585,16 +45095,15 @@ var javax;
                 return JTextField.defaultActions_$LI$();
             };
             /**
-             * Processes action events occurring on this textfield by dispatching them
-             * to any registered <code>ActionListener</code> objects. This is normally
-             * called by the controller registered with textfield.
+             * Processes action events occurring on this textfield by dispatching them to any registered
+             * <code>ActionListener</code> objects. This is normally called by the controller registered with
+             * textfield.
              */
             JTextField.prototype.postActionEvent = function () {
                 this.fireActionPerformed();
             };
             /**
-             * Returns true if the receiver has an <code>ActionListener</code>
-             * installed.
+             * Returns true if the receiver has an <code>ActionListener</code> installed.
              * @return {boolean}
              */
             JTextField.prototype.hasActionListener = function () {
@@ -46613,11 +45122,9 @@ var javax;
                 JTextField.defaultActions = [];
             } return JTextField.defaultActions; };
             /**
-             * Returns a string representation of this <code>JTextField</code>. This
-             * method is intended to be used only for debugging purposes, and the
-             * content and format of the returned string may vary between
-             * implementations. The returned string may be empty but may not be
-             * <code>null</code>.
+             * Returns a string representation of this <code>JTextField</code>. This method is intended to be
+             * used only for debugging purposes, and the content and format of the returned string may vary
+             * between implementations. The returned string may be empty but may not be <code>null</code>.
              *
              * @return {string} a string representation of this <code>JTextField</code>
              */
@@ -46644,8 +45151,8 @@ var javax;
                 return _super.prototype.paramString.call(this) + ",columns=" + this.columns + ",columnWidth=" + this.columnWidth + ",command=" + commandString + ",horizontalAlignment=" + horizontalAlignmentString;
             };
             /**
-             * Name of the action to send notification that the contents of the field
-             * have been accepted. Typically this is bound to a carriage-return.
+             * Name of the action to send notification that the contents of the field have been accepted.
+             * Typically this is bound to a carriage-return.
              */
             JTextField.notifyAction = "notify-field-accept";
             /**
@@ -46703,7 +45210,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_99 = arguments;
+                        var __args_100 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46718,7 +45225,7 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_100 = arguments;
+                        var __args_101 = arguments;
                         var text_16 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46732,7 +45239,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_101 = arguments;
+                        var __args_102 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46746,7 +45253,7 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_102 = arguments;
+                        var __args_103 = arguments;
                         var text_17 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
@@ -46760,7 +45267,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_103 = arguments;
+                        var __args_104 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -46775,9 +45282,9 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_104 = arguments;
+                        var __args_105 = arguments;
                         {
-                            var __args_105 = arguments;
+                            var __args_106 = arguments;
                             var text_18 = null;
                             var icon_10 = null;
                             var selected_6 = false;
@@ -46797,7 +45304,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_106 = arguments;
+                        var __args_107 = arguments;
                         var text_19 = null;
                         var icon_11 = null;
                         var selected_7 = false;
@@ -46862,9 +45369,7 @@ var javax;
                 /**
                  * Sets the selected state of the button.
                  *
-                 * @param {boolean} b
-                 * true selects the toggle button, false deselects the toggle
-                 * button.
+                 * @param {boolean} b true selects the toggle button, false deselects the toggle button.
                  */
                 ToggleButtonModel.prototype.setSelected = function (b) {
                     var group = this.getGroup();
@@ -46951,7 +45456,7 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_107 = arguments;
+                        var __args_108 = arguments;
                         var text_20 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -46963,7 +45468,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_108 = arguments;
+                        var __args_109 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -46976,9 +45481,9 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_109 = arguments;
+                        var __args_110 = arguments;
                         {
-                            var __args_110 = arguments;
+                            var __args_111 = arguments;
                             var text_21 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
@@ -46996,7 +45501,7 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_111 = arguments;
+                        var __args_112 = arguments;
                         var text_22 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
@@ -47042,8 +45547,8 @@ var javax;
                 this.setFocusPainted(false);
             };
             /**
-             * Returns the suffix used to construct the name of the L&amp;F class used to
-             * render this component.
+             * Returns the suffix used to construct the name of the L&amp;F class used to render this
+             * component.
              *
              * @return {string} the string "MenuItemUI"
              * @see JComponent#getUIClassID
@@ -47053,15 +45558,12 @@ var javax;
                 return JMenuItem.uiClassID;
             };
             /**
-             * Identifies the menu item as "armed". If the mouse button is
-             * released while it is over this item, the menu's action event
-             * will fire. If the mouse button is released elsewhere, the
-             * event will not fire and the menu item will be disarmed.
+             * Identifies the menu item as "armed". If the mouse button is released while it is over this
+             * item, the menu's action event will fire. If the mouse button is released elsewhere, the event
+             * will not fire and the menu item will be disarmed.
              *
              * @param {boolean} b true to arm the menu item so it can be selected
-             * @beaninfo
-             * description: Mouse release will fire an action event
-             * hidden: true
+             * @beaninfo description: Mouse release will fire an action event hidden: true
              */
             JMenuItem.prototype.setArmed = function (b) {
                 var model = this.getModel();
@@ -47081,10 +45583,9 @@ var javax;
                 return model.isArmed();
             };
             /**
-             * Returns the <code>KeyStroke</code> which serves as an accelerator
-             * for the menu item.
-             * @return {void} a <code>KeyStroke</code> object identifying the
-             * accelerator key
+             * Returns the <code>KeyStroke</code> which serves as an accelerator for the menu item.
+             *
+             * @return {void} a <code>KeyStroke</code> object identifying the accelerator key
              * @param {*} a
              */
             JMenuItem.prototype.setIconFromAction = function (a) {
@@ -47100,16 +45601,15 @@ var javax;
                 this.setIconFromAction(a);
             };
             /**
-             * Processes a key event forwarded from the
-             * <code>MenuSelectionManager</code> and changes the menu selection,
-             * if necessary, by using <code>MenuSelectionManager</code>'s API.
-             * <p>
-             * Note: you do not have to forward the event to sub-components.
-             * This is done automatically by the <code>MenuSelectionManager</code>.
+             * Processes a key event forwarded from the <code>MenuSelectionManager</code> and changes the menu
+             * selection, if necessary, by using <code>MenuSelectionManager</code>'s API.
              *
-             * @param {java.awt.event.KeyEvent} e  a <code>KeyEvent</code>
+             * <p>Note: you do not have to forward the event to sub-components. This is done automatically by
+             * the <code>MenuSelectionManager</code>.
+             *
+             * @param {java.awt.event.KeyEvent} e a <code>KeyEvent</code>
              * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
-             * @param {javax.swing.MenuSelectionManager} manager   the <code>MenuSelectionManager</code>
+             * @param {javax.swing.MenuSelectionManager} manager the <code>MenuSelectionManager</code>
              */
             JMenuItem.prototype.processKeyEvent = function (e, path, manager) {
                 var mke = new javax.swing.event.MenuKeyEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getKeyCode(), e.getKeyChar(), path, manager);
@@ -47121,7 +45621,7 @@ var javax;
             /**
              * Handles a keystroke in a menu.
              *
-             * @param {javax.swing.event.MenuKeyEvent} e  a <code>MenuKeyEvent</code> object
+             * @param {javax.swing.event.MenuKeyEvent} e a <code>MenuKeyEvent</code> object
              */
             JMenuItem.prototype.processMenuKeyEvent = function (e) {
                 switch ((e.getID())) {
@@ -47139,8 +45639,7 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for
-             * notification on this event type.
+             * Notifies all listeners that have registered interest for notification on this event type.
              *
              * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
              * @see EventListenerList
@@ -47157,8 +45656,7 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for
-             * notification on this event type.
+             * Notifies all listeners that have registered interest for notification on this event type.
              *
              * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
              * @see EventListenerList
@@ -47175,8 +45673,7 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for
-             * notification on this event type.
+             * Notifies all listeners that have registered interest for notification on this event type.
              *
              * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
              * @see EventListenerList
@@ -47193,21 +45690,19 @@ var javax;
                 }
             };
             /**
-             * Called by the <code>MenuSelectionManager</code> when the
-             * <code>MenuElement</code> is selected or unselected.
+             * Called by the <code>MenuSelectionManager</code> when the <code>MenuElement</code> is selected
+             * or unselected.
              *
-             * @param {boolean} isIncluded  true if this menu item is on the part of the menu
-             * path that changed, false if this menu is part of the
-             * a menu path that changed, but this particular part of
-             * that path is still the same
+             * @param {boolean} isIncluded true if this menu item is on the part of the menu path that changed, false if
+             * this menu is part of the a menu path that changed, but this particular part of that path is
+             * still the same
              * @see MenuSelectionManager#setSelectedPath(MenuElement[])
              */
             JMenuItem.prototype.menuSelectionChanged = function (isIncluded) {
                 this.setArmed(isIncluded);
             };
             /**
-             * This method returns an array containing the sub-menu
-             * components for this menu component.
+             * This method returns an array containing the sub-menu components for this menu component.
              *
              * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code>s
              */
@@ -47244,24 +45739,22 @@ var javax;
                 this.listenerList.remove("javax.swing.event.MenuKeyListener", l);
             };
             /**
-             * Returns an array of all the <code>MenuKeyListener</code>s added
-             * to this JMenuItem with addMenuKeyListener().
+             * Returns an array of all the <code>MenuKeyListener</code>s added to this JMenuItem with
+             * addMenuKeyListener().
              *
-             * @return {javax.swing.event.MenuKeyListener[]} all of the <code>MenuKeyListener</code>s added or an empty
-             * array if no listeners have been added
+             * @return {javax.swing.event.MenuKeyListener[]} all of the <code>MenuKeyListener</code>s added or an empty array if no listeners have
+             * been added
              * @since 1.4
              */
             JMenuItem.prototype.getMenuKeyListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.MenuKeyListener");
             };
             /**
-             * Returns a string representation of this <code>JMenuItem</code>.
-             * This method is intended to be used only for debugging purposes,
-             * and the content and format of the returned string may vary between
-             * implementations. The returned string may be empty but may not
-             * be <code>null</code>.
+             * Returns a string representation of this <code>JMenuItem</code>. This method is intended to be
+             * used only for debugging purposes, and the content and format of the returned string may vary
+             * between implementations. The returned string may be empty but may not be <code>null</code>.
              *
-             * @return  {string} a string representation of this <code>JMenuItem</code>
+             * @return {string} a string representation of this <code>JMenuItem</code>
              */
             JMenuItem.prototype.paramString = function () {
                 return _super.prototype.paramString.call(this);
@@ -47337,7 +45830,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_112 = arguments;
+                        var __args_113 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -47440,7 +45933,9 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * [cite_start]Creates a radio button with the specified text, image, and selection state. [cite: 638]
+         * [cite_start]Creates a radio button with the specified text, image, and selection state. [cite:
+         * 638]
+         *
          * @param {string} text the string displayed on the radio button
          * @param {*} icon the image that the button should display
          * @param {boolean} selected if true, the button is initially selected
@@ -47469,7 +45964,7 @@ var javax;
                     var __args = arguments;
                     var selected_8 = __args[1];
                     {
-                        var __args_113 = arguments;
+                        var __args_114 = arguments;
                         var icon_17 = null;
                         _this = _super.call(this, text, icon_17, selected_8) || this;
                         if (_this.name === undefined) {
@@ -47498,7 +45993,7 @@ var javax;
                     var icon_18 = __args[0];
                     var selected_9 = __args[1];
                     {
-                        var __args_114 = arguments;
+                        var __args_115 = arguments;
                         var text_23 = null;
                         _this = _super.call(this, text_23, icon_18, selected_9) || this;
                         if (_this.name === undefined) {
@@ -47525,7 +46020,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_115 = arguments;
+                        var __args_116 = arguments;
                         var icon_19 = null;
                         var selected_10 = false;
                         _this = _super.call(this, text, icon_19, selected_10) || this;
@@ -47554,7 +46049,7 @@ var javax;
                     var __args = arguments;
                     var icon_20 = __args[0];
                     {
-                        var __args_116 = arguments;
+                        var __args_117 = arguments;
                         var text_24 = null;
                         var selected_11 = false;
                         _this = _super.call(this, text_24, icon_20, selected_11) || this;
@@ -47582,7 +46077,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_117 = arguments;
+                        var __args_118 = arguments;
                         var text_25 = null;
                         var icon_21 = null;
                         var selected_12 = false;
@@ -47706,7 +46201,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_118 = arguments;
+                        var __args_119 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -47747,7 +46242,7 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_119 = arguments;
+                        var __args_120 = arguments;
                         var label_2 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
@@ -47916,13 +46411,11 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * Constructs a new <code>JMenu</code> with the supplied string as its text
-         * and specified as a tear-off menu or not.
+         * Constructs a new <code>JMenu</code> with the supplied string as its text and specified as a
+         * tear-off menu or not.
          *
-         * @param {string} s
-         * the text for the menu label
-         * @param {boolean} b
-         * can the menu be torn off (not yet implemented)
+         * @param {string} s the text for the menu label
+         * @param {boolean} b can the menu be torn off (not yet implemented)
          * @class
          * @extends javax.swing.JMenuItem
          * @author Georges Saab
@@ -47934,7 +46427,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_120 = arguments;
+                        var __args_121 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -47970,9 +46463,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_121 = arguments;
+                        var __args_122 = arguments;
                         {
-                            var __args_122 = arguments;
+                            var __args_123 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -48008,7 +46501,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_123 = arguments;
+                        var __args_124 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -48034,16 +46527,13 @@ var javax;
                 return _this;
             }
             /**
-             * Overriden to do nothing. We want JMenu to be focusable, but
-             * <code>JMenuItem</code> doesn't want to be, thus we override this do
-             * nothing. We don't invoke <code>setFocusable(true)</code> after super's
-             * constructor has completed as this has the side effect that
-             * <code>JMenu</code> will be considered traversable via the keyboard, which
-             * we don't want. Making a Component traversable by the keyboard after
-             * invoking <code>setFocusable(true)</code> is OK, as
-             * <code>setFocusable</code> is new API and is speced as such, but
-             * internally we don't want to use it like this else we change the keyboard
-             * traversability.
+             * Overriden to do nothing. We want JMenu to be focusable, but <code>JMenuItem</code> doesn't want
+             * to be, thus we override this do nothing. We don't invoke <code>setFocusable(true)</code> after
+             * super's constructor has completed as this has the side effect that <code>JMenu</code> will be
+             * considered traversable via the keyboard, which we don't want. Making a Component traversable by
+             * the keyboard after invoking <code>setFocusable(true)</code> is OK, as <code>setFocusable</code>
+             * is new API and is speced as such, but internally we don't want to use it like this else we
+             * change the keyboard traversability.
              */
             JMenu.prototype.initFocusability = function () {
             };
@@ -48058,14 +46548,12 @@ var javax;
                 return JMenu.__javax_swing_JMenu_uiClassID;
             };
             /**
-             * Sets the data model for the "menu button" -- the label that the user
-             * clicks to open or close the menu.
+             * Sets the data model for the "menu button" -- the label that the user clicks to open or close
+             * the menu.
              *
-             * @param {*} newModel
-             * the <code>ButtonModel</code>
+             * @param {*} newModel the <code>ButtonModel</code>
              * @see #getModel
-             * @beaninfo description: The menu's model bound: true expert: true hidden:
-             * true
+             * @beaninfo description: The menu's model bound: true expert: true hidden: true
              */
             JMenu.prototype.setModel = function (newModel) {
                 var oldModel = this.getModel();
@@ -48091,11 +46579,9 @@ var javax;
             /**
              * Sets the selection status of the menu.
              *
-             * @param {boolean} b
-             * true to select (highlight) the menu; false to de-select the
-             * menu
-             * @beaninfo description: When the menu is selected, its popup child is
-             * shown. expert: true hidden: true
+             * @param {boolean} b true to select (highlight) the menu; false to de-select the menu
+             * @beaninfo description: When the menu is selected, its popup child is shown. expert: true
+             * hidden: true
              */
             JMenu.prototype.setSelected = function (b) {
                 var model = this.getModel();
@@ -48113,14 +46599,11 @@ var javax;
                 return this.popupMenu.isVisible();
             };
             /**
-             * Sets the visibility of the menu's popup. If the menu is not enabled, this
-             * method will have no effect.
+             * Sets the visibility of the menu's popup. If the menu is not enabled, this method will have no
+             * effect.
              *
-             * @param {boolean} b
-             * a boolean value -- true to make the menu visible, false to
-             * hide it
-             * @beaninfo description: The popup menu's visibility expert: true hidden:
-             * true
+             * @param {boolean} b a boolean value -- true to make the menu visible, false to hide it
+             * @beaninfo description: The popup menu's visibility expert: true hidden: true
              */
             JMenu.prototype.setPopupMenuVisible = function (b) {
                 if (JMenu.__javax_swing_JMenu_DEBUG) {
@@ -48128,16 +46611,13 @@ var javax;
                 }
             };
             /**
-             * Computes the origin for the <code>JMenu</code>'s popup menu. This method
-             * uses Look and Feel properties named <code>Menu.menuPopupOffsetX</code>,
-             * <code>Menu.menuPopupOffsetY</code>, <code>Menu.submenuPopupOffsetX</code>
-             * , and <code>Menu.submenuPopupOffsetY</code> to adjust the exact location
-             * of popup.
+             * Computes the origin for the <code>JMenu</code>'s popup menu. This method uses Look and Feel
+             * properties named <code>Menu.menuPopupOffsetX</code>, <code>Menu.menuPopupOffsetY</code>, <code>
+             * Menu.submenuPopupOffsetX</code> , and <code>Menu.submenuPopupOffsetY</code> to adjust the exact
+             * location of popup.
              *
-             * @return {java.awt.Point} a <code>Point</code> in the coordinate space of the menu which
-             * should be used as the origin of the <code>JMenu</code>'s popup
-             * menu
-             *
+             * @return {java.awt.Point} a <code>Point</code> in the coordinate space of the menu which should be used as the
+             * origin of the <code>JMenu</code>'s popup menu
              * @since 1.3
              */
             JMenu.prototype.getPopupMenuOrigin = function () {
@@ -48146,14 +46626,11 @@ var javax;
                 return new java.awt.Point(x, y);
             };
             /**
-             * Returns the suggested delay, in milliseconds, before submenus are popped
-             * up or down. Each look and feel (L&amp;F) may determine its own policy for
-             * observing the <code>delay</code> property. In most cases, the delay is
-             * not observed for top level menus or while dragging. The default for
-             * <code>delay</code> is 0. This method is a property of the look and feel
-             * code and is used to manage the idiosyncrasies of the various UI
-             * implementations.
-             *
+             * Returns the suggested delay, in milliseconds, before submenus are popped up or down. Each look
+             * and feel (L&amp;F) may determine its own policy for observing the <code>delay</code> property.
+             * In most cases, the delay is not observed for top level menus or while dragging. The default for
+             * <code>delay</code> is 0. This method is a property of the look and feel code and is used to
+             * manage the idiosyncrasies of the various UI implementations.
              *
              * @return {number} the <code>delay</code> property
              */
@@ -48161,19 +46638,16 @@ var javax;
                 return this.delay;
             };
             /**
-             * Sets the suggested delay before the menu's <code>PopupMenu</code> is
-             * popped up or down. Each look and feel (L&amp;F) may determine it's own
-             * policy for observing the delay property. In most cases, the delay is not
-             * observed for top level menus or while dragging. This method is a property
-             * of the look and feel code and is used to manage the idiosyncrasies of the
-             * various UI implementations.
+             * Sets the suggested delay before the menu's <code>PopupMenu</code> is popped up or down. Each
+             * look and feel (L&amp;F) may determine it's own policy for observing the delay property. In most
+             * cases, the delay is not observed for top level menus or while dragging. This method is a
+             * property of the look and feel code and is used to manage the idiosyncrasies of the various UI
+             * implementations.
              *
-             * @param {number} d
-             * the number of milliseconds to delay
-             * @exception IllegalArgumentException
-             * if <code>d</code> is less than 0
-             * @beaninfo description: The delay between menu selection and making the
-             * popup menu visible expert: true
+             * @param {number} d the number of milliseconds to delay
+             * @exception IllegalArgumentException if <code>d</code> is less than 0
+             * @beaninfo description: The delay between menu selection and making the popup menu visible
+             * expert: true
              */
             JMenu.prototype.setDelay = function (d) {
                 if (d < 0)
@@ -48185,10 +46659,8 @@ var javax;
             /**
              * Sets the location of the popup component.
              *
-             * @param {number} x
-             * the x coordinate of the popup's new position
-             * @param {number} y
-             * the y coordinate of the popup's new position
+             * @param {number} x the x coordinate of the popup's new position
+             * @param {number} y the y coordinate of the popup's new position
              */
             JMenu.prototype.setMenuLocation = function (x, y) {
                 if (this.popupMenu != null)
@@ -48246,14 +46718,12 @@ var javax;
                 return mi;
             };
             /**
-             * Factory method which creates the <code>JMenuItem</code> for
-             * <code>Action</code>s added to the <code>JMenu</code>.
+             * Factory method which creates the <code>JMenuItem</code> for <code>Action</code>s added to the
+             * <code>JMenu</code>.
              *
-             * @param {*} a
-             * the <code>Action</code> for the menu item to be added
+             * @param {*} a the <code>Action</code> for the menu item to be added
              * @return {javax.swing.JMenuItem} the new menu item
              * @see Action
-             *
              * @since 1.3
              */
             JMenu.prototype.createActionComponent = function (a) {
@@ -48279,13 +46749,9 @@ var javax;
             /**
              * Inserts a new menu item with the specified text at a given position.
              *
-             * @param {string} s
-             * the text for the menu item to add
-             * @param {number} pos
-             * an integer specifying the position at which to add the new
-             * menu item
-             * @exception IllegalArgumentException
-             * when the value of <code>pos</code> &lt; 0
+             * @param {string} s the text for the menu item to add
+             * @param {number} pos an integer specifying the position at which to add the new menu item
+             * @exception IllegalArgumentException when the value of <code>pos</code> &lt; 0
              */
             JMenu.prototype.insert = function (s, pos) {
                 if (((typeof s === 'string') || s === null) && ((typeof pos === 'number') || pos === null)) {
@@ -48320,11 +46786,8 @@ var javax;
             /**
              * Inserts a separator at the specified position.
              *
-             * @param {number} index
-             * an integer specifying the position at which to insert the menu
-             * separator
-             * @exception IllegalArgumentException
-             * if the value of <code>index</code> &lt; 0
+             * @param {number} index an integer specifying the position at which to insert the menu separator
+             * @exception IllegalArgumentException if the value of <code>index</code> &lt; 0
              */
             JMenu.prototype.insertSeparator = function (index) {
                 if (index < 0) {
@@ -48334,16 +46797,14 @@ var javax;
                 this.popupMenu.insert$java_awt_Component$int(new javax.swing.JPopupMenu.Separator(), index);
             };
             /**
-             * Returns the <code>JMenuItem</code> at the specified position. If the
-             * component at <code>pos</code> is not a menu item, <code>null</code> is
-             * returned. This method is included for AWT compatibility.
+             * Returns the <code>JMenuItem</code> at the specified position. If the component at <code>pos
+             * </code> is not a menu item, <code>null</code> is returned. This method is included for AWT
+             * compatibility.
              *
-             * @param {number} pos
-             * an integer specifying the position
-             * @exception IllegalArgumentException
-             * if the value of <code>pos</code> &lt; 0
-             * @return {javax.swing.JMenuItem} the menu item at the specified position; or <code>null</code> if
-             * the item as the specified position is not a menu item
+             * @param {number} pos an integer specifying the position
+             * @exception IllegalArgumentException if the value of <code>pos</code> &lt; 0
+             * @return {javax.swing.JMenuItem} the menu item at the specified position; or <code>null</code> if the item as the
+             * specified position is not a menu item
              */
             JMenu.prototype.getItem = function (pos) {
                 if (pos < 0) {
@@ -48357,8 +46818,8 @@ var javax;
                 return null;
             };
             /**
-             * Returns the number of items on the menu, including separators. This
-             * method is included for AWT compatibility.
+             * Returns the number of items on the menu, including separators. This method is included for AWT
+             * compatibility.
              *
              * @return {number} an integer equal to the number of items on the menu
              * @see #getMenuComponentCount
@@ -48367,12 +46828,10 @@ var javax;
                 return this.getMenuComponentCount();
             };
             /**
-             * Returns true if the menu can be torn off. This method is not yet
-             * implemented.
+             * Returns true if the menu can be torn off. This method is not yet implemented.
              *
              * @return {boolean} true if the menu can be torn off, else false
-             * @exception Error
-             * if invoked -- this method is not yet implemented
+             * @exception Error if invoked -- this method is not yet implemented
              */
             JMenu.prototype.isTearOff = function () {
                 throw new Error("boolean isTearOff() {} not yet implemented");
@@ -48382,11 +46841,10 @@ var javax;
                     this.popupMenu.remove$java_awt_Component(item);
             };
             /**
-             * Removes the specified menu item from this menu. If there is no popup
-             * menu, this method will have no effect.
+             * Removes the specified menu item from this menu. If there is no popup menu, this method will
+             * have no effect.
              *
-             * @param {javax.swing.JMenuItem} item
-             * the <code>JMenuItem</code> to be removed from the menu
+             * @param {javax.swing.JMenuItem} item the <code>JMenuItem</code> to be removed from the menu
              */
             JMenu.prototype.remove = function (item) {
                 if (((item != null && item instanceof javax.swing.JMenuItem) || item === null)) {
@@ -48436,10 +46894,8 @@ var javax;
             /**
              * Returns the component at position <code>n</code>.
              *
-             * @param {number} n
-             * the position of the component to be returned
-             * @return {java.awt.Component} the component requested, or <code>null</code> if there is no
-             * popup menu
+             * @param {number} n the position of the component to be returned
+             * @return {java.awt.Component} the component requested, or <code>null</code> if there is no popup menu
              */
             JMenu.prototype.getMenuComponent = function (n) {
                 if (this.popupMenu != null)
@@ -48447,12 +46903,10 @@ var javax;
                 return null;
             };
             /**
-             * Returns an array of <code>Component</code>s of the menu's subcomponents.
-             * Note that this returns all <code>Component</code>s in the popup menu,
-             * including separators.
+             * Returns an array of <code>Component</code>s of the menu's subcomponents. Note that this returns
+             * all <code>Component</code>s in the popup menu, including separators.
              *
-             * @return {java.awt.Component[]} an array of <code>Component</code>s or an empty array if there is
-             * no popup menu
+             * @return {java.awt.Component[]} an array of <code>Component</code>s or an empty array if there is no popup menu
              */
             JMenu.prototype.getMenuComponents = function () {
                 if (this.popupMenu != null)
@@ -48460,11 +46914,11 @@ var javax;
                 return [];
             };
             /**
-             * Returns true if the menu is a 'top-level menu', that is, if it is the
-             * direct child of a menubar.
+             * Returns true if the menu is a 'top-level menu', that is, if it is the direct child of a
+             * menubar.
              *
-             * @return {boolean} true if the menu is activated from the menu bar; false if the
-             * menu is activated from a menu item on another menu
+             * @return {boolean} true if the menu is activated from the menu bar; false if the menu is activated from a
+             * menu item on another menu
              */
             JMenu.prototype.isTopLevelMenu = function () {
                 return false;
@@ -48472,8 +46926,7 @@ var javax;
             /**
              * Returns true if the specified component exists in the submenu hierarchy.
              *
-             * @param {java.awt.Component} c
-             * the <code>Component</code> to be tested
+             * @param {java.awt.Component} c the <code>Component</code> to be tested
              * @return {boolean} true if the <code>Component</code> exists, false otherwise
              */
             JMenu.prototype.isMenuComponent = function (c) {
@@ -48502,8 +46955,7 @@ var javax;
                 return false;
             };
             /**
-             * Returns the popupmenu associated with this menu. If there is no
-             * popupmenu, it will create one.
+             * Returns the popupmenu associated with this menu. If there is no popupmenu, it will create one.
              * @return {javax.swing.JPopupMenu}
              */
             JMenu.prototype.getPopupMenu = function () {
@@ -48513,8 +46965,7 @@ var javax;
             /**
              * Adds a listener for menu events.
              *
-             * @param {*} l
-             * the listener to be added
+             * @param {*} l the listener to be added
              */
             JMenu.prototype.addMenuListener = function (l) {
                 this.listenerList.add("javax.swing.event.MenuListener", l);
@@ -48522,29 +46973,27 @@ var javax;
             /**
              * Removes a listener for menu events.
              *
-             * @param {*} l
-             * the listener to be removed
+             * @param {*} l the listener to be removed
              */
             JMenu.prototype.removeMenuListener = function (l) {
                 this.listenerList.remove("javax.swing.event.MenuListener", l);
             };
             /**
-             * Returns an array of all the <code>MenuListener</code>s added to this
-             * JMenu with addMenuListener().
+             * Returns an array of all the <code>MenuListener</code>s added to this JMenu with
+             * addMenuListener().
              *
-             * @return {javax.swing.event.MenuListener[]} all of the <code>MenuListener</code>s added or an empty array if
-             * no listeners have been added
+             * @return {javax.swing.event.MenuListener[]} all of the <code>MenuListener</code>s added or an empty array if no listeners have been
+             * added
              * @since 1.4
              */
             JMenu.prototype.getMenuListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.MenuListener");
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is created lazily.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is created lazily.
              *
-             * @exception Error
-             * if there is a <code>null</code> listener
+             * @exception Error if there is a <code>null</code> listener
              * @see EventListenerList
              */
             JMenu.prototype.fireMenuSelected = function () {
@@ -48569,11 +47018,10 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is created lazily.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is created lazily.
              *
-             * @exception Error
-             * if there is a <code>null</code> listener
+             * @exception Error if there is a <code>null</code> listener
              * @see EventListenerList
              */
             JMenu.prototype.fireMenuDeselected = function () {
@@ -48598,11 +47046,10 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type. The event instance is created lazily.
+             * Notifies all listeners that have registered interest for notification on this event type. The
+             * event instance is created lazily.
              *
-             * @exception Error
-             * if there is a <code>null</code> listener
+             * @exception Error if there is a <code>null</code> listener
              * @see EventListenerList
              */
             JMenu.prototype.fireMenuCanceled = function () {
@@ -48632,11 +47079,10 @@ var javax;
                 return new JMenu.MenuChangeListener(this);
             };
             /**
-             * Messaged when the menubar selection changes to activate or deactivate
-             * this menu. Overrides <code>JMenuItem.menuSelectionChanged</code>.
+             * Messaged when the menubar selection changes to activate or deactivate this menu. Overrides
+             * <code>JMenuItem.menuSelectionChanged</code>.
              *
-             * @param {boolean} isIncluded
-             * true if this menu is active, false if it is not
+             * @param {boolean} isIncluded true if this menu is active, false if it is not
              */
             JMenu.prototype.menuSelectionChanged = function (isIncluded) {
                 if (JMenu.__javax_swing_JMenu_DEBUG) {
@@ -48645,12 +47091,11 @@ var javax;
                 this.setSelected(isIncluded);
             };
             /**
-             * Returns an array of <code>MenuElement</code>s containing the submenu for
-             * this menu component. If popup menu is <code>null</code> returns an empty
-             * array. This method is required to conform to the <code>MenuElement</code>
-             * interface. Note that since <code>JSeparator</code>s do not conform to the
-             * <code>MenuElement</code> interface, this array will only contain
-             * <code>JMenuItem</code>s.
+             * Returns an array of <code>MenuElement</code>s containing the submenu for this menu component.
+             * If popup menu is <code>null</code> returns an empty array. This method is required to conform
+             * to the <code>MenuElement</code> interface. Note that since <code>JSeparator</code>s do not
+             * conform to the <code>MenuElement</code> interface, this array will only contain <code>JMenuItem
+             * </code>s.
              *
              * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code> objects
              */
@@ -48677,16 +47122,15 @@ var javax;
                 return this;
             };
             /**
-             * Processes a key event forwarded from the
-             * <code>MenuSelectionManager</code> and changes the menu selection,
-             * if necessary, by using <code>MenuSelectionManager</code>'s API.
-             * <p>
-             * Note: you do not have to forward the event to sub-components.
-             * This is done automatically by the <code>MenuSelectionManager</code>.
+             * Processes a key event forwarded from the <code>MenuSelectionManager</code> and changes the menu
+             * selection, if necessary, by using <code>MenuSelectionManager</code>'s API.
              *
-             * @param {java.awt.event.KeyEvent} e  a <code>KeyEvent</code>
+             * <p>Note: you do not have to forward the event to sub-components. This is done automatically by
+             * the <code>MenuSelectionManager</code>.
+             *
+             * @param {java.awt.event.KeyEvent} e a <code>KeyEvent</code>
              * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
-             * @param {javax.swing.MenuSelectionManager} manager   the <code>MenuSelectionManager</code>
+             * @param {javax.swing.MenuSelectionManager} manager the <code>MenuSelectionManager</code>
              */
             JMenu.prototype.processKeyEvent = function (e, path, manager) {
                 if (((e != null && e instanceof java.awt.event.KeyEvent) || e === null) && ((path != null && path instanceof Array && (path.length == 0 || path[0] == null || (path[0] != null && (path[0].constructor != null && path[0].constructor["__interfaces"] != null && path[0].constructor["__interfaces"].indexOf("javax.swing.MenuElement") >= 0)))) || path === null) && ((manager != null && manager instanceof javax.swing.MenuSelectionManager) || manager === null)) {
@@ -48703,12 +47147,10 @@ var javax;
             JMenu.prototype.doClick$int = function (pressTime) {
             };
             /**
-             * Programmatically performs a "click". This overrides the method
-             * <code>AbstractButton.doClick</code> in order to make the menu pop up.
+             * Programmatically performs a "click". This overrides the method <code>AbstractButton.doClick
+             * </code> in order to make the menu pop up.
              *
-             * @param {number} pressTime
-             * indicates the number of milliseconds the button was pressed
-             * for
+             * @param {number} pressTime indicates the number of milliseconds the button was pressed for
              */
             JMenu.prototype.doClick = function (pressTime) {
                 if (((typeof pressTime === 'number') || pressTime === null)) {
@@ -48721,10 +47163,9 @@ var javax;
                     throw new Error('invalid overload');
             };
             /**
-             * Returns a string representation of this <code>JMenu</code>. This method
-             * is intended to be used only for debugging purposes, and the content and
-             * format of the returned string may vary between implementations. The
-             * returned string may be empty but may not be <code>null</code>.
+             * Returns a string representation of this <code>JMenu</code>. This method is intended to be used
+             * only for debugging purposes, and the content and format of the returned string may vary between
+             * implementations. The returned string may be empty but may not be <code>null</code>.
              *
              * @return {string} a string representation of this JMenu.
              */
@@ -48775,9 +47216,7 @@ var javax;
         /**
          * Constructs a <code>JPopupMenu</code> with the specified title.
          *
-         * @param {string} label
-         * the string that a UI may use to display as a title for the
-         * popup menu.
+         * @param {string} label the string that a UI may use to display as a title for the popup menu.
          * @class
          * @extends javax.swing.JComponent
          * @author Georges Saab
@@ -48813,7 +47252,7 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_124 = arguments;
+                        var __args_125 = arguments;
                         var label_3 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {
@@ -48890,11 +47329,9 @@ var javax;
             /**
              * Sets the model object to handle single selections.
              *
-             * @param {*} model
-             * the new <code>SingleSelectionModel</code>
+             * @param {*} model the new <code>SingleSelectionModel</code>
              * @see SingleSelectionModel
-             * @beaninfo description: The selection model for the popup menu expert:
-             * true
+             * @beaninfo description: The selection model for the popup menu expert: true
              */
             JPopupMenu.prototype.setSelectionModel = function (model) {
                 this.selectionModel = model;
@@ -48941,14 +47378,12 @@ var javax;
                 return mi;
             };
             /**
-             * Factory method which creates the <code>JMenuItem</code> for
-             * <code>Actions</code> added to the <code>JPopupMenu</code>.
+             * Factory method which creates the <code>JMenuItem</code> for <code>Actions</code> added to the
+             * <code>JPopupMenu</code>.
              *
-             * @param {*} a
-             * the <code>Action</code> for the menu item to be added
+             * @param {*} a the <code>Action</code> for the menu item to be added
              * @return {javax.swing.JMenuItem} the new menu item
              * @see Action
-             *
              * @since 1.3
              */
             JPopupMenu.prototype.createActionComponent = function (a) {
@@ -48958,8 +47393,8 @@ var javax;
                 return mi;
             };
             /**
-             * Returns a properly configured <code>PropertyChangeListener</code> which
-             * updates the control as changes to the <code>Action</code> occur.
+             * Returns a properly configured <code>PropertyChangeListener</code> which updates the control as
+             * changes to the <code>Action</code> occur.
              * @param {javax.swing.JMenuItem} b
              * @return {*}
              */
@@ -48995,12 +47430,10 @@ var javax;
                 return this.label;
             };
             /**
-             * Sets the popup menu's label. Different look and feels may choose to
-             * display or not display this.
+             * Sets the popup menu's label. Different look and feels may choose to display or not display
+             * this.
              *
-             * @param {string} label
-             * a string specifying the label for the popup menu
-             *
+             * @param {string} label a string specifying the label for the popup menu
              * @see #setLabel
              * @beaninfo description: The label for the popup menu. bound: true
              */
@@ -49024,16 +47457,12 @@ var javax;
                 this.insert$java_awt_Component$int(mi, index);
             };
             /**
-             * Inserts a menu item for the specified <code>Action</code> object at a
-             * given position.
+             * Inserts a menu item for the specified <code>Action</code> object at a given position.
              *
-             * @param {*} a
-             * the <code>Action</code> object to insert
-             * @param {number} index
-             * specifies the position at which to insert the
-             * <code>Action</code>, where 0 is the first
-             * @exception IllegalArgumentException
-             * if <code>index</code> &lt; 0
+             * @param {*} a the <code>Action</code> object to insert
+             * @param {number} index specifies the position at which to insert the <code>Action</code>, where 0 is the
+             * first
+             * @exception IllegalArgumentException if <code>index</code> &lt; 0
              * @see Action
              */
             JPopupMenu.prototype.insert = function (a, index) {
@@ -49070,8 +47499,7 @@ var javax;
             /**
              * Adds a <code>PopupMenu</code> listener.
              *
-             * @param {*} l
-             * the <code>PopupMenuListener</code> to add
+             * @param {*} l the <code>PopupMenuListener</code> to add
              */
             JPopupMenu.prototype.addPopupMenuListener = function (l) {
                 this.listenerList.add("javax.swing.event.PopupMenuListener", l);
@@ -49079,18 +47507,17 @@ var javax;
             /**
              * Removes a <code>PopupMenu</code> listener.
              *
-             * @param {*} l
-             * the <code>PopupMenuListener</code> to remove
+             * @param {*} l the <code>PopupMenuListener</code> to remove
              */
             JPopupMenu.prototype.removePopupMenuListener = function (l) {
                 this.listenerList.remove("javax.swing.event.PopupMenuListener", l);
             };
             /**
-             * Returns an array of all the <code>PopupMenuListener</code>s added to this
-             * JMenuItem with addPopupMenuListener().
+             * Returns an array of all the <code>PopupMenuListener</code>s added to this JMenuItem with
+             * addPopupMenuListener().
              *
-             * @return {javax.swing.event.PopupMenuListener[]} all of the <code>PopupMenuListener</code>s added or an empty
-             * array if no listeners have been added
+             * @return {javax.swing.event.PopupMenuListener[]} all of the <code>PopupMenuListener</code>s added or an empty array if no listeners have
+             * been added
              * @since 1.4
              */
             JPopupMenu.prototype.getPopupMenuListeners = function () {
@@ -49099,8 +47526,7 @@ var javax;
             /**
              * Adds a <code>MenuKeyListener</code> to the popup menu.
              *
-             * @param {*} l
-             * the <code>MenuKeyListener</code> to be added
+             * @param {*} l the <code>MenuKeyListener</code> to be added
              * @since 1.5
              */
             JPopupMenu.prototype.addMenuKeyListener = function (l) {
@@ -49109,27 +47535,25 @@ var javax;
             /**
              * Removes a <code>MenuKeyListener</code> from the popup menu.
              *
-             * @param {*} l
-             * the <code>MenuKeyListener</code> to be removed
+             * @param {*} l the <code>MenuKeyListener</code> to be removed
              * @since 1.5
              */
             JPopupMenu.prototype.removeMenuKeyListener = function (l) {
                 this.listenerList.remove("javax.swing.event.MenuKeyListener", l);
             };
             /**
-             * Returns an array of all the <code>MenuKeyListener</code>s added to this
-             * JPopupMenu with addMenuKeyListener().
+             * Returns an array of all the <code>MenuKeyListener</code>s added to this JPopupMenu with
+             * addMenuKeyListener().
              *
-             * @return {javax.swing.event.MenuKeyListener[]} all of the <code>MenuKeyListener</code>s added or an empty array
-             * if no listeners have been added
+             * @return {javax.swing.event.MenuKeyListener[]} all of the <code>MenuKeyListener</code>s added or an empty array if no listeners have
+             * been added
              * @since 1.5
              */
             JPopupMenu.prototype.getMenuKeyListeners = function () {
                 return this.listenerList.getListeners$java_lang_Class("javax.swing.event.MenuKeyListener");
             };
             /**
-             * Notifies <code>PopupMenuListener</code>s that this popup menu will become
-             * visible.
+             * Notifies <code>PopupMenuListener</code>s that this popup menu will become visible.
              */
             JPopupMenu.prototype.firePopupMenuWillBecomeVisible = function () {
                 var listeners = this.listenerList.getListenerList();
@@ -49146,8 +47570,7 @@ var javax;
                 }
             };
             /**
-             * Notifies <code>PopupMenuListener</code>s that this popup menu will become
-             * invisible.
+             * Notifies <code>PopupMenuListener</code>s that this popup menu will become invisible.
              */
             JPopupMenu.prototype.firePopupMenuWillBecomeInvisible = function () {
                 var listeners = this.listenerList.getListenerList();
@@ -49164,8 +47587,7 @@ var javax;
                 }
             };
             /**
-             * Notifies <code>PopupMenuListeners</code> that this popup menu is
-             * cancelled.
+             * Notifies <code>PopupMenuListeners</code> that this popup menu is cancelled.
              */
             JPopupMenu.prototype.firePopupMenuCanceled = function () {
                 var listeners = this.listenerList.getListenerList();
@@ -49184,13 +47606,11 @@ var javax;
             JPopupMenu.prototype.pack = function () {
             };
             /**
-             * Retrieves <code>Popup</code> instance from the <code>PopupMenuUI</code>
-             * that has had <code>show</code> invoked on it. If the current
-             * <code>popup</code> is non-null, this will invoke <code>dispose</code> of
-             * it, and then <code>show</code> the new one.
-             * <p>
-             * This does NOT fire any events, it is up the caller to dispatch the
-             * necessary events.
+             * Retrieves <code>Popup</code> instance from the <code>PopupMenuUI</code> that has had <code>show
+             * </code> invoked on it. If the current <code>popup</code> is non-null, this will invoke <code>
+             * dispose</code> of it, and then <code>show</code> the new one.
+             *
+             * <p>This does NOT fire any events, it is up the caller to dispatch the necessary events.
              * @private
              */
             JPopupMenu.prototype.showPopup = function () {
@@ -49202,20 +47622,14 @@ var javax;
                 this.desiredLocationY = y;
             };
             /**
-             * Sets the location of the upper left corner of the popup menu using x, y
-             * coordinates.
-             * <p>
-             * The method changes the geometry-related data. Therefore, the native
-             * windowing system may ignore such requests, or it may modify the requested
-             * data, so that the {@code JPopupMenu} object is placed and sized in a way
-             * that corresponds closely to the desktop settings.
+             * Sets the location of the upper left corner of the popup menu using x, y coordinates.
              *
-             * @param {number} x
-             * the x coordinate of the popup's new position in the screen's
-             * coordinate space
-             * @param {number} y
-             * the y coordinate of the popup's new position in the screen's
-             * coordinate space
+             * <p>The method changes the geometry-related data. Therefore, the native windowing system may
+             * ignore such requests, or it may modify the requested data, so that the {@code JPopupMenu}
+             * object is placed and sized in a way that corresponds closely to the desktop settings.
+             *
+             * @param {number} x the x coordinate of the popup's new position in the screen's coordinate space
+             * @param {number} y the y coordinate of the popup's new position in the screen's coordinate space
              * @beaninfo description: The location of the popup menu.
              */
             JPopupMenu.prototype.setLocation = function (x, y) {
@@ -49229,8 +47643,8 @@ var javax;
                     throw new Error('invalid overload');
             };
             /**
-             * Returns true if the popup menu is a standalone popup menu rather than the
-             * submenu of a <code>JMenu</code>.
+             * Returns true if the popup menu is a standalone popup menu rather than the submenu of a <code>
+             * JMenu</code>.
              *
              * @return {boolean} true if this menu is a standalone popup menu, otherwise false
              * @private
@@ -49249,8 +47663,7 @@ var javax;
             /**
              * Returns the component at the specified index.
              *
-             * @param {number} i
-             * the index of the component, where 0 is the first
+             * @param {number} i the index of the component, where 0 is the first
              * @return {java.awt.Component} the <code>Component</code> at that index
              * @deprecated replaced by {@link java.awt.Container#getComponent(int)}
              */
@@ -49260,10 +47673,8 @@ var javax;
             /**
              * Returns the index of the specified component.
              *
-             * @param {java.awt.Component} c
-             * the <code>Component</code> to find
-             * @return {number} the index of the component, where 0 is the first; or -1 if the
-             * component is not found
+             * @param {java.awt.Component} c the <code>Component</code> to find
+             * @return {number} the index of the component, where 0 is the first; or -1 if the component is not found
              */
             JPopupMenu.prototype.getComponentIndex = function (c) {
                 var ncomponents = this.getComponentCount();
@@ -49279,13 +47690,10 @@ var javax;
                 return -1;
             };
             /**
-             * Sets the currently selected component, This will result in a change to
-             * the selection model.
+             * Sets the currently selected component, This will result in a change to the selection model.
              *
-             * @param {java.awt.Component} sel
-             * the <code>Component</code> to select
-             * @beaninfo description: The selected component on the popup menu expert:
-             * true hidden: true
+             * @param {java.awt.Component} sel the <code>Component</code> to select
+             * @beaninfo description: The selected component on the popup menu expert: true hidden: true
              */
             JPopupMenu.prototype.setSelected = function (sel) {
                 var model = this.getSelectionModel();
@@ -49304,8 +47712,7 @@ var javax;
             /**
              * Sets whether the border should be painted.
              *
-             * @param {boolean} b
-             * if true, the border is painted.
+             * @param {boolean} b if true, the border is painted.
              * @see #isBorderPainted
              * @beaninfo description: Is the border of the popup menu painted
              */
@@ -49313,8 +47720,7 @@ var javax;
                 this.paintBorder = b;
             };
             /**
-             * Returns the margin, in pixels, between the popup menu's border and its
-             * containers.
+             * Returns the margin, in pixels, between the popup menu's border and its containers.
              *
              * @return {java.awt.Insets} an <code>Insets</code> object containing the margin values.
              */
@@ -49327,11 +47733,9 @@ var javax;
                 }
             };
             /**
-             * Examines the list of menu items to determine whether <code>popup</code>
-             * is a popup menu.
+             * Examines the list of menu items to determine whether <code>popup</code> is a popup menu.
              *
-             * @param {javax.swing.JPopupMenu} popup
-             * a <code>JPopupMenu</code>
+             * @param {javax.swing.JPopupMenu} popup a <code>JPopupMenu</code>
              * @return {boolean} true if <code>popup</code>
              */
             JPopupMenu.prototype.isSubPopupMenu = function (popup) {
@@ -49364,11 +47768,9 @@ var javax;
                 return w;
             };
             /**
-             * Returns a string representation of this <code>JPopupMenu</code>. This
-             * method is intended to be used only for debugging purposes, and the
-             * content and format of the returned string may vary between
-             * implementations. The returned string may be empty but may not be
-             * <code>null</code>.
+             * Returns a string representation of this <code>JPopupMenu</code>. This method is intended to be
+             * used only for debugging purposes, and the content and format of the returned string may vary
+             * between implementations. The returned string may be empty but may not be <code>null</code>.
              *
              * @return {string} a string representation of this <code>JPopupMenu</code>.
              */
@@ -49379,11 +47781,10 @@ var javax;
                 return _super.prototype.paramString.call(this) + ",desiredLocationX=" + this.desiredLocationX + ",desiredLocationY=" + this.desiredLocationY + ",label=" + labelString + ",margin=" + marginString + ",paintBorder=" + paintBorderString;
             };
             /**
-             * This method is required to conform to the <code>MenuElement</code>
-             * interface, but it not implemented.
+             * This method is required to conform to the <code>MenuElement</code> interface, but it not
+             * implemented.
              *
-             * @see MenuElement#processMouseEvent(MouseEvent, MenuElement[],
-             * MenuSelectionManager)
+             * @see MenuElement#processMouseEvent(MouseEvent, MenuElement[], MenuSelectionManager)
              * @param {java.awt.event.MouseEvent} event
              * @param {javax.swing.MenuElement[]} path
              * @param {javax.swing.MenuSelectionManager} manager
@@ -49391,19 +47792,15 @@ var javax;
             JPopupMenu.prototype.processMouseEvent = function (event, path, manager) {
             };
             /**
-             * Processes a key event forwarded from the
-             * <code>MenuSelectionManager</code> and changes the menu selection, if
-             * necessary, by using <code>MenuSelectionManager</code>'s API.
-             * <p>
-             * Note: you do not have to forward the event to sub-components. This is
-             * done automatically by the <code>MenuSelectionManager</code>.
+             * Processes a key event forwarded from the <code>MenuSelectionManager</code> and changes the menu
+             * selection, if necessary, by using <code>MenuSelectionManager</code>'s API.
              *
-             * @param {java.awt.event.KeyEvent} e
-             * a <code>KeyEvent</code>
-             * @param {javax.swing.MenuElement[]} path
-             * the <code>MenuElement</code> path array
-             * @param {javax.swing.MenuSelectionManager} manager
-             * the <code>MenuSelectionManager</code>
+             * <p>Note: you do not have to forward the event to sub-components. This is done automatically by
+             * the <code>MenuSelectionManager</code>.
+             *
+             * @param {java.awt.event.KeyEvent} e a <code>KeyEvent</code>
+             * @param {javax.swing.MenuElement[]} path the <code>MenuElement</code> path array
+             * @param {javax.swing.MenuSelectionManager} manager the <code>MenuSelectionManager</code>
              */
             JPopupMenu.prototype.processKeyEvent = function (e, path, manager) {
                 var mke = new javax.swing.event.MenuKeyEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getKeyCode(), e.getKeyChar(), path, manager);
@@ -49415,8 +47812,7 @@ var javax;
             /**
              * Handles a keystroke in a menu.
              *
-             * @param {javax.swing.event.MenuKeyEvent} e
-             * a <code>MenuKeyEvent</code> object
+             * @param {javax.swing.event.MenuKeyEvent} e a <code>MenuKeyEvent</code> object
              * @since 1.5
              * @private
              */
@@ -49436,11 +47832,9 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type.
+             * Notifies all listeners that have registered interest for notification on this event type.
              *
-             * @param {javax.swing.event.MenuKeyEvent} event
-             * a <code>MenuKeyEvent</code>
+             * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
              * @see EventListenerList
              * @private
              */
@@ -49456,11 +47850,9 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type.
+             * Notifies all listeners that have registered interest for notification on this event type.
              *
-             * @param {javax.swing.event.MenuKeyEvent} event
-             * a <code>MenuKeyEvent</code>
+             * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
              * @see EventListenerList
              * @private
              */
@@ -49476,11 +47868,9 @@ var javax;
                 }
             };
             /**
-             * Notifies all listeners that have registered interest for notification on
-             * this event type.
+             * Notifies all listeners that have registered interest for notification on this event type.
              *
-             * @param {javax.swing.event.MenuKeyEvent} event
-             * a <code>MenuKeyEvent</code>
+             * @param {javax.swing.event.MenuKeyEvent} event a <code>MenuKeyEvent</code>
              * @see EventListenerList
              * @private
              */
@@ -49496,12 +47886,11 @@ var javax;
                 }
             };
             /**
-             * Messaged when the menubar selection changes to activate or deactivate
-             * this menu. This implements the <code>javax.swing.MenuElement</code>
-             * interface. Overrides <code>MenuElement.menuSelectionChanged</code>.
+             * Messaged when the menubar selection changes to activate or deactivate this menu. This
+             * implements the <code>javax.swing.MenuElement</code> interface. Overrides <code>
+             * MenuElement.menuSelectionChanged</code>.
              *
-             * @param {boolean} isIncluded
-             * true if this menu is active, false if it is not
+             * @param {boolean} isIncluded true if this menu is active, false if it is not
              * @see MenuElement#menuSelectionChanged(boolean)
              */
             JPopupMenu.prototype.menuSelectionChanged = function (isIncluded) {
@@ -49519,11 +47908,10 @@ var javax;
                     this.setVisible(false);
             };
             /**
-             * Returns an array of <code>MenuElement</code>s containing the submenu for
-             * this menu component. It will only return items conforming to the
-             * <code>JMenuElement</code> interface. If popup menu is <code>null</code>
-             * returns an empty array. This method is required to conform to the
-             * <code>MenuElement</code> interface.
+             * Returns an array of <code>MenuElement</code>s containing the submenu for this menu component.
+             * It will only return items conforming to the <code>JMenuElement</code> interface. If popup menu
+             * is <code>null</code> returns an empty array. This method is required to conform to the <code>
+             * MenuElement</code> interface.
              *
              * @return {javax.swing.MenuElement[]} an array of <code>MenuElement</code> objects
              * @see MenuElement#getSubElements

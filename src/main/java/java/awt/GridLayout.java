@@ -20,6 +20,11 @@ public class GridLayout implements LayoutManager2 {
     this.cols = cols;
   }
 
+  public GridLayout(int rows, int cols, int hgap, int vgap) {
+    this(rows, cols);
+    // TODO: Use hgap, vgap?
+  }
+
   @Override
   public void addLayoutComponent(String name, Component component) {
     int pos = 0;
