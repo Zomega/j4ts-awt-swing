@@ -79,14 +79,18 @@ public class BoxLayout implements LayoutManager2, Serializable {
       HTMLTableRowElement tr = (HTMLTableRowElement) table.firstChild;
       if (tr == null) {
         tr = document.createElement(StringTypes.tr);
+        tr.className = "applet-box-layout-tr";
         table.appendChild(tr);
       }
       HTMLTableCellElement td = document.createElement(StringTypes.td);
+      td.className = "applet-box-layout-td";
       td.appendChild(comp.getHTMLElement());
       tr.appendChild(td);
     } else {
       HTMLTableRowElement tr = document.createElement(StringTypes.tr);
+      tr.className = "applet-box-layout-tr";
       HTMLTableCellElement td = document.createElement(StringTypes.td);
+      td.className = "applet-box-layout-td";
       tr.appendChild(td);
       td.appendChild(comp.getHTMLElement());
       table.appendChild(tr);
@@ -105,6 +109,7 @@ public class BoxLayout implements LayoutManager2, Serializable {
   public void layoutContainer(Container target) {
     if (table == null) {
       table = document.createElement(StringTypes.table);
+      table.className = "applet-box-layout";
       HTMLDivElement div = any(target.getHTMLElement());
       div.appendChild(table);
     }

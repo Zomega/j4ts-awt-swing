@@ -122,6 +122,7 @@ public class Label extends Component {
   @Override
   public void createHTML() {
     htmlElement = document.createElement(StringTypes.label);
+    htmlElement.className = "applet-label";
   }
 
   @Override

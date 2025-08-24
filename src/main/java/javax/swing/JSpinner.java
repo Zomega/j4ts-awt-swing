@@ -52,27 +52,27 @@ public class JSpinner extends JComponent {
 
     // Create the main container element for the spinner
     this.spinnerElement = (HTMLElement) document.createElement("div");
-    this.spinnerElement.className = "j-spinner";
+    this.spinnerElement.className = "applet-jspinner";
 
     // Create the editor field
     this.valueEditor = (HTMLInputElement) document.createElement("input");
     this.valueEditor.type = "text";
-    this.valueEditor.className = "j-spinner-editor";
+    this.valueEditor.className = "applet-jspinner-input";
     this.spinnerElement.appendChild(this.valueEditor);
 
     // Create the buttons container
     HTMLElement buttonsContainer = (HTMLElement) document.createElement("div");
-    buttonsContainer.className = "j-spinner-buttons";
+    buttonsContainer.className = "applet-jspinner-buttons";
 
     // Create the up button
     this.upButton = (HTMLElement) document.createElement("button");
-    this.upButton.className = "j-spinner-up-button";
+    this.upButton.className = "applet-jspinner-button-up";
     this.upButton.textContent = "▲";
     buttonsContainer.appendChild(this.upButton);
 
     // Create the down button
     this.downButton = (HTMLElement) document.createElement("button");
-    this.downButton.className = "j-spinner-down-button";
+    this.downButton.className = "applet-jspinner-button-down";
     this.downButton.textContent = "▼";
     buttonsContainer.appendChild(this.downButton);
 

@@ -47,6 +47,7 @@ public class JButton extends AbstractButton {
       return;
     }
     htmlElement = document.createElement(StringTypes.button);
+    htmlElement.className = "applet-jbutton";
   }
 
   @Override

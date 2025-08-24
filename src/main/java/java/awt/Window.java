@@ -53,6 +53,7 @@ public class Window extends Container {
   @Override
   public void createHTML() {
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-window";
     getElement().style.display = "none";
 
     Function<Event, Object> fun =

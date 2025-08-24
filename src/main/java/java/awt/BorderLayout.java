@@ -504,36 +504,21 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable {
       created = true;
       HTMLDivElement div = any(parent.getHTMLElement());
       table = document.createElement(StringTypes.table);
-      table.style.width = "100%";
-      table.style.height = "100%";
-      // table.style.position = "absolute";
-      table.style.left = "0px";
-      table.style.right = "0px";
-      table.style.zIndex = "0";
-      table.style.border = "0px";
-      table.cellSpacing = "0px";
-      table.cellPadding = "0px";
+      table.className = "applet-border-layout";
 
       for (int j = 0; j < 3; j++) {
         HTMLTableRowElement row = document.createElement(StringTypes.tr);
+        row.className = "applet-border-layout-row";
         table.appendChild(row);
-        if (j != 1) {
-          row.style.height = "0px";
-        } else {
-          row.style.height = "100%";
-        }
         for (int i = 0; i < 3; i++) {
           if (j == 1 || i == 1) {
             HTMLTableDataCellElement col = document.createElement(StringTypes.td);
-            col.style.padding = "0px";
+            col.className = "applet-border-layout-col";
             row.appendChild(col);
             if (i == 1) {
-              col.style.width = "100%";
               if (j != 1) {
                 col.colSpan = 3;
               }
-            } else {
-              col.style.width = "0px";
             }
           }
         }

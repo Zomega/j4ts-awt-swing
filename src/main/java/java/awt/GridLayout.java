@@ -2,6 +2,7 @@ package java.awt;
 
 import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
+import static def.dom.Globals.console;
 
 import def.dom.*;
 import jsweet.util.StringTypes;
@@ -31,6 +32,7 @@ public class GridLayout implements LayoutManager2 {
     if (table.children.$get(0).childNodes.length * rows == currentPosition) {
       for (int i = 0; i < rows; i++) {
         HTMLTableDataCellElement col = document.createElement(StringTypes.td);
+        col.className = "applet-grid-layout-col";
         table.children.$get(i).appendChild(col);
       }
       Component[] cp = new Component[parent.getComponentCount()];
@@ -62,7 +64,25 @@ public class GridLayout implements LayoutManager2 {
   }
 
   @Override
-  public void removeLayoutComponent(Component component) {}
+  public void removeLayoutComponent(Component component) {
+    // Find the HTML element associated with the component
+    HTMLElement componentElement = component.getHTMLElement();
+
+    // Iterate through the table rows and cells to find and remove the component's element
+    for (int j = 0; j < rows; j++) {
+      HTMLTableRowElement row = (HTMLTableRowElement) table.childNodes.$get(j);
+      for (int i = 0; i < row.childNodes.length; i++) {
+        HTMLTableDataCellElement col = (HTMLTableDataCellElement) row.childNodes.$get(i);
+
+        // Check if the current cell contains the component's HTML element
+        if (col.contains(componentElement)) {
+          col.removeChild(componentElement);
+          console.log("Component removed from the layout.");
+          return; // Exit once the component is found and removed
+        }
+      }
+    }
+  }
 
   @Override
   public void layoutContainer(Container parent) {
@@ -71,6 +91,7 @@ public class GridLayout implements LayoutManager2 {
       created = true;
       HTMLDivElement div = any(parent.getHTMLElement());
       table = document.createElement(StringTypes.table);
+      table.className = "applet-grid-layout";
       table.style.width = "100%";
       table.style.height = "100%";
       // table.style.position = "absolute";
@@ -84,9 +105,11 @@ public class GridLayout implements LayoutManager2 {
 
       for (int j = 0; j < rows; j++) {
         HTMLTableRowElement row = document.createElement(StringTypes.tr);
+        row.className = "applet-grid-layout-row";
         table.appendChild(row);
         for (int i = 0; i < 1; i++) {
           HTMLTableDataCellElement col = document.createElement(StringTypes.td);
+          col.className = "applet-grid-layout-col";
           row.appendChild(col);
         }
       }

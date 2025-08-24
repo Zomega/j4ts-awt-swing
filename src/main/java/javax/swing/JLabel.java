@@ -104,6 +104,7 @@ public class JLabel extends JComponent implements SwingConstants {
   @Override
   public void createHTML() {
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jlabel";
   }
 
   @Override
@@ -116,6 +117,7 @@ public class JLabel extends JComponent implements SwingConstants {
       htmlImageElement = defaultIcon.getInternalHTMLImageElement();
     }
     htmlLabelElement = document.createElement(StringTypes.label);
+    htmlElement.className = "applet-jlabel-label";
     if (defaultIcon != null) {
       htmlElement.appendChild(htmlImageElement);
     }

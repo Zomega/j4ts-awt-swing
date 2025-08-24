@@ -1136,7 +1136,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
 
     int num;
     if (D < 0) {
-        /* Casus irreducibilis: three real solutions */
+      /* Casus irreducibilis: three real solutions */
       // see:
       // http://en.wikipedia.org/wiki/Cubic_function#Trigonometric_.28and_hyperbolic.29_method
       double phi = 1.0 / 3 * Math.acos(-q / Math.sqrt(-cb_p));

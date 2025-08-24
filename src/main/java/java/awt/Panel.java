@@ -2,6 +2,7 @@ package java.awt;
 
 import static def.dom.Globals.document;
 import static def.dom.Globals.window;
+import static def.dom.Globals.console;
 
 import def.dom.HTMLCanvasElement;
 import jsweet.util.StringTypes;
@@ -24,6 +25,7 @@ public class Panel extends Container {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-panel";
   }
 
   @Override
@@ -58,11 +60,13 @@ public class Panel extends Container {
     super.initHTML();
     if (htmlCanvas == null) {
       htmlCanvas = document.createElement(StringTypes.canvas);
+      htmlElement.className = "applet-panel-canvas";
       htmlElement.appendChild(htmlCanvas);
       window.onresize =
           e -> {
             if ((htmlCanvas.width != htmlElement.offsetWidth)
                 || (htmlCanvas.height != htmlElement.offsetHeight)) {
+              console.log("OW", htmlElement.offsetWidth);
               htmlCanvas.width = htmlElement.offsetWidth;
               htmlCanvas.height = htmlElement.offsetHeight;
               repaint();
@@ -74,6 +78,7 @@ public class Panel extends Container {
       htmlElement.style.backgroundColor = null;
       htmlCanvas.style.backgroundColor = background.toHTML();
     }
+    console.log("OW", htmlElement.offsetWidth);
     htmlCanvas.width = htmlElement.offsetWidth;
     htmlCanvas.height = htmlElement.offsetHeight;
     htmlCanvas.style.position = "absolute";

@@ -62,6 +62,7 @@ var java;
                     this.source = null;
                 }
                 this.source = document.createElement("img");
+                this.source.className = "applet-image";
                 this.source.src = src;
                 this.setScale(Image.SCALE_DEFAULT);
             }
@@ -462,6 +463,7 @@ var java;
             FontMetrics.prototype.charWidth$int = function (ch) {
                 if (this.defaultContext2D == null) {
                     var dummyCanvas = document.createElement("canvas");
+                    dummyCanvas.className = "applet-dummy-canvas";
                     this.defaultContext2D = dummyCanvas.getContext("2d");
                     if (this.font != null) {
                         this.defaultContext2D.font = this.font.getSize() + "px " + this.font.getFontName();
@@ -548,6 +550,7 @@ var java;
                 }
                 if (this.defaultContext2D == null) {
                     var dummyCanvas = document.createElement("canvas");
+                    dummyCanvas.className = "applet-dummy-canvas";
                     this.defaultContext2D = dummyCanvas.getContext("2d");
                     if (this.font != null) {
                         this.defaultContext2D.font = this.font.getSize() + "px " + this.font.getFontName();
@@ -10724,6 +10727,8 @@ var java;
                 else
                     throw new Error('invalid overload');
             };
+            Graphics.prototype.setXORMode = function (c1) {
+            };
             Graphics.prototype.getFontMetrics$ = function () {
                 return new java.awt.FontMetrics(this.getFont());
             };
@@ -11319,38 +11324,22 @@ var java;
                     this.created = true;
                     var div = parent.getHTMLElement();
                     this.table = document.createElement("table");
-                    this.table.style.width = "100%";
-                    this.table.style.height = "100%";
-                    this.table.style.left = "0px";
-                    this.table.style.right = "0px";
-                    this.table.style.zIndex = "0";
-                    this.table.style.border = "0px";
-                    this.table.cellSpacing = "0px";
-                    this.table.cellPadding = "0px";
+                    this.table.className = "applet-border-layout";
                     for (var j = 0; j < 3; j++) {
                         {
                             var row = document.createElement("tr");
+                            row.className = "applet-border-layout-row";
                             this.table.appendChild(row);
-                            if (j !== 1) {
-                                row.style.height = "0px";
-                            }
-                            else {
-                                row.style.height = "100%";
-                            }
                             for (var i = 0; i < 3; i++) {
                                 {
                                     if (j === 1 || i === 1) {
                                         var col = document.createElement("td");
-                                        col.style.padding = "0px";
+                                        col.className = "applet-border-layout-col";
                                         row.appendChild(col);
                                         if (i === 1) {
-                                            col.style.width = "100%";
                                             if (j !== 1) {
                                                 col.colSpan = 3;
                                             }
-                                        }
-                                        else {
-                                            col.style.width = "0px";
                                         }
                                     }
                                 }
@@ -11445,6 +11434,18 @@ var java;
         awt.BorderLayout = BorderLayout;
         BorderLayout["__class"] = "java.awt.BorderLayout";
         BorderLayout["__interfaces"] = ["java.awt.LayoutManager2", "java.awt.LayoutManager", "java.io.Serializable"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var GraphicsConfiguration = /** @class */ (function () {
+            function GraphicsConfiguration() {
+            }
+            return GraphicsConfiguration;
+        }());
+        awt.GraphicsConfiguration = GraphicsConfiguration;
+        GraphicsConfiguration["__class"] = "java.awt.GraphicsConfiguration";
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -13979,6 +13980,7 @@ var java;
                     for (var i = 0; i < this.rows; i++) {
                         {
                             var col = document.createElement("td");
+                            col.className = "applet-grid-layout-col";
                             this.table.children[i].appendChild(col);
                         }
                         ;
@@ -14043,6 +14045,24 @@ var java;
              * @param {java.awt.Component} component
              */
             GridLayout.prototype.removeLayoutComponent = function (component) {
+                var componentElement = component.getHTMLElement();
+                for (var j = 0; j < this.rows; j++) {
+                    {
+                        var row = this.table.childNodes[j];
+                        for (var i = 0; i < row.childNodes.length; i++) {
+                            {
+                                var col = row.childNodes[i];
+                                if (col.contains(componentElement)) {
+                                    col.removeChild(componentElement);
+                                    console.log("Component removed from the layout.");
+                                    return;
+                                }
+                            }
+                            ;
+                        }
+                    }
+                    ;
+                }
             };
             /**
              *
@@ -14054,6 +14074,7 @@ var java;
                     this.created = true;
                     var div = parent.getHTMLElement();
                     this.table = document.createElement("table");
+                    this.table.className = "applet-grid-layout";
                     this.table.style.width = "100%";
                     this.table.style.height = "100%";
                     this.table.style.left = "0px";
@@ -14066,10 +14087,12 @@ var java;
                     for (var j = 0; j < this.rows; j++) {
                         {
                             var row = document.createElement("tr");
+                            row.className = "applet-grid-layout-row";
                             this.table.appendChild(row);
                             for (var i = 0; i < 1; i++) {
                                 {
                                     var col = document.createElement("td");
+                                    col.className = "applet-grid-layout-col";
                                     row.appendChild(col);
                                 }
                                 ;
@@ -18139,15 +18162,19 @@ var javax;
                     var tr = this.table.firstChild;
                     if (tr == null) {
                         tr = document.createElement("tr");
+                        tr.className = "applet-box-layout-tr";
                         this.table.appendChild(tr);
                     }
                     var td = document.createElement("td");
+                    td.className = "applet-box-layout-td";
                     td.appendChild(comp.getHTMLElement());
                     tr.appendChild(td);
                 }
                 else {
                     var tr = document.createElement("tr");
+                    tr.className = "applet-box-layout-tr";
                     var td = document.createElement("td");
+                    td.className = "applet-box-layout-td";
                     tr.appendChild(td);
                     td.appendChild(comp.getHTMLElement());
                     this.table.appendChild(tr);
@@ -18166,6 +18193,7 @@ var javax;
             BoxLayout.prototype.layoutContainer = function (target) {
                 if (this.table == null) {
                     this.table = document.createElement("table");
+                    this.table.className = "applet-box-layout";
                     var div = target.getHTMLElement();
                     div.appendChild(this.table);
                 }
@@ -28153,8 +28181,10 @@ var javax;
             Scrollbar.prototype.createHTML = function () {
                 var _this = this;
                 var container = document.createElement("div");
+                container.className = "applet-scrollbar-div";
                 container.style.position = "relative";
                 this.inputElement = document.createElement("input");
+                this.inputElement.className = "applet-scrollbar-input";
                 this.inputElement.type = "range";
                 if (this.orientation === Scrollbar.HORIZONTAL) {
                     this.inputElement.style.width = "100%";
@@ -28478,6 +28508,7 @@ var javax;
             }
             Choice.prototype.createHTML = function () {
                 this.htmlElement = document.createElement("select");
+                this.htmlElement.className = "applet-choice";
             };
             Choice.prototype.getHTMLElement = function () {
                 return this.htmlElement;
@@ -28501,6 +28532,7 @@ var javax;
                 for (var i = 0; i < this.getItemCount(); i++) {
                     {
                         var option = document.createElement("option");
+                        option.className = "applet-option";
                         option.innerHTML = this.getItem(i);
                         option.value = this.getItem(i);
                         if (this.getSelectedIndex() === i) {
@@ -28969,8 +29001,10 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("label");
+                this.htmlElement.className = "applet-checkbox-label";
                 this.htmlElement.appendChild(this.htmlLabel = document.createTextNode(""));
                 this.htmlCheckbox = document.createElement("input");
+                this.htmlElement.className = "applet-checkbox-box";
                 this.htmlCheckbox.type = this.group == null ? "checkbox" : "radio";
                 this.htmlElement.appendChild(this.htmlCheckbox);
             };
@@ -29144,6 +29178,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("input");
+                this.htmlElement.className = "applet-textfield";
                 this.htmlElement.setAttribute("type", "text");
             };
             /**
@@ -29309,6 +29344,7 @@ var javax;
              */
             Label.prototype.createHTML = function () {
                 this.htmlElement = document.createElement("label");
+                this.htmlElement.className = "applet-label";
             };
             /**
              *
@@ -29400,6 +29436,7 @@ var javax;
                 }
                 if (this.htmlCanvasElement == null) {
                     this.htmlCanvasElement = document.createElement("canvas");
+                    this.htmlCanvasElement.className = "applet-canvas";
                     this.htmlCanvasElement.width = this.width;
                     this.htmlCanvasElement.height = this.height;
                     this.htmlElement.appendChild(this.htmlCanvasElement);
@@ -29512,6 +29549,7 @@ var javax;
              */
             Canvas.prototype.createHTML = function () {
                 this.htmlCanvasElement = document.createElement("canvas");
+                this.htmlCanvasElement.className = "applet-canvas";
                 this.htmlCanvasElement.width = this.width;
                 this.htmlCanvasElement.height = this.height;
                 this.htmlElement = this.htmlCanvasElement;
@@ -29588,6 +29626,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("button");
+                this.htmlElement.className = "applet-button";
             };
             /**
              *
@@ -34364,6 +34403,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-panel";
             };
             /**
              *
@@ -34405,9 +34445,11 @@ var javax;
                 _super.prototype.initHTML.call(this);
                 if (this.htmlCanvas == null) {
                     this.htmlCanvas = document.createElement("canvas");
+                    this.htmlElement.className = "applet-panel-canvas";
                     this.htmlElement.appendChild(this.htmlCanvas);
                     window.onresize = function (e) {
                         if ((_this.htmlCanvas.width !== _this.htmlElement.offsetWidth) || (_this.htmlCanvas.height !== _this.htmlElement.offsetHeight)) {
+                            console.log("OW", _this.htmlElement.offsetWidth);
                             _this.htmlCanvas.width = _this.htmlElement.offsetWidth;
                             _this.htmlCanvas.height = _this.htmlElement.offsetHeight;
                             _this.repaint();
@@ -34419,6 +34461,7 @@ var javax;
                     this.htmlElement.style.backgroundColor = null;
                     this.htmlCanvas.style.backgroundColor = this.background.toHTML();
                 }
+                console.log("OW", this.htmlElement.offsetWidth);
                 this.htmlCanvas.width = this.htmlElement.offsetWidth;
                 this.htmlCanvas.height = this.htmlElement.offsetHeight;
                 this.htmlCanvas.style.position = "absolute";
@@ -34531,6 +34574,7 @@ var javax;
             Window.prototype.createHTML = function () {
                 var _this = this;
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-window";
                 this.getElement().style.display = "none";
                 var fun = function (e) {
                     if (Window.loaded) {
@@ -37075,7 +37119,6 @@ var javax;
                         var applet_3 = (new constructor());
                         applet_3.setSize(javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-width")), javaemul.internal.IntegerHelper.parseInt(div.getAttribute("data-height")));
                         div.innerHTML = "";
-                        div.style.position = "relative";
                         applet_3.bindHTML(div);
                         applet_3.init();
                         applet_3.doPaintInternal();
@@ -39182,6 +39225,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jrootpane";
             };
             /**
              *
@@ -39908,6 +39952,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jtextpane";
             };
             JTextPane.prototype.setPage = function (page) {
             };
@@ -40155,6 +40200,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jtabbedpane";
             };
             JTabbedPane.prototype.setTabPlacement = function (tabPlacement) {
             };
@@ -40263,6 +40309,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jpanel";
             };
             /**
              *
@@ -40298,6 +40345,7 @@ var javax;
                 var firstTime = this.htmlCanvas == null;
                 if (firstTime) {
                     this.htmlCanvas = document.createElement("canvas");
+                    this.htmlCanvas.className = "applet-jpanel-canvas";
                     this.htmlElement.appendChild(this.htmlCanvas);
                     window.onresize = function (e) {
                         _this.htmlCanvas.width = _this.htmlElement.offsetWidth;
@@ -40354,6 +40402,8 @@ var javax;
                 }
                 else
                     throw new Error('invalid overload');
+            };
+            JPanel.prototype.setOpaque = function (isOpaque) {
             };
             /**
              * @see #getUIClassID
@@ -40468,19 +40518,19 @@ var javax;
                     return;
                 }
                 this.spinnerElement = document.createElement("div");
-                this.spinnerElement.className = "j-spinner";
+                this.spinnerElement.className = "applet-jspinner";
                 this.valueEditor = document.createElement("input");
                 this.valueEditor.type = "text";
-                this.valueEditor.className = "j-spinner-editor";
+                this.valueEditor.className = "applet-jspinner-input";
                 this.spinnerElement.appendChild(this.valueEditor);
                 var buttonsContainer = document.createElement("div");
-                buttonsContainer.className = "j-spinner-buttons";
+                buttonsContainer.className = "applet-jspinner-buttons";
                 this.upButton = document.createElement("button");
-                this.upButton.className = "j-spinner-up-button";
+                this.upButton.className = "applet-jspinner-button-up";
                 this.upButton.textContent = "\u25b2";
                 buttonsContainer.appendChild(this.upButton);
                 this.downButton = document.createElement("button");
-                this.downButton.className = "j-spinner-down-button";
+                this.downButton.className = "applet-jspinner-button-down";
                 this.downButton.textContent = "\u25bc";
                 buttonsContainer.appendChild(this.downButton);
                 this.spinnerElement.appendChild(buttonsContainer);
@@ -41264,6 +41314,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jscrollpane";
             };
             JScrollPane.prototype.getViewport = function () {
                 return null;
@@ -41426,6 +41477,7 @@ var javax;
             }
             JComboBox.prototype.createHTML = function () {
                 this.htmlElement = document.createElement("select");
+                this.htmlElement.className = "applet-jcombobox";
             };
             JComboBox.prototype.getHTMLElement = function () {
                 return this.htmlElement;
@@ -41450,6 +41502,7 @@ var javax;
                 for (var i = 0; i < this.getItemCount(); i++) {
                     {
                         var option = document.createElement("option");
+                        option.className = "applet-jcombobox-option";
                         option.innerHTML = this.getItemAt(i).toString();
                         option.value = this.getItemAt(i).toString();
                         if (this.getSelectedIndex() === i) {
@@ -42618,6 +42671,7 @@ var javax;
              */
             JLabel.prototype.createHTML = function () {
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jlabel";
             };
             /**
              *
@@ -42634,6 +42688,7 @@ var javax;
                     this.htmlImageElement = this.defaultIcon.getInternalHTMLImageElement();
                 }
                 this.htmlLabelElement = document.createElement("label");
+                this.htmlElement.className = "applet-jlabel-label";
                 if (this.defaultIcon != null) {
                     this.htmlElement.appendChild(this.htmlImageElement);
                 }
@@ -44458,6 +44513,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jtextarea";
             };
             /**
              *
@@ -44799,6 +44855,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("input");
+                this.htmlElement.className = "applet-jtextfield";
                 this.getHTMLElement().setAttribute("type", "text");
                 this.getHTMLElement().style.backgroundColor = java.awt.Color.WHITE_$LI$().toHTML();
                 this.getHTMLElement().style.border = "2px groove " + new java.awt.Color(180, 185, 196).toHTML();
@@ -45331,6 +45388,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("button");
+                this.htmlElement.className = "applet-jtogglebutton";
                 this.buttonCreated = true;
             };
             /**
@@ -45891,6 +45949,7 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("button");
+                this.htmlElement.className = "applet-jbutton";
             };
             /**
              *
@@ -46116,12 +46175,14 @@ var javax;
                     return;
                 }
                 var container = document.createElement("div");
-                container.className = "j-radio-button-container";
+                container.className = "applet-jradiobutton";
                 var radioInput = document.createElement("input");
+                radioInput.className = "applet-jradiobutton-input";
                 radioInput.type = "radio";
                 radioInput.checked = this.isSelected();
                 container.appendChild(radioInput);
                 var label = document.createElement("label");
+                label.className = "applet-jradiobutton-label";
                 label.textContent = this.getText();
                 container.appendChild(label);
                 this.element = container;
@@ -46293,7 +46354,9 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("label");
+                this.htmlElement.className = "applet-jcheckbox-label";
                 this.htmlCheckbox = document.createElement("input");
+                this.htmlElement.className = "applet-jcheckbox-box";
                 this.htmlCheckbox.type = "checkbox";
                 this.htmlElement.appendChild(this.htmlCheckbox);
                 this.htmlElement.appendChild(this.htmlLabel = document.createTextNode(""));

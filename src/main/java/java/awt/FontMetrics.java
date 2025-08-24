@@ -177,6 +177,7 @@ public class FontMetrics implements Serializable {
     if (defaultContext2D == null) {
       // Lazily create a dummy context if not provided
       HTMLCanvasElement dummyCanvas = (HTMLCanvasElement) Globals.document.createElement("canvas");
+      dummyCanvas.className = "applet-dummy-canvas";
       defaultContext2D = (CanvasRenderingContext2D) dummyCanvas.getContext("2d");
       // Set a default font for the dummy context for more meaningful measurements
       if (this.font != null) {
@@ -273,6 +274,7 @@ public class FontMetrics implements Serializable {
     if (defaultContext2D == null) {
       // Lazily create a dummy context if not provided
       HTMLCanvasElement dummyCanvas = (HTMLCanvasElement) Globals.document.createElement("canvas");
+      dummyCanvas.className = "applet-dummy-canvas";
       defaultContext2D = (CanvasRenderingContext2D) dummyCanvas.getContext("2d");
       if (this.font != null) {
         defaultContext2D.font = this.font.getSize() + "px " + this.font.getFontName();

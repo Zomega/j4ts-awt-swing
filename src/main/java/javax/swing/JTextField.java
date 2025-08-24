@@ -51,6 +51,7 @@ public class JTextField extends JTextComponent implements SwingConstants {
       return;
     }
     htmlElement = document.createElement(StringTypes.input);
+    htmlElement.className = "applet-jtextfield";
     getHTMLElement().setAttribute("type", "text");
     getHTMLElement().style.backgroundColor = Color.WHITE.toHTML();
     getHTMLElement().style.border = "2px groove " + new Color(180, 185, 196).toHTML();

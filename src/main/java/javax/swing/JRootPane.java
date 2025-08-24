@@ -37,6 +37,7 @@ public class JRootPane extends JComponent {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jrootpane";
   }
 
   @Override

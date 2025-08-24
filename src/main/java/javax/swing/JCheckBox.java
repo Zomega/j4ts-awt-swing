@@ -74,8 +74,10 @@ public class JCheckBox extends JToggleButton implements ItemSelectable {
       return;
     }
     htmlElement = document.createElement(StringTypes.label);
+    htmlElement.className = "applet-jcheckbox-label";
 
     htmlCheckbox = document.createElement(StringTypes.input);
+    htmlElement.className = "applet-jcheckbox-box";
     htmlCheckbox.type = "checkbox";
 
     htmlElement.appendChild(htmlCheckbox);

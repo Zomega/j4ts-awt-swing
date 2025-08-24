@@ -14,6 +14,7 @@ class JTextPane extends JComponent {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jtextpane";
   }
 
   public void setPage(URL page) {

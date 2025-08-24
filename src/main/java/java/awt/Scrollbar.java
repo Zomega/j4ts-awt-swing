@@ -70,9 +70,11 @@ public class Scrollbar extends Component implements Adjustable {
   @Override
   public void createHTML() {
     HTMLDivElement container = (HTMLDivElement) document.createElement("div");
+    container.className = "applet-scrollbar-div";
     container.style.position = "relative";
 
     inputElement = (HTMLInputElement) document.createElement("input");
+    inputElement.className = "applet-scrollbar-input";
     inputElement.type = "range";
 
     if (orientation == HORIZONTAL) {

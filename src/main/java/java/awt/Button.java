@@ -36,6 +36,7 @@ public class Button extends Component {
       return;
     }
     htmlElement = document.createElement(StringTypes.button);
+    htmlElement.className = "applet-button";
   }
 
   @Override

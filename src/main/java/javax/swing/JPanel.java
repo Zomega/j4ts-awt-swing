@@ -47,6 +47,7 @@ public class JPanel extends JComponent {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jpanel";
   }
 
   @Override
@@ -77,6 +78,7 @@ public class JPanel extends JComponent {
     boolean firstTime = htmlCanvas == null;
     if (firstTime) {
       htmlCanvas = document.createElement(StringTypes.canvas);
+      htmlCanvas.className = "applet-jpanel-canvas";
       htmlElement.appendChild(htmlCanvas);
       window.onresize =
           e -> {
@@ -169,5 +171,9 @@ public class JPanel extends JComponent {
     htmlCanvas.width = width;
     htmlCanvas.height = height;
     repaint();
+  }
+
+  public void setOpaque(boolean isOpaque) {
+    // TODO: Set style?
   }
 }

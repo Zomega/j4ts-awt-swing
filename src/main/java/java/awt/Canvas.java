@@ -81,6 +81,7 @@ public class Canvas extends Component {
     if (this.htmlCanvasElement == null) {
       this.htmlCanvasElement =
           (HTMLCanvasElement) Globals.document.createElement(StringTypes.canvas);
+      this.htmlCanvasElement.className = "applet-canvas";
       // Set initial size (can be overridden by setSize later)
       this.htmlCanvasElement.width = this.width;
       this.htmlCanvasElement.height = this.height;
@@ -206,6 +207,7 @@ public class Canvas extends Component {
   @Override // Assuming Component declares this or HTMLComponent is an interface
   public void createHTML() {
     this.htmlCanvasElement = (HTMLCanvasElement) Globals.document.createElement(StringTypes.canvas);
+    this.htmlCanvasElement.className = "applet-canvas";
     // Set initial size (can be overridden by setSize later)
     this.htmlCanvasElement.width = this.width;
     this.htmlCanvasElement.height = this.height;

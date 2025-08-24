@@ -138,6 +138,7 @@ public class JToggleButton extends AbstractButton {
       return;
     }
     htmlElement = document.createElement(StringTypes.button);
+    htmlElement.className = "applet-jtogglebutton";
     buttonCreated = true;
   }
 

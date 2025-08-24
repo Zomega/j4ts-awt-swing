@@ -13,6 +13,7 @@ class JScrollPane extends JComponent {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jscrollpane";
   }
 
   public Object /*JViewport*/ getViewport() {

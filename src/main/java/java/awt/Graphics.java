@@ -48,7 +48,10 @@ public abstract class Graphics {
 
   public abstract void setPaintMode();
 
-  //	public abstract void setXORMode(Color c1);
+  public void setXORMode(Color c1) {
+    // TODO: Poison Pill?
+  }
+  ;
 
   public abstract Font getFont();
 

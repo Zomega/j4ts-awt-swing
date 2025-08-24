@@ -57,6 +57,7 @@ public class Choice extends Component implements ItemSelectable {
 
   public void createHTML() {
     htmlElement = document.createElement(StringTypes.select);
+    htmlElement.className = "applet-choice";
   }
 
   public HTMLSelectElement getHTMLElement() {
@@ -78,6 +79,7 @@ public class Choice extends Component implements ItemSelectable {
     }
     for (int i = 0; i < getItemCount(); i++) {
       HTMLOptionElement option = document.createElement(StringTypes.option);
+      option.className = "applet-option";
       option.innerHTML = getItem(i);
       option.value = getItem(i);
       if (getSelectedIndex() == i) {

@@ -14,6 +14,7 @@ class JTabbedPane extends JComponent {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jtabbedpane";
   }
 
   public void setTabPlacement(int tabPlacement) {

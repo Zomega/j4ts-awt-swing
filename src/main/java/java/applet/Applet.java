@@ -41,8 +41,8 @@ public class Applet extends Panel {
                 Integer.parseInt(div.getAttribute("data-height")));
 
             // Clear the internals.
+            // TODO: Controllable?
             div.innerHTML = "";
-            div.style.position = "relative"; // TODO: Why doesn't this get applied?
             applet.bindHTML(div);
             applet.init();
             applet.doPaintInternal();

@@ -24,7 +24,6 @@
  */
 package java.awt;
 
-
 import static jsweet.util.Lang.array;
 
 public abstract class Container extends Component {

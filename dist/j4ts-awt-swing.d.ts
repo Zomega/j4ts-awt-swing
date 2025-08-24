@@ -5314,6 +5314,7 @@ declare namespace java.awt {
         abstract getColor(): java.awt.Color;
         abstract setColor(c: java.awt.Color): any;
         abstract setPaintMode(): any;
+        setXORMode(c1: java.awt.Color): void;
         abstract getFont(): java.awt.Font;
         abstract setFont(font: java.awt.Font): any;
         getFontMetrics$(): java.awt.FontMetrics;
@@ -5627,6 +5628,10 @@ declare namespace java.awt {
          * @return {string} a string representation of this border layout.
          */
         toString(): string;
+    }
+}
+declare namespace java.awt {
+    class GraphicsConfiguration {
     }
 }
 declare namespace java.awt.image {
@@ -18065,6 +18070,7 @@ declare namespace javax.swing {
          * @param {number} height
          */
         setSize(width?: any, height?: any): any;
+        setOpaque(isOpaque: boolean): void;
     }
 }
 declare namespace javax.swing {

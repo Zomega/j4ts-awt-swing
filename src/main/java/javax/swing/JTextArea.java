@@ -55,6 +55,7 @@ public class JTextArea extends JTextComponent {
       return;
     }
     htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jtextarea";
   }
 
   @Override

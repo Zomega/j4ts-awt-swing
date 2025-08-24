@@ -87,14 +87,16 @@ public class JRadioButton extends JToggleButton {
 
     // Create a new container for the radio button and label
     HTMLElement container = (HTMLElement) document.createElement("div");
-    container.className = "j-radio-button-container";
+    container.className = "applet-jradiobutton";
 
     HTMLInputElement radioInput = (HTMLInputElement) document.createElement("input");
+    radioInput.className = "applet-jradiobutton-input";
     radioInput.type = "radio";
     radioInput.checked = this.isSelected();
     container.appendChild(radioInput);
 
     HTMLElement label = (HTMLElement) document.createElement("label");
+    label.className = "applet-jradiobutton-label";
     label.textContent = this.getText();
     container.appendChild(label);
 

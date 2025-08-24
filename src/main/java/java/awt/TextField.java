@@ -25,6 +25,7 @@ public class TextField extends Component {
       return;
     }
     htmlElement = document.createElement(StringTypes.input);
+    htmlElement.className = "applet-textfield";
     htmlElement.setAttribute("type", "text");
   }
 

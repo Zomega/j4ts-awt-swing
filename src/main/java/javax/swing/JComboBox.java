@@ -53,6 +53,7 @@ public class JComboBox<E> extends JComponent
 
   public void createHTML() {
     htmlElement = document.createElement(StringTypes.select);
+    htmlElement.className = "applet-jcombobox";
   }
 
   public HTMLSelectElement getHTMLElement() {
@@ -76,6 +77,7 @@ public class JComboBox<E> extends JComponent
     }
     for (int i = 0; i < getItemCount(); i++) {
       HTMLOptionElement option = document.createElement(StringTypes.option);
+      option.className = "applet-jcombobox-option";
       // TODO: use renderer
       option.innerHTML = getItemAt(i).toString();
       option.value = getItemAt(i).toString();

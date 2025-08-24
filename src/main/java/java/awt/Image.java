@@ -44,6 +44,7 @@ public class Image {
 
   public Image(String src) {
     source = document.createElement(StringTypes.img);
+    source.className = "applet-image";
     source.src = src;
     setScale(SCALE_DEFAULT);
   }
