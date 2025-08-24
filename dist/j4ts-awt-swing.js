@@ -10901,14 +10901,6 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
-        /**
-         * Constructs a border layout with the specified gaps between components. The horizontal gap is
-         * specified by <code>hgap</code> and the vertical gap is specified by <code>vgap</code>.
-         *
-         * @param {number} hgap the horizontal gap.
-         * @param {number} vgap the vertical gap.
-         * @class
-         */
         var BorderLayout = /** @class */ (function () {
             function BorderLayout(hgap, vgap) {
                 if (((typeof hgap === 'number') || hgap === null) && ((typeof vgap === 'number') || vgap === null)) {
@@ -10916,8 +10908,11 @@ var java;
                     if (this.parent === undefined) {
                         this.parent = null;
                     }
-                    if (this.table === undefined) {
-                        this.table = null;
+                    if (this.container === undefined) {
+                        this.container = null;
+                    }
+                    if (this.middleRow === undefined) {
+                        this.middleRow = null;
                     }
                     if (this.hgap === undefined) {
                         this.hgap = 0;
@@ -10965,8 +10960,11 @@ var java;
                         if (this.parent === undefined) {
                             this.parent = null;
                         }
-                        if (this.table === undefined) {
-                            this.table = null;
+                        if (this.container === undefined) {
+                            this.container = null;
+                        }
+                        if (this.middleRow === undefined) {
+                            this.middleRow = null;
                         }
                         if (this.hgap === undefined) {
                             this.hgap = 0;
@@ -11008,8 +11006,11 @@ var java;
                     if (this.parent === undefined) {
                         this.parent = null;
                     }
-                    if (this.table === undefined) {
-                        this.table = null;
+                    if (this.container === undefined) {
+                        this.container = null;
+                    }
+                    if (this.middleRow === undefined) {
+                        this.middleRow = null;
                     }
                     if (this.hgap === undefined) {
                         this.hgap = 0;
@@ -11049,51 +11050,15 @@ var java;
                 else
                     throw new Error('invalid overload');
             }
-            BorderLayout.PAGE_START_$LI$ = function () { if (BorderLayout.PAGE_START == null) {
-                BorderLayout.PAGE_START = BorderLayout.BEFORE_FIRST_LINE;
-            } return BorderLayout.PAGE_START; };
-            BorderLayout.PAGE_END_$LI$ = function () { if (BorderLayout.PAGE_END == null) {
-                BorderLayout.PAGE_END = BorderLayout.AFTER_LAST_LINE;
-            } return BorderLayout.PAGE_END; };
-            BorderLayout.LINE_START_$LI$ = function () { if (BorderLayout.LINE_START == null) {
-                BorderLayout.LINE_START = BorderLayout.BEFORE_LINE_BEGINS;
-            } return BorderLayout.LINE_START; };
-            BorderLayout.LINE_END_$LI$ = function () { if (BorderLayout.LINE_END == null) {
-                BorderLayout.LINE_END = BorderLayout.AFTER_LINE_ENDS;
-            } return BorderLayout.LINE_END; };
-            /**
-             * Returns the horizontal gap between components.
-             *
-             * @since JDK1.1
-             * @return {number}
-             */
             BorderLayout.prototype.getHgap = function () {
                 return this.hgap;
             };
-            /**
-             * Sets the horizontal gap between components.
-             *
-             * @param {number} hgap the horizontal gap between components
-             * @since JDK1.1
-             */
             BorderLayout.prototype.setHgap = function (hgap) {
                 this.hgap = hgap;
             };
-            /**
-             * Returns the vertical gap between components.
-             *
-             * @since JDK1.1
-             * @return {number}
-             */
             BorderLayout.prototype.getVgap = function () {
                 return this.vgap;
             };
-            /**
-             * Sets the vertical gap between components.
-             *
-             * @param {number} vgap the vertical gap between components
-             * @since JDK1.1
-             */
             BorderLayout.prototype.setVgap = function (vgap) {
                 this.vgap = vgap;
             };
@@ -11114,49 +11079,39 @@ var java;
                     old.parent.remove$java_awt_Component(old);
                     old.parent = null;
                 }
-                var pos = 4;
-                if ("Center" === name) {
-                    this.center = comp;
-                    pos = 4;
+                switch ((name)) {
+                    case "Center":
+                        this.center = comp;
+                        break;
+                    case "North":
+                        this.north = comp;
+                        break;
+                    case "South":
+                        this.south = comp;
+                        break;
+                    case "East":
+                        this.east = comp;
+                        break;
+                    case "West":
+                        this.west = comp;
+                        break;
+                    case "First" /* PAGE_START */:
+                        this.firstLine = comp;
+                        break;
+                    case "Last" /* PAGE_END */:
+                        this.lastLine = comp;
+                        break;
+                    case "Before" /* LINE_START */:
+                        this.firstItem = comp;
+                        break;
+                    case "After" /* LINE_END */:
+                        this.lastItem = comp;
+                        break;
+                    default:
+                        throw new java.lang.IllegalArgumentException("cannot add to layout: unknown constraint: " + name);
                 }
-                else if ("North" === name) {
-                    this.north = comp;
-                    pos = 2;
-                }
-                else if ("South" === name) {
-                    this.south = comp;
-                    pos = 7;
-                }
-                else if ("East" === name) {
-                    this.east = comp;
-                    pos = 5;
-                }
-                else if ("West" === name) {
-                    this.west = comp;
-                    pos = 3;
-                }
-                else if (BorderLayout.BEFORE_FIRST_LINE === name) {
-                    this.firstLine = comp;
-                }
-                else if (BorderLayout.AFTER_LAST_LINE === name) {
-                    this.lastLine = comp;
-                }
-                else if (BorderLayout.BEFORE_LINE_BEGINS === name) {
-                    this.firstItem = comp;
-                }
-                else if (BorderLayout.AFTER_LINE_ENDS === name) {
-                    this.lastItem = comp;
-                }
-                else {
-                    throw new java.lang.IllegalArgumentException("cannot add to layout: unknown constraint: " + name);
-                }
-                this.add(comp, pos);
+                this.add(comp, name);
             };
-            /**
-             * @deprecated replaced by <code>addLayoutComponent(Component, Object)</code>.
-             * @param {string} name
-             * @param {java.awt.Component} comp
-             */
             BorderLayout.prototype.addLayoutComponent = function (name, comp) {
                 if (((typeof name === 'string') || name === null) && ((comp != null && comp instanceof java.awt.Component) || comp === null)) {
                     return this.addLayoutComponent$java_lang_String$java_awt_Component(name, comp);
@@ -11167,15 +11122,6 @@ var java;
                 else
                     throw new Error('invalid overload');
             };
-            /**
-             * Removes the specified component from this border layout. This method is called when a container
-             * calls its <code>remove</code> or <code>removeAll</code> methods. Most applications do not call
-             * this method directly.
-             *
-             * @param {java.awt.Component} comp the component to be removed.
-             * @see java.awt.Container#remove(java.awt.Component)
-             * @see java.awt.Container#removeAll()
-             */
             BorderLayout.prototype.removeLayoutComponent = function (comp) {
                 comp.getHTMLElement().parentNode.removeChild(comp.getHTMLElement());
                 if (comp === this.center) {
@@ -11222,16 +11168,16 @@ var java;
                 else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.EAST, constraints)) {
                     return this.east;
                 }
-                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.PAGE_START_$LI$(), constraints)) {
+                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.PAGE_START, constraints)) {
                     return this.firstLine;
                 }
-                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.PAGE_END_$LI$(), constraints)) {
+                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.PAGE_END, constraints)) {
                     return this.lastLine;
                 }
-                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.LINE_START_$LI$(), constraints)) {
+                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.LINE_START, constraints)) {
                     return this.firstItem;
                 }
-                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.LINE_END_$LI$(), constraints)) {
+                else if ( /* equals */(function (o1, o2) { return o1 && o1.equals ? o1.equals(o2) : o1 === o2; })(BorderLayout.LINE_END, constraints)) {
                     return this.lastItem;
                 }
                 else {
@@ -11297,16 +11243,16 @@ var java;
                     return BorderLayout.EAST;
                 }
                 else if (comp === this.firstLine) {
-                    return BorderLayout.PAGE_START_$LI$();
+                    return BorderLayout.PAGE_START;
                 }
                 else if (comp === this.lastLine) {
-                    return BorderLayout.PAGE_END_$LI$();
+                    return BorderLayout.PAGE_END;
                 }
                 else if (comp === this.firstItem) {
-                    return BorderLayout.LINE_START_$LI$();
+                    return BorderLayout.LINE_START;
                 }
                 else if (comp === this.lastItem) {
-                    return BorderLayout.LINE_END_$LI$();
+                    return BorderLayout.LINE_END;
                 }
                 return null;
             };
@@ -11323,111 +11269,56 @@ var java;
                     this.parent = parent;
                     this.created = true;
                     var div = parent.getHTMLElement();
-                    this.table = document.createElement("table");
-                    this.table.className = "applet-border-layout";
-                    for (var j = 0; j < 3; j++) {
-                        {
-                            var row = document.createElement("tr");
-                            row.className = "applet-border-layout-row";
-                            this.table.appendChild(row);
-                            for (var i = 0; i < 3; i++) {
-                                {
-                                    if (j === 1 || i === 1) {
-                                        var col = document.createElement("td");
-                                        col.className = "applet-border-layout-col";
-                                        row.appendChild(col);
-                                        if (i === 1) {
-                                            if (j !== 1) {
-                                                col.colSpan = 3;
-                                            }
-                                        }
-                                    }
-                                }
-                                ;
-                            }
-                        }
-                        ;
-                    }
-                    div.appendChild(this.table);
+                    this.container = document.createElement("div");
+                    this.container.className = "applet-border-layout-container";
+                    div.appendChild(this.container);
+                    this.middleRow = document.createElement("div");
+                    this.middleRow.className = "applet-border-layout-middle-row";
+                    this.container.appendChild(this.middleRow);
+                    this.add(this.north, BorderLayout.NORTH);
+                    this.add(this.south, BorderLayout.SOUTH);
+                    this.add(this.west, BorderLayout.WEST);
+                    this.add(this.east, BorderLayout.EAST);
+                    this.add(this.center, BorderLayout.CENTER);
                 }
             };
             /*private*/ BorderLayout.prototype.add = function (component, position) {
-                var pos = 0;
-                for (var j = 0; j < 3; j++) {
-                    {
-                        for (var i = 0; i < 3; i++) {
-                            {
-                                if (pos++ === position) {
-                                    var row = this.table.childNodes[j];
-                                    var col = row.childNodes[j === 1 ? i : 0];
-                                    col.appendChild(component.getHTMLElement());
-                                    return;
-                                }
-                            }
-                            ;
-                        }
-                    }
-                    ;
+                if (component == null) {
+                    return;
+                }
+                var componentDiv = document.createElement("div");
+                componentDiv.className = "applet-border-layout-item " + position.toLowerCase();
+                componentDiv.appendChild(component.getHTMLElement());
+                switch ((position)) {
+                    case "North" /* NORTH */:
+                        this.container.insertBefore(componentDiv, this.container.firstChild);
+                        break;
+                    case "South" /* SOUTH */:
+                        this.container.appendChild(componentDiv);
+                        break;
+                    case "West" /* WEST */:
+                        this.middleRow.insertBefore(componentDiv, this.middleRow.firstChild);
+                        break;
+                    case "East" /* EAST */:
+                        this.middleRow.appendChild(componentDiv);
+                        break;
+                    case "Center" /* CENTER */:
+                        this.middleRow.appendChild(componentDiv);
+                        break;
                 }
             };
-            /**
-             * Returns a string representation of the state of this border layout.
-             *
-             * @return {string} a string representation of this border layout.
-             */
             BorderLayout.prototype.toString = function () {
                 return /* getName */ (function (c) { return typeof c === 'string' ? c : c["__class"] ? c["__class"] : c["name"]; })(this.constructor) + "[hgap=" + this.hgap + ",vgap=" + this.vgap + "]";
             };
-            /**
-             * The north layout constraint (top of container).
-             */
             BorderLayout.NORTH = "North";
-            /**
-             * The south layout constraint (bottom of container).
-             */
             BorderLayout.SOUTH = "South";
-            /**
-             * The east layout constraint (right side of container).
-             */
             BorderLayout.EAST = "East";
-            /**
-             * The west layout constraint (left side of container).
-             */
             BorderLayout.WEST = "West";
-            /**
-             * The center layout constraint (middle of container).
-             */
             BorderLayout.CENTER = "Center";
-            /**
-             * Synonym for PAGE_START. Exists for compatibility with previous versions. PAGE_START is
-             * preferred.
-             *
-             * @see #PAGE_START
-             * @since 1.2
-             */
-            BorderLayout.BEFORE_FIRST_LINE = "First";
-            /**
-             * Synonym for PAGE_END. Exists for compatibility with previous versions. PAGE_END is preferred.
-             *
-             * @see #PAGE_END
-             * @since 1.2
-             */
-            BorderLayout.AFTER_LAST_LINE = "Last";
-            /**
-             * Synonym for LINE_START. Exists for compatibility with previous versions. LINE_START is
-             * preferred.
-             *
-             * @see #LINE_START
-             * @since 1.2
-             */
-            BorderLayout.BEFORE_LINE_BEGINS = "Before";
-            /**
-             * Synonym for LINE_END. Exists for compatibility with previous versions. LINE_END is preferred.
-             *
-             * @see #LINE_END
-             * @since 1.2
-             */
-            BorderLayout.AFTER_LINE_ENDS = "After";
+            BorderLayout.PAGE_START = "First";
+            BorderLayout.PAGE_END = "Last";
+            BorderLayout.LINE_START = "Before";
+            BorderLayout.LINE_END = "After";
             BorderLayout.serialVersionUID = -8658291919501921765;
             return BorderLayout;
         }());
@@ -48206,10 +48097,6 @@ java.awt.Color.LIGHT_GRAY_$LI$();
 java.awt.Color.lightGray_$LI$();
 java.awt.Color.WHITE_$LI$();
 java.awt.Color.white_$LI$();
-java.awt.BorderLayout.LINE_END_$LI$();
-java.awt.BorderLayout.LINE_START_$LI$();
-java.awt.BorderLayout.PAGE_END_$LI$();
-java.awt.BorderLayout.PAGE_START_$LI$();
 java.awt.geom.EllipseIterator.ctrlpts_$LI$();
 java.awt.geom.EllipseIterator.ncv_$LI$();
 java.awt.geom.EllipseIterator.pcv_$LI$();

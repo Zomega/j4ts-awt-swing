@@ -5362,256 +5362,40 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
-    /**
-     * Constructs a border layout with the specified gaps between components. The horizontal gap is
-     * specified by <code>hgap</code> and the vertical gap is specified by <code>vgap</code>.
-     *
-     * @param {number} hgap the horizontal gap.
-     * @param {number} vgap the vertical gap.
-     * @class
-     */
     class BorderLayout implements java.awt.LayoutManager2, java.io.Serializable {
         created: boolean;
         parent: java.awt.Container;
-        table: HTMLTableElement;
-        /**
-         * Constructs a border layout with the horizontal gaps between components. The horizontal gap is
-         * specified by <code>hgap</code>.
-         *
-         * @see #getHgap()
-         * @see #setHgap(int)
-         * @serial
-         */
+        container: HTMLDivElement;
+        middleRow: HTMLDivElement;
         hgap: number;
-        /**
-         * Constructs a border layout with the vertical gaps between components. The vertical gap is
-         * specified by <code>vgap</code>.
-         *
-         * @see #getVgap()
-         * @see #setVgap(int)
-         * @serial
-         */
         vgap: number;
-        /**
-         * Constant to specify components location to be the north portion of the border layout.
-         *
-         * @serial
-         * @see #getChild(String, boolean)
-         * @see #addLayoutComponent
-         * @see #getLayoutAlignmentX
-         * @see #getLayoutAlignmentY
-         * @see #removeLayoutComponent
-         */
         north: java.awt.Component;
-        /**
-         * Constant to specify components location to be the west portion of the border layout.
-         *
-         * @serial
-         * @see #getChild(String, boolean)
-         * @see #addLayoutComponent
-         * @see #getLayoutAlignmentX
-         * @see #getLayoutAlignmentY
-         * @see #removeLayoutComponent
-         */
         west: java.awt.Component;
-        /**
-         * Constant to specify components location to be the east portion of the border layout.
-         *
-         * @serial
-         * @see #getChild(String, boolean)
-         * @see #addLayoutComponent
-         * @see #getLayoutAlignmentX
-         * @see #getLayoutAlignmentY
-         * @see #removeLayoutComponent
-         */
         east: java.awt.Component;
-        /**
-         * Constant to specify components location to be the south portion of the border layout.
-         *
-         * @serial
-         * @see #getChild(String, boolean)
-         * @see #addLayoutComponent
-         * @see #getLayoutAlignmentX
-         * @see #getLayoutAlignmentY
-         * @see #removeLayoutComponent
-         */
         south: java.awt.Component;
-        /**
-         * Constant to specify components location to be the center portion of the border layout.
-         *
-         * @serial
-         * @see #getChild(String, boolean)
-         * @see #addLayoutComponent
-         * @see #getLayoutAlignmentX
-         * @see #getLayoutAlignmentY
-         * @see #removeLayoutComponent
-         */
         center: java.awt.Component;
-        /**
-         * A relative positioning constant, that can be used instead of north, south, east, west or
-         * center. mixing the two types of constants can lead to unpredictable results. If you use both
-         * types, the relative constants will take precedence. For example, if you add components using
-         * both the <code>NORTH</code> and <code>BEFORE_FIRST_LINE</code> constants in a container whose
-         * orientation is <code>LEFT_TO_RIGHT</code>, only the <code>BEFORE_FIRST_LINE</code> will be
-         * layed out. This will be the same for lastLine, firstItem, lastItem.
-         *
-         * @serial
-         */
         firstLine: java.awt.Component;
-        /**
-         * A relative positioning constant, that can be used instead of north, south, east, west or
-         * center. Please read Description for firstLine.
-         *
-         * @serial
-         */
         lastLine: java.awt.Component;
-        /**
-         * A relative positioning constant, that can be used instead of north, south, east, west or
-         * center. Please read Description for firstLine.
-         *
-         * @serial
-         */
         firstItem: java.awt.Component;
-        /**
-         * A relative positioning constant, that can be used instead of north, south, east, west or
-         * center. Please read Description for firstLine.
-         *
-         * @serial
-         */
         lastItem: java.awt.Component;
-        /**
-         * The north layout constraint (top of container).
-         */
         static NORTH: string;
-        /**
-         * The south layout constraint (bottom of container).
-         */
         static SOUTH: string;
-        /**
-         * The east layout constraint (right side of container).
-         */
         static EAST: string;
-        /**
-         * The west layout constraint (left side of container).
-         */
         static WEST: string;
-        /**
-         * The center layout constraint (middle of container).
-         */
         static CENTER: string;
-        /**
-         * Synonym for PAGE_START. Exists for compatibility with previous versions. PAGE_START is
-         * preferred.
-         *
-         * @see #PAGE_START
-         * @since 1.2
-         */
-        static BEFORE_FIRST_LINE: string;
-        /**
-         * Synonym for PAGE_END. Exists for compatibility with previous versions. PAGE_END is preferred.
-         *
-         * @see #PAGE_END
-         * @since 1.2
-         */
-        static AFTER_LAST_LINE: string;
-        /**
-         * Synonym for LINE_START. Exists for compatibility with previous versions. LINE_START is
-         * preferred.
-         *
-         * @see #LINE_START
-         * @since 1.2
-         */
-        static BEFORE_LINE_BEGINS: string;
-        /**
-         * Synonym for LINE_END. Exists for compatibility with previous versions. LINE_END is preferred.
-         *
-         * @see #LINE_END
-         * @since 1.2
-         */
-        static AFTER_LINE_ENDS: string;
-        /**
-         * The component comes before the first line of the layout's content. For Western, left-to-right
-         * and top-to-bottom orientations, this is equivalent to NORTH.
-         *
-         * @see java.awt.Component#getComponentOrientation
-         * @since 1.4
-         */
         static PAGE_START: string;
-        static PAGE_START_$LI$(): string;
-        /**
-         * The component comes after the last line of the layout's content. For Western, left-to-right and
-         * top-to-bottom orientations, this is equivalent to SOUTH.
-         *
-         * @see java.awt.Component#getComponentOrientation
-         * @since 1.4
-         */
         static PAGE_END: string;
-        static PAGE_END_$LI$(): string;
-        /**
-         * The component goes at the beginning of the line direction for the layout. For Western,
-         * left-to-right and top-to-bottom orientations, this is equivalent to WEST.
-         *
-         * @see java.awt.Component#getComponentOrientation
-         * @since 1.4
-         */
         static LINE_START: string;
-        static LINE_START_$LI$(): string;
-        /**
-         * The component goes at the end of the line direction for the layout. For Western, left-to-right
-         * and top-to-bottom orientations, this is equivalent to EAST.
-         *
-         * @see java.awt.Component#getComponentOrientation
-         * @since 1.4
-         */
         static LINE_END: string;
-        static LINE_END_$LI$(): string;
         static serialVersionUID: number;
         constructor(hgap?: any, vgap?: any);
-        /**
-         * Returns the horizontal gap between components.
-         *
-         * @since JDK1.1
-         * @return {number}
-         */
         getHgap(): number;
-        /**
-         * Sets the horizontal gap between components.
-         *
-         * @param {number} hgap the horizontal gap between components
-         * @since JDK1.1
-         */
         setHgap(hgap: number): void;
-        /**
-         * Returns the vertical gap between components.
-         *
-         * @since JDK1.1
-         * @return {number}
-         */
         getVgap(): number;
-        /**
-         * Sets the vertical gap between components.
-         *
-         * @param {number} vgap the vertical gap between components
-         * @since JDK1.1
-         */
         setVgap(vgap: number): void;
         addLayoutComponent$java_awt_Component$java_lang_Object(comp: java.awt.Component, constraints: any): void;
         addLayoutComponent$java_lang_String$java_awt_Component(name: string, comp: java.awt.Component): void;
-        /**
-         * @deprecated replaced by <code>addLayoutComponent(Component, Object)</code>.
-         * @param {string} name
-         * @param {java.awt.Component} comp
-         */
         addLayoutComponent(name?: any, comp?: any): any;
-        /**
-         * Removes the specified component from this border layout. This method is called when a container
-         * calls its <code>remove</code> or <code>removeAll</code> methods. Most applications do not call
-         * this method directly.
-         *
-         * @param {java.awt.Component} comp the component to be removed.
-         * @see java.awt.Container#remove(java.awt.Component)
-         * @see java.awt.Container#removeAll()
-         */
         removeLayoutComponent(comp: java.awt.Component): void;
         getLayoutComponent$java_lang_Object(constraints: any): java.awt.Component;
         getLayoutComponent$java_awt_Container$java_lang_Object(target: java.awt.Container, constraints: any): java.awt.Component;
@@ -5621,12 +5405,7 @@ declare namespace java.awt {
         getLayoutAlignmentY(parent: java.awt.Container): number;
         invalidateLayout(target: java.awt.Container): void;
         layoutContainer(parent: java.awt.Container): void;
-        add(component: java.awt.Component, position: number): void;
-        /**
-         * Returns a string representation of the state of this border layout.
-         *
-         * @return {string} a string representation of this border layout.
-         */
+        add(component: java.awt.Component, position: string): void;
         toString(): string;
     }
 }
