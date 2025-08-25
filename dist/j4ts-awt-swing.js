@@ -249,25 +249,38 @@ var java;
             FlowLayout.prototype.addLayoutComponent = function (name, component) {
                 var element = component.getHTMLElement();
                 switch ((this.align)) {
-                    case 1 /* CENTER */:
-                    case 0 /* LEFT */:
-                    case 3 /* LEADING */:
-                        element.style.display = "inline-block";
-                        element.style.marginRight = this.hgap + "px";
-                        element.style.marginBottom = this.vgap + "px";
-                        element.style.verticalAlign = "top";
-                        break;
                     case 2 /* RIGHT */:
                     case 4 /* TRAILING */:
                         element.style.cssFloat = "right";
                         element.style.marginLeft = this.hgap + "px";
                         element.style.marginBottom = this.vgap + "px";
                         break;
+                    case 1 /* CENTER */:
+                    case 0 /* LEFT */:
+                    case 3 /* LEADING */:
+                    default:
+                        element.style.display = "inline-block";
+                        element.style.marginRight = this.hgap + "px";
+                        element.style.marginBottom = this.vgap + "px";
+                        element.style.verticalAlign = "top";
+                        break;
                 }
                 element.style.width = "auto";
                 element.style.height = "auto";
                 element.style.verticalAlign = "middle";
-                this.parent.getHTMLElement().appendChild(element);
+                var container = this.parent.getHTMLElement();
+                switch ((this.align)) {
+                    case 2 /* RIGHT */:
+                    case 4 /* TRAILING */:
+                        container.insertBefore(element, container.firstChild);
+                        break;
+                    case 1 /* CENTER */:
+                    case 0 /* LEFT */:
+                    case 3 /* LEADING */:
+                    default:
+                        container.appendChild(element);
+                        break;
+                }
             };
             /**
              *

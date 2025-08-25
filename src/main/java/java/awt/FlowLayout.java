@@ -45,19 +45,20 @@ public class FlowLayout implements LayoutManager {
   public void addLayoutComponent(String name, Component component) {
     HTMLElement element = component.getHTMLElement();
     switch (align) {
-      case CENTER:
-      case LEFT:
-      case LEADING:
-        element.style.display = "inline-block";
-        element.style.marginRight = hgap + "px";
-        element.style.marginBottom = vgap + "px";
-        element.style.verticalAlign = "top";
-        break;
       case RIGHT:
       case TRAILING:
         element.style.cssFloat = "right";
         element.style.marginLeft = hgap + "px";
         element.style.marginBottom = vgap + "px";
+        break;
+      case CENTER:
+      case LEFT:
+      case LEADING:
+      default:
+        element.style.display = "inline-block";
+        element.style.marginRight = hgap + "px";
+        element.style.marginBottom = vgap + "px";
+        element.style.verticalAlign = "top";
         break;
     }
     element.style.width = "auto";
@@ -70,7 +71,19 @@ public class FlowLayout implements LayoutManager {
     //    && ((Container) component).getLayout() instanceof GridLayout) {
     //  ((GridLayout) ((Container) component).getLayout()).table.style.height = "auto";
     //}
-    parent.getHTMLElement().appendChild(element);
+    HTMLElement container = parent.getHTMLElement();
+    switch (align) {
+      case RIGHT:
+      case TRAILING:
+          container.insertBefore(element, container.firstChild);
+          break;
+      case CENTER:
+      case LEFT:
+      case LEADING:
+      default:
+          container.appendChild(element);
+          break;
+    }
   }
 
   @Override
