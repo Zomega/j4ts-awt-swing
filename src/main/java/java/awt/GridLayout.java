@@ -12,75 +12,33 @@ public class GridLayout implements LayoutManager2 {
   boolean created = false;
 
   Container parent;
-  public HTMLTableElement table;
-  int currentPosition = 0;
-  int cols, rows;
+  public HTMLDivElement gridContainer;
+  int rows, cols;
+  int hgap, vgap;
 
   public GridLayout(int rows, int cols) {
-    this.rows = rows;
-    this.cols = cols;
+    this(rows, cols, 0, 0); // Default to no gaps
   }
 
   public GridLayout(int rows, int cols, int hgap, int vgap) {
-    this(rows, cols);
-    // TODO: Use hgap, vgap?
+    this.rows = rows;
+    this.cols = cols;
+    this.hgap = hgap;
+    this.vgap = vgap;
   }
 
   @Override
   public void addLayoutComponent(String name, Component component) {
-    int pos = 0;
-    if (table.children.$get(0).childNodes.length * rows == currentPosition) {
-      for (int i = 0; i < rows; i++) {
-        HTMLTableDataCellElement col = document.createElement(StringTypes.td);
-        col.className = "applet-grid-layout-col";
-        table.children.$get(i).appendChild(col);
-      }
-      Component[] cp = new Component[parent.getComponentCount()];
-      for (int i = 0; i < cp.length; ++i) cp[i] = parent.getComponents()[i];
-
-      for (Component comp : cp) {
-        parent.remove(comp);
-      }
-
-      cols = table.children.$get(0).childNodes.length;
-      currentPosition = 0;
-
-      for (Component comp : cp) {
-        parent.add(comp);
-      }
-    } else {
-      for (int j = 0; j < rows; j++) {
-        HTMLTableRowElement row = (HTMLTableRowElement) table.childNodes.$get(j);
-        for (int i = 0; i < row.childNodes.length; i++) {
-          HTMLTableColElement col = (HTMLTableColElement) row.childNodes.$get(i);
-          if (pos++ == currentPosition) {
-            col.appendChild(component.getHTMLElement());
-            currentPosition++;
-            return;
-          }
-        }
-      }
+    if (gridContainer != null) {
+      gridContainer.appendChild(component.getHTMLElement());
     }
   }
 
   @Override
   public void removeLayoutComponent(Component component) {
-    // Find the HTML element associated with the component
     HTMLElement componentElement = component.getHTMLElement();
-
-    // Iterate through the table rows and cells to find and remove the component's element
-    for (int j = 0; j < rows; j++) {
-      HTMLTableRowElement row = (HTMLTableRowElement) table.childNodes.$get(j);
-      for (int i = 0; i < row.childNodes.length; i++) {
-        HTMLTableDataCellElement col = (HTMLTableDataCellElement) row.childNodes.$get(i);
-
-        // Check if the current cell contains the component's HTML element
-        if (col.contains(componentElement)) {
-          col.removeChild(componentElement);
-          console.log("Component removed from the layout.");
-          return; // Exit once the component is found and removed
-        }
-      }
+    if (gridContainer.contains(componentElement)) {
+      gridContainer.removeChild(componentElement);
     }
   }
 
@@ -89,31 +47,24 @@ public class GridLayout implements LayoutManager2 {
     if (!created) {
       this.parent = parent;
       created = true;
-      HTMLDivElement div = any(parent.getHTMLElement());
-      table = document.createElement(StringTypes.table);
-      table.className = "applet-grid-layout";
-      table.style.width = "100%";
-      table.style.height = "100%";
-      // table.style.position = "absolute";
-      table.style.left = "0px";
-      table.style.right = "0px";
-      table.style.zIndex = "0";
-      table.style.border = "0px";
-      table.cellSpacing = "0px";
-      table.cellPadding = "0px";
-      table.style.tableLayout = "fixed";
+      HTMLDivElement parentElement = any(parent.getHTMLElement());
 
-      for (int j = 0; j < rows; j++) {
-        HTMLTableRowElement row = document.createElement(StringTypes.tr);
-        row.className = "applet-grid-layout-row";
-        table.appendChild(row);
-        for (int i = 0; i < 1; i++) {
-          HTMLTableDataCellElement col = document.createElement(StringTypes.td);
-          col.className = "applet-grid-layout-col";
-          row.appendChild(col);
-        }
-      }
-      div.appendChild(table);
+      gridContainer = document.createElement(StringTypes.div);
+      gridContainer.className = "applet-grid-layout";
+
+      // Set the CSS properties for the grid layout dynamically.
+      gridContainer.style.display = "grid";
+      // TODO: gridContainer.style.gridTemplateRows = "repeat(" + this.rows + ", 1fr)";
+      // TODO: gridContainer.style.gridTemplateColumns = "repeat(" + this.cols + ", 1fr)";
+
+      // Use the hgap and vgap to set the CSS gap property
+      // TODO: gridContainer.style.gap = this.vgap + "px " + this.hgap + "px";
+
+      gridContainer.style.width = "100%";
+      gridContainer.style.height = "100%";
+
+      // Append the new grid container to the parent element.
+      parentElement.appendChild(gridContainer);
     }
   }
 

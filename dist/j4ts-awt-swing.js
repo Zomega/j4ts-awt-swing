@@ -267,9 +267,6 @@ var java;
                 element.style.width = "auto";
                 element.style.height = "auto";
                 element.style.verticalAlign = "middle";
-                if ((component != null && component instanceof java.awt.Container) && (component.getLayout() != null && component.getLayout() instanceof java.awt.GridLayout)) {
-                    component.getLayout().table.style.height = "auto";
-                }
                 this.parent.getHTMLElement().appendChild(element);
             };
             /**
@@ -13809,111 +13806,86 @@ var java;
             function GridLayout(rows, cols, hgap, vgap) {
                 if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && ((typeof hgap === 'number') || hgap === null) && ((typeof vgap === 'number') || vgap === null)) {
                     var __args = arguments;
+                    if (this.parent === undefined) {
+                        this.parent = null;
+                    }
+                    if (this.gridContainer === undefined) {
+                        this.gridContainer = null;
+                    }
+                    if (this.rows === undefined) {
+                        this.rows = 0;
+                    }
+                    if (this.cols === undefined) {
+                        this.cols = 0;
+                    }
+                    if (this.hgap === undefined) {
+                        this.hgap = 0;
+                    }
+                    if (this.vgap === undefined) {
+                        this.vgap = 0;
+                    }
+                    this.created = false;
+                    this.rows = rows;
+                    this.cols = cols;
+                    this.hgap = hgap;
+                    this.vgap = vgap;
+                }
+                else if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && hgap === undefined && vgap === undefined) {
+                    var __args = arguments;
                     {
                         var __args_16 = arguments;
+                        var hgap_4 = 0;
+                        var vgap_4 = 0;
                         if (this.parent === undefined) {
                             this.parent = null;
                         }
-                        if (this.table === undefined) {
-                            this.table = null;
-                        }
-                        if (this.cols === undefined) {
-                            this.cols = 0;
+                        if (this.gridContainer === undefined) {
+                            this.gridContainer = null;
                         }
                         if (this.rows === undefined) {
                             this.rows = 0;
                         }
+                        if (this.cols === undefined) {
+                            this.cols = 0;
+                        }
+                        if (this.hgap === undefined) {
+                            this.hgap = 0;
+                        }
+                        if (this.vgap === undefined) {
+                            this.vgap = 0;
+                        }
                         this.created = false;
-                        this.currentPosition = 0;
                         this.rows = rows;
                         this.cols = cols;
+                        this.hgap = hgap_4;
+                        this.vgap = vgap_4;
                     }
                     if (this.parent === undefined) {
                         this.parent = null;
                     }
-                    if (this.table === undefined) {
-                        this.table = null;
-                    }
-                    if (this.cols === undefined) {
-                        this.cols = 0;
+                    if (this.gridContainer === undefined) {
+                        this.gridContainer = null;
                     }
                     if (this.rows === undefined) {
                         this.rows = 0;
                     }
-                    this.created = false;
-                    this.currentPosition = 0;
-                }
-                else if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && hgap === undefined && vgap === undefined) {
-                    var __args = arguments;
-                    if (this.parent === undefined) {
-                        this.parent = null;
-                    }
-                    if (this.table === undefined) {
-                        this.table = null;
-                    }
                     if (this.cols === undefined) {
                         this.cols = 0;
                     }
-                    if (this.rows === undefined) {
-                        this.rows = 0;
+                    if (this.hgap === undefined) {
+                        this.hgap = 0;
+                    }
+                    if (this.vgap === undefined) {
+                        this.vgap = 0;
                     }
                     this.created = false;
-                    this.currentPosition = 0;
-                    this.rows = rows;
-                    this.cols = cols;
                 }
                 else
                     throw new Error('invalid overload');
             }
             GridLayout.prototype.addLayoutComponent$java_lang_String$java_awt_Component = function (name, component) {
-                var pos = 0;
-                if (this.table.children[0].childNodes.length * this.rows === this.currentPosition) {
-                    for (var i = 0; i < this.rows; i++) {
-                        {
-                            var col = document.createElement("td");
-                            col.className = "applet-grid-layout-col";
-                            this.table.children[i].appendChild(col);
-                        }
-                        ;
-                    }
-                    var cp = (function (s) { var a = []; while (s-- > 0)
-                        a.push(null); return a; })(this.parent.getComponentCount());
-                    for (var i = 0; i < cp.length; ++i) {
-                        cp[i] = this.parent.getComponents()[i];
-                    }
-                    for (var index = 0; index < cp.length; index++) {
-                        var comp = cp[index];
-                        {
-                            this.parent.remove$java_awt_Component(comp);
-                        }
-                    }
-                    this.cols = this.table.children[0].childNodes.length;
-                    this.currentPosition = 0;
-                    for (var index = 0; index < cp.length; index++) {
-                        var comp = cp[index];
-                        {
-                            this.parent.add$java_awt_Component(comp);
-                        }
-                    }
-                }
-                else {
-                    for (var j = 0; j < this.rows; j++) {
-                        {
-                            var row = this.table.childNodes[j];
-                            for (var i = 0; i < row.childNodes.length; i++) {
-                                {
-                                    var col = row.childNodes[i];
-                                    if (pos++ === this.currentPosition) {
-                                        col.appendChild(component.getHTMLElement());
-                                        this.currentPosition++;
-                                        return;
-                                    }
-                                }
-                                ;
-                            }
-                        }
-                        ;
-                    }
+                if (this.gridContainer != null) {
+                    this.gridContainer.appendChild(component.getHTMLElement());
                 }
             };
             /**
@@ -13937,22 +13909,8 @@ var java;
              */
             GridLayout.prototype.removeLayoutComponent = function (component) {
                 var componentElement = component.getHTMLElement();
-                for (var j = 0; j < this.rows; j++) {
-                    {
-                        var row = this.table.childNodes[j];
-                        for (var i = 0; i < row.childNodes.length; i++) {
-                            {
-                                var col = row.childNodes[i];
-                                if (col.contains(componentElement)) {
-                                    col.removeChild(componentElement);
-                                    console.log("Component removed from the layout.");
-                                    return;
-                                }
-                            }
-                            ;
-                        }
-                    }
-                    ;
+                if (this.gridContainer.contains(componentElement)) {
+                    this.gridContainer.removeChild(componentElement);
                 }
             };
             /**
@@ -13963,35 +13921,13 @@ var java;
                 if (!this.created) {
                     this.parent = parent;
                     this.created = true;
-                    var div = parent.getHTMLElement();
-                    this.table = document.createElement("table");
-                    this.table.className = "applet-grid-layout";
-                    this.table.style.width = "100%";
-                    this.table.style.height = "100%";
-                    this.table.style.left = "0px";
-                    this.table.style.right = "0px";
-                    this.table.style.zIndex = "0";
-                    this.table.style.border = "0px";
-                    this.table.cellSpacing = "0px";
-                    this.table.cellPadding = "0px";
-                    this.table.style.tableLayout = "fixed";
-                    for (var j = 0; j < this.rows; j++) {
-                        {
-                            var row = document.createElement("tr");
-                            row.className = "applet-grid-layout-row";
-                            this.table.appendChild(row);
-                            for (var i = 0; i < 1; i++) {
-                                {
-                                    var col = document.createElement("td");
-                                    col.className = "applet-grid-layout-col";
-                                    row.appendChild(col);
-                                }
-                                ;
-                            }
-                        }
-                        ;
-                    }
-                    div.appendChild(this.table);
+                    var parentElement = parent.getHTMLElement();
+                    this.gridContainer = document.createElement("div");
+                    this.gridContainer.className = "applet-grid-layout";
+                    this.gridContainer.style.display = "grid";
+                    this.gridContainer.style.width = "100%";
+                    this.gridContainer.style.height = "100%";
+                    parentElement.appendChild(this.gridContainer);
                 }
             };
             GridLayout.prototype.addLayoutComponent$java_awt_Component$java_lang_Object = function (component, o) {
@@ -28893,11 +28829,12 @@ var javax;
                 }
                 this.htmlElement = document.createElement("label");
                 this.htmlElement.className = "applet-checkbox-label";
-                this.htmlElement.appendChild(this.htmlLabel = document.createTextNode(""));
                 this.htmlCheckbox = document.createElement("input");
-                this.htmlElement.className = "applet-checkbox-box";
+                this.htmlCheckbox.className = "applet-checkbox-box";
                 this.htmlCheckbox.type = this.group == null ? "checkbox" : "radio";
                 this.htmlElement.appendChild(this.htmlCheckbox);
+                this.htmlLabel = document.createTextNode("");
+                this.htmlElement.appendChild(this.htmlLabel);
             };
             /**
              *
@@ -34310,7 +34247,9 @@ var javax;
             Panel.prototype.setBackground = function (background) {
                 _super.prototype.setBackground.call(this, background);
                 if (this.htmlElement != null) {
-                    this.htmlElement.style.backgroundColor = null;
+                    if (background != null) {
+                        this.htmlElement.style.backgroundColor = background.toHTML();
+                    }
                 }
                 if (this.htmlCanvas != null) {
                     if (background != null) {
@@ -34340,7 +34279,6 @@ var javax;
                     this.htmlElement.appendChild(this.htmlCanvas);
                     window.onresize = function (e) {
                         if ((_this.htmlCanvas.width !== _this.htmlElement.offsetWidth) || (_this.htmlCanvas.height !== _this.htmlElement.offsetHeight)) {
-                            console.log("OW", _this.htmlElement.offsetWidth);
                             _this.htmlCanvas.width = _this.htmlElement.offsetWidth;
                             _this.htmlCanvas.height = _this.htmlElement.offsetHeight;
                             _this.repaint();
@@ -34349,10 +34287,9 @@ var javax;
                     };
                 }
                 if (this.background != null) {
-                    this.htmlElement.style.backgroundColor = null;
+                    this.htmlElement.style.backgroundColor = this.background.toHTML();
                     this.htmlCanvas.style.backgroundColor = this.background.toHTML();
                 }
-                console.log("OW", this.htmlElement.offsetWidth);
                 this.htmlCanvas.width = this.htmlElement.offsetWidth;
                 this.htmlCanvas.height = this.htmlElement.offsetHeight;
                 this.htmlCanvas.style.position = "absolute";

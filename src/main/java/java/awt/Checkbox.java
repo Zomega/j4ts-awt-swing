@@ -93,11 +93,12 @@ public class Checkbox extends Component implements ItemSelectable {
     }
     htmlElement = document.createElement(StringTypes.label);
     htmlElement.className = "applet-checkbox-label";
-    htmlElement.appendChild(htmlLabel = document.createTextNode(""));
     htmlCheckbox = document.createElement(StringTypes.input);
-    htmlElement.className = "applet-checkbox-box";
+    htmlCheckbox.className = "applet-checkbox-box";
     htmlCheckbox.type = group == null ? "checkbox" : "radio";
     htmlElement.appendChild(htmlCheckbox);
+    htmlLabel = document.createTextNode("");
+    htmlElement.appendChild(htmlLabel);
   }
 
   @Override

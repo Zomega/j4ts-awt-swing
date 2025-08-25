@@ -6667,10 +6667,11 @@ declare namespace java.awt {
     class GridLayout implements java.awt.LayoutManager2 {
         created: boolean;
         parent: java.awt.Container;
-        table: HTMLTableElement;
-        currentPosition: number;
-        cols: number;
+        gridContainer: HTMLDivElement;
         rows: number;
+        cols: number;
+        hgap: number;
+        vgap: number;
         constructor(rows?: any, cols?: any, hgap?: any, vgap?: any);
         addLayoutComponent$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): void;
         /**

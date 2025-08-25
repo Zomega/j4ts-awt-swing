@@ -37,7 +37,9 @@ public class Panel extends Container {
   public void setBackground(Color background) {
     super.setBackground(background);
     if (htmlElement != null) {
-      htmlElement.style.backgroundColor = null;
+      if (background != null) {
+        htmlElement.style.backgroundColor = background.toHTML();
+      }
     }
     if (htmlCanvas != null) {
       if (background != null) {
@@ -66,7 +68,6 @@ public class Panel extends Container {
           e -> {
             if ((htmlCanvas.width != htmlElement.offsetWidth)
                 || (htmlCanvas.height != htmlElement.offsetHeight)) {
-              console.log("OW", htmlElement.offsetWidth);
               htmlCanvas.width = htmlElement.offsetWidth;
               htmlCanvas.height = htmlElement.offsetHeight;
               repaint();
@@ -75,10 +76,9 @@ public class Panel extends Container {
           };
     }
     if (background != null) {
-      htmlElement.style.backgroundColor = null;
+      htmlElement.style.backgroundColor = background.toHTML();
       htmlCanvas.style.backgroundColor = background.toHTML();
     }
-    console.log("OW", htmlElement.offsetWidth);
     htmlCanvas.width = htmlElement.offsetWidth;
     htmlCanvas.height = htmlElement.offsetHeight;
     htmlCanvas.style.position = "absolute";
