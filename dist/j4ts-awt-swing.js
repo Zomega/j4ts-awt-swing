@@ -18052,6 +18052,296 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        var table;
+        (function (table) {
+            /**
+             * This abstract class provides default implementations for most of
+             * the methods in the <code>TableModel</code> interface. It takes care of
+             * the management of listeners and provides some conveniences for generating
+             * <code>TableModelEvents</code> and dispatching them to the listeners.
+             * To create a concrete <code>TableModel</code> as a subclass of
+             * <code>AbstractTableModel</code> you need only provide implementations
+             * for the following three methods:
+             *
+             * <pre>
+             * public int getRowCount();
+             * public int getColumnCount();
+             * public Object getValueAt(int row, int column);
+             * </pre>
+             * <p>
+             * <strong>Warning:</strong>
+             * Serialized objects of this class will not be compatible with
+             * future Swing releases. The current serialization support is
+             * appropriate for short term storage or RMI between applications running
+             * the same version of Swing.  As of 1.4, support for long term storage
+             * of all JavaBeans&trade;
+             * has been added to the <code>java.beans</code> package.
+             * Please see {@link java.beans.XMLEncoder}.
+             *
+             * @author Alan Chung
+             * @author Philip Milne
+             * @class
+             */
+            var AbstractTableModel = /** @class */ (function () {
+                function AbstractTableModel() {
+                    this.listenerList = new javax.swing.event.EventListenerList();
+                }
+                /**
+                 * Returns a default name for the column using spreadsheet conventions:
+                 * A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
+                 * returns an empty string.
+                 *
+                 * @param {number} column  the column being queried
+                 * @return {string} a string containing the default name of <code>column</code>
+                 */
+                AbstractTableModel.prototype.getColumnName = function (column) {
+                    var result = "";
+                    for (; column >= 0; column = (column / 26 | 0) - 1) {
+                        {
+                            result = String.fromCharCode(((function (c) { return c.charCodeAt == null ? c : c.charCodeAt(0); })(String.fromCharCode((column % 26))) + 'A'.charCodeAt(0))) + result;
+                        }
+                        ;
+                    }
+                    return result;
+                };
+                /**
+                 * Returns a column given its name.
+                 * Implementation is naive so this should be overridden if
+                 * this method is to be called often. This method is not
+                 * in the <code>TableModel</code> interface and is not used by the
+                 * <code>JTable</code>.
+                 *
+                 * @param {string} columnName string containing name of column to be located
+                 * @return {number} the column with <code>columnName</code>, or -1 if not found
+                 */
+                AbstractTableModel.prototype.findColumn = function (columnName) {
+                    for (var i = 0; i < this.getColumnCount(); i++) {
+                        {
+                            if (columnName === this.getColumnName(i)) {
+                                return i;
+                            }
+                        }
+                        ;
+                    }
+                    return -1;
+                };
+                /**
+                 * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
+                 *
+                 * @param {number} columnIndex  the column being queried
+                 * @return {java.lang.Class} the Object.class
+                 */
+                AbstractTableModel.prototype.getColumnClass = function (columnIndex) {
+                    return Object;
+                };
+                /**
+                 * Returns false.  This is the default implementation for all cells.
+                 *
+                 * @param  {number} rowIndex  the row being queried
+                 * @param  {number} columnIndex the column being queried
+                 * @return {boolean} false
+                 */
+                AbstractTableModel.prototype.isCellEditable = function (rowIndex, columnIndex) {
+                    return false;
+                };
+                /**
+                 * This empty implementation is provided so users don't have to implement
+                 * this method if their data model is not editable.
+                 *
+                 * @param  {*} aValue   value to assign to cell
+                 * @param  {number} rowIndex   row of cell
+                 * @param  {number} columnIndex  column of cell
+                 */
+                AbstractTableModel.prototype.setValueAt = function (aValue, rowIndex, columnIndex) {
+                };
+                /**
+                 * Adds a listener to the list that's notified each time a change
+                 * to the data model occurs.
+                 *
+                 * @param   {*} l               the TableModelListener
+                 */
+                AbstractTableModel.prototype.addTableModelListener = function (l) {
+                    this.listenerList.add("javax.swing.event.TableModelListener", l);
+                };
+                /**
+                 * Removes a listener from the list that's notified each time a
+                 * change to the data model occurs.
+                 *
+                 * @param   {*} l               the TableModelListener
+                 */
+                AbstractTableModel.prototype.removeTableModelListener = function (l) {
+                    this.listenerList.remove("javax.swing.event.TableModelListener", l);
+                };
+                /**
+                 * Returns an array of all the table model listeners
+                 * registered on this model.
+                 *
+                 * @return {javax.swing.event.TableModelListener[]} all of this model's <code>TableModelListener</code>s
+                 * or an empty
+                 * array if no table model listeners are currently registered
+                 *
+                 * @see #addTableModelListener
+                 * @see #removeTableModelListener
+                 *
+                 * @since 1.4
+                 */
+                AbstractTableModel.prototype.getTableModelListeners = function () {
+                    return this.listenerList.getListeners$java_lang_Class("javax.swing.event.TableModelListener");
+                };
+                /**
+                 * Notifies all listeners that all cell values in the table's
+                 * rows may have changed. The number of rows may also have changed
+                 * and the <code>JTable</code> should redraw the
+                 * table from scratch. The structure of the table (as in the order of the
+                 * columns) is assumed to be the same.
+                 *
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 * @see javax.swing.JTable#tableChanged(TableModelEvent)
+                 */
+                AbstractTableModel.prototype.fireTableDataChanged = function () {
+                    this.fireTableChanged(new javax.swing.event.TableModelEvent(this));
+                };
+                /**
+                 * Notifies all listeners that the table's structure has changed.
+                 * The number of columns in the table, and the names and types of
+                 * the new columns may be different from the previous state.
+                 * If the <code>JTable</code> receives this event and its
+                 * <code>autoCreateColumnsFromModel</code>
+                 * flag is set it discards any table columns that it had and reallocates
+                 * default columns in the order they appear in the model. This is the
+                 * same as calling <code>setModel(TableModel)</code> on the
+                 * <code>JTable</code>.
+                 *
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 */
+                AbstractTableModel.prototype.fireTableStructureChanged = function () {
+                    this.fireTableChanged(new javax.swing.event.TableModelEvent(this, javax.swing.event.TableModelEvent.HEADER_ROW));
+                };
+                /**
+                 * Notifies all listeners that rows in the range
+                 * <code>[firstRow, lastRow]</code>, inclusive, have been inserted.
+                 *
+                 * @param  {number} firstRow  the first row
+                 * @param  {number} lastRow   the last row
+                 *
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 */
+                AbstractTableModel.prototype.fireTableRowsInserted = function (firstRow, lastRow) {
+                    this.fireTableChanged(new javax.swing.event.TableModelEvent(this, firstRow, lastRow, javax.swing.event.TableModelEvent.ALL_COLUMNS, javax.swing.event.TableModelEvent.INSERT));
+                };
+                /**
+                 * Notifies all listeners that rows in the range
+                 * <code>[firstRow, lastRow]</code>, inclusive, have been updated.
+                 *
+                 * @param {number} firstRow  the first row
+                 * @param {number} lastRow   the last row
+                 *
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 */
+                AbstractTableModel.prototype.fireTableRowsUpdated = function (firstRow, lastRow) {
+                    this.fireTableChanged(new javax.swing.event.TableModelEvent(this, firstRow, lastRow, javax.swing.event.TableModelEvent.ALL_COLUMNS, javax.swing.event.TableModelEvent.UPDATE));
+                };
+                /**
+                 * Notifies all listeners that rows in the range
+                 * <code>[firstRow, lastRow]</code>, inclusive, have been deleted.
+                 *
+                 * @param {number} firstRow  the first row
+                 * @param {number} lastRow   the last row
+                 *
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 */
+                AbstractTableModel.prototype.fireTableRowsDeleted = function (firstRow, lastRow) {
+                    this.fireTableChanged(new javax.swing.event.TableModelEvent(this, firstRow, lastRow, javax.swing.event.TableModelEvent.ALL_COLUMNS, javax.swing.event.TableModelEvent.DELETE));
+                };
+                /**
+                 * Notifies all listeners that the value of the cell at
+                 * <code>[row, column]</code> has been updated.
+                 *
+                 * @param {number} row  row of cell which has been updated
+                 * @param {number} column  column of cell which has been updated
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 */
+                AbstractTableModel.prototype.fireTableCellUpdated = function (row, column) {
+                    this.fireTableChanged(new javax.swing.event.TableModelEvent(this, row, row, column));
+                };
+                /**
+                 * Forwards the given notification event to all
+                 * <code>TableModelListeners</code> that registered
+                 * themselves as listeners for this table model.
+                 *
+                 * @param {javax.swing.event.TableModelEvent} e  the event to be forwarded
+                 *
+                 * @see #addTableModelListener
+                 * @see TableModelEvent
+                 * @see EventListenerList
+                 */
+                AbstractTableModel.prototype.fireTableChanged = function (e) {
+                    var listeners = this.listenerList.getListenerList();
+                    for (var i = listeners.length - 2; i >= 0; i -= 2) {
+                        {
+                            if (listeners[i] === "javax.swing.event.TableModelListener") {
+                                listeners[i + 1].tableChanged(e);
+                            }
+                        }
+                        ;
+                    }
+                };
+                /**
+                 * Returns an array of all the objects currently registered
+                 * as <code><em>Foo</em>Listener</code>s
+                 * upon this <code>AbstractTableModel</code>.
+                 * <code><em>Foo</em>Listener</code>s are registered using the
+                 * <code>add<em>Foo</em>Listener</code> method.
+                 *
+                 * <p>
+                 *
+                 * You can specify the <code>listenerType</code> argument
+                 * with a class literal,
+                 * such as
+                 * <code><em>Foo</em>Listener.class</code>.
+                 * For example, you can query a
+                 * model <code>m</code>
+                 * for its table model listeners with the following code:
+                 *
+                 * <pre>TableModelListener[] tmls = (TableModelListener[])(m.getListeners(TableModelListener.class));</pre>
+                 *
+                 * If no such listeners exist, this method returns an empty array.
+                 *
+                 * @param {java.lang.Class} listenerType the type of listeners requested; this parameter
+                 * should specify an interface that descends from
+                 * <code>java.util.EventListener</code>
+                 * @return {T[]} an array of all objects registered as
+                 * <code><em>Foo</em>Listener</code>s on this component,
+                 * or an empty array if no such
+                 * listeners have been added
+                 * @exception ClassCastException if <code>listenerType</code>
+                 * doesn't specify a class or interface that implements
+                 * <code>java.util.EventListener</code>
+                 *
+                 * @see #getTableModelListeners
+                 *
+                 * @since 1.3
+                 */
+                AbstractTableModel.prototype.getListeners = function (listenerType) {
+                    return this.listenerList.getListeners$java_lang_Class(listenerType);
+                };
+                return AbstractTableModel;
+            }());
+            table.AbstractTableModel = AbstractTableModel;
+            AbstractTableModel["__class"] = "javax.swing.table.AbstractTableModel";
+            AbstractTableModel["__interfaces"] = ["javax.swing.table.TableModel", "java.io.Serializable"];
+        })(table = swing.table || (swing.table = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var Action;
         (function (Action) {
             Action.DEFAULT = "Default";
@@ -18188,6 +18478,227 @@ var javax;
             event.UndoableEditEvent = UndoableEditEvent;
             UndoableEditEvent["__class"] = "javax.swing.event.UndoableEditEvent";
             UndoableEditEvent["__interfaces"] = ["java.io.Serializable"];
+        })(event = swing.event || (swing.event = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var event;
+        (function (event) {
+            /**
+             * This event notifies listeners that rows in the range [firstRow, lastRow]
+             * have been inserted, updated or deleted.
+             * @param {*} source
+             * @param {number} firstRow
+             * @param {number} lastRow
+             * @param {number} column
+             * @param {number} type
+             * @class
+             * @extends java.util.EventObject
+             */
+            var TableModelEvent = /** @class */ (function (_super) {
+                __extends(TableModelEvent, _super);
+                function TableModelEvent(source, firstRow, lastRow, column, type) {
+                    var _this = this;
+                    if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
+                        var __args = arguments;
+                        _this = _super.call(this, source) || this;
+                        if (_this.type === undefined) {
+                            _this.type = 0;
+                        }
+                        if (_this.firstRow === undefined) {
+                            _this.firstRow = 0;
+                        }
+                        if (_this.lastRow === undefined) {
+                            _this.lastRow = 0;
+                        }
+                        if (_this.column === undefined) {
+                            _this.column = 0;
+                        }
+                        _this.firstRow = firstRow;
+                        _this.lastRow = lastRow;
+                        _this.column = column;
+                        _this.type = type;
+                    }
+                    else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
+                        var __args = arguments;
+                        {
+                            var __args_18 = arguments;
+                            var type_1 = TableModelEvent.UPDATE;
+                            _this = _super.call(this, source) || this;
+                            if (_this.type === undefined) {
+                                _this.type = 0;
+                            }
+                            if (_this.firstRow === undefined) {
+                                _this.firstRow = 0;
+                            }
+                            if (_this.lastRow === undefined) {
+                                _this.lastRow = 0;
+                            }
+                            if (_this.column === undefined) {
+                                _this.column = 0;
+                            }
+                            _this.firstRow = firstRow;
+                            _this.lastRow = lastRow;
+                            _this.column = column;
+                            _this.type = type_1;
+                        }
+                        if (_this.type === undefined) {
+                            _this.type = 0;
+                        }
+                        if (_this.firstRow === undefined) {
+                            _this.firstRow = 0;
+                        }
+                        if (_this.lastRow === undefined) {
+                            _this.lastRow = 0;
+                        }
+                        if (_this.column === undefined) {
+                            _this.column = 0;
+                        }
+                    }
+                    else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
+                        var __args = arguments;
+                        {
+                            var __args_19 = arguments;
+                            var column_1 = TableModelEvent.ALL_COLUMNS;
+                            var type_2 = TableModelEvent.UPDATE;
+                            _this = _super.call(this, source) || this;
+                            if (_this.type === undefined) {
+                                _this.type = 0;
+                            }
+                            if (_this.firstRow === undefined) {
+                                _this.firstRow = 0;
+                            }
+                            if (_this.lastRow === undefined) {
+                                _this.lastRow = 0;
+                            }
+                            if (_this.column === undefined) {
+                                _this.column = 0;
+                            }
+                            _this.firstRow = firstRow;
+                            _this.lastRow = lastRow;
+                            _this.column = column_1;
+                            _this.type = type_2;
+                        }
+                        if (_this.type === undefined) {
+                            _this.type = 0;
+                        }
+                        if (_this.firstRow === undefined) {
+                            _this.firstRow = 0;
+                        }
+                        if (_this.lastRow === undefined) {
+                            _this.lastRow = 0;
+                        }
+                        if (_this.column === undefined) {
+                            _this.column = 0;
+                        }
+                    }
+                    else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
+                        var __args = arguments;
+                        var row = __args[1];
+                        {
+                            var __args_20 = arguments;
+                            var firstRow_1 = row;
+                            var lastRow_1 = row;
+                            var column_2 = TableModelEvent.ALL_COLUMNS;
+                            var type_3 = TableModelEvent.UPDATE;
+                            _this = _super.call(this, source) || this;
+                            if (_this.type === undefined) {
+                                _this.type = 0;
+                            }
+                            if (_this.firstRow === undefined) {
+                                _this.firstRow = 0;
+                            }
+                            if (_this.lastRow === undefined) {
+                                _this.lastRow = 0;
+                            }
+                            if (_this.column === undefined) {
+                                _this.column = 0;
+                            }
+                            _this.firstRow = firstRow_1;
+                            _this.lastRow = lastRow_1;
+                            _this.column = column_2;
+                            _this.type = type_3;
+                        }
+                        if (_this.type === undefined) {
+                            _this.type = 0;
+                        }
+                        if (_this.firstRow === undefined) {
+                            _this.firstRow = 0;
+                        }
+                        if (_this.lastRow === undefined) {
+                            _this.lastRow = 0;
+                        }
+                        if (_this.column === undefined) {
+                            _this.column = 0;
+                        }
+                    }
+                    else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
+                        var __args = arguments;
+                        {
+                            var __args_21 = arguments;
+                            var firstRow_2 = 0;
+                            var lastRow_2 = javaemul.internal.IntegerHelper.MAX_VALUE;
+                            var column_3 = TableModelEvent.ALL_COLUMNS;
+                            var type_4 = TableModelEvent.UPDATE;
+                            _this = _super.call(this, source) || this;
+                            if (_this.type === undefined) {
+                                _this.type = 0;
+                            }
+                            if (_this.firstRow === undefined) {
+                                _this.firstRow = 0;
+                            }
+                            if (_this.lastRow === undefined) {
+                                _this.lastRow = 0;
+                            }
+                            if (_this.column === undefined) {
+                                _this.column = 0;
+                            }
+                            _this.firstRow = firstRow_2;
+                            _this.lastRow = lastRow_2;
+                            _this.column = column_3;
+                            _this.type = type_4;
+                        }
+                        if (_this.type === undefined) {
+                            _this.type = 0;
+                        }
+                        if (_this.firstRow === undefined) {
+                            _this.firstRow = 0;
+                        }
+                        if (_this.lastRow === undefined) {
+                            _this.lastRow = 0;
+                        }
+                        if (_this.column === undefined) {
+                            _this.column = 0;
+                        }
+                    }
+                    else
+                        throw new Error('invalid overload');
+                    return _this;
+                }
+                TableModelEvent.prototype.getFirstRow = function () {
+                    return this.firstRow;
+                };
+                TableModelEvent.prototype.getLastRow = function () {
+                    return this.lastRow;
+                };
+                TableModelEvent.prototype.getColumn = function () {
+                    return this.column;
+                };
+                TableModelEvent.prototype.getType = function () {
+                    return this.type;
+                };
+                TableModelEvent.INSERT = 1;
+                TableModelEvent.UPDATE = 0;
+                TableModelEvent.DELETE = -1;
+                TableModelEvent.HEADER_ROW = -1;
+                TableModelEvent.ALL_COLUMNS = -1;
+                return TableModelEvent;
+            }(java.util.EventObject));
+            event.TableModelEvent = TableModelEvent;
+            TableModelEvent["__class"] = "javax.swing.event.TableModelEvent";
+            TableModelEvent["__interfaces"] = ["java.io.Serializable"];
         })(event = swing.event || (swing.event = {}));
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
@@ -18595,7 +19106,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_18 = arguments;
+                        var __args_22 = arguments;
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -18654,8 +19165,8 @@ var javax;
                 else if (((typeof filename === 'string') || filename === null) && description === undefined) {
                     var __args = arguments;
                     {
-                        var __args_19 = arguments;
-                        var description_1 = __args_19[0];
+                        var __args_23 = arguments;
+                        var description_1 = __args_23[0];
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -18717,8 +19228,8 @@ var javax;
                     var __args = arguments;
                     var location_2 = __args[0];
                     {
-                        var __args_20 = arguments;
-                        var description_2 = __args_20[0].toString();
+                        var __args_24 = arguments;
+                        var description_2 = __args_24[0].toString();
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -18966,7 +19477,7 @@ var javax;
                 if (((typeof name === 'string') || name === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null)) {
                     var __args = arguments;
                     {
-                        var __args_21 = arguments;
+                        var __args_25 = arguments;
                         if (this.arrayTable === undefined) {
                             this.arrayTable = null;
                         }
@@ -21171,7 +21682,7 @@ var javax;
                     else if (r === undefined) {
                         var __args = arguments;
                         {
-                            var __args_22 = arguments;
+                            var __args_26 = arguments;
                             var r_3 = null;
                             if (this.updateLevel === undefined) {
                                 this.updateLevel = 0;
@@ -21714,7 +22225,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_23 = arguments;
+                        var __args_27 = arguments;
                         var width_2 = d.width;
                         var height_1 = d.height;
                         _this = _super.call(this) || this;
@@ -21737,7 +22248,7 @@ var javax;
                 else if (width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_24 = arguments;
+                        var __args_28 = arguments;
                         var width_3 = 0;
                         var height_2 = 0;
                         _this = _super.call(this) || this;
@@ -21904,7 +22415,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_25 = arguments;
+                        var __args_29 = arguments;
                         var x_2 = p.x;
                         var y_2 = p.y;
                         _this = _super.call(this) || this;
@@ -21927,7 +22438,7 @@ var javax;
                 else if (x === undefined && y === undefined) {
                     var __args = arguments;
                     {
-                        var __args_26 = arguments;
+                        var __args_30 = arguments;
                         var x_3 = 0;
                         var y_3 = 0;
                         _this = _super.call(this) || this;
@@ -22674,7 +23185,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_27 = arguments;
+                                var __args_31 = arguments;
                                 var at_1 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.floatCoords === undefined) {
@@ -22706,7 +23217,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_28 = arguments;
+                                var __args_32 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.floatCoords === undefined) {
@@ -22722,7 +23233,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_29 = arguments;
+                                var __args_33 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -23381,7 +23892,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_30 = arguments;
+                                var __args_34 = arguments;
                                 var at_2 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -23413,7 +23924,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_31 = arguments;
+                                var __args_35 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -23429,7 +23940,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_32 = arguments;
+                                var __args_36 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -26007,13 +26518,13 @@ var javax;
                     else if (type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_33 = arguments;
-                            var type_1 = Arc2D.OPEN;
+                            var __args_37 = arguments;
+                            var type_5 = Arc2D.OPEN;
                             _this = _super.call(this) || this;
                             if (_this.type === undefined) {
                                 _this.type = 0;
                             }
-                            _this.setArcType(type_1);
+                            _this.setArcType(type_5);
                         }
                         if (_this.type === undefined) {
                             _this.type = 0;
@@ -26699,8 +27210,8 @@ var javax;
                             var ellipseBounds = __args[0];
                             var start_1 = __args[1];
                             var extent_1 = __args[2];
-                            var type_2 = __args[3];
-                            _this = _super.call(this, type_2) || this;
+                            var type_6 = __args[3];
+                            _this = _super.call(this, type_6) || this;
                             if (_this.x === undefined) {
                                 _this.x = 0;
                             }
@@ -26728,8 +27239,8 @@ var javax;
                         }
                         else if (((typeof x === 'number') || x === null) && y === undefined && w === undefined && h === undefined && start === undefined && extent === undefined && type === undefined) {
                             var __args = arguments;
-                            var type_3 = __args[0];
-                            _this = _super.call(this, type_3) || this;
+                            var type_7 = __args[0];
+                            _this = _super.call(this, type_7) || this;
                             if (_this.x === undefined) {
                                 _this.x = 0;
                             }
@@ -26980,8 +27491,8 @@ var javax;
                             var ellipseBounds = __args[0];
                             var start_2 = __args[1];
                             var extent_2 = __args[2];
-                            var type_4 = __args[3];
-                            _this = _super.call(this, type_4) || this;
+                            var type_8 = __args[3];
+                            _this = _super.call(this, type_8) || this;
                             if (_this.x === undefined) {
                                 _this.x = 0;
                             }
@@ -27009,8 +27520,8 @@ var javax;
                         }
                         else if (((typeof x === 'number') || x === null) && y === undefined && w === undefined && h === undefined && start === undefined && extent === undefined && type === undefined) {
                             var __args = arguments;
-                            var type_5 = __args[0];
-                            _this = _super.call(this, type_5) || this;
+                            var type_9 = __args[0];
+                            _this = _super.call(this, type_9) || this;
                             if (_this.x === undefined) {
                                 _this.x = 0;
                             }
@@ -27461,7 +27972,7 @@ var javax;
                         var __args = arguments;
                         var modifiers_2 = __args[3];
                         {
-                            var __args_34 = arguments;
+                            var __args_38 = arguments;
                             var when_2 = 0;
                             _this = _super.call(this, source, id) || this;
                             if (_this.actionCommand === undefined) {
@@ -27490,10 +28001,10 @@ var javax;
                     else if (((source != null) || source === null) && ((typeof id === 'number') || id === null) && ((typeof command === 'string') || command === null) && when === undefined && modifiers === undefined) {
                         var __args = arguments;
                         {
-                            var __args_35 = arguments;
+                            var __args_39 = arguments;
                             var modifiers_3 = 0;
                             {
-                                var __args_36 = arguments;
+                                var __args_40 = arguments;
                                 var when_3 = 0;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.actionCommand === undefined) {
@@ -27694,7 +28205,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("java.awt.Adjustable") >= 0)) || source === null) && ((typeof id === 'number') || id === null) && ((typeof type === 'number') || type === null) && ((typeof value === 'number') || value === null) && isAdjusting === undefined) {
                         var __args = arguments;
                         {
-                            var __args_37 = arguments;
+                            var __args_41 = arguments;
                             var isAdjusting_1 = false;
                             _this = _super.call(this, source, id) || this;
                             if (_this.adjustable === undefined) {
@@ -27897,7 +28408,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_38 = arguments;
+                        var __args_42 = arguments;
                         var value_1 = 0;
                         var visible_1 = 10;
                         var minimum_1 = 0;
@@ -27955,7 +28466,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_39 = arguments;
+                        var __args_43 = arguments;
                         var orientation_1 = Scrollbar.VERTICAL;
                         var value_2 = 0;
                         var visible_2 = 10;
@@ -28587,7 +29098,7 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((group != null && group instanceof java.awt.CheckboxGroup) || group === null) && ((typeof state === 'boolean') || state === null)) {
                     var __args = arguments;
                     {
-                        var __args_40 = arguments;
+                        var __args_44 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
                             _this.label = null;
@@ -28669,7 +29180,7 @@ var javax;
                     var __args = arguments;
                     var state_2 = __args[1];
                     {
-                        var __args_41 = arguments;
+                        var __args_45 = arguments;
                         var group_2 = null;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -28720,7 +29231,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_42 = arguments;
+                        var __args_46 = arguments;
                         var state_3 = false;
                         var group_3 = null;
                         _this = _super.call(this) || this;
@@ -28772,7 +29283,7 @@ var javax;
                 else if (label === undefined && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_43 = arguments;
+                        var __args_47 = arguments;
                         var label_1 = "";
                         var state_4 = false;
                         var group_4 = null;
@@ -29083,7 +29594,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_44 = arguments;
+                        var __args_48 = arguments;
                         var alignment_1 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
@@ -29101,7 +29612,7 @@ var javax;
                 else if (text === undefined && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_45 = arguments;
+                        var __args_49 = arguments;
                         var text_1 = "";
                         var alignment_2 = Label.LEFT;
                         _this = _super.call(this) || this;
@@ -29228,7 +29739,7 @@ var javax;
                 if (((config != null) || config === null)) {
                     var __args = arguments;
                     {
-                        var __args_46 = arguments;
+                        var __args_50 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvasElement === undefined) {
                             _this.htmlCanvasElement = null;
@@ -31676,7 +32187,7 @@ var javax;
                     var p = __args[0];
                     var d = __args[1];
                     {
-                        var __args_47 = arguments;
+                        var __args_51 = arguments;
                         var x_4 = p.x;
                         var y_4 = p.y;
                         var width_4 = d.width;
@@ -31717,7 +32228,7 @@ var javax;
                     var width_5 = __args[0];
                     var height_4 = __args[1];
                     {
-                        var __args_48 = arguments;
+                        var __args_52 = arguments;
                         var x_5 = 0;
                         var y_5 = 0;
                         _this = _super.call(this) || this;
@@ -31755,7 +32266,7 @@ var javax;
                     var __args = arguments;
                     var r = __args[0];
                     {
-                        var __args_49 = arguments;
+                        var __args_53 = arguments;
                         var x_6 = r.x;
                         var y_6 = r.y;
                         var width_6 = r.width;
@@ -31795,7 +32306,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_50 = arguments;
+                        var __args_54 = arguments;
                         var x_7 = p.x;
                         var y_7 = p.y;
                         var width_7 = 0;
@@ -31835,7 +32346,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_51 = arguments;
+                        var __args_55 = arguments;
                         var x_8 = 0;
                         var y_8 = 0;
                         var width_8 = d.width;
@@ -31874,7 +32385,7 @@ var javax;
                 else if (x === undefined && y === undefined && width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_52 = arguments;
+                        var __args_56 = arguments;
                         var x_9 = 0;
                         var y_9 = 0;
                         var width_9 = 0;
@@ -33693,7 +34204,7 @@ var javax;
                         var oldState_1 = __args[2];
                         var newState_1 = __args[3];
                         {
-                            var __args_53 = arguments;
+                            var __args_57 = arguments;
                             var opposite_1 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.opposite === undefined) {
@@ -33722,7 +34233,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && ((opposite != null && opposite instanceof java.awt.Window) || opposite === null) && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_54 = arguments;
+                            var __args_58 = arguments;
                             var oldState_2 = 0;
                             var newState_2 = 0;
                             _this = _super.call(this, source, id) || this;
@@ -33752,7 +34263,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && opposite === undefined && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_55 = arguments;
+                            var __args_59 = arguments;
                             var opposite_2 = null;
                             var oldState_3 = 0;
                             var newState_3 = 0;
@@ -33991,7 +34502,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof temporary === 'boolean') || temporary === null) && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_56 = arguments;
+                            var __args_60 = arguments;
                             var opposite_3 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.temporary === undefined) {
@@ -34013,10 +34524,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && temporary === undefined && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_57 = arguments;
+                            var __args_61 = arguments;
                             var temporary_1 = false;
                             {
-                                var __args_58 = arguments;
+                                var __args_62 = arguments;
                                 var opposite_4 = null;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.temporary === undefined) {
@@ -34220,7 +34731,7 @@ var javax;
                 else if (layout === undefined) {
                     var __args = arguments;
                     {
-                        var __args_59 = arguments;
+                        var __args_63 = arguments;
                         var layout_1 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -34825,7 +35336,7 @@ var javax;
                     else if (((sourceBean != null) || sourceBean === null) && notifyOnEDT === undefined) {
                         var __args = arguments;
                         {
-                            var __args_60 = arguments;
+                            var __args_64 = arguments;
                             var notifyOnEDT_1 = false;
                             _this = _super.call(this, sourceBean) || this;
                             if (_this.notifyOnEDT === undefined) {
@@ -35387,7 +35898,7 @@ var javax;
                         var popupTrigger_1 = __args[7];
                         var button_1 = __args[8];
                         {
-                            var __args_61 = arguments;
+                            var __args_65 = arguments;
                             var xAbs_1 = 0;
                             var yAbs_1 = 0;
                             _this = _super.call(this, source, id, when, modifiers) || this;
@@ -35482,10 +35993,10 @@ var javax;
                         var clickCount_2 = __args[6];
                         var popupTrigger_2 = __args[7];
                         {
-                            var __args_62 = arguments;
+                            var __args_66 = arguments;
                             var button_2 = MouseEvent.NOBUTTON;
                             {
-                                var __args_63 = arguments;
+                                var __args_67 = arguments;
                                 var xAbs_2 = 0;
                                 var yAbs_2 = 0;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
@@ -35885,7 +36396,7 @@ var javax;
                     if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && ((typeof keyLocation === 'number') || keyLocation === null) && ((typeof isProxyActive === 'boolean') || isProxyActive === null)) {
                         var __args = arguments;
                         {
-                            var __args_64 = arguments;
+                            var __args_68 = arguments;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
                                 _this.isProxyActive = false;
@@ -35992,7 +36503,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_65 = arguments;
+                            var __args_69 = arguments;
                             var keyLocation_1 = KeyEvent.KEY_LOCATION_UNKNOWN;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
@@ -36054,10 +36565,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && keyChar === undefined && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_66 = arguments;
-                            var keyChar_1 = String.fromCharCode(__args_66[4]);
+                            var __args_70 = arguments;
+                            var keyChar_1 = String.fromCharCode(__args_70[4]);
                             {
-                                var __args_67 = arguments;
+                                var __args_71 = arguments;
                                 var keyLocation_2 = KeyEvent.KEY_LOCATION_UNKNOWN;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
                                 if (_this.isProxyActive === undefined) {
@@ -37087,7 +37598,7 @@ var javax;
                 else if (title === undefined) {
                     var __args = arguments;
                     {
-                        var __args_68 = arguments;
+                        var __args_72 = arguments;
                         var title_1 = "";
                         _this = _super.call(this) || this;
                         if (_this.maximizedBounds === undefined) {
@@ -37368,7 +37879,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_69 = arguments;
+                        var __args_73 = arguments;
                         var dataModel_1 = new JList.JList$0(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -37447,7 +37958,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_70 = arguments;
+                        var __args_74 = arguments;
                         var dataModel_2 = new JList.JList$1(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -37525,7 +38036,7 @@ var javax;
                 else if (dataModel === undefined) {
                     var __args = arguments;
                     {
-                        var __args_71 = arguments;
+                        var __args_75 = arguments;
                         var dataModel_3 = new JList.JList$2(_this);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -38933,7 +39444,7 @@ var javax;
                 else if (orientation === undefined) {
                     var __args = arguments;
                     {
-                        var __args_72 = arguments;
+                        var __args_76 = arguments;
                         var orientation_2 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         _this.orientation = javax.swing.SwingConstants.HORIZONTAL;
@@ -39026,6 +39537,34 @@ var javax;
         swing.JSeparator = JSeparator;
         JSeparator["__class"] = "javax.swing.JSeparator";
         JSeparator["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JTable = /** @class */ (function (_super) {
+            __extends(JTable, _super);
+            function JTable() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JTable.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jtable";
+            };
+            JTable.prototype.getSelectionModel = function () {
+                return null;
+            };
+            return JTable;
+        }(javax.swing.JComponent));
+        swing.JTable = JTable;
+        JTable["__class"] = "javax.swing.JTable";
+        JTable["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -39309,7 +39848,7 @@ var javax;
                     var max_1 = __args[1];
                     var value_3 = __args[2];
                     {
-                        var __args_73 = arguments;
+                        var __args_77 = arguments;
                         var orientation_3 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
@@ -39362,9 +39901,9 @@ var javax;
                     var min_2 = __args[0];
                     var max_2 = __args[1];
                     {
-                        var __args_74 = arguments;
+                        var __args_78 = arguments;
                         var orientation_4 = javax.swing.SwingConstants.HORIZONTAL;
-                        var value_4 = ((__args_74[1] + __args_74[2]) / 2 | 0);
+                        var value_4 = ((__args_78[1] + __args_78[2]) / 2 | 0);
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
@@ -39441,7 +39980,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_75 = arguments;
+                        var __args_79 = arguments;
                         var min_3 = 0;
                         var max_3 = 100;
                         var value_5 = 50;
@@ -39494,7 +40033,7 @@ var javax;
                 else if (orientation === undefined && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_76 = arguments;
+                        var __args_80 = arguments;
                         var orientation_5 = javax.swing.SwingConstants.HORIZONTAL;
                         var min_4 = 0;
                         var max_4 = 100;
@@ -39878,7 +40417,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_77 = arguments;
+                        var __args_81 = arguments;
                         var value_7 = 0;
                         var extent_3 = 10;
                         var min_5 = 0;
@@ -39915,7 +40454,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_78 = arguments;
+                        var __args_82 = arguments;
                         var orientation_6 = java.awt.Adjustable.VERTICAL;
                         var value_8 = 0;
                         var extent_4 = 10;
@@ -40047,6 +40586,9 @@ var javax;
             };
             JTabbedPane.prototype.addTab = function (title, icon, component, tip) {
             };
+            JTabbedPane.prototype.getSelectionModel = function () {
+                return null;
+            };
             return JTabbedPane;
         }(javax.swing.JComponent));
         swing.JTabbedPane = JTabbedPane;
@@ -40081,7 +40623,7 @@ var javax;
                 else if (((layout != null && (layout.constructor != null && layout.constructor["__interfaces"] != null && layout.constructor["__interfaces"].indexOf("java.awt.LayoutManager") >= 0)) || layout === null) && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_79 = arguments;
+                        var __args_83 = arguments;
                         var isDoubleBuffered_1 = true;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -40097,7 +40639,7 @@ var javax;
                     var __args = arguments;
                     var isDoubleBuffered_2 = __args[0];
                     {
-                        var __args_80 = arguments;
+                        var __args_84 = arguments;
                         var layout_2 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -40112,10 +40654,10 @@ var javax;
                 else if (layout === undefined && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_81 = arguments;
+                        var __args_85 = arguments;
                         var isDoubleBuffered_3 = true;
                         {
-                            var __args_82 = arguments;
+                            var __args_86 = arguments;
                             var layout_3 = new java.awt.FlowLayout();
                             _this = _super.call(this) || this;
                             if (_this.htmlCanvas === undefined) {
@@ -40303,7 +40845,7 @@ var javax;
                 else if (model === undefined) {
                     var __args = arguments;
                     {
-                        var __args_83 = arguments;
+                        var __args_87 = arguments;
                         var model_1 = new javax.swing.SpinnerNumberModel(0, null, null, 1);
                         _this = _super.call(this) || this;
                         if (_this.model === undefined) {
@@ -41957,7 +42499,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_84 = arguments;
+                        var __args_88 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -42067,7 +42609,7 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_85 = arguments;
+                        var __args_89 = arguments;
                         var text_4 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
@@ -42176,7 +42718,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_86 = arguments;
+                        var __args_90 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -42286,7 +42828,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_87 = arguments;
+                        var __args_91 = arguments;
                         var text_5 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
@@ -42396,7 +42938,7 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_88 = arguments;
+                        var __args_92 = arguments;
                         var text_6 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
@@ -42852,8 +43394,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_89 = arguments;
-                            var preciseWheelRotation_1 = __args_89[12];
+                            var __args_93 = arguments;
+                            var preciseWheelRotation_1 = __args_93[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -42893,12 +43435,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_90 = arguments;
+                            var __args_94 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_91 = arguments;
-                                var preciseWheelRotation_2 = __args_91[12];
+                                var __args_95 = arguments;
+                                var preciseWheelRotation_2 = __args_95[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -44109,7 +44651,7 @@ var javax;
                     var rows_1 = __args[1];
                     var columns_1 = __args[2];
                     {
-                        var __args_92 = arguments;
+                        var __args_96 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -44166,7 +44708,7 @@ var javax;
                     var rows_2 = __args[0];
                     var columns_2 = __args[1];
                     {
-                        var __args_93 = arguments;
+                        var __args_97 = arguments;
                         var doc_2 = null;
                         var text_9 = null;
                         _this = _super.call(this) || this;
@@ -44223,7 +44765,7 @@ var javax;
                     var __args = arguments;
                     var text_10 = __args[0];
                     {
-                        var __args_94 = arguments;
+                        var __args_98 = arguments;
                         var doc_3 = null;
                         var rows_3 = 0;
                         var columns_3 = 0;
@@ -44280,7 +44822,7 @@ var javax;
                 else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_95 = arguments;
+                        var __args_99 = arguments;
                         var doc_4 = null;
                         var text_11 = null;
                         var rows_4 = 0;
@@ -44486,7 +45028,7 @@ var javax;
                     var text_12 = __args[0];
                     var columns_5 = __args[1];
                     {
-                        var __args_96 = arguments;
+                        var __args_100 = arguments;
                         var doc_5 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -44534,7 +45076,7 @@ var javax;
                     var __args = arguments;
                     var text_13 = __args[0];
                     {
-                        var __args_97 = arguments;
+                        var __args_101 = arguments;
                         var doc_6 = null;
                         var columns_6 = 0;
                         _this = _super.call(this) || this;
@@ -44583,7 +45125,7 @@ var javax;
                     var __args = arguments;
                     var columns_7 = __args[0];
                     {
-                        var __args_98 = arguments;
+                        var __args_102 = arguments;
                         var doc_7 = null;
                         var text_14 = null;
                         _this = _super.call(this) || this;
@@ -44631,7 +45173,7 @@ var javax;
                 else if (doc === undefined && text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_99 = arguments;
+                        var __args_103 = arguments;
                         var doc_8 = null;
                         var text_15 = null;
                         var columns_8 = 0;
@@ -45108,7 +45650,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_100 = arguments;
+                        var __args_104 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45123,7 +45665,7 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_101 = arguments;
+                        var __args_105 = arguments;
                         var text_16 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45137,7 +45679,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_102 = arguments;
+                        var __args_106 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -45151,7 +45693,7 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_103 = arguments;
+                        var __args_107 = arguments;
                         var text_17 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
@@ -45165,7 +45707,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_104 = arguments;
+                        var __args_108 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -45180,9 +45722,9 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_105 = arguments;
+                        var __args_109 = arguments;
                         {
-                            var __args_106 = arguments;
+                            var __args_110 = arguments;
                             var text_18 = null;
                             var icon_10 = null;
                             var selected_6 = false;
@@ -45202,7 +45744,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_107 = arguments;
+                        var __args_111 = arguments;
                         var text_19 = null;
                         var icon_11 = null;
                         var selected_7 = false;
@@ -45355,7 +45897,7 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_108 = arguments;
+                        var __args_112 = arguments;
                         var text_20 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -45367,7 +45909,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_109 = arguments;
+                        var __args_113 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -45380,9 +45922,9 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_110 = arguments;
+                        var __args_114 = arguments;
                         {
-                            var __args_111 = arguments;
+                            var __args_115 = arguments;
                             var text_21 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
@@ -45400,7 +45942,7 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_112 = arguments;
+                        var __args_116 = arguments;
                         var text_22 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
@@ -45729,7 +46271,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_113 = arguments;
+                        var __args_117 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -45864,7 +46406,7 @@ var javax;
                     var __args = arguments;
                     var selected_8 = __args[1];
                     {
-                        var __args_114 = arguments;
+                        var __args_118 = arguments;
                         var icon_17 = null;
                         _this = _super.call(this, text, icon_17, selected_8) || this;
                         if (_this.name === undefined) {
@@ -45893,7 +46435,7 @@ var javax;
                     var icon_18 = __args[0];
                     var selected_9 = __args[1];
                     {
-                        var __args_115 = arguments;
+                        var __args_119 = arguments;
                         var text_23 = null;
                         _this = _super.call(this, text_23, icon_18, selected_9) || this;
                         if (_this.name === undefined) {
@@ -45920,7 +46462,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_116 = arguments;
+                        var __args_120 = arguments;
                         var icon_19 = null;
                         var selected_10 = false;
                         _this = _super.call(this, text, icon_19, selected_10) || this;
@@ -45949,7 +46491,7 @@ var javax;
                     var __args = arguments;
                     var icon_20 = __args[0];
                     {
-                        var __args_117 = arguments;
+                        var __args_121 = arguments;
                         var text_24 = null;
                         var selected_11 = false;
                         _this = _super.call(this, text_24, icon_20, selected_11) || this;
@@ -45977,7 +46519,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_118 = arguments;
+                        var __args_122 = arguments;
                         var text_25 = null;
                         var icon_21 = null;
                         var selected_12 = false;
@@ -46103,7 +46645,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_119 = arguments;
+                        var __args_123 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -46144,7 +46686,7 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_120 = arguments;
+                        var __args_124 = arguments;
                         var label_2 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
@@ -46331,7 +46873,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_121 = arguments;
+                        var __args_125 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -46367,9 +46909,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_122 = arguments;
+                        var __args_126 = arguments;
                         {
-                            var __args_123 = arguments;
+                            var __args_127 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -46405,7 +46947,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_124 = arguments;
+                        var __args_128 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -47156,7 +47698,7 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_125 = arguments;
+                        var __args_129 = arguments;
                         var label_3 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {

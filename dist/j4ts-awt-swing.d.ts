@@ -7839,6 +7839,334 @@ declare namespace javax.swing {
         target: java.awt.Container;
     }
 }
+declare namespace javax.swing.table {
+    /**
+     * This abstract class provides default implementations for most of
+     * the methods in the <code>TableModel</code> interface. It takes care of
+     * the management of listeners and provides some conveniences for generating
+     * <code>TableModelEvents</code> and dispatching them to the listeners.
+     * To create a concrete <code>TableModel</code> as a subclass of
+     * <code>AbstractTableModel</code> you need only provide implementations
+     * for the following three methods:
+     *
+     * <pre>
+     * public int getRowCount();
+     * public int getColumnCount();
+     * public Object getValueAt(int row, int column);
+     * </pre>
+     * <p>
+     * <strong>Warning:</strong>
+     * Serialized objects of this class will not be compatible with
+     * future Swing releases. The current serialization support is
+     * appropriate for short term storage or RMI between applications running
+     * the same version of Swing.  As of 1.4, support for long term storage
+     * of all JavaBeans&trade;
+     * has been added to the <code>java.beans</code> package.
+     * Please see {@link java.beans.XMLEncoder}.
+     *
+     * @author Alan Chung
+     * @author Philip Milne
+     * @class
+     */
+    abstract class AbstractTableModel implements javax.swing.table.TableModel, java.io.Serializable {
+        /**
+         * List of listeners
+         */
+        listenerList: javax.swing.event.EventListenerList;
+        /**
+         * Returns a default name for the column using spreadsheet conventions:
+         * A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
+         * returns an empty string.
+         *
+         * @param {number} column  the column being queried
+         * @return {string} a string containing the default name of <code>column</code>
+         */
+        getColumnName(column: number): string;
+        /**
+         * Returns a column given its name.
+         * Implementation is naive so this should be overridden if
+         * this method is to be called often. This method is not
+         * in the <code>TableModel</code> interface and is not used by the
+         * <code>JTable</code>.
+         *
+         * @param {string} columnName string containing name of column to be located
+         * @return {number} the column with <code>columnName</code>, or -1 if not found
+         */
+        findColumn(columnName: string): number;
+        /**
+         * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
+         *
+         * @param {number} columnIndex  the column being queried
+         * @return {java.lang.Class} the Object.class
+         */
+        getColumnClass(columnIndex: number): any;
+        /**
+         * Returns false.  This is the default implementation for all cells.
+         *
+         * @param  {number} rowIndex  the row being queried
+         * @param  {number} columnIndex the column being queried
+         * @return {boolean} false
+         */
+        isCellEditable(rowIndex: number, columnIndex: number): boolean;
+        /**
+         * This empty implementation is provided so users don't have to implement
+         * this method if their data model is not editable.
+         *
+         * @param  {*} aValue   value to assign to cell
+         * @param  {number} rowIndex   row of cell
+         * @param  {number} columnIndex  column of cell
+         */
+        setValueAt(aValue: any, rowIndex: number, columnIndex: number): void;
+        /**
+         * Adds a listener to the list that's notified each time a change
+         * to the data model occurs.
+         *
+         * @param   {*} l               the TableModelListener
+         */
+        addTableModelListener(l: javax.swing.event.TableModelListener): void;
+        /**
+         * Removes a listener from the list that's notified each time a
+         * change to the data model occurs.
+         *
+         * @param   {*} l               the TableModelListener
+         */
+        removeTableModelListener(l: javax.swing.event.TableModelListener): void;
+        /**
+         * Returns an array of all the table model listeners
+         * registered on this model.
+         *
+         * @return {javax.swing.event.TableModelListener[]} all of this model's <code>TableModelListener</code>s
+         * or an empty
+         * array if no table model listeners are currently registered
+         *
+         * @see #addTableModelListener
+         * @see #removeTableModelListener
+         *
+         * @since 1.4
+         */
+        getTableModelListeners(): javax.swing.event.TableModelListener[];
+        /**
+         * Notifies all listeners that all cell values in the table's
+         * rows may have changed. The number of rows may also have changed
+         * and the <code>JTable</code> should redraw the
+         * table from scratch. The structure of the table (as in the order of the
+         * columns) is assumed to be the same.
+         *
+         * @see TableModelEvent
+         * @see EventListenerList
+         * @see javax.swing.JTable#tableChanged(TableModelEvent)
+         */
+        fireTableDataChanged(): void;
+        /**
+         * Notifies all listeners that the table's structure has changed.
+         * The number of columns in the table, and the names and types of
+         * the new columns may be different from the previous state.
+         * If the <code>JTable</code> receives this event and its
+         * <code>autoCreateColumnsFromModel</code>
+         * flag is set it discards any table columns that it had and reallocates
+         * default columns in the order they appear in the model. This is the
+         * same as calling <code>setModel(TableModel)</code> on the
+         * <code>JTable</code>.
+         *
+         * @see TableModelEvent
+         * @see EventListenerList
+         */
+        fireTableStructureChanged(): void;
+        /**
+         * Notifies all listeners that rows in the range
+         * <code>[firstRow, lastRow]</code>, inclusive, have been inserted.
+         *
+         * @param  {number} firstRow  the first row
+         * @param  {number} lastRow   the last row
+         *
+         * @see TableModelEvent
+         * @see EventListenerList
+         */
+        fireTableRowsInserted(firstRow: number, lastRow: number): void;
+        /**
+         * Notifies all listeners that rows in the range
+         * <code>[firstRow, lastRow]</code>, inclusive, have been updated.
+         *
+         * @param {number} firstRow  the first row
+         * @param {number} lastRow   the last row
+         *
+         * @see TableModelEvent
+         * @see EventListenerList
+         */
+        fireTableRowsUpdated(firstRow: number, lastRow: number): void;
+        /**
+         * Notifies all listeners that rows in the range
+         * <code>[firstRow, lastRow]</code>, inclusive, have been deleted.
+         *
+         * @param {number} firstRow  the first row
+         * @param {number} lastRow   the last row
+         *
+         * @see TableModelEvent
+         * @see EventListenerList
+         */
+        fireTableRowsDeleted(firstRow: number, lastRow: number): void;
+        /**
+         * Notifies all listeners that the value of the cell at
+         * <code>[row, column]</code> has been updated.
+         *
+         * @param {number} row  row of cell which has been updated
+         * @param {number} column  column of cell which has been updated
+         * @see TableModelEvent
+         * @see EventListenerList
+         */
+        fireTableCellUpdated(row: number, column: number): void;
+        /**
+         * Forwards the given notification event to all
+         * <code>TableModelListeners</code> that registered
+         * themselves as listeners for this table model.
+         *
+         * @param {javax.swing.event.TableModelEvent} e  the event to be forwarded
+         *
+         * @see #addTableModelListener
+         * @see TableModelEvent
+         * @see EventListenerList
+         */
+        fireTableChanged(e: javax.swing.event.TableModelEvent): void;
+        /**
+         * Returns an array of all the objects currently registered
+         * as <code><em>Foo</em>Listener</code>s
+         * upon this <code>AbstractTableModel</code>.
+         * <code><em>Foo</em>Listener</code>s are registered using the
+         * <code>add<em>Foo</em>Listener</code> method.
+         *
+         * <p>
+         *
+         * You can specify the <code>listenerType</code> argument
+         * with a class literal,
+         * such as
+         * <code><em>Foo</em>Listener.class</code>.
+         * For example, you can query a
+         * model <code>m</code>
+         * for its table model listeners with the following code:
+         *
+         * <pre>TableModelListener[] tmls = (TableModelListener[])(m.getListeners(TableModelListener.class));</pre>
+         *
+         * If no such listeners exist, this method returns an empty array.
+         *
+         * @param {java.lang.Class} listenerType the type of listeners requested; this parameter
+         * should specify an interface that descends from
+         * <code>java.util.EventListener</code>
+         * @return {T[]} an array of all objects registered as
+         * <code><em>Foo</em>Listener</code>s on this component,
+         * or an empty array if no such
+         * listeners have been added
+         * @exception ClassCastException if <code>listenerType</code>
+         * doesn't specify a class or interface that implements
+         * <code>java.util.EventListener</code>
+         *
+         * @see #getTableModelListeners
+         *
+         * @since 1.3
+         */
+        getListeners<T extends java.util.EventListener>(listenerType: any): T[];
+        abstract getColumnCount(): any;
+        abstract getRowCount(): any;
+        abstract getValueAt(rowIndex?: any, columnIndex?: any): any;
+        constructor();
+    }
+}
+declare namespace javax.swing.table {
+    /**
+     * The <code>TableModel</code> interface specifies the methods the
+     * <code>JTable</code> will use to interrogate a tabular data model. <p>
+     *
+     * The <code>JTable</code> can be set up to display any data
+     * model which implements the
+     * <code>TableModel</code> interface with a couple of lines of code:
+     * <pre>
+     * TableModel myData = new MyTableModel();
+     * JTable table = new JTable(myData);
+     * </pre><p>
+     *
+     * For further documentation, see <a href="https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#data">Creating a Table Model</a>
+     * in <em>The Java Tutorial</em>.
+     *
+     * @author Philip Milne
+     * @see JTable
+     * @class
+     */
+    interface TableModel {
+        /**
+         * Returns the number of rows in the model. A
+         * <code>JTable</code> uses this method to determine how many rows it
+         * should display.  This method should be quick, as it
+         * is called frequently during rendering.
+         *
+         * @return {number} the number of rows in the model
+         * @see #getColumnCount
+         */
+        getRowCount(): number;
+        /**
+         * Returns the number of columns in the model. A
+         * <code>JTable</code> uses this method to determine how many columns it
+         * should create and display by default.
+         *
+         * @return {number} the number of columns in the model
+         * @see #getRowCount
+         */
+        getColumnCount(): number;
+        /**
+         * Returns the name of the column at <code>columnIndex</code>.  This is used
+         * to initialize the table's column header name.  Note: this name does
+         * not need to be unique; two columns in a table can have the same name.
+         *
+         * @param   {number} columnIndex     the index of the column
+         * @return  {string} the name of the column
+         */
+        getColumnName(columnIndex: number): string;
+        /**
+         * Returns true if the cell at <code>rowIndex</code> and
+         * <code>columnIndex</code>
+         * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
+         * change the value of that cell.
+         *
+         * @param   {number} rowIndex        the row whose value to be queried
+         * @param   {number} columnIndex     the column whose value to be queried
+         * @return  {boolean} true if the cell is editable
+         * @see #setValueAt
+         */
+        isCellEditable(rowIndex: number, columnIndex: number): boolean;
+        /**
+         * Returns the value for the cell at <code>columnIndex</code> and
+         * <code>rowIndex</code>.
+         *
+         * @param   {number} rowIndex        the row whose value is to be queried
+         * @param   {number} columnIndex     the column whose value is to be queried
+         * @return  {*} the value Object at the specified cell
+         */
+        getValueAt(rowIndex: number, columnIndex: number): any;
+        /**
+         * Sets the value in the cell at <code>columnIndex</code> and
+         * <code>rowIndex</code> to <code>aValue</code>.
+         *
+         * @param   {*} aValue           the new value
+         * @param   {number} rowIndex         the row whose value is to be changed
+         * @param   {number} columnIndex      the column whose value is to be changed
+         * @see #getValueAt
+         * @see #isCellEditable
+         */
+        setValueAt(aValue: any, rowIndex: number, columnIndex: number): any;
+        /**
+         * Adds a listener to the list that is notified each time a change
+         * to the data model occurs.
+         *
+         * @param   {*} l               the TableModelListener
+         */
+        addTableModelListener(l: javax.swing.event.TableModelListener): any;
+        /**
+         * Removes a listener from the list that is notified each time a
+         * change to the data model occurs.
+         *
+         * @param   {*} l               the TableModelListener
+         */
+        removeTableModelListener(l: javax.swing.event.TableModelListener): any;
+    }
+}
 declare namespace javax.swing {
     /**
      * A model that supports at most one indexed selection.
@@ -8026,6 +8354,35 @@ declare namespace javax.swing.event {
 }
 declare namespace javax.swing.event {
     /**
+     * This event notifies listeners that rows in the range [firstRow, lastRow]
+     * have been inserted, updated or deleted.
+     * @param {*} source
+     * @param {number} firstRow
+     * @param {number} lastRow
+     * @param {number} column
+     * @param {number} type
+     * @class
+     * @extends java.util.EventObject
+     */
+    class TableModelEvent extends java.util.EventObject {
+        static INSERT: number;
+        static UPDATE: number;
+        static DELETE: number;
+        static HEADER_ROW: number;
+        static ALL_COLUMNS: number;
+        type: number;
+        firstRow: number;
+        lastRow: number;
+        column: number;
+        constructor(source?: any, firstRow?: any, lastRow?: any, column?: any, type?: any);
+        getFirstRow(): number;
+        getLastRow(): number;
+        getColumn(): number;
+        getType(): number;
+    }
+}
+declare namespace javax.swing.event {
+    /**
      * Defines a listener for menu events.
      *
      * @author Georges Saab
@@ -8050,6 +8407,21 @@ declare namespace javax.swing.event {
          * @param {javax.swing.event.MenuEvent} e a MenuEvent object
          */
         menuCanceled(e: javax.swing.event.MenuEvent): any;
+    }
+}
+declare namespace javax.swing.event {
+    /**
+     * TableModelListener defines the interface for an object that listens
+     * to changes in a TableModel.
+     * @class
+     */
+    interface TableModelListener extends java.util.EventListener {
+        /**
+         * This fine grain notification tells listeners the exact range
+         * of cells, rows, or columns that changed.
+         * @param {javax.swing.event.TableModelEvent} e
+         */
+        tableChanged(e: javax.swing.event.TableModelEvent): any;
     }
 }
 declare namespace javax.swing.event {
@@ -17455,6 +17827,16 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
+    class JTable extends javax.swing.JComponent {
+        /**
+         *
+         */
+        createHTML(): void;
+        getSelectionModel(): javax.swing.table.TableModel;
+        constructor();
+    }
+}
+declare namespace javax.swing {
     /**
      * Creates a <code>JRootPane</code>, setting up its <code>glassPane</code>, <code>layeredPane
      * </code>, and <code>contentPane</code>.
@@ -17790,6 +18172,7 @@ declare namespace javax.swing {
         createHTML(): void;
         setTabPlacement(tabPlacement: number): void;
         addTab(title: string, icon: javax.swing.Icon, component: java.awt.Component, tip: string): void;
+        getSelectionModel(): javax.swing.SingleSelectionModel;
         constructor();
     }
 }

@@ -24,4 +24,9 @@ class JTabbedPane extends JComponent {
   public void addTab(String title, Icon icon, Component component, String tip) {
     // TODO
   }
+
+  // TODO: Get model.
+  public SingleSelectionModel getSelectionModel() {
+    return null;
+  }
 }
