@@ -6784,6 +6784,10 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class MediaTracker {
+    }
+}
+declare namespace java.awt {
     /**
      * Creates a new cursor object with the specified type.
      *
@@ -7074,6 +7078,7 @@ declare namespace java.awt {
         getMouseListeners(): java.awt.event.MouseListener[];
         addMouseMotionListener(l: java.awt.event.MouseMotionListener): void;
         requestFocus(): void;
+        setOpaque(isOpaque: boolean): void;
         abstract createHTML(): any;
         constructor();
     }
@@ -7840,6 +7845,10 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing.table {
+    class TableCellRenderer {
+    }
+}
+declare namespace javax.swing.table {
     /**
      * This abstract class provides default implementations for most of
      * the methods in the <code>TableModel</code> interface. It takes care of
@@ -8165,6 +8174,15 @@ declare namespace javax.swing.table {
          * @param   {*} l               the TableModelListener
          */
         removeTableModelListener(l: javax.swing.event.TableModelListener): any;
+    }
+}
+declare namespace javax.swing.table {
+    class TableColumn implements java.io.Serializable {
+        constructor();
+    }
+}
+declare namespace javax.swing.table {
+    class TableCellEditor {
     }
 }
 declare namespace javax.swing {
@@ -14147,6 +14165,24 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class List extends java.awt.Component {
+        /**
+         *
+         * @return {HTMLDivElement}
+         */
+        getHTMLElement(): HTMLDivElement;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        constructor();
+    }
+}
+declare namespace java.awt {
     /**
      * Constructs a new Canvas given a GraphicsConfiguration object. This constructor is largely
      * ignored in a typical JSweet browser context as GraphicsConfiguration is a native AWT concept.
@@ -17832,7 +17868,35 @@ declare namespace javax.swing {
          *
          */
         createHTML(): void;
-        getSelectionModel(): javax.swing.table.TableModel;
+        getModel(): javax.swing.table.TableModel;
+        getColumnCount(): number;
+        getColumn(identifier: any): javax.swing.table.TableColumn;
+        getTableHeader(): any;
+        getColumnModel(): any;
+        setColumnSelectionAllowed(columnSelectionAllowed: boolean): void;
+        setRowSelectionAllowed(rowSelectionAllowed: boolean): void;
+        getRowCount(): number;
+        getRowHeight$(): number;
+        getRowHeight$int(row: number): number;
+        getRowHeight(row?: any): number;
+        getSelectedRow(): number;
+        setRowHeight(rowHeight: number): void;
+        clearSelection(): void;
+        getValueAt(row: number, column: number): any;
+        setValueAt(aValue: any, row: number, column: number): void;
+        setAutoResizeMode(mode: number): void;
+        getAutoResizeMode(): number;
+        setGridColor(gridColor: java.awt.Color): void;
+        setIntercellSpacing(intercellSpacing: java.awt.Dimension): void;
+        constructor();
+    }
+}
+declare namespace javax.swing {
+    class JFormattedTextField extends javax.swing.JComponent {
+        /**
+         *
+         */
+        createHTML(): void;
         constructor();
     }
 }
@@ -18172,7 +18236,7 @@ declare namespace javax.swing {
         createHTML(): void;
         setTabPlacement(tabPlacement: number): void;
         addTab(title: string, icon: javax.swing.Icon, component: java.awt.Component, tip: string): void;
-        getSelectionModel(): javax.swing.SingleSelectionModel;
+        getModel(): javax.swing.SingleSelectionModel;
         constructor();
     }
 }

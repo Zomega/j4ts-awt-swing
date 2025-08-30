@@ -492,4 +492,8 @@ public abstract class Component implements HTMLComponent {
   public void requestFocus() {
     // ignore
   }
+
+  public void setOpaque(boolean isOpaque) {
+    // TODO: Implement
+  }
 }

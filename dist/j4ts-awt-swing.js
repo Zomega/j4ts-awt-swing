@@ -14391,6 +14391,18 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        var MediaTracker = /** @class */ (function () {
+            function MediaTracker() {
+            }
+            return MediaTracker;
+        }());
+        awt.MediaTracker = MediaTracker;
+        MediaTracker["__class"] = "java.awt.MediaTracker";
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         /**
          * Creates a new cursor object with the specified type.
          *
@@ -15122,6 +15134,8 @@ var java;
                 return;
             };
             Component.prototype.requestFocus = function () {
+            };
+            Component.prototype.setOpaque = function (isOpaque) {
             };
             Component.TOP_ALIGNMENT = 0.0;
             Component.CENTER_ALIGNMENT = 0.5;
@@ -18054,6 +18068,21 @@ var javax;
     (function (swing) {
         var table;
         (function (table) {
+            var TableCellRenderer = /** @class */ (function () {
+                function TableCellRenderer() {
+                }
+                return TableCellRenderer;
+            }());
+            table.TableCellRenderer = TableCellRenderer;
+            TableCellRenderer["__class"] = "javax.swing.table.TableCellRenderer";
+        })(table = swing.table || (swing.table = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var table;
+        (function (table) {
             /**
              * This abstract class provides default implementations for most of
              * the methods in the <code>TableModel</code> interface. It takes care of
@@ -18336,6 +18365,37 @@ var javax;
             table.AbstractTableModel = AbstractTableModel;
             AbstractTableModel["__class"] = "javax.swing.table.AbstractTableModel";
             AbstractTableModel["__interfaces"] = ["javax.swing.table.TableModel", "java.io.Serializable"];
+        })(table = swing.table || (swing.table = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var table;
+        (function (table) {
+            var TableColumn = /** @class */ (function () {
+                function TableColumn() {
+                }
+                return TableColumn;
+            }());
+            table.TableColumn = TableColumn;
+            TableColumn["__class"] = "javax.swing.table.TableColumn";
+            TableColumn["__interfaces"] = ["java.io.Serializable"];
+        })(table = swing.table || (swing.table = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var table;
+        (function (table) {
+            var TableCellEditor = /** @class */ (function () {
+                function TableCellEditor() {
+                }
+                return TableCellEditor;
+            }());
+            table.TableCellEditor = TableCellEditor;
+            TableCellEditor["__class"] = "javax.swing.table.TableCellEditor";
         })(table = swing.table || (swing.table = {}));
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
@@ -29723,6 +29783,41 @@ var javax;
 (function (java) {
     var awt;
     (function (awt) {
+        var List = /** @class */ (function (_super) {
+            __extends(List, _super);
+            function List() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             * @return {HTMLDivElement}
+             */
+            List.prototype.getHTMLElement = function () {
+                return _super.prototype.getHTMLElement.call(this);
+            };
+            /**
+             *
+             */
+            List.prototype.createHTML = function () {
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-list";
+            };
+            /**
+             *
+             */
+            List.prototype.initHTML = function () {
+                _super.prototype.initHTML.call(this);
+            };
+            return List;
+        }(java.awt.Component));
+        awt.List = List;
+        List["__class"] = "java.awt.List";
+        List["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         /**
          * Constructs a new Canvas given a GraphicsConfiguration object. This constructor is largely
          * ignored in a typical JSweet browser context as GraphicsConfiguration is a native AWT concept.
@@ -39557,14 +39652,95 @@ var javax;
                 this.htmlElement = document.createElement("div");
                 this.htmlElement.className = "applet-jtable";
             };
-            JTable.prototype.getSelectionModel = function () {
+            JTable.prototype.getModel = function () {
                 return null;
+            };
+            JTable.prototype.getColumnCount = function () {
+                return 0;
+            };
+            JTable.prototype.getColumn = function (identifier) {
+                return null;
+            };
+            JTable.prototype.getTableHeader = function () {
+                return null;
+            };
+            JTable.prototype.getColumnModel = function () {
+                return null;
+            };
+            JTable.prototype.setColumnSelectionAllowed = function (columnSelectionAllowed) {
+            };
+            JTable.prototype.setRowSelectionAllowed = function (rowSelectionAllowed) {
+            };
+            JTable.prototype.getRowCount = function () {
+                return 0;
+            };
+            JTable.prototype.getRowHeight$ = function () {
+                return 0;
+            };
+            JTable.prototype.getRowHeight$int = function (row) {
+                return this.getRowHeight$();
+            };
+            JTable.prototype.getRowHeight = function (row) {
+                if (((typeof row === 'number') || row === null)) {
+                    return this.getRowHeight$int(row);
+                }
+                else if (row === undefined) {
+                    return this.getRowHeight$();
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            JTable.prototype.getSelectedRow = function () {
+                return -1;
+            };
+            JTable.prototype.setRowHeight = function (rowHeight) {
+            };
+            JTable.prototype.clearSelection = function () {
+            };
+            JTable.prototype.getValueAt = function (row, column) {
+                return null;
+            };
+            JTable.prototype.setValueAt = function (aValue, row, column) {
+            };
+            JTable.prototype.setAutoResizeMode = function (mode) {
+            };
+            JTable.prototype.getAutoResizeMode = function () {
+                return 0;
+            };
+            JTable.prototype.setGridColor = function (gridColor) {
+            };
+            JTable.prototype.setIntercellSpacing = function (intercellSpacing) {
             };
             return JTable;
         }(javax.swing.JComponent));
         swing.JTable = JTable;
         JTable["__class"] = "javax.swing.JTable";
         JTable["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JFormattedTextField = /** @class */ (function (_super) {
+            __extends(JFormattedTextField, _super);
+            function JFormattedTextField() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JFormattedTextField.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jformattedtextfield";
+            };
+            return JFormattedTextField;
+        }(javax.swing.JComponent));
+        swing.JFormattedTextField = JFormattedTextField;
+        JFormattedTextField["__class"] = "javax.swing.JFormattedTextField";
+        JFormattedTextField["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -40586,7 +40762,7 @@ var javax;
             };
             JTabbedPane.prototype.addTab = function (title, icon, component, tip) {
             };
-            JTabbedPane.prototype.getSelectionModel = function () {
+            JTabbedPane.prototype.getModel = function () {
                 return null;
             };
             return JTabbedPane;
