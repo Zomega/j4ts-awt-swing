@@ -19,4 +19,8 @@ class JScrollPane extends JComponent {
   public Object /*JViewport*/ getViewport() {
     return null; // TODO
   }
+
+  public JScrollBar getVerticalScrollBar() {
+    return null; // TODO
+  }
 }

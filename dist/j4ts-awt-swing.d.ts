@@ -6785,6 +6785,12 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     class MediaTracker {
+        checkAll(load?: boolean): boolean;
+        isErrorAny(): boolean;
+        waitForAll(): void;
+        addImage$java_awt_Image$int(image: java.awt.Image, id: number): void;
+        addImage$java_awt_Image$int$int$int(image: java.awt.Image, id: number, w: number, h: number): void;
+        addImage(image?: any, id?: any, w?: any, h?: any): any;
     }
 }
 declare namespace java.awt {
@@ -8178,6 +8184,7 @@ declare namespace javax.swing.table {
 }
 declare namespace javax.swing.table {
     class TableColumn implements java.io.Serializable {
+        setCellRenderer(cellRenderer: javax.swing.table.TableCellRenderer): void;
         constructor();
     }
 }
@@ -8755,6 +8762,7 @@ declare namespace javax.swing {
         constructor();
         static invokeLater(doRun: () => void): void;
         static invokeAndWait(doRun: () => void): void;
+        static convertPointToScreen(p: java.awt.Point, c: java.awt.Component): void;
     }
 }
 declare namespace javax.swing {
@@ -10134,6 +10142,8 @@ declare namespace javax.swing {
          */
         removeChangeListener(listener: javax.swing.event.ChangeListener): void;
         fireStateChanged(oldValue: any, newValue: any): void;
+        setMinimum(minimum: java.lang.Comparable<any>): void;
+        setMaximum(maximum: java.lang.Comparable<any>): void;
     }
 }
 declare namespace javax.swing {
@@ -17868,7 +17878,9 @@ declare namespace javax.swing {
          *
          */
         createHTML(): void;
+        setModel(dataModel: javax.swing.table.TableModel): void;
         getModel(): javax.swing.table.TableModel;
+        getSelectionModel(): javax.swing.SingleSelectionModel;
         getColumnCount(): number;
         getColumn(identifier: any): javax.swing.table.TableColumn;
         getTableHeader(): any;
@@ -17888,15 +17900,6 @@ declare namespace javax.swing {
         getAutoResizeMode(): number;
         setGridColor(gridColor: java.awt.Color): void;
         setIntercellSpacing(intercellSpacing: java.awt.Dimension): void;
-        constructor();
-    }
-}
-declare namespace javax.swing {
-    class JFormattedTextField extends javax.swing.JComponent {
-        /**
-         *
-         */
-        createHTML(): void;
         constructor();
     }
 }
@@ -18706,6 +18709,7 @@ declare namespace javax.swing {
          */
         createHTML(): void;
         getViewport(): any;
+        getVerticalScrollBar(): javax.swing.JScrollBar;
         constructor();
     }
 }
@@ -19750,6 +19754,11 @@ declare namespace javax.swing {
         addActionListener(actionListener: java.awt.event.ActionListener): void;
         removeActionListener(actionListener: java.awt.event.ActionListener): void;
         setBackground(background: java.awt.Color): void;
+    }
+}
+declare namespace javax.swing {
+    class JFormattedTextField extends javax.swing.JTextField {
+        constructor();
     }
 }
 declare namespace javax.swing {

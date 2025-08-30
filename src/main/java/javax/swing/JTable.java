@@ -20,7 +20,15 @@ class JTable extends JComponent {
     htmlElement.className = "applet-jtable";
   }
 
+  public void setModel(TableModel dataModel) {
+    // TODO: Implement
+  }
+
   public TableModel getModel() {
+    return null; // TODO: Implement
+  }
+
+  public SingleSelectionModel getSelectionModel() {
     return null; // TODO: Implement
   }
 

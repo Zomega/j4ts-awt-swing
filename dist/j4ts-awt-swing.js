@@ -14394,6 +14394,29 @@ var java;
         var MediaTracker = /** @class */ (function () {
             function MediaTracker() {
             }
+            MediaTracker.prototype.checkAll = function (load) {
+                if (load === void 0) { load = false; }
+                return false;
+            };
+            MediaTracker.prototype.isErrorAny = function () {
+                return false;
+            };
+            MediaTracker.prototype.waitForAll = function () {
+            };
+            MediaTracker.prototype.addImage$java_awt_Image$int = function (image, id) {
+            };
+            MediaTracker.prototype.addImage$java_awt_Image$int$int$int = function (image, id, w, h) {
+            };
+            MediaTracker.prototype.addImage = function (image, id, w, h) {
+                if (((image != null && image instanceof java.awt.Image) || image === null) && ((typeof id === 'number') || id === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null)) {
+                    return this.addImage$java_awt_Image$int$int$int(image, id, w, h);
+                }
+                else if (((image != null && image instanceof java.awt.Image) || image === null) && ((typeof id === 'number') || id === null) && w === undefined && h === undefined) {
+                    return this.addImage$java_awt_Image$int(image, id);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
             return MediaTracker;
         }());
         awt.MediaTracker = MediaTracker;
@@ -18376,6 +18399,8 @@ var javax;
             var TableColumn = /** @class */ (function () {
                 function TableColumn() {
                 }
+                TableColumn.prototype.setCellRenderer = function (cellRenderer) {
+                };
                 return TableColumn;
             }());
             table.TableColumn = TableColumn;
@@ -19511,6 +19536,8 @@ var javax;
             };
             SwingUtilities.invokeAndWait = function (doRun) {
                 (function (target) { return (typeof target === 'function') ? target() : target.run(); })(doRun);
+            };
+            SwingUtilities.convertPointToScreen = function (p, c) {
             };
             return SwingUtilities;
         }());
@@ -21506,6 +21533,10 @@ var javax;
             SpinnerNumberModel.prototype.removeChangeListener = function (listener) {
             };
             SpinnerNumberModel.prototype.fireStateChanged = function (oldValue, newValue) {
+            };
+            SpinnerNumberModel.prototype.setMinimum = function (minimum) {
+            };
+            SpinnerNumberModel.prototype.setMaximum = function (maximum) {
             };
             return SpinnerNumberModel;
         }());
@@ -39652,7 +39683,12 @@ var javax;
                 this.htmlElement = document.createElement("div");
                 this.htmlElement.className = "applet-jtable";
             };
+            JTable.prototype.setModel = function (dataModel) {
+            };
             JTable.prototype.getModel = function () {
+                return null;
+            };
+            JTable.prototype.getSelectionModel = function () {
                 return null;
             };
             JTable.prototype.getColumnCount = function () {
@@ -39716,31 +39752,6 @@ var javax;
         swing.JTable = JTable;
         JTable["__class"] = "javax.swing.JTable";
         JTable["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
-    })(swing = javax.swing || (javax.swing = {}));
-})(javax || (javax = {}));
-(function (javax) {
-    var swing;
-    (function (swing) {
-        var JFormattedTextField = /** @class */ (function (_super) {
-            __extends(JFormattedTextField, _super);
-            function JFormattedTextField() {
-                return _super.call(this) || this;
-            }
-            /**
-             *
-             */
-            JFormattedTextField.prototype.createHTML = function () {
-                if (this.htmlElement != null) {
-                    return;
-                }
-                this.htmlElement = document.createElement("div");
-                this.htmlElement.className = "applet-jformattedtextfield";
-            };
-            return JFormattedTextField;
-        }(javax.swing.JComponent));
-        swing.JFormattedTextField = JFormattedTextField;
-        JFormattedTextField["__class"] = "javax.swing.JFormattedTextField";
-        JFormattedTextField["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -41876,6 +41887,9 @@ var javax;
                 this.htmlElement.className = "applet-jscrollpane";
             };
             JScrollPane.prototype.getViewport = function () {
+                return null;
+            };
+            JScrollPane.prototype.getVerticalScrollBar = function () {
                 return null;
             };
             return JScrollPane;
@@ -46545,6 +46559,21 @@ var javax;
         swing.JButton = JButton;
         JButton["__class"] = "javax.swing.JButton";
         JButton["__interfaces"] = ["java.awt.ItemSelectable", "java.awt.HTMLComponent", "javax.swing.SwingConstants", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JFormattedTextField = /** @class */ (function (_super) {
+            __extends(JFormattedTextField, _super);
+            function JFormattedTextField() {
+                return _super.call(this) || this;
+            }
+            return JFormattedTextField;
+        }(javax.swing.JTextField));
+        swing.JFormattedTextField = JFormattedTextField;
+        JFormattedTextField["__class"] = "javax.swing.JFormattedTextField";
+        JFormattedTextField["__interfaces"] = ["java.awt.HTMLComponent", "javax.swing.SwingConstants", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {

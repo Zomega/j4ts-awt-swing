@@ -69,4 +69,12 @@ public class SpinnerNumberModel implements SpinnerModel {
   protected void fireStateChanged(Object oldValue, Object newValue) {
     // Notify all listeners
   }
+
+  public void setMinimum(Comparable minimum) {
+    // TODO: Implement
+  }
+
+  public void setMaximum(Comparable maximum) {
+    // TODO: Implement
+  }
 }
