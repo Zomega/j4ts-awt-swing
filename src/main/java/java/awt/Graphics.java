@@ -75,8 +75,7 @@ public abstract class Graphics {
 
   public abstract void setClip(Shape clip);
 
-  // public abstract void copyArea(int x, int y, int width, int height,
-  // int dx, int dy);
+  public abstract void copyArea(int x, int y, int width, int height, int dx, int dy);
 
   public abstract void drawLine(int x1, int y1, int x2, int y2);
 
@@ -163,9 +162,9 @@ public abstract class Graphics {
 
   //	public abstract void drawString(AttributedCharacterIterator iterator, int x, int y);
 
-  //	public void drawChars(char data[], int offset, int length, int x, int y) {
-  //		drawString(new String(data, offset, length), x, y);
-  //	}
+  public void drawChars(char data[], int offset, int length, int x, int y) {
+  		drawString(new String(data, offset, length), x, y);
+  }
   //
   //	public void drawBytes(byte data[], int offset, int length, int x, int y) {
   //		drawString(new String(data, 0, offset, length), x, y);

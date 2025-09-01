@@ -1,3 +1,5 @@
 package javax.swing.table;
 
-class TableCellEditor {}
+public class TableCellEditor {
+	// TODO: Implement
+}

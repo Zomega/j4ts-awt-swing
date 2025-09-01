@@ -117,6 +117,10 @@ public abstract class Component implements HTMLComponent {
     return null; // TODO: Implement?
   }
 
+  public Image createImage(/*TODO ImageProducer*/ Object producer) {
+    return null; // TODO: Implement?
+  }
+
   public Point getLocationOnScreen() {
     return new Point(getX(), getY());
   }
@@ -412,6 +416,25 @@ public abstract class Component implements HTMLComponent {
     paint(getGraphics());
   }
 
+  public void repaint(long tm) {
+    this.repaint(); // Ignore time.
+  }
+
+  public void repaint(int x,
+                    int y,
+                    int width,
+                    int height) {
+    this.repaint(); // TODO: Only repaint the rectangle?
+  }
+
+  public void repaint(long tm,
+                    int x,
+                    int y,
+                    int width,
+                    int height) {
+    this.repaint(); // TODO: Only repaint the rectangle?
+  }
+
   public void addFocusListener(FocusListener l) {
     // TODO
   }
@@ -434,6 +457,11 @@ public abstract class Component implements HTMLComponent {
     this.y = p.y;
   }
 
+  public Point getLocation() {
+    // TODO: Implement
+    return null;
+  }
+
   private Cursor cursor;
 
   public Cursor getCursor() {
@@ -446,46 +474,46 @@ public abstract class Component implements HTMLComponent {
 
   MouseWheelListener[] mouseWheelListeners = {};
 
-  public synchronized void addMouseWheelListener(MouseWheelListener l) {
+  public  void addMouseWheelListener(MouseWheelListener l) {
     if (l == null) {
       return;
     }
     array(mouseWheelListeners).push(l);
   }
 
-  public synchronized void removeMouseWheelListener(MouseWheelListener l) {
+  public  void removeMouseWheelListener(MouseWheelListener l) {
     if (l == null) {
       return;
     }
     array(mouseWheelListeners).splice(array(mouseWheelListeners).indexOf(l), 1);
   }
 
-  public synchronized MouseWheelListener[] getMouseWheelListeners() {
+  public  MouseWheelListener[] getMouseWheelListeners() {
     return mouseWheelListeners;
   }
 
   MouseListener[] mouseListeners = {};
 
-  public synchronized void addMouseListener(MouseListener l) {
+  public  void addMouseListener(MouseListener l) {
     if (l == null) {
       return;
     }
     array(mouseListeners).push(l);
   }
 
-  public synchronized void removeMouseListener(MouseListener l) {
+  public  void removeMouseListener(MouseListener l) {
     if (l == null) {
       return;
     }
     array(mouseListeners).splice(array(mouseListeners).indexOf(l), 1);
   }
 
-  public synchronized MouseListener[] getMouseListeners() {
+  public  MouseListener[] getMouseListeners() {
     return mouseListeners;
   }
 
   // TODO:Implement!
-  public synchronized void addMouseMotionListener(MouseMotionListener l) {
+  public  void addMouseMotionListener(MouseMotionListener l) {
     return;
   }
 

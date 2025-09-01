@@ -12,7 +12,13 @@ public class TextField extends Component {
 
   ActionListener actionListener;
 
-  public TextField(int cols) {}
+  public TextField(int cols) {
+    // TODO: Implement?
+  }
+
+  public TextField(String text, int columns) {
+    // TODO: Implement?
+  }
 
   @Override
   public HTMLInputElement getHTMLElement() {

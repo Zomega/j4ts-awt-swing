@@ -355,6 +355,10 @@ public class JTextField extends JTextComponent implements SwingConstants {
     setActionCommand((action == null) ? null : (String) action.getValue(Action.ACTION_COMMAND_KEY));
   }
 
+  public void setCaretPosition(int position) {
+    // TODO: Implement
+  }
+
   protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
     return new TextFieldActionPropertyChangeListener(this, a);
   }

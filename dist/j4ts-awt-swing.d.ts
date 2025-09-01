@@ -5326,6 +5326,7 @@ declare namespace java.awt {
         setClip(x?: any, y?: any, width?: any, height?: any): any;
         abstract getClip(): java.awt.Shape;
         setClip$java_awt_Shape(clip: java.awt.Shape): void;
+        abstract copyArea(x: number, y: number, width: number, height: number, dx: number, dy: number): any;
         abstract drawLine(x1: number, y1: number, x2: number, y2: number): any;
         abstract fillRect(x: number, y: number, width: number, height: number): any;
         drawRect(x: number, y: number, width: number, height: number): void;
@@ -5346,6 +5347,7 @@ declare namespace java.awt {
         fillPolygon(xPoints?: any, yPoints?: any, nPoints?: any): any;
         fillPolygon$java_awt_Polygon(p: java.awt.Polygon): void;
         abstract drawString(str: string, x: number, y: number): any;
+        drawChars(data: string[], offset: number, length: number, x: number, y: number): void;
         drawImage$java_awt_Image$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, observer: java.awt.image.ImageObserver): boolean;
         drawImage$java_awt_Image$int$int$int$int$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, width: number, height: number, observer: java.awt.image.ImageObserver): boolean;
         drawImage$java_awt_Image$int$int$java_awt_Color$java_awt_image_ImageObserver(img: java.awt.Image, x: number, y: number, bgcolor: java.awt.Color, observer: java.awt.image.ImageObserver): boolean;
@@ -6785,12 +6787,16 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     class MediaTracker {
+        constructor(comp: java.awt.Component);
         checkAll(load?: boolean): boolean;
         isErrorAny(): boolean;
-        waitForAll(): void;
+        waitForAll$(): void;
+        waitForAll$long(ms: number): boolean;
+        waitForAll(ms?: any): any;
         addImage$java_awt_Image$int(image: java.awt.Image, id: number): void;
         addImage$java_awt_Image$int$int$int(image: java.awt.Image, id: number, w: number, h: number): void;
         addImage(image?: any, id?: any, w?: any, h?: any): any;
+        statusID(id: number, load: boolean): number;
     }
 }
 declare namespace java.awt {
@@ -7010,7 +7016,9 @@ declare namespace java.awt {
          *
          */
         initHTML(): void;
-        createImage(width: number, height: number): java.awt.Image;
+        createImage$int$int(width: number, height: number): java.awt.Image;
+        createImage(width?: any, height?: any): java.awt.Image;
+        createImage$java_lang_Object(producer: any): java.awt.Image;
         getLocationOnScreen(): java.awt.Point;
         getBounds(): java.awt.Rectangle;
         setBounds$java_awt_Rectangle(rectangle: java.awt.Rectangle): void;
@@ -7064,13 +7072,18 @@ declare namespace java.awt {
         getSize(): java.awt.Dimension;
         revalidate(): void;
         invalidate(): void;
-        repaint(): void;
+        repaint$(): void;
+        repaint$long(tm: number): void;
+        repaint$int$int$int$int(x: number, y: number, width: number, height: number): void;
+        repaint$long$int$int$int$int(tm: number, x: number, y: number, width: number, height: number): void;
+        repaint(tm?: any, x?: any, y?: any, width?: any, height?: any): any;
         addFocusListener(l: java.awt.event.FocusListener): void;
         getMinimumSize(): java.awt.Dimension;
         setMinimumSize(minimumSize: java.awt.Dimension): void;
         setLocation$int$int(x: number, y: number): void;
         setLocation(x?: any, y?: any): any;
         setLocation$java_awt_Point(p: java.awt.Point): void;
+        getLocation(): java.awt.Point;
         cursor: java.awt.Cursor;
         getCursor(): java.awt.Cursor;
         setCursor(cursor: java.awt.Cursor): void;
@@ -8582,6 +8595,7 @@ declare namespace javax.swing.event {
 declare namespace javax.swing {
     class UIManager {
         static getString(key: string): string;
+        static getBorder(key: any): any;
     }
 }
 declare namespace javax.swing {
@@ -8622,6 +8636,10 @@ declare namespace javax.swing {
          * @param {number} index location of the item to be removed
          */
         removeElementAt(index: number): any;
+    }
+}
+declare namespace javax.swing {
+    class ToolTipManager {
     }
 }
 declare namespace javax.swing {
@@ -10142,8 +10160,8 @@ declare namespace javax.swing {
          */
         removeChangeListener(listener: javax.swing.event.ChangeListener): void;
         fireStateChanged(oldValue: any, newValue: any): void;
-        setMinimum(minimum: java.lang.Comparable<any>): void;
-        setMaximum(maximum: java.lang.Comparable<any>): void;
+        setMinimum(minimum: number): void;
+        setMaximum(maximum: number): void;
     }
 }
 declare namespace javax.swing {
@@ -14033,6 +14051,17 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class ScrollPane extends java.awt.Component {
+        constructor(view?: any);
+        add(view: java.awt.Component): void;
+        /**
+         *
+         */
+        createHTML(): void;
+        doLayout(): void;
+    }
+}
+declare namespace java.awt {
     class Choice extends java.awt.Component implements java.awt.ItemSelectable {
         pItems: java.util.Vector<string>;
         selectedIndex: number;
@@ -14117,7 +14146,7 @@ declare namespace java.awt {
 declare namespace java.awt {
     class TextField extends java.awt.Component {
         actionListener: java.awt.event.ActionListener;
-        constructor(cols: number);
+        constructor(text?: any, columns?: any);
         /**
          *
          * @return {HTMLInputElement}
@@ -14176,6 +14205,7 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     class List extends java.awt.Component {
+        constructor(rows?: number, multipleMode?: boolean);
         /**
          *
          * @return {HTMLDivElement}
@@ -14189,7 +14219,17 @@ declare namespace java.awt {
          *
          */
         initHTML(): void;
-        constructor();
+        addItemListener(l: java.awt.event.ItemListener): void;
+        getSelectedIndex(): number;
+        add$java_lang_String(item: string): void;
+        add$java_lang_String$int(item: string, index: number): void;
+        add(item?: any, index?: any): any;
+        remove(position: number): void;
+        removeAll(): void;
+        replaceItem(newValue: string, index: number): void;
+        makeVisible(index: number): void;
+        getItemCount(): number;
+        getItem(index: number): string;
     }
 }
 declare namespace java.awt {
@@ -14561,6 +14601,11 @@ declare namespace sun.awt.geom {
         getReversedCurve(): sun.awt.geom.Curve;
         getSegment(coords: number[]): number;
         controlPointString(): string;
+    }
+}
+declare namespace javax.swing {
+    class DefaultCellEditor extends javax.swing.table.TableCellEditor {
+        constructor(textField?: any);
     }
 }
 declare namespace javax.swing {
@@ -15509,6 +15554,16 @@ declare namespace java.awt {
          * @param {*} s
          */
         setStroke(s: java.awt.Stroke): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         * @param {number} dx
+         * @param {number} dy
+         */
+        copyArea(x: number, y: number, width: number, height: number, dx: number, dy: number): void;
     }
 }
 declare namespace java.awt.event {
@@ -16053,6 +16108,7 @@ declare namespace java.awt {
         setOpacity(opacity: number): void;
         getShape(): java.awt.Shape;
         setShape(shape: java.awt.Shape): void;
+        setLocationRelativeTo(c: java.awt.Component): void;
     }
     namespace Window {
         enum Type {
@@ -18354,6 +18410,7 @@ declare namespace javax.swing {
         setValue(value: any): void;
         updateValueInEditor(): void;
         addChangeListener(listener: javax.swing.event.ChangeListener): void;
+        removeChangeListener(listener: javax.swing.event.ChangeListener): void;
     }
 }
 declare namespace javax.swing {
@@ -18704,13 +18761,13 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     class JScrollPane extends javax.swing.JComponent {
+        constructor(view: java.awt.Component);
         /**
          *
          */
         createHTML(): void;
         getViewport(): any;
         getVerticalScrollBar(): javax.swing.JScrollBar;
-        constructor();
     }
 }
 declare namespace javax.swing {
@@ -19468,6 +19525,7 @@ declare namespace javax.swing {
         configurePropertiesFromAction(a: javax.swing.Action): void;
         actionPropertyChanged(action: javax.swing.Action, propertyName: string): void;
         setActionCommandFromAction(action: javax.swing.Action): void;
+        setCaretPosition(position: number): void;
         createActionPropertyChangeListener(a: javax.swing.Action): java.beans.PropertyChangeListener;
         /**
          * Fetches the command list for the editor. This is the list of commands supported by the
@@ -19758,7 +19816,7 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     class JFormattedTextField extends javax.swing.JTextField {
-        constructor();
+        constructor(format?: any);
     }
 }
 declare namespace javax.swing {

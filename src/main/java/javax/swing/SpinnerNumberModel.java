@@ -70,11 +70,11 @@ public class SpinnerNumberModel implements SpinnerModel {
     // Notify all listeners
   }
 
-  public void setMinimum(Comparable minimum) {
+  public void setMinimum(Number minimum) {
     // TODO: Implement
   }
 
-  public void setMaximum(Comparable maximum) {
+  public void setMaximum(Number maximum) {
     // TODO: Implement
   }
 }

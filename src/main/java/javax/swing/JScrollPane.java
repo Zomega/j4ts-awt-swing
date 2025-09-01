@@ -3,9 +3,14 @@ package javax.swing;
 import static def.dom.Globals.document;
 
 import jsweet.util.StringTypes;
+import java.awt.Component;
 
 class JScrollPane extends JComponent {
-  // TODO
+  // TODO: Implement.
+
+  JScrollPane(Component view) {
+    // TODO: Implement
+  }
 
   @Override
   public void createHTML() {

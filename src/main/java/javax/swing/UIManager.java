@@ -12,4 +12,8 @@ public class UIManager {
         return "<undefided>";
     }
   }
+
+  static /*Border*/ Object getBorder(Object key) {
+    return null; // TODO: Implement? Mock?
+  }
 }

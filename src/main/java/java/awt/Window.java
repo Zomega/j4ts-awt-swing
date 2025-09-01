@@ -496,4 +496,8 @@ public class Window extends Container {
   public void setShape(Shape shape) {
     this.shape = (shape == null) ? null : new Path2D.Float(shape);
   }
+
+  public void setLocationRelativeTo(Component c) {
+    // TODO: Implement.
+  }
 } // class Window

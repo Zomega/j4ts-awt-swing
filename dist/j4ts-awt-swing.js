@@ -10838,6 +10838,9 @@ var java;
             Graphics.prototype.fillPolygon$java_awt_Polygon = function (p) {
                 this.fillPolygon$int_A$int_A$int(p.xpoints, p.ypoints, p.npoints);
             };
+            Graphics.prototype.drawChars = function (data, offset, length, x, y) {
+                this.drawString((function (str, index, len) { return str.substring(index, index + len); })((data).join(''), offset, length), x, y);
+            };
             Graphics.prototype.drawImage$java_awt_Image$int$int$java_awt_image_ImageObserver = function (img, x, y, observer) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
             Graphics.prototype.drawImage$java_awt_Image$int$int$int$int$java_awt_image_ImageObserver = function (img, x, y, width, height, observer) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
             Graphics.prototype.drawImage$java_awt_Image$int$int$java_awt_Color$java_awt_image_ImageObserver = function (img, x, y, bgcolor, observer) { throw new Error('cannot invoke abstract overloaded method... check your argument(s) type(s)'); };
@@ -14392,7 +14395,7 @@ var java;
     var awt;
     (function (awt) {
         var MediaTracker = /** @class */ (function () {
-            function MediaTracker() {
+            function MediaTracker(comp) {
             }
             MediaTracker.prototype.checkAll = function (load) {
                 if (load === void 0) { load = false; }
@@ -14401,7 +14404,20 @@ var java;
             MediaTracker.prototype.isErrorAny = function () {
                 return false;
             };
-            MediaTracker.prototype.waitForAll = function () {
+            MediaTracker.prototype.waitForAll$ = function () {
+            };
+            MediaTracker.prototype.waitForAll$long = function (ms) {
+                return false;
+            };
+            MediaTracker.prototype.waitForAll = function (ms) {
+                if (((typeof ms === 'number') || ms === null)) {
+                    return this.waitForAll$long(ms);
+                }
+                else if (ms === undefined) {
+                    return this.waitForAll$();
+                }
+                else
+                    throw new Error('invalid overload');
             };
             MediaTracker.prototype.addImage$java_awt_Image$int = function (image, id) {
             };
@@ -14416,6 +14432,9 @@ var java;
                 }
                 else
                     throw new Error('invalid overload');
+            };
+            MediaTracker.prototype.statusID = function (id, load) {
+                return 0;
             };
             return MediaTracker;
         }());
@@ -14806,7 +14825,20 @@ var java;
                     this.htmlElement.style.top = this.y + "px";
                 }
             };
+            Component.prototype.createImage$int$int = function (width, height) {
+                return null;
+            };
             Component.prototype.createImage = function (width, height) {
+                if (((typeof width === 'number') || width === null) && ((typeof height === 'number') || height === null)) {
+                    return this.createImage$int$int(width, height);
+                }
+                else if (((width != null) || width === null) && height === undefined) {
+                    return this.createImage$java_lang_Object(width);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            Component.prototype.createImage$java_lang_Object = function (producer) {
                 return null;
             };
             Component.prototype.getLocationOnScreen = function () {
@@ -15088,8 +15120,33 @@ var java;
             };
             Component.prototype.invalidate = function () {
             };
-            Component.prototype.repaint = function () {
+            Component.prototype.repaint$ = function () {
                 this.paint(this.getGraphics());
+            };
+            Component.prototype.repaint$long = function (tm) {
+                this.repaint$();
+            };
+            Component.prototype.repaint$int$int$int$int = function (x, y, width, height) {
+                this.repaint$();
+            };
+            Component.prototype.repaint$long$int$int$int$int = function (tm, x, y, width, height) {
+                this.repaint$();
+            };
+            Component.prototype.repaint = function (tm, x, y, width, height) {
+                if (((typeof tm === 'number') || tm === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof width === 'number') || width === null) && ((typeof height === 'number') || height === null)) {
+                    return this.repaint$long$int$int$int$int(tm, x, y, width, height);
+                }
+                else if (((typeof tm === 'number') || tm === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof width === 'number') || width === null) && height === undefined) {
+                    return this.repaint$int$int$int$int(tm, x, y, width);
+                }
+                else if (((typeof tm === 'number') || tm === null) && x === undefined && y === undefined && width === undefined && height === undefined) {
+                    return this.repaint$long(tm);
+                }
+                else if (tm === undefined && x === undefined && y === undefined && width === undefined && height === undefined) {
+                    return this.repaint$();
+                }
+                else
+                    throw new Error('invalid overload');
             };
             Component.prototype.addFocusListener = function (l) {
             };
@@ -15116,6 +15173,9 @@ var java;
             Component.prototype.setLocation$java_awt_Point = function (p) {
                 this.x = p.x;
                 this.y = p.y;
+            };
+            Component.prototype.getLocation = function () {
+                return null;
             };
             Component.prototype.getCursor = function () {
                 return this.cursor;
@@ -19109,10 +19169,25 @@ var javax;
                         return "<undefided>";
                 }
             };
+            UIManager.getBorder = function (key) {
+                return null;
+            };
             return UIManager;
         }());
         swing.UIManager = UIManager;
         UIManager["__class"] = "javax.swing.UIManager";
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var ToolTipManager = /** @class */ (function () {
+            function ToolTipManager() {
+            }
+            return ToolTipManager;
+        }());
+        swing.ToolTipManager = ToolTipManager;
+        ToolTipManager["__class"] = "javax.swing.ToolTipManager";
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -28933,6 +29008,46 @@ var javax;
 (function (java) {
     var awt;
     (function (awt) {
+        var ScrollPane = /** @class */ (function (_super) {
+            __extends(ScrollPane, _super);
+            function ScrollPane(view) {
+                var _this = this;
+                if (((view != null && view instanceof java.awt.Component) || view === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (view === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            ScrollPane.prototype.add = function (view) {
+            };
+            /**
+             *
+             */
+            ScrollPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-scrollpane";
+            };
+            ScrollPane.prototype.doLayout = function () {
+            };
+            return ScrollPane;
+        }(java.awt.Component));
+        awt.ScrollPane = ScrollPane;
+        ScrollPane["__class"] = "java.awt.ScrollPane";
+        ScrollPane["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         var Choice = /** @class */ (function (_super) {
             __extends(Choice, _super);
             function Choice() {
@@ -29599,11 +29714,25 @@ var javax;
     (function (awt) {
         var TextField = /** @class */ (function (_super) {
             __extends(TextField, _super);
-            function TextField(cols) {
-                var _this = _super.call(this) || this;
-                if (_this.actionListener === undefined) {
-                    _this.actionListener = null;
+            function TextField(text, columns) {
+                var _this = this;
+                if (((typeof text === 'string') || text === null) && ((typeof columns === 'number') || columns === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
                 }
+                else if (((typeof text === 'number') || text === null) && columns === undefined) {
+                    var __args = arguments;
+                    var cols = __args[0];
+                    _this = _super.call(this) || this;
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                }
+                else
+                    throw new Error('invalid overload');
                 return _this;
             }
             /**
@@ -29816,7 +29945,9 @@ var javax;
     (function (awt) {
         var List = /** @class */ (function (_super) {
             __extends(List, _super);
-            function List() {
+            function List(rows, multipleMode) {
+                if (rows === void 0) { rows = 0; }
+                if (multipleMode === void 0) { multipleMode = false; }
                 return _super.call(this) || this;
             }
             /**
@@ -29838,6 +29969,39 @@ var javax;
              */
             List.prototype.initHTML = function () {
                 _super.prototype.initHTML.call(this);
+            };
+            List.prototype.addItemListener = function (l) {
+            };
+            List.prototype.getSelectedIndex = function () {
+                return -1;
+            };
+            List.prototype.add$java_lang_String = function (item) {
+            };
+            List.prototype.add$java_lang_String$int = function (item, index) {
+            };
+            List.prototype.add = function (item, index) {
+                if (((typeof item === 'string') || item === null) && ((typeof index === 'number') || index === null)) {
+                    return this.add$java_lang_String$int(item, index);
+                }
+                else if (((typeof item === 'string') || item === null) && index === undefined) {
+                    return this.add$java_lang_String(item);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            List.prototype.remove = function (position) {
+            };
+            List.prototype.removeAll = function () {
+            };
+            List.prototype.replaceItem = function (newValue, index) {
+            };
+            List.prototype.makeVisible = function (index) {
+            };
+            List.prototype.getItemCount = function () {
+                return 0;
+            };
+            List.prototype.getItem = function (index) {
+                return "";
             };
             return List;
         }(java.awt.Component));
@@ -31706,6 +31870,37 @@ var javax;
         })(geom = awt.geom || (awt.geom = {}));
     })(awt = sun.awt || (sun.awt = {}));
 })(sun || (sun = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var DefaultCellEditor = /** @class */ (function (_super) {
+            __extends(DefaultCellEditor, _super);
+            function DefaultCellEditor(textField) {
+                var _this = this;
+                if (((textField != null && textField instanceof javax.swing.JTextField) || textField === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (((textField != null && textField instanceof javax.swing.JCheckBox) || textField === null)) {
+                    var __args = arguments;
+                    var checkBox = __args[0];
+                    _this = _super.call(this) || this;
+                }
+                else if (((textField != null && textField instanceof javax.swing.JComboBox) || textField === null)) {
+                    var __args = arguments;
+                    var comboBox = __args[0];
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            return DefaultCellEditor;
+        }(javax.swing.table.TableCellEditor));
+        swing.DefaultCellEditor = DefaultCellEditor;
+        DefaultCellEditor["__class"] = "javax.swing.DefaultCellEditor";
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
 (function (javax) {
     var swing;
     (function (swing) {
@@ -34128,6 +34323,17 @@ var javax;
              */
             WebGraphics2D.prototype.setStroke = function (s) {
             };
+            /**
+             *
+             * @param {number} x
+             * @param {number} y
+             * @param {number} width
+             * @param {number} height
+             * @param {number} dx
+             * @param {number} dy
+             */
+            WebGraphics2D.prototype.copyArea = function (x, y, width, height, dx, dy) {
+            };
             return WebGraphics2D;
         }(java.awt.Graphics2D));
         awt.WebGraphics2D = WebGraphics2D;
@@ -34931,7 +35137,7 @@ var javax;
                         if ((_this.htmlCanvas.width !== _this.htmlElement.offsetWidth) || (_this.htmlCanvas.height !== _this.htmlElement.offsetHeight)) {
                             _this.htmlCanvas.width = _this.htmlElement.offsetWidth;
                             _this.htmlCanvas.height = _this.htmlElement.offsetHeight;
-                            _this.repaint();
+                            _this.repaint$();
                         }
                         return e;
                     };
@@ -35372,6 +35578,8 @@ var javax;
             };
             Window.prototype.setShape = function (shape) {
                 this.shape = (shape == null) ? null : new java.awt.geom.Path2D.Float(shape);
+            };
+            Window.prototype.setLocationRelativeTo = function (c) {
             };
             Window.loaded = false;
             Window.OPENED = 1;
@@ -39631,7 +39839,7 @@ var javax;
                 this.orientation = orientation;
                 this.firePropertyChange("orientation", oldValue, orientation);
                 this.revalidate();
-                this.repaint();
+                this.repaint$();
             };
             /*private*/ JSeparator.prototype.checkOrientation = function (orientation) {
                 switch ((orientation)) {
@@ -39905,10 +40113,10 @@ var javax;
                 if (oldDefault !== defaultButton) {
                     this.defaultButton = defaultButton;
                     if (oldDefault != null) {
-                        oldDefault.repaint();
+                        oldDefault.repaint$();
                     }
                     if (defaultButton != null) {
-                        defaultButton.repaint();
+                        defaultButton.repaint$();
                     }
                 }
                 this.firePropertyChange("defaultButton", oldDefault, defaultButton);
@@ -40920,7 +41128,7 @@ var javax;
                     window.onresize = function (e) {
                         _this.htmlCanvas.width = _this.htmlElement.offsetWidth;
                         _this.htmlCanvas.height = _this.htmlElement.offsetHeight;
-                        _this.repaint();
+                        _this.repaint$();
                         return e;
                     };
                 }
@@ -40935,7 +41143,7 @@ var javax;
                 this.htmlCanvas.style.font = java.awt.Font.decode(null).toHTML();
                 this.getGraphics().setFont(java.awt.Font.decode(null));
                 if (!firstTime) {
-                    this.repaint();
+                    this.repaint$();
                 }
             };
             /**
@@ -40956,7 +41164,7 @@ var javax;
                 _super.prototype.setSize$int$int.call(this, width, height);
                 this.htmlCanvas.width = width;
                 this.htmlCanvas.height = height;
-                this.repaint();
+                this.repaint$();
             };
             /**
              *
@@ -41166,6 +41374,9 @@ var javax;
             };
             JSpinner.prototype.addChangeListener = function (listener) {
                 this.model.addChangeListener(listener);
+            };
+            JSpinner.prototype.removeChangeListener = function (listener) {
+                this.model.removeChangeListener(listener);
             };
             return JSpinner;
         }(javax.swing.JComponent));
@@ -41873,7 +42084,7 @@ var javax;
     (function (swing) {
         var JScrollPane = /** @class */ (function (_super) {
             __extends(JScrollPane, _super);
-            function JScrollPane() {
+            function JScrollPane(view) {
                 return _super.call(this) || this;
             }
             /**
@@ -45519,7 +45730,7 @@ var javax;
                 }
                 this.firePropertyChange("horizontalAlignment", oldValue, this.horizontalAlignment);
                 this.invalidate();
-                this.repaint();
+                this.repaint$();
             };
             /**
              * Returns the number of columns in this <code>TextField</code>.
@@ -45710,6 +45921,8 @@ var javax;
             };
             JTextField.prototype.setActionCommandFromAction = function (action) {
                 this.setActionCommand((action == null) ? null : action.getValue(javax.swing.Action.ACTION_COMMAND_KEY));
+            };
+            JTextField.prototype.setCaretPosition = function (position) {
             };
             JTextField.prototype.createActionPropertyChangeListener = function (a) {
                 return new JTextField.TextFieldActionPropertyChangeListener(this, a);
@@ -46412,7 +46625,7 @@ var javax;
                 MenuItemFocusListener.prototype.focusLost = function (event) {
                     var mi = event.getSource();
                     if (mi.isFocusPainted()) {
-                        mi.repaint();
+                        mi.repaint$();
                     }
                 };
                 return MenuItemFocusListener;
@@ -46566,8 +46779,19 @@ var javax;
     (function (swing) {
         var JFormattedTextField = /** @class */ (function (_super) {
             __extends(JFormattedTextField, _super);
-            function JFormattedTextField() {
-                return _super.call(this) || this;
+            function JFormattedTextField(format) {
+                var _this = this;
+                if (((format != null) || format === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (format === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
             }
             return JFormattedTextField;
         }(javax.swing.JTextField));
