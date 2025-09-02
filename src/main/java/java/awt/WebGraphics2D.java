@@ -557,26 +557,26 @@ public class WebGraphics2D extends Graphics2D {
   public void copyArea(int x, int y, int width, int height, int dx, int dy) {
     // TODO: Implement
     /*
-    function copyCanvasArea(sourceCanvas, x, y, width, height) {
-    // Create a new, temporary canvas element
-    const tempCanvas = document.createElement('canvas');
-    const tempContext = tempCanvas.getContext('2d');
+      function copyCanvasArea(sourceCanvas, x, y, width, height) {
+      // Create a new, temporary canvas element
+      const tempCanvas = document.createElement('canvas');
+      const tempContext = tempCanvas.getContext('2d');
 
-    // Set the dimensions of the temporary canvas to match the area you are copying
-    tempCanvas.width = width;
-    tempCanvas.height = height;
+      // Set the dimensions of the temporary canvas to match the area you are copying
+      tempCanvas.width = width;
+      tempCanvas.height = height;
 
-    // Draw the specified area of the source canvas onto the temporary canvas
-    tempContext.drawImage(
-      sourceCanvas, // The source canvas to copy from
-      x, y, // The starting x and y coordinates of the area to copy
-      width, height, // The width and height of the area to copy
-      0, 0, // The destination x and y coordinates on the temporary canvas
-      width, height // The destination width and height on the temporary canvas
-    );
+      // Draw the specified area of the source canvas onto the temporary canvas
+      tempContext.drawImage(
+        sourceCanvas, // The source canvas to copy from
+        x, y, // The starting x and y coordinates of the area to copy
+        width, height, // The width and height of the area to copy
+        0, 0, // The destination x and y coordinates on the temporary canvas
+        width, height // The destination width and height on the temporary canvas
+      );
 
-    return tempCanvas;
-  }
-    */
+      return tempCanvas;
+    }
+      */
   }
 }

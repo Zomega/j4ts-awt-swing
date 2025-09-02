@@ -3,8 +3,8 @@ package java.awt;
 import static def.dom.Globals.document;
 
 import def.dom.HTMLDivElement;
-import jsweet.util.StringTypes;
 import java.awt.event.ItemListener;
+import jsweet.util.StringTypes;
 
 public class List extends Component {
   public List() {
@@ -15,8 +15,7 @@ public class List extends Component {
     this(rows, false);
   }
 
-  public List(int rows,
-            boolean multipleMode) {
+  public List(int rows, boolean multipleMode) {
     // TODO: Implement
   }
 
@@ -48,8 +47,7 @@ public class List extends Component {
     // TODO: Implement
   }
 
-  public void add(String item,
-                int index) {
+  public void add(String item, int index) {
     // TODO: Implement
   }
 
@@ -62,8 +60,7 @@ public class List extends Component {
     // TODO: Implement
   }
 
-  public void replaceItem(String newValue,
-                        int index) {
+  public void replaceItem(String newValue, int index) {
     // TODO: Implement
   }
 

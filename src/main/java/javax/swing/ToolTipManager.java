@@ -1,4 +1,3 @@
 package javax.swing;
 
-public class ToolTipManager {
-}
+public class ToolTipManager {}

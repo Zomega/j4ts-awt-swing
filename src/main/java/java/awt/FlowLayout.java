@@ -67,22 +67,22 @@ public class FlowLayout implements LayoutManager {
 
     // hack: force grid layout table to not take 100% of the height
     // TODO: Fix this.
-    //if (component instanceof Container
+    // if (component instanceof Container
     //    && ((Container) component).getLayout() instanceof GridLayout) {
     //  ((GridLayout) ((Container) component).getLayout()).table.style.height = "auto";
-    //}
+    // }
     HTMLElement container = parent.getHTMLElement();
     switch (align) {
       case RIGHT:
       case TRAILING:
-          container.insertBefore(element, container.firstChild);
-          break;
+        container.insertBefore(element, container.firstChild);
+        break;
       case CENTER:
       case LEFT:
       case LEADING:
       default:
-          container.appendChild(element);
-          break;
+        container.appendChild(element);
+        break;
     }
   }
 

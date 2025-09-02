@@ -420,18 +420,11 @@ public abstract class Component implements HTMLComponent {
     this.repaint(); // Ignore time.
   }
 
-  public void repaint(int x,
-                    int y,
-                    int width,
-                    int height) {
+  public void repaint(int x, int y, int width, int height) {
     this.repaint(); // TODO: Only repaint the rectangle?
   }
 
-  public void repaint(long tm,
-                    int x,
-                    int y,
-                    int width,
-                    int height) {
+  public void repaint(long tm, int x, int y, int width, int height) {
     this.repaint(); // TODO: Only repaint the rectangle?
   }
 
@@ -474,46 +467,46 @@ public abstract class Component implements HTMLComponent {
 
   MouseWheelListener[] mouseWheelListeners = {};
 
-  public  void addMouseWheelListener(MouseWheelListener l) {
+  public void addMouseWheelListener(MouseWheelListener l) {
     if (l == null) {
       return;
     }
     array(mouseWheelListeners).push(l);
   }
 
-  public  void removeMouseWheelListener(MouseWheelListener l) {
+  public void removeMouseWheelListener(MouseWheelListener l) {
     if (l == null) {
       return;
     }
     array(mouseWheelListeners).splice(array(mouseWheelListeners).indexOf(l), 1);
   }
 
-  public  MouseWheelListener[] getMouseWheelListeners() {
+  public MouseWheelListener[] getMouseWheelListeners() {
     return mouseWheelListeners;
   }
 
   MouseListener[] mouseListeners = {};
 
-  public  void addMouseListener(MouseListener l) {
+  public void addMouseListener(MouseListener l) {
     if (l == null) {
       return;
     }
     array(mouseListeners).push(l);
   }
 
-  public  void removeMouseListener(MouseListener l) {
+  public void removeMouseListener(MouseListener l) {
     if (l == null) {
       return;
     }
     array(mouseListeners).splice(array(mouseListeners).indexOf(l), 1);
   }
 
-  public  MouseListener[] getMouseListeners() {
+  public MouseListener[] getMouseListeners() {
     return mouseListeners;
   }
 
   // TODO:Implement!
-  public  void addMouseMotionListener(MouseMotionListener l) {
+  public void addMouseMotionListener(MouseMotionListener l) {
     return;
   }
 

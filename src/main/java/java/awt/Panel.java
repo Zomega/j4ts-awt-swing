@@ -2,7 +2,6 @@ package java.awt;
 
 import static def.dom.Globals.document;
 import static def.dom.Globals.window;
-import static def.dom.Globals.console;
 
 import def.dom.HTMLCanvasElement;
 import jsweet.util.StringTypes;

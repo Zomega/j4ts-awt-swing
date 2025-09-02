@@ -2,8 +2,8 @@ package javax.swing;
 
 import static def.dom.Globals.document;
 
-import jsweet.util.StringTypes;
 import java.awt.Component;
+import jsweet.util.StringTypes;
 
 class JScrollPane extends JComponent {
   // TODO: Implement.

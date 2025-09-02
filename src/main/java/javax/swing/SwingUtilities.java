@@ -1,8 +1,8 @@
 package javax.swing;
 
 import def.dom.Globals;
-import java.awt.Point;
 import java.awt.Component;
+import java.awt.Point;
 
 public class SwingUtilities implements SwingConstants {
   private SwingUtilities() {
@@ -17,8 +17,7 @@ public class SwingUtilities implements SwingConstants {
     doRun.run();
   }
 
-  public static void convertPointToScreen(Point p,
-                                        Component c) {
+  public static void convertPointToScreen(Point p, Component c) {
     // TODO: Implement
   }
 }

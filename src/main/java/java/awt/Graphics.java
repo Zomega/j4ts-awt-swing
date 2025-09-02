@@ -163,8 +163,9 @@ public abstract class Graphics {
   //	public abstract void drawString(AttributedCharacterIterator iterator, int x, int y);
 
   public void drawChars(char data[], int offset, int length, int x, int y) {
-  		drawString(new String(data, offset, length), x, y);
+    drawString(new String(data, offset, length), x, y);
   }
+
   //
   //	public void drawBytes(byte data[], int offset, int length, int x, int y) {
   //		drawString(new String(data, 0, offset, length), x, y);

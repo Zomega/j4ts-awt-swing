@@ -2,7 +2,6 @@ package java.awt;
 
 import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
-import static def.dom.Globals.console;
 
 import def.dom.*;
 import jsweet.util.StringTypes;

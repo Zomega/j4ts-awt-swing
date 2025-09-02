@@ -156,7 +156,7 @@ public class JSpinner extends JComponent {
     this.model.addChangeListener(listener);
   }
 
-  void  removeChangeListener(ChangeListener listener) {
+  void removeChangeListener(ChangeListener listener) {
     this.model.removeChangeListener(listener);
   }
 }

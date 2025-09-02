@@ -281,32 +281,32 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable {
   }
 
   private void add(Component component, String position) {
-      if (component == null) {
-          return;
-      }
+    if (component == null) {
+      return;
+    }
 
-      HTMLDivElement componentDiv = any(document.createElement(StringTypes.div));
-      componentDiv.className = "applet-border-layout-item " + position.toLowerCase();
-      componentDiv.appendChild(component.getHTMLElement());
+    HTMLDivElement componentDiv = any(document.createElement(StringTypes.div));
+    componentDiv.className = "applet-border-layout-item " + position.toLowerCase();
+    componentDiv.appendChild(component.getHTMLElement());
 
-      // Place components in the correct order
-      switch (position) {
-          case NORTH:
-              container.insertBefore(componentDiv, container.firstChild);
-              break;
-          case SOUTH:
-              container.appendChild(componentDiv);
-              break;
-          case WEST:
-              middleRow.insertBefore(componentDiv, middleRow.firstChild);
-              break;
-          case EAST:
-              middleRow.appendChild(componentDiv);
-              break;
-          case CENTER:
-              middleRow.appendChild(componentDiv);
-              break;
-      }
+    // Place components in the correct order
+    switch (position) {
+      case NORTH:
+        container.insertBefore(componentDiv, container.firstChild);
+        break;
+      case SOUTH:
+        container.appendChild(componentDiv);
+        break;
+      case WEST:
+        middleRow.insertBefore(componentDiv, middleRow.firstChild);
+        break;
+      case EAST:
+        middleRow.appendChild(componentDiv);
+        break;
+      case CENTER:
+        middleRow.appendChild(componentDiv);
+        break;
+    }
   }
 
   public String toString() {
