@@ -30,6 +30,7 @@ import static jsweet.util.Lang.array;
 import static jsweet.util.Lang.string;
 
 import def.dom.HTMLDivElement;
+import def.dom.KeyboardEvent;
 import java.awt.*;
 import javax.swing.text.JTextComponent;
 import jsweet.util.StringTypes;
@@ -64,21 +65,36 @@ public class JTextArea extends JTextComponent {
     getHTMLElement().innerText = text;
     getHTMLElement().contentEditable = String.valueOf(isEditable());
     getHTMLElement().style.backgroundColor = Color.WHITE.toHTML();
-    getHTMLElement().style.font = Font.decode(null).toHTML();
-    getHTMLElement().style.minHeight =
-        rows * 25 + "px"; // TODO not exact minimum values, need to measure with font metrics.
-    getHTMLElement().style.minWidth = columns * 11 + "px";
-    // initActionListeners();
+    Font font = Font.decode(null);
+    getHTMLElement().style.font = font.toHTML();
+    FontMetrics metrics = new FontMetrics(font);
+    if (rows > 0) {
+      getHTMLElement().style.minHeight = (rows * metrics.getHeight()) + "px";
+    }
+    if (columns > 0) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < columns; i++) {
+        sb.append("m");
+      }
+      getHTMLElement().style.minWidth = metrics.stringWidth(sb.toString()) + "px";
+    }
+    initActionListeners();
   }
 
-  // private void initActionListeners() {
-  // for (ActionListener actionListener : getActionListeners()) {
-  // htmlElement.addEventListener(StringTypes.click, e -> {
-  // actionListener.actionPerformed(new ActionEvent(this, 0, null));
-  // return e;
-  // });
-  // }
-  // }
+  private void initActionListeners() {
+    for (Object actionListener : getActionListeners()) {
+      htmlElement.addEventListener(
+          StringTypes.keydown,
+          e -> {
+            KeyboardEvent ke = (KeyboardEvent) e;
+            if (ke.keyCode == 13) {
+              ((java.awt.event.ActionListener) actionListener)
+                  .actionPerformed(new java.awt.event.ActionEvent(this, 0, null));
+            }
+            return e;
+          });
+    }
+  }
 
   private static final String uiClassID = "TextAreaUI";
 

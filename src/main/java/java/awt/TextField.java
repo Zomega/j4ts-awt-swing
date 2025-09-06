@@ -4,20 +4,32 @@ import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 
 import def.dom.HTMLInputElement;
+import def.dom.KeyboardEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import jsweet.util.StringTypes;
 
 public class TextField extends Component {
 
+  String text;
+  int columns;
   ActionListener actionListener;
 
-  public TextField(int cols) {
-    // TODO: Implement?
+  public TextField() {
+    this("", 0);
+  }
+
+  public TextField(String text) {
+    this(text, 0);
+  }
+
+  public TextField(int columns) {
+    this("", columns);
   }
 
   public TextField(String text, int columns) {
-    // TODO: Implement?
+    this.text = text;
+    this.columns = columns;
   }
 
   @Override
@@ -38,15 +50,24 @@ public class TextField extends Component {
   @Override
   public void initHTML() {
     super.initHTML();
+    if (text != null) {
+      getHTMLElement().value = text;
+    }
+    if (columns > 0) {
+      getHTMLElement().size = columns;
+    }
     initActionListener();
   }
 
   private void initActionListener() {
     if (actionListener != null) {
-      htmlElement.onclick =
-          e -> {
-            this.actionListener.actionPerformed(new ActionEvent(this, 0, null));
-            return e;
+      htmlElement.onkeydown =
+          (e) -> {
+            KeyboardEvent ke = (KeyboardEvent) e;
+            if (ke.keyCode == 13) {
+              this.actionListener.actionPerformed(new ActionEvent(this, 0, null));
+            }
+            return ke;
           };
     }
   }

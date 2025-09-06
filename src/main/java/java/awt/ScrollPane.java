@@ -4,19 +4,28 @@ import static def.dom.Globals.document;
 
 import jsweet.util.StringTypes;
 
-public class ScrollPane extends Component {
-  // TODO: Implement.
+public class ScrollPane extends Container {
 
-  ScrollPane() {
-    // TODO: Implement
+  protected Component view;
+
+  public ScrollPane() {
+    this(null);
   }
 
-  ScrollPane(Component view) {
-    // TODO: Implement
+  public ScrollPane(Component view) {
+    this.view = view;
+    if (view != null) {
+        add(view);
+    }
   }
 
-  public void add(Component view) {
-    // TODO: Implement
+  @Override
+  public void add(Component comp, Object constraints) {
+      this.view = comp;
+      super.add(comp, constraints);
+      if (htmlElement != null) {
+          htmlElement.appendChild(comp.getHTMLElement());
+      }
   }
 
   @Override
@@ -26,6 +35,7 @@ public class ScrollPane extends Component {
     }
     htmlElement = document.createElement(StringTypes.div);
     htmlElement.className = "applet-scrollpane";
+    htmlElement.style.overflow = "auto";
   }
 
   public void doLayout() {

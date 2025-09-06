@@ -12,95 +12,58 @@ import javax.swing.event.ChangeListener;
  *
  * <p>TODO: AI Implemented Stub. Finish
  */
+import jsweet.util.StringTypes;
+
 public class JSpinner extends JComponent {
 
   private SpinnerModel model;
-  private HTMLElement spinnerElement;
-  private HTMLInputElement valueEditor;
-  private HTMLElement upButton;
-  private HTMLElement downButton;
 
-  /** Constructs a spinner with an Integer SpinnerNumberModel with initial value 0. */
   public JSpinner() {
-    this(new SpinnerNumberModel(0, null, null, 1));
+    this(new SpinnerNumberModel());
   }
 
-  /**
-   * Constructs a spinner for the given model. The spinner has a set of previous/next buttons, and
-   * an editor appropriate for the model.
-   *
-   * @param model the SpinnerModel that defines the sequence of values.
-   */
   public JSpinner(SpinnerModel model) {
     if (model == null) {
       throw new NullPointerException("model cannot be null");
     }
     this.model = model;
-    createHTML(); // TODO: This might be in the wrong place.
+    this.model.addChangeListener(e -> updateValueInEditor());
+  }
 
-    this.model.addChangeListener(
-        e -> {
-          updateValueInEditor();
-        });
+  @Override
+  public HTMLInputElement getHTMLElement() {
+    return (HTMLInputElement) super.getHTMLElement();
   }
 
   @Override
   public void createHTML() {
-    if (this.spinnerElement != null) {
+    if (htmlElement != null) {
       return;
     }
+    htmlElement = document.createElement(StringTypes.input);
+    getHTMLElement().type = "number";
+    getHTMLElement().className = "applet-jspinner";
 
-    // Create the main container element for the spinner
-    this.spinnerElement = (HTMLElement) document.createElement("div");
-    this.spinnerElement.className = "applet-jspinner";
-
-    // Create the editor field
-    this.valueEditor = (HTMLInputElement) document.createElement("input");
-    this.valueEditor.type = "text";
-    this.valueEditor.className = "applet-jspinner-input";
-    this.spinnerElement.appendChild(this.valueEditor);
-
-    // Create the buttons container
-    HTMLElement buttonsContainer = (HTMLElement) document.createElement("div");
-    buttonsContainer.className = "applet-jspinner-buttons";
-
-    // Create the up button
-    this.upButton = (HTMLElement) document.createElement("button");
-    this.upButton.className = "applet-jspinner-button-up";
-    this.upButton.textContent = "▲";
-    buttonsContainer.appendChild(this.upButton);
-
-    // Create the down button
-    this.downButton = (HTMLElement) document.createElement("button");
-    this.downButton.className = "applet-jspinner-button-down";
-    this.downButton.textContent = "▼";
-    buttonsContainer.appendChild(this.downButton);
-
-    this.spinnerElement.appendChild(buttonsContainer);
-
-    // Add event listeners to the buttons
-    this.upButton.addEventListener(
-        "click",
-        e -> {
-          Object nextValue = model.getNextValue();
-          if (nextValue != null) {
-            model.setValue(nextValue);
-          }
-        });
-
-    this.downButton.addEventListener(
-        "click",
-        e -> {
-          Object previousValue = model.getPreviousValue();
-          if (previousValue != null) {
-            model.setValue(previousValue);
-          }
-        });
+    getHTMLElement().onchange = e -> {
+      setValue(getHTMLElement().valueAsNumber);
+      return e;
+    };
   }
 
   @Override
-  public HTMLElement getHTMLElement() {
-    return this.spinnerElement;
+  public void initHTML() {
+    super.initHTML();
+    updateValueInEditor();
+    if (model instanceof SpinnerNumberModel) {
+      SpinnerNumberModel numberModel = (SpinnerNumberModel) model;
+      getHTMLElement().step = numberModel.getStepSize().toString();
+      if (numberModel.getMinimum() != null) {
+        getHTMLElement().min = numberModel.getMinimum().toString();
+      }
+      if (numberModel.getMaximum() != null) {
+        getHTMLElement().max = numberModel.getMaximum().toString();
+      }
+    }
   }
 
   /**
@@ -112,20 +75,18 @@ public class JSpinner extends JComponent {
     return this.model;
   }
 
-  /**
-   * Changes the model that represents the value of this spinner.
-   *
-   * @param model the new SpinnerModel
-   */
   public void setModel(SpinnerModel model) {
-    SpinnerModel oldModel = getModel();
-    if (oldModel != null) {
-      // Remove listeners from old model
-      // Not implemented for this simple example
+    if (model == null) {
+      throw new NullPointerException("model cannot be null");
+    }
+    if (this.model != null) {
+      this.model.removeChangeListener(e -> updateValueInEditor());
     }
     this.model = model;
-    // Add listeners to new model
-    // Not implemented for this simple example
+    this.model.addChangeListener(e -> updateValueInEditor());
+    if (htmlElement != null) {
+      initHTML();
+    }
   }
 
   /**
@@ -147,8 +108,13 @@ public class JSpinner extends JComponent {
   }
 
   private void updateValueInEditor() {
-    if (this.valueEditor != null && this.model != null) {
-      this.valueEditor.value = this.model.getValue().toString();
+    if (getHTMLElement() != null && this.model != null) {
+        Object value = this.model.getValue();
+        if (value instanceof Number) {
+            getHTMLElement().valueAsNumber = ((Number) value).doubleValue();
+        } else {
+            getHTMLElement().value = value.toString();
+        }
     }
   }
 

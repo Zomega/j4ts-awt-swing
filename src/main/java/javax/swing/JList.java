@@ -25,8 +25,11 @@
 
 package javax.swing;
 
+import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 
+import def.dom.HTMLDivElement;
+import def.js.Array;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -262,7 +265,51 @@ public class JList<E> extends JComponent {
 
   @Override
   public void createHTML() {
-    // TODO
+    if (htmlElement != null) {
+        return;
+    }
+    htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jlist";
+    htmlElement.style.overflow = "auto";
+    htmlElement.style.border = "1px solid #C0C0C0";
+  }
+
+  @Override
+  public void initHTML() {
+      super.initHTML();
+      refreshItems();
+  }
+
+  private void refreshItems() {
+      if (htmlElement == null) {
+          return;
+      }
+      htmlElement.innerHTML = "";
+      ListModel<E> model = getModel();
+      for (int i = 0; i < model.getSize(); i++) {
+          final int index = i;
+          E item = model.getElementAt(i);
+
+          HTMLDivElement itemElement = (HTMLDivElement) document.createElement(StringTypes.div);
+          itemElement.className = "applet-jlist-item";
+          itemElement.innerText = item.toString();
+          itemElement.style.padding = "2px 4px";
+
+          if (getSelectionModel().isSelectedIndex(index)) {
+              itemElement.style.backgroundColor = getSelectionBackground().toHTML();
+              itemElement.style.color = getSelectionForeground().toHTML();
+          } else {
+              itemElement.style.backgroundColor = getBackground().toHTML();
+              itemElement.style.color = getForeground().toHTML();
+          }
+
+          itemElement.onclick = (e) -> {
+              getSelectionModel().setSelectionInterval(index, index);
+              return e;
+          };
+
+          htmlElement.appendChild(itemElement);
+      }
   }
 
   /**
@@ -1266,6 +1313,7 @@ public class JList<E> extends JComponent {
         ((ListSelectionListener) listeners[i + 1]).valueChanged(e);
       }
     }
+    refreshItems();
   }
 
   /*

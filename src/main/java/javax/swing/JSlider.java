@@ -27,7 +27,9 @@ package javax.swing;
 
 import static def.dom.Globals.document;
 
+import def.dom.HTMLDataListElement;
 import def.dom.HTMLInputElement;
+import def.dom.HTMLOptionElement;
 import java.awt.Font;
 import java.io.Serializable;
 import javax.swing.event.ChangeEvent;
@@ -37,9 +39,11 @@ import jsweet.util.StringTypes;
 @SuppressWarnings("serial")
 public class JSlider extends JComponent implements SwingConstants {
 
-  @Override
-  public HTMLInputElement getHTMLElement() {
-    return (HTMLInputElement) super.getHTMLElement();
+  public HTMLInputElement getSliderElement() {
+    if (htmlElement == null) {
+      return null;
+    }
+    return (HTMLInputElement) htmlElement.firstElementChild;
   }
 
   @Override
@@ -47,42 +51,52 @@ public class JSlider extends JComponent implements SwingConstants {
     if (htmlElement != null) {
       return;
     }
-    htmlElement = document.createElement(StringTypes.input);
-    getHTMLElement().style.margin = "0px";
-    getHTMLElement().style.padding = "0px";
-    getHTMLElement().type = "range";
-    getHTMLElement().onchange =
+    htmlElement = document.createElement(StringTypes.div);
+    htmlElement.className = "applet-jslider-container";
+
+    HTMLInputElement slider = (HTMLInputElement) document.createElement(StringTypes.input);
+    slider.style.margin = "0px";
+    slider.style.padding = "0px";
+    slider.type = "range";
+    slider.onchange =
         e -> {
-          setValue(Integer.parseInt(getHTMLElement().value));
+          setValue(Integer.parseInt(slider.value));
           return null;
         };
-    getHTMLElement().oninput =
+    slider.oninput =
         e -> {
-          setValue(Integer.parseInt(getHTMLElement().value));
+          setValue(Integer.parseInt(slider.value));
           return null;
         };
+
+    htmlElement.appendChild(slider);
+
+    ticksDataList = (HTMLDataListElement) document.createElement(StringTypes.datalist);
+    ticksDataList.id = "ticks-" + slider.id;
+    slider.setAttribute("list", ticksDataList.id);
+    htmlElement.appendChild(ticksDataList);
   }
 
   @Override
   public void initHTML() {
     super.initHTML();
-    getHTMLElement().min = "" + getMinimum();
-    getHTMLElement().max = "" + getMaximum();
-    getHTMLElement().step = "" + 1;
-    getHTMLElement().value = "" + getValue();
+    getSliderElement().min = "" + getMinimum();
+    getSliderElement().max = "" + getMaximum();
+    getSliderElement().step = "" + 1;
+    getSliderElement().value = "" + getValue();
     try {
-      if (getHTMLElement().hasAttribute("orient")) {
-        getHTMLElement()
+      if (getSliderElement().hasAttribute("orient")) {
+        getSliderElement()
             .setAttribute("orient", getOrientation() == VERTICAL ? "vertical" : "horizontal");
       }
-      if (getHTMLElement().hasAttribute("-webkit-appearance")) {
-        getHTMLElement()
+      if (getSliderElement().hasAttribute("-webkit-appearance")) {
+        getSliderElement()
             .setAttribute(
                 "-webkit-appearance",
                 getOrientation() == VERTICAL ? "slider-vertical" : "slider-horizontal");
       }
-      if (getHTMLElement().hasAttribute("writing-mode")) {
-        getHTMLElement()
+      if (getSliderElement().hasAttribute("writing-mode")) {
+        getSliderElement()
             .setAttribute("writing-mode", getOrientation() == VERTICAL ? "bt-lr" : null);
       }
     } catch (Exception e) {
@@ -102,6 +116,7 @@ public class JSlider extends JComponent implements SwingConstants {
   private boolean isInverted = false;
 
   protected BoundedRangeModel sliderModel;
+  protected HTMLDataListElement ticksDataList;
 
   protected int majorTickSpacing;
 
@@ -228,8 +243,8 @@ public class JSlider extends JComponent implements SwingConstants {
     }
     m.setValue(n);
 
-    if (getHTMLElement().valueAsNumber != getValue()) {
-      getHTMLElement().valueAsNumber = getValue();
+    if (getSliderElement().valueAsNumber != getValue()) {
+      getSliderElement().valueAsNumber = getValue();
     }
   }
 
@@ -318,95 +333,109 @@ public class JSlider extends JComponent implements SwingConstants {
    * @see #setMajorTickSpacing
    */
 
-  /* TODO not working at all :( it need to integrate some fancy lib
-
   public int getMajorTickSpacing() {
-  	return majorTickSpacing;
+    return majorTickSpacing;
   }
 
   public void setMajorTickSpacing(int n) {
-  	int oldValue = majorTickSpacing;
-  	majorTickSpacing = n;
-  	firePropertyChange("majorTickSpacing", oldValue, majorTickSpacing);
-  	if (htmlElement != null) {
-  		initHTML();
-  	}
+    int oldValue = majorTickSpacing;
+    majorTickSpacing = n;
+    if (getSnapToTicks() && getSliderElement() != null) {
+      getSliderElement().step = "" + majorTickSpacing;
+    }
+    firePropertyChange("majorTickSpacing", oldValue, majorTickSpacing);
+    if (htmlElement != null) {
+      initHTML();
+    }
   }
 
   public int getMinorTickSpacing() {
-  	return minorTickSpacing;
+    return minorTickSpacing;
   }
 
   public void setMinorTickSpacing(int n) {
-  	int oldValue = minorTickSpacing;
-  	minorTickSpacing = n;
-  	firePropertyChange("minorTickSpacing", oldValue, minorTickSpacing);
-  	if (htmlElement != null) {
-  		initHTML();
-  	}
+    int oldValue = minorTickSpacing;
+    minorTickSpacing = n;
+    firePropertyChange("minorTickSpacing", oldValue, minorTickSpacing);
+    if (htmlElement != null) {
+      initHTML();
+    }
   }
 
   public boolean getSnapToTicks() {
-  	return snapToTicks;
+    return snapToTicks;
   }
 
   boolean getSnapToValue() {
-  	return snapToValue;
+    return snapToValue;
   }
 
   public void setSnapToTicks(boolean b) {
-  	boolean oldValue = snapToTicks;
-  	snapToTicks = b;
-  	firePropertyChange("snapToTicks", oldValue, snapToTicks);
+    boolean oldValue = snapToTicks;
+    snapToTicks = b;
+    if (getSliderElement() != null) {
+      if (snapToTicks) {
+        getSliderElement().step = "" + getMajorTickSpacing();
+      } else {
+        getSliderElement().step = "" + 1;
+      }
+    }
+    firePropertyChange("snapToTicks", oldValue, snapToTicks);
   }
 
   void setSnapToValue(boolean b) {
-  	boolean oldValue = snapToValue;
-  	snapToValue = b;
-  	firePropertyChange("snapToValue", oldValue, snapToValue);
+    boolean oldValue = snapToValue;
+    snapToValue = b;
+    firePropertyChange("snapToValue", oldValue, snapToValue);
   }
 
   public boolean getPaintTicks() {
-  	return paintTicks;
+    return paintTicks;
   }
 
   public void setPaintTicks(boolean b) {
-  	boolean oldValue = paintTicks;
-  	paintTicks = b;
-  	firePropertyChange("paintTicks", oldValue, paintTicks);
-  	if (paintTicks != oldValue) {
-  		revalidate();
-  		repaint();
-  	}
+    boolean oldValue = paintTicks;
+    paintTicks = b;
+    firePropertyChange("paintTicks", oldValue, paintTicks);
+
+    if (ticksDataList != null) {
+      ticksDataList.innerHTML = "";
+      if (paintTicks && getMajorTickSpacing() > 0) {
+        for (int i = getMinimum(); i <= getMaximum(); i += getMajorTickSpacing()) {
+          HTMLOptionElement option = (HTMLOptionElement) document.createElement("option");
+          option.value = "" + i;
+          ticksDataList.appendChild(option);
+        }
+      }
+    }
   }
 
   public boolean getPaintTrack() {
-  	return paintTrack;
+    return paintTrack;
   }
 
   public void setPaintTrack(boolean b) {
-  	boolean oldValue = paintTrack;
-  	paintTrack = b;
-  	firePropertyChange("paintTrack", oldValue, paintTrack);
-  	if (paintTrack != oldValue) {
-  		repaint();
-  	}
+    boolean oldValue = paintTrack;
+    paintTrack = b;
+    firePropertyChange("paintTrack", oldValue, paintTrack);
+    if (paintTrack != oldValue) {
+      // repaint();
+    }
   }
 
   public boolean getPaintLabels() {
-  	return paintLabels;
+    return paintLabels;
   }
 
   public void setPaintLabels(boolean b) {
-  	boolean oldValue = paintLabels;
-  	paintLabels = b;
-  	firePropertyChange("paintLabels", oldValue, paintLabels);
-  	if (paintLabels != oldValue) {
-  		revalidate();
-  		repaint();
-  	}
+    boolean oldValue = paintLabels;
+    paintLabels = b;
+    firePropertyChange("paintLabels", oldValue, paintLabels);
+    if (paintLabels != oldValue) {
+      // revalidate();
+      // repaint();
+    }
   }
-  */
 
   /**
    * Returns a string representation of this JSlider. This method is intended to be used only for

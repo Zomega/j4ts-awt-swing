@@ -2,14 +2,22 @@ package javax.swing;
 
 import static def.dom.Globals.document;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import jsweet.util.StringTypes;
 
-class JScrollPane extends JComponent {
-  // TODO: Implement.
+public class JScrollPane extends JComponent {
 
-  JScrollPane(Component view) {
-    // TODO: Implement
+  protected JViewport viewport;
+  protected JScrollBar verticalScrollBar;
+
+  public JScrollPane(Component view) {
+    this.viewport = new JViewport();
+    this.viewport.setView(view);
+    this.verticalScrollBar = new JScrollBar(JScrollBar.VERTICAL);
+    setLayout(new BorderLayout());
+    add(viewport, BorderLayout.CENTER);
+    add(verticalScrollBar, BorderLayout.EAST);
   }
 
   @Override
@@ -19,13 +27,18 @@ class JScrollPane extends JComponent {
     }
     htmlElement = document.createElement(StringTypes.div);
     htmlElement.className = "applet-jscrollpane";
+    htmlElement.style.overflow = "auto";
   }
 
-  public Object /*JViewport*/ getViewport() {
-    return null; // TODO
+  public Component getView() {
+    return viewport.getView();
+  }
+
+  public JViewport getViewport() {
+    return viewport;
   }
 
   public JScrollBar getVerticalScrollBar() {
-    return null; // TODO
+    return verticalScrollBar;
   }
 }
