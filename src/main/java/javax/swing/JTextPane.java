@@ -1,10 +1,10 @@
 package javax.swing;
 
 import static def.dom.Globals.document;
-import static def.dom.Globals.window;
 
-import def.js.Promise;
-import def.dom.Response;
+import def.dom.Event;
+import def.dom.ProgressEvent;
+import def.dom.XMLHttpRequest;
 import java.net.URL;
 import jsweet.util.StringTypes;
 
@@ -28,20 +28,25 @@ public class JTextPane extends JEditorPane {
         throw new NullPointerException("page must be non-null.");
     }
 
-    window.fetch(page.toString())
-        .then((Response response) -> {
-            if (!response.ok) {
-                throw new Error("Network response was not ok.");
+    XMLHttpRequest xhr = new XMLHttpRequest();
+    xhr.open("GET", page.toString(), true);
+
+    xhr.onreadystatechange = (ProgressEvent e) -> {
+        if (xhr.readyState == 4) { // DONE
+            if (xhr.status >= 200 && xhr.status < 300) {
+                setText(xhr.responseText);
+            } else {
+                setText("<html><body><h1>Error loading page: " + xhr.statusText + "</h1></body></html>");
             }
-            return response.text();
-        })
-        .then((String text) -> {
-            setText(text);
-            return null;
-        })
-        .Catch((error) -> {
-            setText("<html><body><h1>Error loading page: " + error.toString() + "</h1></body></html>");
-            return null;
-        });
+        }
+        return null;
+    };
+
+    xhr.onerror = (Event e) -> {
+        setText("<html><body><h1>Network error occurred.</h1></body></html>");
+        return null;
+    };
+
+    xhr.send();
   }
 }

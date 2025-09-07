@@ -64,6 +64,12 @@ public class List extends Component implements ItemSelectable {
     this.itemListener = l;
   }
 
+  public void removeItemListener(ItemListener l) {
+      if (this.itemListener == l) {
+          this.itemListener = null;
+      }
+  }
+
   public int getSelectedIndex() {
     return (int) getHTMLElement().selectedIndex;
   }

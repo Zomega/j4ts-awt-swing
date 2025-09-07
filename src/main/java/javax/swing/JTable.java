@@ -12,6 +12,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import jsweet.util.StringTypes;
@@ -146,7 +147,7 @@ public class JTable extends JComponent {
           editor = defaultCellEditor;
       }
 
-      Component editorComponent = editor.getTableCellEditorComponent(this, getValueAt(row, column), true, true, row, column);
+      Component editorComponent = editor.getTableCellEditorComponent(this, getValueAt(row, column), true, row, column);
       td.innerHTML = "";
       td.appendChild(editorComponent.getHTMLElement());
 
