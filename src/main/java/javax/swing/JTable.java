@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import jsweet.util.StringTypes;
 import javax.swing.ListSelectionModel;
@@ -25,8 +26,8 @@ public class JTable extends JComponent {
   protected ListSelectionModel selectionModel;
   protected TableCellRenderer defaultRenderer;
   protected TableCellEditor defaultCellEditor;
+  protected JTableHeader tableHeader;
   protected HTMLTableElement tableElement;
-  protected HTMLTableSectionElement tableHead;
   protected HTMLTableSectionElement tableBody;
   protected int editingRow = -1;
   protected int editingColumn = -1;
@@ -35,6 +36,7 @@ public class JTable extends JComponent {
       this.columnModel = new DefaultTableColumnModel();
       this.selectionModel = new DefaultListSelectionModel();
       this.selectionModel.addListSelectionListener(e -> refreshTable());
+      this.tableHeader = new JTableHeader(columnModel);
       this.defaultRenderer = new DefaultTableCellRenderer();
       this.defaultCellEditor = new DefaultCellEditor(new JTextField());
       setModel(dm);
@@ -54,8 +56,7 @@ public class JTable extends JComponent {
     tableElement.className = "applet-jtable";
     htmlElement.appendChild(tableElement);
 
-    tableHead = (HTMLTableSectionElement) document.createElement(StringTypes.thead);
-    tableElement.appendChild(tableHead);
+    tableElement.appendChild(getTableHeader().getHTMLElement());
 
     tableBody = (HTMLTableSectionElement) document.createElement(StringTypes.tbody);
     tableElement.appendChild(tableBody);
@@ -82,24 +83,12 @@ public class JTable extends JComponent {
   }
 
   private void refreshTable() {
-      if (tableHead == null || tableBody == null) {
+      if (tableBody == null) {
           return;
       }
 
       // Clear existing content
-      tableHead.innerHTML = "";
       tableBody.innerHTML = "";
-
-      // Create header
-      if (dataModel.getRowCount() > 0) {
-          def.dom.HTMLTableRowElement headerRow = (def.dom.HTMLTableRowElement) document.createElement(StringTypes.tr);
-          for (int i = 0; i < dataModel.getColumnCount(); i++) {
-              def.dom.HTMLTableCellElement th = (def.dom.HTMLTableCellElement) document.createElement(StringTypes.th);
-              th.innerText = dataModel.getColumnName(i);
-              headerRow.appendChild(th);
-          }
-          tableHead.appendChild(headerRow);
-      }
 
       // Create body
       for (int i = 0; i < dataModel.getRowCount(); i++) {
@@ -198,8 +187,8 @@ public class JTable extends JComponent {
     return null; // TODO: Implement
   }
 
-  public Object /*JTableHeader*/ getTableHeader() {
-    return null; // TODO: Implement
+  public JTableHeader getTableHeader() {
+    return tableHeader;
   }
 
   public TableColumnModel getColumnModel() {
