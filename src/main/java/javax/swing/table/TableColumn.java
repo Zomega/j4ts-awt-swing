@@ -3,7 +3,28 @@ package javax.swing.table;
 import java.io.Serializable;
 
 public class TableColumn implements Serializable {
-  void setCellRenderer(TableCellRenderer cellRenderer) {
-    // TODO: Implement
-  }
+
+    protected Object headerValue;
+    protected int modelIndex;
+    protected TableCellRenderer cellRenderer;
+
+    public TableColumn(int modelIndex) {
+        this.modelIndex = modelIndex;
+    }
+
+    public void setHeaderValue(Object headerValue) {
+        this.headerValue = headerValue;
+    }
+
+    public Object getHeaderValue() {
+        return headerValue;
+    }
+
+    public void setCellRenderer(TableCellRenderer cellRenderer) {
+        this.cellRenderer = cellRenderer;
+    }
+
+    public TableCellRenderer getCellRenderer() {
+        return cellRenderer;
+    }
 }
