@@ -1,5 +1,10 @@
 package javax.swing.table;
 
-public class TableCellEditor {
-  // TODO: Implement
+import java.awt.Component;
+import javax.swing.JTable;
+
+public interface TableCellEditor {
+    Component getTableCellEditorComponent(JTable table, Object value,
+                                          boolean isSelected,
+                                          int row, int column);
 }

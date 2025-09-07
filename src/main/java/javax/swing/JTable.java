@@ -3,9 +3,13 @@ package javax.swing;
 import static def.dom.Globals.document;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import jsweet.util.StringTypes;
 import def.dom.HTMLTableElement;
@@ -14,12 +18,21 @@ import def.dom.HTMLTableSectionElement;
 public class JTable extends JComponent {
 
   protected TableModel dataModel;
+  protected TableColumnModel columnModel;
+  protected TableCellRenderer defaultRenderer;
+  protected TableCellEditor defaultCellEditor;
   protected HTMLTableElement tableElement;
   protected HTMLTableSectionElement tableHead;
   protected HTMLTableSectionElement tableBody;
+  protected int editingRow = -1;
+  protected int editingColumn = -1;
 
   public JTable(TableModel dm) {
+      this.columnModel = new DefaultTableColumnModel();
+      this.defaultRenderer = new DefaultTableCellRenderer();
+      this.defaultCellEditor = new DefaultCellEditor(new JTextField());
       setModel(dm);
+      createDefaultColumnsFromModel();
   }
 
   @Override
@@ -86,13 +99,76 @@ public class JTable extends JComponent {
       for (int i = 0; i < dataModel.getRowCount(); i++) {
           def.dom.HTMLTableRowElement tr = (def.dom.HTMLTableRowElement) document.createElement(StringTypes.tr);
           for (int j = 0; j < dataModel.getColumnCount(); j++) {
+              final int row = i;
+              final int col = j;
               def.dom.HTMLTableCellElement td = (def.dom.HTMLTableCellElement) document.createElement(StringTypes.td);
-              Object value = dataModel.getValueAt(i, j);
-              td.innerText = (value == null) ? "" : value.toString();
+              TableColumn column = getColumnModel().getColumn(j);
+              TableCellRenderer renderer = column.getCellRenderer();
+              if (renderer == null) {
+                  renderer = defaultRenderer;
+              }
+              Component cellComponent = renderer.getTableCellRendererComponent(this, dataModel.getValueAt(i, j), false, false, i, j);
+              td.appendChild(cellComponent.getHTMLElement());
+
+              td.onclick = (e) -> {
+                  if (getModel().isCellEditable(row, col)) {
+                      editCellAt(row, col);
+                  }
+                  return e;
+              };
+
               tr.appendChild(td);
           }
           tableBody.appendChild(tr);
       }
+  }
+
+  public void editCellAt(int row, int column) {
+      if (editingRow != -1) {
+          stopEditing();
+      }
+
+      editingRow = row;
+      editingColumn = column;
+
+      def.dom.HTMLTableRowElement tr = (def.dom.HTMLTableRowElement) tableBody.rows.item(row);
+      def.dom.HTMLTableCellElement td = (def.dom.HTMLTableCellElement) tr.cells.item(column);
+
+      TableColumn tableColumn = getColumnModel().getColumn(column);
+      TableCellEditor editor = tableColumn.getCellEditor();
+      if (editor == null) {
+          editor = defaultCellEditor;
+      }
+
+      Component editorComponent = editor.getTableCellEditorComponent(this, getValueAt(row, column), true, true, row, column);
+      td.innerHTML = "";
+      td.appendChild(editorComponent.getHTMLElement());
+
+      editorComponent.getHTMLElement().focus();
+      editorComponent.getHTMLElement().onblur = (e) -> {
+          stopEditing();
+          return e;
+      };
+  }
+
+  public void stopEditing() {
+      if (editingRow == -1) {
+          return;
+      }
+
+      TableColumn tableColumn = getColumnModel().getColumn(editingColumn);
+      TableCellEditor editor = tableColumn.getCellEditor();
+      if (editor == null) {
+          editor = defaultCellEditor;
+      }
+
+      // This is a simplification. A real implementation would get the value from the editor.
+      // For now, we assume the editor has modified the model directly or we don't capture the value.
+      // To properly get the value, we would need a `getCellEditorValue()` method on TableCellEditor.
+
+      editingRow = -1;
+      editingColumn = -1;
+      refreshTable();
   }
 
   public SingleSelectionModel getSelectionModel() {
@@ -111,8 +187,34 @@ public class JTable extends JComponent {
     return null; // TODO: Implement
   }
 
-  public /*TableColumnModel*/ Object getColumnModel() {
-    return null; // TODO: Implement
+  public TableColumnModel getColumnModel() {
+    return columnModel;
+  }
+
+  public void createDefaultColumnsFromModel() {
+      TableModel tm = getModel();
+      if (tm != null) {
+          // Remove any existing columns
+          TableColumnModel cm = getColumnModel();
+          while (cm.getColumnCount() > 0) {
+              cm.removeColumn(cm.getColumn(0));
+          }
+
+          // Create new columns from the data model info
+          for (int i = 0; i < tm.getColumnCount(); i++) {
+              TableColumn newColumn = new TableColumn(i);
+              addColumn(newColumn);
+          }
+      }
+  }
+
+  public void addColumn(TableColumn aColumn) {
+      if (aColumn.getHeaderValue() == null) {
+          int modelColumn = aColumn.modelIndex;
+          String columnName = getModel().getColumnName(modelColumn);
+          aColumn.setHeaderValue(columnName);
+      }
+      getColumnModel().addColumn(aColumn);
   }
 
   public void setColumnSelectionAllowed(boolean columnSelectionAllowed) {

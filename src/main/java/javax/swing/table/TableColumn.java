@@ -27,4 +27,14 @@ public class TableColumn implements Serializable {
     public TableCellRenderer getCellRenderer() {
         return cellRenderer;
     }
+
+    protected TableCellEditor cellEditor;
+
+    public void setCellEditor(TableCellEditor cellEditor) {
+        this.cellEditor = cellEditor;
+    }
+
+    public TableCellEditor getCellEditor() {
+        return cellEditor;
+    }
 }

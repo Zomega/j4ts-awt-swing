@@ -1,19 +1,34 @@
 package javax.swing;
 
+import java.awt.Component;
 import javax.swing.table.TableCellEditor;
 
-public class DefaultCellEditor extends TableCellEditor {
-  public DefaultCellEditor(JTextField textField) {
-    // TODO: Implement
-  }
+public class DefaultCellEditor implements TableCellEditor {
 
-  public DefaultCellEditor(JCheckBox checkBox) {
-    // TODO: Implement
-  }
+    protected JComponent editorComponent;
 
-  public DefaultCellEditor(JComboBox comboBox) {
-    // TODO: Implement
-  }
+    public DefaultCellEditor(final JTextField textField) {
+        this.editorComponent = textField;
+    }
 
-  // TODO: Implement
+    public DefaultCellEditor(final JCheckBox checkBox) {
+        this.editorComponent = checkBox;
+    }
+
+    public DefaultCellEditor(final JComboBox comboBox) {
+        this.editorComponent = comboBox;
+    }
+
+    public Component getTableCellEditorComponent(JTable table, Object value,
+                                                 boolean isSelected,
+                                                 int row, int column) {
+        if (editorComponent instanceof JTextField) {
+            ((JTextField) editorComponent).setText((value != null) ? value.toString() : "");
+        } else if (editorComponent instanceof JCheckBox) {
+            ((JCheckBox) editorComponent).setState((Boolean) value);
+        } else if (editorComponent instanceof JComboBox) {
+            ((JComboBox) editorComponent).setSelectedItem(value);
+        }
+        return editorComponent;
+    }
 }
