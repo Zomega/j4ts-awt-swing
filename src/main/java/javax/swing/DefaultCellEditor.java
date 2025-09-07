@@ -31,4 +31,15 @@ public class DefaultCellEditor implements TableCellEditor {
         }
         return editorComponent;
     }
+
+    public Object getCellEditorValue() {
+        if (editorComponent instanceof JTextField) {
+            return ((JTextField) editorComponent).getText();
+        } else if (editorComponent instanceof JCheckBox) {
+            return ((JCheckBox) editorComponent).getState();
+        } else if (editorComponent instanceof JComboBox) {
+            return ((JComboBox) editorComponent).getSelectedItem();
+        }
+        return null;
+    }
 }

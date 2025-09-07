@@ -5,6 +5,7 @@ import static def.dom.Globals.document;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -12,6 +13,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import jsweet.util.StringTypes;
+import javax.swing.ListSelectionModel;
+import javax.swing.DefaultListSelectionModel;
 import def.dom.HTMLTableElement;
 import def.dom.HTMLTableSectionElement;
 
@@ -19,6 +22,7 @@ public class JTable extends JComponent {
 
   protected TableModel dataModel;
   protected TableColumnModel columnModel;
+  protected ListSelectionModel selectionModel;
   protected TableCellRenderer defaultRenderer;
   protected TableCellEditor defaultCellEditor;
   protected HTMLTableElement tableElement;
@@ -29,6 +33,8 @@ public class JTable extends JComponent {
 
   public JTable(TableModel dm) {
       this.columnModel = new DefaultTableColumnModel();
+      this.selectionModel = new DefaultListSelectionModel();
+      this.selectionModel.addListSelectionListener(e -> refreshTable());
       this.defaultRenderer = new DefaultTableCellRenderer();
       this.defaultCellEditor = new DefaultCellEditor(new JTextField());
       setModel(dm);
@@ -107,7 +113,8 @@ public class JTable extends JComponent {
               if (renderer == null) {
                   renderer = defaultRenderer;
               }
-              Component cellComponent = renderer.getTableCellRendererComponent(this, dataModel.getValueAt(i, j), false, false, i, j);
+              boolean isSelected = getSelectionModel().isSelectedIndex(i);
+              Component cellComponent = renderer.getTableCellRendererComponent(this, dataModel.getValueAt(i, j), isSelected, false, i, j);
               td.appendChild(cellComponent.getHTMLElement());
 
               td.onclick = (e) -> {
@@ -118,6 +125,15 @@ public class JTable extends JComponent {
               };
 
               tr.appendChild(td);
+          }
+          final int row = i;
+          tr.onclick = (e) -> {
+              getSelectionModel().setSelectionInterval(row, row);
+              return e;
+          };
+          if (getSelectionModel().isSelectedIndex(i)) {
+              tr.style.backgroundColor = "highlight";
+              tr.style.color = "highlighttext";
           }
           tableBody.appendChild(tr);
       }
@@ -162,17 +178,16 @@ public class JTable extends JComponent {
           editor = defaultCellEditor;
       }
 
-      // This is a simplification. A real implementation would get the value from the editor.
-      // For now, we assume the editor has modified the model directly or we don't capture the value.
-      // To properly get the value, we would need a `getCellEditorValue()` method on TableCellEditor.
+      Object value = editor.getCellEditorValue();
+      setValueAt(value, editingRow, editingColumn);
 
       editingRow = -1;
       editingColumn = -1;
       refreshTable();
   }
 
-  public SingleSelectionModel getSelectionModel() {
-    return null; // TODO: Implement
+  public ListSelectionModel getSelectionModel() {
+    return selectionModel;
   }
 
   public int getColumnCount() {
@@ -238,7 +253,7 @@ public class JTable extends JComponent {
   }
 
   public int getSelectedRow() {
-    return -1; // TODO: Implement
+    return getSelectionModel().getMinSelectionIndex();
   }
 
   public void setRowHeight(int rowHeight) {
@@ -246,15 +261,15 @@ public class JTable extends JComponent {
   }
 
   public void clearSelection() {
-    // TODO: Implement
+    getSelectionModel().clearSelection();
   }
 
   public Object getValueAt(int row, int column) {
-    return null; // TODO: Implement
+    return getModel().getValueAt(row, column);
   }
 
   public void setValueAt(Object aValue, int row, int column) {
-    // TODO: Implement
+    getModel().setValueAt(aValue, row, column);
   }
 
   public void setAutoResizeMode(int mode) {

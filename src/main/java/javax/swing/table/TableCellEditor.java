@@ -7,4 +7,5 @@ public interface TableCellEditor {
     Component getTableCellEditorComponent(JTable table, Object value,
                                           boolean isSelected,
                                           int row, int column);
+    Object getCellEditorValue();
 }
