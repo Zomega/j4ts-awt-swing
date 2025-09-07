@@ -10,7 +10,7 @@ import java.awt.event.ItemListener;
 import java.util.Vector;
 import jsweet.util.StringTypes;
 
-public class List extends Component {
+public class List extends Component implements ItemSelectable {
 
   Vector<String> items = new Vector<>();
   int rows;
@@ -65,7 +65,17 @@ public class List extends Component {
   }
 
   public int getSelectedIndex() {
-    return getHTMLElement().selectedIndex;
+    return (int) getHTMLElement().selectedIndex;
+  }
+
+  public Object[] getSelectedObjects() {
+      int selectedIndex = getSelectedIndex();
+      if (selectedIndex >= 0) {
+          Object[] items = new Object[1];
+          items[0] = getItem(selectedIndex);
+          return items;
+      }
+      return new Object[0];
   }
 
   public void add(String item) {

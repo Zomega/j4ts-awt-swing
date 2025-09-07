@@ -32,12 +32,14 @@ import static jsweet.util.Lang.string;
 import def.dom.HTMLDivElement;
 import def.dom.KeyboardEvent;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.text.JTextComponent;
 import jsweet.util.StringTypes;
 
 @SuppressWarnings("serial")
 public class JTextArea extends JTextComponent {
 
+  private ActionListener actionListener;
   private int rows;
   private int columns;
   private int columnWidth;
@@ -82,18 +84,21 @@ public class JTextArea extends JTextComponent {
   }
 
   private void initActionListeners() {
-    for (Object actionListener : getActionListeners()) {
-      htmlElement.addEventListener(
-          StringTypes.keydown,
-          e -> {
+    if (actionListener != null) {
+      htmlElement.onkeydown =
+          (e) -> {
             KeyboardEvent ke = (KeyboardEvent) e;
             if (ke.keyCode == 13) {
-              ((java.awt.event.ActionListener) actionListener)
-                  .actionPerformed(new java.awt.event.ActionEvent(this, 0, null));
+              actionListener.actionPerformed(
+                  new java.awt.event.ActionEvent(this, 0, null));
             }
-            return e;
-          });
+            return ke;
+          };
     }
+  }
+
+  public void addActionListener(ActionListener l) {
+      actionListener = l;
   }
 
   private static final String uiClassID = "TextAreaUI";

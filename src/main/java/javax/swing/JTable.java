@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -172,7 +173,7 @@ public class JTable extends JComponent {
 
       editingRow = -1;
       editingColumn = -1;
-      refreshTable();
+      // The model listener will call refreshTable()
   }
 
   public ListSelectionModel getSelectionModel() {
@@ -214,7 +215,7 @@ public class JTable extends JComponent {
 
   public void addColumn(TableColumn aColumn) {
       if (aColumn.getHeaderValue() == null) {
-          int modelColumn = aColumn.modelIndex;
+          int modelColumn = aColumn.getModelIndex();
           String columnName = getModel().getColumnName(modelColumn);
           aColumn.setHeaderValue(columnName);
       }

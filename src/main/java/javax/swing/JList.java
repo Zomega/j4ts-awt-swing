@@ -29,6 +29,7 @@ import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 
 import def.dom.HTMLDivElement;
+import jsweet.util.StringTypes;
 import def.js.Array;
 import java.awt.Color;
 import java.awt.Component;

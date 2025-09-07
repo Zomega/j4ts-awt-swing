@@ -71,10 +71,26 @@ public class SpinnerNumberModel implements SpinnerModel {
   }
 
   public void setMinimum(Number minimum) {
-    // TODO: Implement
+    this.minimum = minimum != null ? minimum.doubleValue() : null;
   }
 
   public void setMaximum(Number maximum) {
-    // TODO: Implement
+    this.maximum = maximum != null ? maximum.doubleValue() : null;
+  }
+
+  public Number getStepSize() {
+      return stepSize;
+  }
+
+  public Number getMinimum() {
+      return minimum;
+  }
+
+  public Number getMaximum() {
+      return maximum;
+  }
+
+  public SpinnerNumberModel() {
+      this(0, null, null, 1);
   }
 }

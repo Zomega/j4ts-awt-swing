@@ -12,6 +12,10 @@ public class TableColumn implements Serializable {
         this.modelIndex = modelIndex;
     }
 
+    public int getModelIndex() {
+        return modelIndex;
+    }
+
     public void setHeaderValue(Object headerValue) {
         this.headerValue = headerValue;
     }
