@@ -4485,6 +4485,54 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class GridBagLayout implements java.awt.LayoutManager2 {
+        created: boolean;
+        parent: java.awt.Container;
+        gridContainer: HTMLDivElement;
+        rows: number;
+        cols: number;
+        hgap: number;
+        vgap: number;
+        constructor(rows?: any, cols?: any, hgap?: any, vgap?: any);
+        addLayoutComponent$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): void;
+        /**
+         *
+         * @param {string} name
+         * @param {java.awt.Component} component
+         */
+        addLayoutComponent(name?: any, component?: any): any;
+        /**
+         *
+         * @param {java.awt.Component} component
+         */
+        removeLayoutComponent(component: java.awt.Component): void;
+        /**
+         *
+         * @param {java.awt.Container} parent
+         */
+        layoutContainer(parent: java.awt.Container): void;
+        addLayoutComponent$java_awt_Component$java_lang_Object(component: java.awt.Component, o: any): void;
+        /**
+         *
+         * @param {java.awt.Container} container
+         * @return {number}
+         */
+        getLayoutAlignmentX(container: java.awt.Container): number;
+        /**
+         *
+         * @param {java.awt.Container} container
+         * @return {number}
+         */
+        getLayoutAlignmentY(container: java.awt.Container): number;
+        /**
+         *
+         * @param {java.awt.Container} container
+         */
+        invalidateLayout(container: java.awt.Container): void;
+        setConstraints(comp: java.awt.Component, constraints: java.awt.GridBagConstraints): void;
+    }
+}
+declare namespace java.awt {
     /**
      * Constructs an IllegalComponentStateException with the specified detail message. A detail
      * message is a String that describes this particular exception.
@@ -5416,6 +5464,14 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt.image {
+    class PixelGrabber {
+        constructor(img?: any, x?: any, y?: any, w?: any, h?: any, pix?: any, off?: any, scansize?: any);
+        grabPixels$(): boolean;
+        grabPixels$long(ms: number): boolean;
+        grabPixels(ms?: any): boolean;
+    }
+}
+declare namespace java.awt.image {
     /**
      * RenderedImage is a common interface for objects which contain or can produce image data in the
      * form of Rasters. The image data may be stored/produced as a single tile or a regular array of
@@ -5435,6 +5491,25 @@ declare namespace java.awt.image {
          * @return {number} the height of this <code>RenderedImage</code>.
          */
         getHeight(): number;
+    }
+}
+declare namespace java.awt.image {
+    class ImageProducer {
+    }
+}
+declare namespace java.awt.image {
+    class ImageFilter {
+    }
+}
+declare namespace java.awt.image {
+    class FilteredImageSource {
+        constructor(orig: java.awt.image.ImageProducer, imgf: java.awt.image.ImageFilter);
+    }
+}
+declare namespace java.awt.image {
+    class MemoryImageSource {
+        constructor(w?: any, h?: any, pix?: any, off?: any, scan?: any, props?: any);
+        setAnimated(animated: boolean): void;
     }
 }
 declare namespace java.awt.image {
@@ -6638,6 +6713,471 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    /**
+     * Creates a <code>GridBagConstraints</code> object with all of its fields set to the passed-in
+     * arguments.
+     *
+     * <p>Note: Because the use of this constructor hinders readability of source code, this
+     * constructor should only be used by automatic source code generation tools.
+     *
+     * @param {number} gridx The initial gridx value.
+     * @param {number} gridy The initial gridy value.
+     * @param {number} gridwidth The initial gridwidth value.
+     * @param {number} gridheight The initial gridheight value.
+     * @param {number} weightx The initial weightx value.
+     * @param {number} weighty The initial weighty value.
+     * @param {number} anchor The initial anchor value.
+     * @param {number} fill The initial fill value.
+     * @param {java.awt.Insets} insets The initial insets value.
+     * @param {number} ipadx The initial ipadx value.
+     * @param {number} ipady The initial ipady value.
+     * @see java.awt.GridBagConstraints#gridx
+     * @see java.awt.GridBagConstraints#gridy
+     * @see java.awt.GridBagConstraints#gridwidth
+     * @see java.awt.GridBagConstraints#gridheight
+     * @see java.awt.GridBagConstraints#weightx
+     * @see java.awt.GridBagConstraints#weighty
+     * @see java.awt.GridBagConstraints#anchor
+     * @see java.awt.GridBagConstraints#fill
+     * @see java.awt.GridBagConstraints#insets
+     * @see java.awt.GridBagConstraints#ipadx
+     * @see java.awt.GridBagConstraints#ipady
+     * @since 1.2
+     * @class
+     */
+    class GridBagConstraints {
+        /**
+         * Specifies that this component is the next-to-last component in its column or row (<code>
+         * gridwidth</code>, <code>gridheight</code>), or that this component be placed next to the
+         * previously added component (<code>gridx</code>, <code>gridy</code>).
+         *
+         * @see java.awt.GridBagConstraints#gridwidth
+         * @see java.awt.GridBagConstraints#gridheight
+         * @see java.awt.GridBagConstraints#gridx
+         * @see java.awt.GridBagConstraints#gridy
+         */
+        static RELATIVE: number;
+        /**
+         * Specifies that this component is the last component in its column or row.
+         */
+        static REMAINDER: number;
+        /**
+         * Do not resize the component.
+         */
+        static NONE: number;
+        /**
+         * Resize the component both horizontally and vertically.
+         */
+        static BOTH: number;
+        /**
+         * Resize the component horizontally but not vertically.
+         */
+        static HORIZONTAL: number;
+        /**
+         * Resize the component vertically but not horizontally.
+         */
+        static VERTICAL: number;
+        /**
+         * Put the component in the center of its display area.
+         */
+        static CENTER: number;
+        /**
+         * Put the component at the top of its display area, centered horizontally.
+         */
+        static NORTH: number;
+        /**
+         * Put the component at the top-right corner of its display area.
+         */
+        static NORTHEAST: number;
+        /**
+         * Put the component on the right side of its display area, centered vertically.
+         */
+        static EAST: number;
+        /**
+         * Put the component at the bottom-right corner of its display area.
+         */
+        static SOUTHEAST: number;
+        /**
+         * Put the component at the bottom of its display area, centered horizontally.
+         */
+        static SOUTH: number;
+        /**
+         * Put the component at the bottom-left corner of its display area.
+         */
+        static SOUTHWEST: number;
+        /**
+         * Put the component on the left side of its display area, centered vertically.
+         */
+        static WEST: number;
+        /**
+         * Put the component at the top-left corner of its display area.
+         */
+        static NORTHWEST: number;
+        /**
+         * Place the component centered along the edge of its display area associated with the start of a
+         * page for the current {@code ComponentOrientation}. Equal to NORTH for horizontal orientations.
+         */
+        static PAGE_START: number;
+        /**
+         * Place the component centered along the edge of its display area associated with the end of a
+         * page for the current {@code ComponentOrientation}. Equal to SOUTH for horizontal orientations.
+         */
+        static PAGE_END: number;
+        /**
+         * Place the component centered along the edge of its display area where lines of text would
+         * normally begin for the current {@code ComponentOrientation}. Equal to WEST for horizontal,
+         * left-to-right orientations and EAST for horizontal, right-to-left orientations.
+         */
+        static LINE_START: number;
+        /**
+         * Place the component centered along the edge of its display area where lines of text would
+         * normally end for the current {@code ComponentOrientation}. Equal to EAST for horizontal,
+         * left-to-right orientations and WEST for horizontal, right-to-left orientations.
+         */
+        static LINE_END: number;
+        /**
+         * Place the component in the corner of its display area where the first line of text on a page
+         * would normally begin for the current {@code ComponentOrientation}. Equal to NORTHWEST for
+         * horizontal, left-to-right orientations and NORTHEAST for horizontal, right-to-left
+         * orientations.
+         */
+        static FIRST_LINE_START: number;
+        /**
+         * Place the component in the corner of its display area where the first line of text on a page
+         * would normally end for the current {@code ComponentOrientation}. Equal to NORTHEAST for
+         * horizontal, left-to-right orientations and NORTHWEST for horizontal, right-to-left
+         * orientations.
+         */
+        static FIRST_LINE_END: number;
+        /**
+         * Place the component in the corner of its display area where the last line of text on a page
+         * would normally start for the current {@code ComponentOrientation}. Equal to SOUTHWEST for
+         * horizontal, left-to-right orientations and SOUTHEAST for horizontal, right-to-left
+         * orientations.
+         */
+        static LAST_LINE_START: number;
+        /**
+         * Place the component in the corner of its display area where the last line of text on a page
+         * would normally end for the current {@code ComponentOrientation}. Equal to SOUTHEAST for
+         * horizontal, left-to-right orientations and SOUTHWEST for horizontal, right-to-left
+         * orientations.
+         */
+        static LAST_LINE_END: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally centered and vertically aligned along the baseline of the prevailing row. If the
+         * component does not have a baseline it will be vertically centered.
+         *
+         * @since 1.6
+         */
+        static BASELINE: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally placed along the leading edge. For components with a left-to-right orientation,
+         * the leading edge is the left edge. Vertically the component is aligned along the baseline of
+         * the prevailing row. If the component does not have a baseline it will be vertically centered.
+         *
+         * @since 1.6
+         */
+        static BASELINE_LEADING: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally placed along the trailing edge. For components with a left-to-right orientation,
+         * the trailing edge is the right edge. Vertically the component is aligned along the baseline of
+         * the prevailing row. If the component does not have a baseline it will be vertically centered.
+         *
+         * @since 1.6
+         */
+        static BASELINE_TRAILING: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally centered. Vertically the component is positioned so that its bottom edge touches
+         * the baseline of the starting row. If the starting row does not have a baseline it will be
+         * vertically centered.
+         *
+         * @since 1.6
+         */
+        static ABOVE_BASELINE: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally placed along the leading edge. For components with a left-to-right orientation,
+         * the leading edge is the left edge. Vertically the component is positioned so that its bottom
+         * edge touches the baseline of the starting row. If the starting row does not have a baseline it
+         * will be vertically centered.
+         *
+         * @since 1.6
+         */
+        static ABOVE_BASELINE_LEADING: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally placed along the trailing edge. For components with a left-to-right orientation,
+         * the trailing edge is the right edge. Vertically the component is positioned so that its bottom
+         * edge touches the baseline of the starting row. If the starting row does not have a baseline it
+         * will be vertically centered.
+         *
+         * @since 1.6
+         */
+        static ABOVE_BASELINE_TRAILING: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally centered. Vertically the component is positioned so that its top edge touches the
+         * baseline of the starting row. If the starting row does not have a baseline it will be
+         * vertically centered.
+         *
+         * @since 1.6
+         */
+        static BELOW_BASELINE: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally placed along the leading edge. For components with a left-to-right orientation,
+         * the leading edge is the left edge. Vertically the component is positioned so that its top edge
+         * touches the baseline of the starting row. If the starting row does not have a baseline it will
+         * be vertically centered.
+         *
+         * @since 1.6
+         */
+        static BELOW_BASELINE_LEADING: number;
+        /**
+         * Possible value for the <code>anchor</code> field. Specifies that the component should be
+         * horizontally placed along the trailing edge. For components with a left-to-right orientation,
+         * the trailing edge is the right edge. Vertically the component is positioned so that its top
+         * edge touches the baseline of the starting row. If the starting row does not have a baseline it
+         * will be vertically centered.
+         *
+         * @since 1.6
+         */
+        static BELOW_BASELINE_TRAILING: number;
+        /**
+         * Specifies the cell containing the leading edge of the component's display area, where the first
+         * cell in a row has <code>gridx=0</code>. The leading edge of a component's display area is its
+         * left edge for a horizontal, left-to-right container and its right edge for a horizontal,
+         * right-to-left container. The value <code>RELATIVE</code> specifies that the component be placed
+         * immediately following the component that was added to the container just before this component
+         * was added.
+         *
+         * <p>The default value is <code>RELATIVE</code>. <code>gridx</code> should be a non-negative
+         * value.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#gridy
+         * @see java.awt.ComponentOrientation
+         */
+        gridx: number;
+        /**
+         * Specifies the cell at the top of the component's display area, where the topmost cell has
+         * <code>gridy=0</code>. The value <code>RELATIVE</code> specifies that the component be placed
+         * just below the component that was added to the container just before this component was added.
+         *
+         * <p>The default value is <code>RELATIVE</code>. <code>gridy</code> should be a non-negative
+         * value.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#gridx
+         */
+        gridy: number;
+        /**
+         * Specifies the number of cells in a row for the component's display area.
+         *
+         * <p>Use <code>REMAINDER</code> to specify that the component's display area will be from <code>
+         * gridx</code> to the last cell in the row. Use <code>RELATIVE</code> to specify that the
+         * component's display area will be from <code>gridx</code> to the next to the last one in its
+         * row.
+         *
+         * <p><code>gridwidth</code> should be non-negative and the default value is 1.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#gridheight
+         */
+        gridwidth: number;
+        /**
+         * Specifies the number of cells in a column for the component's display area.
+         *
+         * <p>Use <code>REMAINDER</code> to specify that the component's display area will be from <code>
+         * gridy</code> to the last cell in the column. Use <code>RELATIVE</code> to specify that the
+         * component's display area will be from <code>gridy</code> to the next to the last one in its
+         * column.
+         *
+         * <p><code>gridheight</code> should be a non-negative value and the default value is 1.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#gridwidth
+         */
+        gridheight: number;
+        /**
+         * Specifies how to distribute extra horizontal space.
+         *
+         * <p>The grid bag layout manager calculates the weight of a column to be the maximum <code>
+         * weightx</code> of all the components in a column. If the resulting layout is smaller
+         * horizontally than the area it needs to fill, the extra space is distributed to each column in
+         * proportion to its weight. A column that has a weight of zero receives no extra space.
+         *
+         * <p>If all the weights are zero, all the extra space appears between the grids of the cell and
+         * the left and right edges.
+         *
+         * <p>The default value of this field is <code>0</code>. <code>weightx</code> should be a
+         * non-negative value.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#weighty
+         */
+        weightx: number;
+        /**
+         * Specifies how to distribute extra vertical space.
+         *
+         * <p>The grid bag layout manager calculates the weight of a row to be the maximum <code>weighty
+         * </code> of all the components in a row. If the resulting layout is smaller vertically than the
+         * area it needs to fill, the extra space is distributed to each row in proportion to its weight.
+         * A row that has a weight of zero receives no extra space.
+         *
+         * <p>If all the weights are zero, all the extra space appears between the grids of the cell and
+         * the top and bottom edges.
+         *
+         * <p>The default value of this field is <code>0</code>. <code>weighty</code> should be a
+         * non-negative value.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#weightx
+         */
+        weighty: number;
+        /**
+         * This field is used when the component is smaller than its display area. It determines where,
+         * within the display area, to place the component.
+         *
+         * <p>There are three kinds of possible values: orientation relative, baseline relative and
+         * absolute. Orientation relative values are interpreted relative to the container's component
+         * orientation property, baseline relative values are interpreted relative to the baseline and
+         * absolute values are not. The absolute values are: <code>CENTER</code>, <code>NORTH</code>,
+         * <code>NORTHEAST</code>, <code>EAST</code>, <code>SOUTHEAST</code>, <code>SOUTH</code>, <code>
+         * SOUTHWEST</code>, <code>WEST</code>, and <code>NORTHWEST</code>. The orientation relative
+         * values are: <code>PAGE_START</code>, <code>PAGE_END</code>, <code>LINE_START</code>, <code>
+         * LINE_END</code>, <code>FIRST_LINE_START</code>, <code>FIRST_LINE_END</code>, <code>
+         * LAST_LINE_START</code> and <code>LAST_LINE_END</code>. The baseline relative values are: <code>
+         * BASELINE</code>, <code>BASELINE_LEADING</code>, <code>BASELINE_TRAILING</code>, <code>
+         * ABOVE_BASELINE</code>, <code>ABOVE_BASELINE_LEADING</code>, <code>ABOVE_BASELINE_TRAILING
+         * </code>, <code>BELOW_BASELINE</code>, <code>BELOW_BASELINE_LEADING</code>, and <code>
+         * BELOW_BASELINE_TRAILING</code>. The default value is <code>CENTER</code>.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.ComponentOrientation
+         */
+        anchor: number;
+        /**
+         * This field is used when the component's display area is larger than the component's requested
+         * size. It determines whether to resize the component, and if so, how.
+         *
+         * <p>The following values are valid for <code>fill</code>:
+         *
+         * <ul>
+         * <li><code>NONE</code>: Do not resize the component.
+         * <li><code>HORIZONTAL</code>: Make the component wide enough to fill its display area
+         * horizontally, but do not change its height.
+         * <li><code>VERTICAL</code>: Make the component tall enough to fill its display area
+         * vertically, but do not change its width.
+         * <li><code>BOTH</code>: Make the component fill its display area entirely.
+         * </ul>
+         *
+         * <p>The default value is <code>NONE</code>.
+         *
+         * @serial
+         * @see #clone()
+         */
+        fill: number;
+        /**
+         * This field specifies the external padding of the component, the minimum amount of space between
+         * the component and the edges of its display area.
+         *
+         * <p>The default value is <code>new Insets(0, 0, 0, 0)</code>.
+         *
+         * @serial
+         * @see #clone()
+         */
+        insets: java.awt.Insets;
+        /**
+         * This field specifies the internal padding of the component, how much space to add to the
+         * minimum width of the component. The width of the component is at least its minimum width plus
+         * <code>ipadx</code> pixels.
+         *
+         * <p>The default value is <code>0</code>.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#ipady
+         */
+        ipadx: number;
+        /**
+         * This field specifies the internal padding, that is, how much space to add to the minimum height
+         * of the component. The height of the component is at least its minimum height plus <code>ipady
+         * </code> pixels.
+         *
+         * <p>The default value is 0.
+         *
+         * @serial
+         * @see #clone()
+         * @see java.awt.GridBagConstraints#ipadx
+         */
+        ipady: number;
+        /**
+         * Temporary place holder for the x coordinate.
+         *
+         * @serial
+         */
+        tempX: number;
+        /**
+         * Temporary place holder for the y coordinate.
+         *
+         * @serial
+         */
+        tempY: number;
+        /**
+         * Temporary place holder for the Width of the component.
+         *
+         * @serial
+         */
+        tempWidth: number;
+        /**
+         * Temporary place holder for the Height of the component.
+         *
+         * @serial
+         */
+        tempHeight: number;
+        /**
+         * The minimum width of the component. It is used to calculate <code>ipady</code>, where the
+         * default will be 0.
+         *
+         * @serial
+         * @see #ipady
+         */
+        minWidth: number;
+        /**
+         * The minimum height of the component. It is used to calculate <code>ipadx</code>, where the
+         * default will be 0.
+         *
+         * @serial
+         * @see #ipadx
+         */
+        minHeight: number;
+        ascent: number;
+        descent: number;
+        centerPadding: number;
+        centerOffset: number;
+        constructor(gridx?: any, gridy?: any, gridwidth?: any, gridheight?: any, weightx?: any, weighty?: any, anchor?: any, fill?: any, insets?: any, ipadx?: any, ipady?: any);
+        /**
+         * Creates a copy of this grid bag constraint.
+         *
+         * @return {*} a copy of this grid bag constraint
+         */
+        clone(): any;
+        isVerticallyResizable(): boolean;
+    }
+}
+declare namespace java.awt {
     class RenderingHints {
         static KEY_ANTIALIASING: any;
         static KEY_ANTIALIASING_$LI$(): any;
@@ -7111,6 +7651,13 @@ declare namespace java.awt {
         getSelectedObjects(): any[];
         addItemListener(l: java.awt.event.ItemListener): any;
         removeItemListener(l: java.awt.event.ItemListener): any;
+    }
+}
+declare namespace java.applet {
+    class AudioClip {
+        loop(): void;
+        play(): void;
+        stop(): void;
     }
 }
 declare namespace java.applet {
@@ -7869,28 +8416,23 @@ declare namespace javax.swing.table {
 }
 declare namespace javax.swing.table {
     /**
-     * This abstract class provides default implementations for most of
-     * the methods in the <code>TableModel</code> interface. It takes care of
-     * the management of listeners and provides some conveniences for generating
-     * <code>TableModelEvents</code> and dispatching them to the listeners.
-     * To create a concrete <code>TableModel</code> as a subclass of
-     * <code>AbstractTableModel</code> you need only provide implementations
-     * for the following three methods:
+     * This abstract class provides default implementations for most of the methods in the <code>
+     * TableModel</code> interface. It takes care of the management of listeners and provides some
+     * conveniences for generating <code>TableModelEvents</code> and dispatching them to the listeners.
+     * To create a concrete <code>TableModel</code> as a subclass of <code>AbstractTableModel</code> you
+     * need only provide implementations for the following three methods:
      *
      * <pre>
      * public int getRowCount();
      * public int getColumnCount();
      * public Object getValueAt(int row, int column);
      * </pre>
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans&trade;
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
+     *
+     * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+     * Swing releases. The current serialization support is appropriate for short term storage or RMI
+     * between applications running the same version of Swing. As of 1.4, support for long term storage
+     * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+     * java.beans.XMLEncoder}.
      *
      * @author Alan Chung
      * @author Philip Milne
@@ -7902,20 +8444,17 @@ declare namespace javax.swing.table {
          */
         listenerList: javax.swing.event.EventListenerList;
         /**
-         * Returns a default name for the column using spreadsheet conventions:
-         * A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
-         * returns an empty string.
+         * Returns a default name for the column using spreadsheet conventions: A, B, C, ... Z, AA, AB,
+         * etc. If <code>column</code> cannot be found, returns an empty string.
          *
-         * @param {number} column  the column being queried
+         * @param {number} column the column being queried
          * @return {string} a string containing the default name of <code>column</code>
          */
         getColumnName(column: number): string;
         /**
-         * Returns a column given its name.
-         * Implementation is naive so this should be overridden if
-         * this method is to be called often. This method is not
-         * in the <code>TableModel</code> interface and is not used by the
-         * <code>JTable</code>.
+         * Returns a column given its name. Implementation is naive so this should be overridden if this
+         * method is to be called often. This method is not in the <code>TableModel</code> interface and
+         * is not used by the <code>JTable</code>.
          *
          * @param {string} columnName string containing name of column to be located
          * @return {number} the column with <code>columnName</code>, or -1 if not found
@@ -7924,61 +8463,53 @@ declare namespace javax.swing.table {
         /**
          * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
          *
-         * @param {number} columnIndex  the column being queried
+         * @param {number} columnIndex the column being queried
          * @return {java.lang.Class} the Object.class
          */
         getColumnClass(columnIndex: number): any;
         /**
-         * Returns false.  This is the default implementation for all cells.
+         * Returns false. This is the default implementation for all cells.
          *
-         * @param  {number} rowIndex  the row being queried
-         * @param  {number} columnIndex the column being queried
+         * @param {number} rowIndex the row being queried
+         * @param {number} columnIndex the column being queried
          * @return {boolean} false
          */
         isCellEditable(rowIndex: number, columnIndex: number): boolean;
         /**
-         * This empty implementation is provided so users don't have to implement
-         * this method if their data model is not editable.
+         * This empty implementation is provided so users don't have to implement this method if their
+         * data model is not editable.
          *
-         * @param  {*} aValue   value to assign to cell
-         * @param  {number} rowIndex   row of cell
-         * @param  {number} columnIndex  column of cell
+         * @param {*} aValue value to assign to cell
+         * @param {number} rowIndex row of cell
+         * @param {number} columnIndex column of cell
          */
         setValueAt(aValue: any, rowIndex: number, columnIndex: number): void;
         /**
-         * Adds a listener to the list that's notified each time a change
-         * to the data model occurs.
+         * Adds a listener to the list that's notified each time a change to the data model occurs.
          *
-         * @param   {*} l               the TableModelListener
+         * @param {*} l the TableModelListener
          */
         addTableModelListener(l: javax.swing.event.TableModelListener): void;
         /**
-         * Removes a listener from the list that's notified each time a
-         * change to the data model occurs.
+         * Removes a listener from the list that's notified each time a change to the data model occurs.
          *
-         * @param   {*} l               the TableModelListener
+         * @param {*} l the TableModelListener
          */
         removeTableModelListener(l: javax.swing.event.TableModelListener): void;
         /**
-         * Returns an array of all the table model listeners
-         * registered on this model.
+         * Returns an array of all the table model listeners registered on this model.
          *
-         * @return {javax.swing.event.TableModelListener[]} all of this model's <code>TableModelListener</code>s
-         * or an empty
-         * array if no table model listeners are currently registered
-         *
+         * @return {javax.swing.event.TableModelListener[]} all of this model's <code>TableModelListener</code>s or an empty array if no table
+         * model listeners are currently registered
          * @see #addTableModelListener
          * @see #removeTableModelListener
-         *
          * @since 1.4
          */
         getTableModelListeners(): javax.swing.event.TableModelListener[];
         /**
-         * Notifies all listeners that all cell values in the table's
-         * rows may have changed. The number of rows may also have changed
-         * and the <code>JTable</code> should redraw the
-         * table from scratch. The structure of the table (as in the order of the
-         * columns) is assumed to be the same.
+         * Notifies all listeners that all cell values in the table's rows may have changed. The number of
+         * rows may also have changed and the <code>JTable</code> should redraw the table from scratch.
+         * The structure of the table (as in the order of the columns) is assumed to be the same.
          *
          * @see TableModelEvent
          * @see EventListenerList
@@ -7986,109 +8517,89 @@ declare namespace javax.swing.table {
          */
         fireTableDataChanged(): void;
         /**
-         * Notifies all listeners that the table's structure has changed.
-         * The number of columns in the table, and the names and types of
-         * the new columns may be different from the previous state.
-         * If the <code>JTable</code> receives this event and its
-         * <code>autoCreateColumnsFromModel</code>
-         * flag is set it discards any table columns that it had and reallocates
-         * default columns in the order they appear in the model. This is the
-         * same as calling <code>setModel(TableModel)</code> on the
-         * <code>JTable</code>.
+         * Notifies all listeners that the table's structure has changed. The number of columns in the
+         * table, and the names and types of the new columns may be different from the previous state. If
+         * the <code>JTable</code> receives this event and its <code>autoCreateColumnsFromModel</code>
+         * flag is set it discards any table columns that it had and reallocates default columns in the
+         * order they appear in the model. This is the same as calling <code>setModel(TableModel)</code>
+         * on the <code>JTable</code>.
          *
          * @see TableModelEvent
          * @see EventListenerList
          */
         fireTableStructureChanged(): void;
         /**
-         * Notifies all listeners that rows in the range
-         * <code>[firstRow, lastRow]</code>, inclusive, have been inserted.
+         * Notifies all listeners that rows in the range <code>[firstRow, lastRow]</code>, inclusive, have
+         * been inserted.
          *
-         * @param  {number} firstRow  the first row
-         * @param  {number} lastRow   the last row
-         *
+         * @param {number} firstRow the first row
+         * @param {number} lastRow the last row
          * @see TableModelEvent
          * @see EventListenerList
          */
         fireTableRowsInserted(firstRow: number, lastRow: number): void;
         /**
-         * Notifies all listeners that rows in the range
-         * <code>[firstRow, lastRow]</code>, inclusive, have been updated.
+         * Notifies all listeners that rows in the range <code>[firstRow, lastRow]</code>, inclusive, have
+         * been updated.
          *
-         * @param {number} firstRow  the first row
-         * @param {number} lastRow   the last row
-         *
+         * @param {number} firstRow the first row
+         * @param {number} lastRow the last row
          * @see TableModelEvent
          * @see EventListenerList
          */
         fireTableRowsUpdated(firstRow: number, lastRow: number): void;
         /**
-         * Notifies all listeners that rows in the range
-         * <code>[firstRow, lastRow]</code>, inclusive, have been deleted.
+         * Notifies all listeners that rows in the range <code>[firstRow, lastRow]</code>, inclusive, have
+         * been deleted.
          *
-         * @param {number} firstRow  the first row
-         * @param {number} lastRow   the last row
-         *
+         * @param {number} firstRow the first row
+         * @param {number} lastRow the last row
          * @see TableModelEvent
          * @see EventListenerList
          */
         fireTableRowsDeleted(firstRow: number, lastRow: number): void;
         /**
-         * Notifies all listeners that the value of the cell at
-         * <code>[row, column]</code> has been updated.
+         * Notifies all listeners that the value of the cell at <code>[row, column]</code> has been
+         * updated.
          *
-         * @param {number} row  row of cell which has been updated
-         * @param {number} column  column of cell which has been updated
+         * @param {number} row row of cell which has been updated
+         * @param {number} column column of cell which has been updated
          * @see TableModelEvent
          * @see EventListenerList
          */
         fireTableCellUpdated(row: number, column: number): void;
         /**
-         * Forwards the given notification event to all
-         * <code>TableModelListeners</code> that registered
+         * Forwards the given notification event to all <code>TableModelListeners</code> that registered
          * themselves as listeners for this table model.
          *
-         * @param {javax.swing.event.TableModelEvent} e  the event to be forwarded
-         *
+         * @param {javax.swing.event.TableModelEvent} e the event to be forwarded
          * @see #addTableModelListener
          * @see TableModelEvent
          * @see EventListenerList
          */
         fireTableChanged(e: javax.swing.event.TableModelEvent): void;
         /**
-         * Returns an array of all the objects currently registered
-         * as <code><em>Foo</em>Listener</code>s
-         * upon this <code>AbstractTableModel</code>.
-         * <code><em>Foo</em>Listener</code>s are registered using the
-         * <code>add<em>Foo</em>Listener</code> method.
+         * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
+         * upon this <code>AbstractTableModel</code>. <code><em>Foo</em>Listener</code>s are registered
+         * using the <code>add<em>Foo</em>Listener</code> method.
          *
-         * <p>
+         * <p>You can specify the <code>listenerType</code> argument with a class literal, such as <code>
+         * <em>Foo</em>Listener.class</code>. For example, you can query a model <code>m</code> for its
+         * table model listeners with the following code:
          *
-         * You can specify the <code>listenerType</code> argument
-         * with a class literal,
-         * such as
-         * <code><em>Foo</em>Listener.class</code>.
-         * For example, you can query a
-         * model <code>m</code>
-         * for its table model listeners with the following code:
-         *
-         * <pre>TableModelListener[] tmls = (TableModelListener[])(m.getListeners(TableModelListener.class));</pre>
+         * <pre>
+         * TableModelListener[] tmls = (TableModelListener[])(m.getListeners(TableModelListener.class));
+         * </pre>
          *
          * If no such listeners exist, this method returns an empty array.
          *
-         * @param {java.lang.Class} listenerType the type of listeners requested; this parameter
-         * should specify an interface that descends from
-         * <code>java.util.EventListener</code>
-         * @return {T[]} an array of all objects registered as
-         * <code><em>Foo</em>Listener</code>s on this component,
-         * or an empty array if no such
-         * listeners have been added
-         * @exception ClassCastException if <code>listenerType</code>
-         * doesn't specify a class or interface that implements
-         * <code>java.util.EventListener</code>
-         *
+         * @param {java.lang.Class} listenerType the type of listeners requested; this parameter should specify an interface
+         * that descends from <code>java.util.EventListener</code>
+         * @return {T[]} an array of all objects registered as <code><em>Foo</em>Listener</code>s on this
+         * component, or an empty array if no such listeners have been added
+         * @exception ClassCastException if <code>listenerType</code> doesn't specify a class or interface
+         * that implements <code>java.util.EventListener</code>
          * @see #getTableModelListeners
-         *
          * @since 1.3
          */
         getListeners<T extends java.util.EventListener>(listenerType: any): T[];
@@ -8100,19 +8611,20 @@ declare namespace javax.swing.table {
 }
 declare namespace javax.swing.table {
     /**
-     * The <code>TableModel</code> interface specifies the methods the
-     * <code>JTable</code> will use to interrogate a tabular data model. <p>
+     * The <code>TableModel</code> interface specifies the methods the <code>JTable</code> will use to
+     * interrogate a tabular data model.
      *
-     * The <code>JTable</code> can be set up to display any data
-     * model which implements the
-     * <code>TableModel</code> interface with a couple of lines of code:
+     * <p>The <code>JTable</code> can be set up to display any data model which implements the <code>
+     * TableModel</code> interface with a couple of lines of code:
+     *
      * <pre>
      * TableModel myData = new MyTableModel();
      * JTable table = new JTable(myData);
-     * </pre><p>
+     * </pre>
      *
-     * For further documentation, see <a href="https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#data">Creating a Table Model</a>
-     * in <em>The Java Tutorial</em>.
+     * <p>For further documentation, see <a
+     * href="https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#data">Creating a
+     * Table Model</a> in <em>The Java Tutorial</em>.
      *
      * @author Philip Milne
      * @see JTable
@@ -8120,77 +8632,70 @@ declare namespace javax.swing.table {
      */
     interface TableModel {
         /**
-         * Returns the number of rows in the model. A
-         * <code>JTable</code> uses this method to determine how many rows it
-         * should display.  This method should be quick, as it
-         * is called frequently during rendering.
+         * Returns the number of rows in the model. A <code>JTable</code> uses this method to determine
+         * how many rows it should display. This method should be quick, as it is called frequently during
+         * rendering.
          *
          * @return {number} the number of rows in the model
          * @see #getColumnCount
          */
         getRowCount(): number;
         /**
-         * Returns the number of columns in the model. A
-         * <code>JTable</code> uses this method to determine how many columns it
-         * should create and display by default.
+         * Returns the number of columns in the model. A <code>JTable</code> uses this method to determine
+         * how many columns it should create and display by default.
          *
          * @return {number} the number of columns in the model
          * @see #getRowCount
          */
         getColumnCount(): number;
         /**
-         * Returns the name of the column at <code>columnIndex</code>.  This is used
-         * to initialize the table's column header name.  Note: this name does
-         * not need to be unique; two columns in a table can have the same name.
+         * Returns the name of the column at <code>columnIndex</code>. This is used to initialize the
+         * table's column header name. Note: this name does not need to be unique; two columns in a table
+         * can have the same name.
          *
-         * @param   {number} columnIndex     the index of the column
-         * @return  {string} the name of the column
+         * @param {number} columnIndex the index of the column
+         * @return {string} the name of the column
          */
         getColumnName(columnIndex: number): string;
         /**
-         * Returns true if the cell at <code>rowIndex</code> and
-         * <code>columnIndex</code>
-         * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
-         * change the value of that cell.
+         * Returns true if the cell at <code>rowIndex</code> and <code>columnIndex</code> is editable.
+         * Otherwise, <code>setValueAt</code> on the cell will not change the value of that cell.
          *
-         * @param   {number} rowIndex        the row whose value to be queried
-         * @param   {number} columnIndex     the column whose value to be queried
-         * @return  {boolean} true if the cell is editable
+         * @param {number} rowIndex the row whose value to be queried
+         * @param {number} columnIndex the column whose value to be queried
+         * @return {boolean} true if the cell is editable
          * @see #setValueAt
          */
         isCellEditable(rowIndex: number, columnIndex: number): boolean;
         /**
-         * Returns the value for the cell at <code>columnIndex</code> and
-         * <code>rowIndex</code>.
+         * Returns the value for the cell at <code>columnIndex</code> and <code>rowIndex</code>.
          *
-         * @param   {number} rowIndex        the row whose value is to be queried
-         * @param   {number} columnIndex     the column whose value is to be queried
-         * @return  {*} the value Object at the specified cell
+         * @param {number} rowIndex the row whose value is to be queried
+         * @param {number} columnIndex the column whose value is to be queried
+         * @return {*} the value Object at the specified cell
          */
         getValueAt(rowIndex: number, columnIndex: number): any;
         /**
-         * Sets the value in the cell at <code>columnIndex</code> and
-         * <code>rowIndex</code> to <code>aValue</code>.
+         * Sets the value in the cell at <code>columnIndex</code> and <code>rowIndex</code> to <code>
+         * aValue</code>.
          *
-         * @param   {*} aValue           the new value
-         * @param   {number} rowIndex         the row whose value is to be changed
-         * @param   {number} columnIndex      the column whose value is to be changed
+         * @param {*} aValue the new value
+         * @param {number} rowIndex the row whose value is to be changed
+         * @param {number} columnIndex the column whose value is to be changed
          * @see #getValueAt
          * @see #isCellEditable
          */
         setValueAt(aValue: any, rowIndex: number, columnIndex: number): any;
         /**
-         * Adds a listener to the list that is notified each time a change
-         * to the data model occurs.
+         * Adds a listener to the list that is notified each time a change to the data model occurs.
          *
-         * @param   {*} l               the TableModelListener
+         * @param {*} l the TableModelListener
          */
         addTableModelListener(l: javax.swing.event.TableModelListener): any;
         /**
-         * Removes a listener from the list that is notified each time a
-         * change to the data model occurs.
+         * Removes a listener from the list that is notified each time a change to the data model occurs.
          *
-         * @param   {*} l               the TableModelListener
+         * @param {*} l the TableModelListener
          */
         removeTableModelListener(l: javax.swing.event.TableModelListener): any;
     }
@@ -8392,8 +8897,8 @@ declare namespace javax.swing.event {
 }
 declare namespace javax.swing.event {
     /**
-     * This event notifies listeners that rows in the range [firstRow, lastRow]
-     * have been inserted, updated or deleted.
+     * This event notifies listeners that rows in the range [firstRow, lastRow] have been inserted,
+     * updated or deleted.
      * @param {*} source
      * @param {number} firstRow
      * @param {number} lastRow
@@ -8449,14 +8954,13 @@ declare namespace javax.swing.event {
 }
 declare namespace javax.swing.event {
     /**
-     * TableModelListener defines the interface for an object that listens
-     * to changes in a TableModel.
+     * TableModelListener defines the interface for an object that listens to changes in a TableModel.
      * @class
      */
     interface TableModelListener extends java.util.EventListener {
         /**
-         * This fine grain notification tells listeners the exact range
-         * of cells, rows, or columns that changed.
+         * This fine grain notification tells listeners the exact range of cells, rows, or columns that
+         * changed.
          * @param {javax.swing.event.TableModelEvent} e
          */
         tableChanged(e: javax.swing.event.TableModelEvent): any;
@@ -13695,6 +14199,12 @@ declare namespace java.awt.geom {
         }
     }
 }
+declare namespace java.awt {
+    class MenuItem extends java.awt.MenuComponent {
+        constructor(label?: any);
+        addActionListener(l: java.awt.event.ActionListener): void;
+    }
+}
 declare namespace javax.swing.event {
     abstract class MouseInputAdapter extends java.awt.event.MouseAdapter implements javax.swing.event.MouseInputListener {
         constructor();
@@ -13726,6 +14236,11 @@ declare namespace java.awt {
         abstract getPaint(): java.awt.Paint;
         abstract setBackground(color: java.awt.Color): any;
         abstract getBackground(): java.awt.Color;
+    }
+}
+declare namespace java.awt.image {
+    class CropImageFilter extends java.awt.image.ImageFilter {
+        constructor(x: number, y: number, w: number, h: number);
     }
 }
 declare namespace java.awt.event {
@@ -13963,6 +14478,20 @@ declare namespace java.awt.event {
          */
         getValueIsAdjusting(): boolean;
         paramString(): string;
+    }
+}
+declare namespace java.awt {
+    class TextArea extends java.awt.Component {
+        constructor(text?: any, rows?: any, columns?: any, scrollbars?: any);
+        append(str: string): void;
+        setText(t: string): void;
+        getFontMetrics$(): java.awt.FontMetrics;
+        getFontMetrics$java_awt_Font(font: java.awt.Font): java.awt.FontMetrics;
+        getFontMetrics(font?: any): java.awt.FontMetrics;
+        /**
+         *
+         */
+        createHTML(): void;
     }
 }
 declare namespace java.awt {
@@ -15236,6 +15765,14 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class Menu extends java.awt.MenuItem {
+        constructor(label?: any, tearOff?: any);
+        add$java_awt_MenuItem(mi: java.awt.MenuItem): java.awt.MenuItem;
+        add(mi?: any): any;
+        add$java_lang_String(label: string): void;
+    }
+}
+declare namespace java.awt {
     class WebGraphics2D extends java.awt.Graphics2D {
         context: CanvasRenderingContext2D;
         constructor(canvas: HTMLCanvasElement);
@@ -16393,6 +16930,12 @@ declare namespace javax.swing.undo {
          * @return {string} a String representation of this object
          */
         toString(): string;
+    }
+}
+declare namespace java.awt {
+    class PopupMenu extends java.awt.Menu {
+        constructor(label?: any);
+        show(origin: java.awt.Component, x: number, y: number): void;
     }
 }
 declare namespace java.awt.event {

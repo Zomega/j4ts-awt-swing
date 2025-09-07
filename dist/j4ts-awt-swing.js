@@ -10243,6 +10243,223 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        var GridBagLayout = /** @class */ (function () {
+            function GridBagLayout(rows, cols, hgap, vgap) {
+                if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && ((typeof hgap === 'number') || hgap === null) && ((typeof vgap === 'number') || vgap === null)) {
+                    var __args = arguments;
+                    if (this.parent === undefined) {
+                        this.parent = null;
+                    }
+                    if (this.gridContainer === undefined) {
+                        this.gridContainer = null;
+                    }
+                    if (this.rows === undefined) {
+                        this.rows = 0;
+                    }
+                    if (this.cols === undefined) {
+                        this.cols = 0;
+                    }
+                    if (this.hgap === undefined) {
+                        this.hgap = 0;
+                    }
+                    if (this.vgap === undefined) {
+                        this.vgap = 0;
+                    }
+                    this.created = false;
+                    this.rows = rows;
+                    this.cols = cols;
+                    this.hgap = hgap;
+                    this.vgap = vgap;
+                }
+                else if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && hgap === undefined && vgap === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_4 = arguments;
+                        var hgap_3 = 0;
+                        var vgap_3 = 0;
+                        if (this.parent === undefined) {
+                            this.parent = null;
+                        }
+                        if (this.gridContainer === undefined) {
+                            this.gridContainer = null;
+                        }
+                        if (this.rows === undefined) {
+                            this.rows = 0;
+                        }
+                        if (this.cols === undefined) {
+                            this.cols = 0;
+                        }
+                        if (this.hgap === undefined) {
+                            this.hgap = 0;
+                        }
+                        if (this.vgap === undefined) {
+                            this.vgap = 0;
+                        }
+                        this.created = false;
+                        this.rows = rows;
+                        this.cols = cols;
+                        this.hgap = hgap_3;
+                        this.vgap = vgap_3;
+                    }
+                    if (this.parent === undefined) {
+                        this.parent = null;
+                    }
+                    if (this.gridContainer === undefined) {
+                        this.gridContainer = null;
+                    }
+                    if (this.rows === undefined) {
+                        this.rows = 0;
+                    }
+                    if (this.cols === undefined) {
+                        this.cols = 0;
+                    }
+                    if (this.hgap === undefined) {
+                        this.hgap = 0;
+                    }
+                    if (this.vgap === undefined) {
+                        this.vgap = 0;
+                    }
+                    this.created = false;
+                }
+                else if (rows === undefined && cols === undefined && hgap === undefined && vgap === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_5 = arguments;
+                        var rows_1 = 1;
+                        var cols_1 = 1;
+                        var hgap_4 = 0;
+                        var vgap_4 = 0;
+                        if (this.parent === undefined) {
+                            this.parent = null;
+                        }
+                        if (this.gridContainer === undefined) {
+                            this.gridContainer = null;
+                        }
+                        if (this.rows === undefined) {
+                            this.rows = 0;
+                        }
+                        if (this.cols === undefined) {
+                            this.cols = 0;
+                        }
+                        if (this.hgap === undefined) {
+                            this.hgap = 0;
+                        }
+                        if (this.vgap === undefined) {
+                            this.vgap = 0;
+                        }
+                        this.created = false;
+                        this.rows = rows_1;
+                        this.cols = cols_1;
+                        this.hgap = hgap_4;
+                        this.vgap = vgap_4;
+                    }
+                    if (this.parent === undefined) {
+                        this.parent = null;
+                    }
+                    if (this.gridContainer === undefined) {
+                        this.gridContainer = null;
+                    }
+                    if (this.rows === undefined) {
+                        this.rows = 0;
+                    }
+                    if (this.cols === undefined) {
+                        this.cols = 0;
+                    }
+                    if (this.hgap === undefined) {
+                        this.hgap = 0;
+                    }
+                    if (this.vgap === undefined) {
+                        this.vgap = 0;
+                    }
+                    this.created = false;
+                }
+                else
+                    throw new Error('invalid overload');
+            }
+            GridBagLayout.prototype.addLayoutComponent$java_lang_String$java_awt_Component = function (name, component) {
+                if (this.gridContainer != null) {
+                    this.gridContainer.appendChild(component.getHTMLElement());
+                }
+            };
+            /**
+             *
+             * @param {string} name
+             * @param {java.awt.Component} component
+             */
+            GridBagLayout.prototype.addLayoutComponent = function (name, component) {
+                if (((typeof name === 'string') || name === null) && ((component != null && component instanceof java.awt.Component) || component === null)) {
+                    return this.addLayoutComponent$java_lang_String$java_awt_Component(name, component);
+                }
+                else if (((name != null && name instanceof java.awt.Component) || name === null) && ((component != null) || component === null)) {
+                    return this.addLayoutComponent$java_awt_Component$java_lang_Object(name, component);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            /**
+             *
+             * @param {java.awt.Component} component
+             */
+            GridBagLayout.prototype.removeLayoutComponent = function (component) {
+                var componentElement = component.getHTMLElement();
+                if (this.gridContainer.contains(componentElement)) {
+                    this.gridContainer.removeChild(componentElement);
+                }
+            };
+            /**
+             *
+             * @param {java.awt.Container} parent
+             */
+            GridBagLayout.prototype.layoutContainer = function (parent) {
+                if (!this.created) {
+                    this.parent = parent;
+                    this.created = true;
+                    var parentElement = parent.getHTMLElement();
+                    this.gridContainer = document.createElement("div");
+                    this.gridContainer.className = "applet-grid-layout";
+                    this.gridContainer.style.display = "grid";
+                    this.gridContainer.style.width = "100%";
+                    this.gridContainer.style.height = "100%";
+                    parentElement.appendChild(this.gridContainer);
+                }
+            };
+            GridBagLayout.prototype.addLayoutComponent$java_awt_Component$java_lang_Object = function (component, o) {
+                this.addLayoutComponent$java_lang_String$java_awt_Component(null, component);
+            };
+            /**
+             *
+             * @param {java.awt.Container} container
+             * @return {number}
+             */
+            GridBagLayout.prototype.getLayoutAlignmentX = function (container) {
+                return 0;
+            };
+            /**
+             *
+             * @param {java.awt.Container} container
+             * @return {number}
+             */
+            GridBagLayout.prototype.getLayoutAlignmentY = function (container) {
+                return 0;
+            };
+            /**
+             *
+             * @param {java.awt.Container} container
+             */
+            GridBagLayout.prototype.invalidateLayout = function (container) {
+            };
+            GridBagLayout.prototype.setConstraints = function (comp, constraints) {
+            };
+            return GridBagLayout;
+        }());
+        awt.GridBagLayout = GridBagLayout;
+        GridBagLayout["__class"] = "java.awt.GridBagLayout";
+        GridBagLayout["__interfaces"] = ["java.awt.LayoutManager2", "java.awt.LayoutManager"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         /**
          * Constructs an IllegalComponentStateException with the specified detail message. A detail
          * message is a String that describes this particular exception.
@@ -10967,9 +11184,9 @@ var java;
                 else if (hgap === undefined && vgap === undefined) {
                     var __args = arguments;
                     {
-                        var __args_4 = arguments;
-                        var hgap_3 = 0;
-                        var vgap_3 = 0;
+                        var __args_6 = arguments;
+                        var hgap_5 = 0;
+                        var vgap_5 = 0;
                         if (this.parent === undefined) {
                             this.parent = null;
                         }
@@ -11013,8 +11230,8 @@ var java;
                             this.lastItem = null;
                         }
                         this.created = false;
-                        this.hgap = hgap_3;
-                        this.vgap = vgap_3;
+                        this.hgap = hgap_5;
+                        this.vgap = vgap_5;
                     }
                     if (this.parent === undefined) {
                         this.parent = null;
@@ -11357,6 +11574,120 @@ var java;
     (function (awt) {
         var image;
         (function (image) {
+            var PixelGrabber = /** @class */ (function () {
+                function PixelGrabber(img, x, y, w, h, pix, off, scansize) {
+                    if (((img != null && img instanceof java.awt.Image) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        var __args = arguments;
+                    }
+                    else if (((img != null && img instanceof java.awt.image.ImageProducer) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        var __args = arguments;
+                        var ip = __args[0];
+                    }
+                    else if (((img != null && img instanceof java.awt.Image) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((typeof pix === 'boolean') || pix === null) && off === undefined && scansize === undefined) {
+                        var __args = arguments;
+                        var forceRGB = __args[5];
+                    }
+                    else
+                        throw new Error('invalid overload');
+                }
+                PixelGrabber.prototype.grabPixels$ = function () {
+                    return false;
+                };
+                PixelGrabber.prototype.grabPixels$long = function (ms) {
+                    return this.grabPixels$();
+                };
+                PixelGrabber.prototype.grabPixels = function (ms) {
+                    if (((typeof ms === 'number') || ms === null)) {
+                        return this.grabPixels$long(ms);
+                    }
+                    else if (ms === undefined) {
+                        return this.grabPixels$();
+                    }
+                    else
+                        throw new Error('invalid overload');
+                };
+                return PixelGrabber;
+            }());
+            image.PixelGrabber = PixelGrabber;
+            PixelGrabber["__class"] = "java.awt.image.PixelGrabber";
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var ImageProducer = /** @class */ (function () {
+                function ImageProducer() {
+                }
+                return ImageProducer;
+            }());
+            image.ImageProducer = ImageProducer;
+            ImageProducer["__class"] = "java.awt.image.ImageProducer";
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var ImageFilter = /** @class */ (function () {
+                function ImageFilter() {
+                }
+                return ImageFilter;
+            }());
+            image.ImageFilter = ImageFilter;
+            ImageFilter["__class"] = "java.awt.image.ImageFilter";
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var FilteredImageSource = /** @class */ (function () {
+                function FilteredImageSource(orig, imgf) {
+                }
+                return FilteredImageSource;
+            }());
+            image.FilteredImageSource = FilteredImageSource;
+            FilteredImageSource["__class"] = "java.awt.image.FilteredImageSource";
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var MemoryImageSource = /** @class */ (function () {
+                function MemoryImageSource(w, h, pix, off, scan, props) {
+                    if (((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scan === 'number') || scan === null) && ((props != null && props instanceof java.util.Hashtable) || props === null)) {
+                        var __args = arguments;
+                    }
+                    else if (((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scan === 'number') || scan === null) && props === undefined) {
+                        var __args = arguments;
+                    }
+                    else
+                        throw new Error('invalid overload');
+                }
+                MemoryImageSource.prototype.setAnimated = function (animated) {
+                };
+                return MemoryImageSource;
+            }());
+            image.MemoryImageSource = MemoryImageSource;
+            MemoryImageSource["__class"] = "java.awt.image.MemoryImageSource";
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
             var ImageObserver;
             (function (ImageObserver) {
                 ImageObserver.WIDTH = 1;
@@ -11450,11 +11781,11 @@ var java;
                 else if (((typeof r === 'number') || r === null) && ((typeof g === 'number') || g === null) && ((typeof b === 'number') || b === null) && ((typeof a === 'number') || a === null)) {
                     var __args = arguments;
                     {
-                        var __args_5 = arguments;
-                        var r_1 = ((__args_5[0] * 255 + 0.5) | 0);
-                        var g_1 = ((__args_5[1] * 255 + 0.5) | 0);
-                        var b_1 = ((__args_5[2] * 255 + 0.5) | 0);
-                        var a_1 = ((__args_5[3] * 255 + 0.5) | 0);
+                        var __args_7 = arguments;
+                        var r_1 = ((__args_7[0] * 255 + 0.5) | 0);
+                        var g_1 = ((__args_7[1] * 255 + 0.5) | 0);
+                        var b_1 = ((__args_7[2] * 255 + 0.5) | 0);
+                        var a_1 = ((__args_7[3] * 255 + 0.5) | 0);
                         if (this.value === undefined) {
                             this.value = 0;
                         }
@@ -11482,7 +11813,7 @@ var java;
                 else if (((typeof r === 'number') || r === null) && ((typeof g === 'number') || g === null) && ((typeof b === 'number') || b === null) && a === undefined) {
                     var __args = arguments;
                     {
-                        var __args_6 = arguments;
+                        var __args_8 = arguments;
                         var a_2 = 255;
                         if (this.value === undefined) {
                             this.value = 0;
@@ -11503,12 +11834,12 @@ var java;
                 else if (((typeof r === 'number') || r === null) && ((typeof g === 'number') || g === null) && ((typeof b === 'number') || b === null) && a === undefined) {
                     var __args = arguments;
                     {
-                        var __args_7 = arguments;
-                        var r_2 = ((__args_7[0] * 255 + 0.5) | 0);
-                        var g_2 = ((__args_7[1] * 255 + 0.5) | 0);
-                        var b_2 = ((__args_7[2] * 255 + 0.5) | 0);
+                        var __args_9 = arguments;
+                        var r_2 = ((__args_9[0] * 255 + 0.5) | 0);
+                        var g_2 = ((__args_9[1] * 255 + 0.5) | 0);
+                        var b_2 = ((__args_9[2] * 255 + 0.5) | 0);
                         {
-                            var __args_8 = arguments;
+                            var __args_10 = arguments;
                             var a_4 = 255;
                             if (this.value === undefined) {
                                 this.value = 0;
@@ -12651,7 +12982,7 @@ var java;
                 else if (((target != null) || target === null) && ((typeof when === 'number') || when === null) && ((typeof id === 'number') || id === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof key === 'number') || key === null) && ((typeof modifiers === 'number') || modifiers === null) && arg === undefined) {
                     var __args = arguments;
                     {
-                        var __args_9 = arguments;
+                        var __args_11 = arguments;
                         var arg_1 = null;
                         if (this.data === undefined) {
                             this.data = 0;
@@ -12757,7 +13088,7 @@ var java;
                     var id_1 = __args[1];
                     var arg_2 = __args[2];
                     {
-                        var __args_10 = arguments;
+                        var __args_12 = arguments;
                         var when_1 = 0;
                         var x_1 = 0;
                         var y_1 = 0;
@@ -13084,7 +13415,7 @@ var java;
                     var __args = arguments;
                     var event_1 = __args[0];
                     {
-                        var __args_11 = arguments;
+                        var __args_13 = arguments;
                         var source_1 = event_1.target;
                         var id_2 = event_1.id;
                         _this = _super.call(this, source_1) || this;
@@ -13340,7 +13671,7 @@ var java;
                 else if (((typeof width === 'number') || width === null) && ((typeof cap === 'number') || cap === null) && ((typeof join === 'number') || join === null) && ((typeof miterlimit === 'number') || miterlimit === null) && dash === undefined && dash_phase === undefined) {
                     var __args = arguments;
                     {
-                        var __args_12 = arguments;
+                        var __args_14 = arguments;
                         var dash_1 = null;
                         var dash_phase_1 = 0.0;
                         if (this.width === undefined) {
@@ -13427,7 +13758,7 @@ var java;
                 else if (((typeof width === 'number') || width === null) && ((typeof cap === 'number') || cap === null) && ((typeof join === 'number') || join === null) && miterlimit === undefined && dash === undefined && dash_phase === undefined) {
                     var __args = arguments;
                     {
-                        var __args_13 = arguments;
+                        var __args_15 = arguments;
                         var miterlimit_1 = 10.0;
                         var dash_2 = null;
                         var dash_phase_2 = 0.0;
@@ -13515,7 +13846,7 @@ var java;
                 else if (((typeof width === 'number') || width === null) && cap === undefined && join === undefined && miterlimit === undefined && dash === undefined && dash_phase === undefined) {
                     var __args = arguments;
                     {
-                        var __args_14 = arguments;
+                        var __args_16 = arguments;
                         var cap_1 = BasicStroke.CAP_SQUARE;
                         var join_1 = BasicStroke.JOIN_MITER;
                         var miterlimit_2 = 10.0;
@@ -13605,7 +13936,7 @@ var java;
                 else if (width === undefined && cap === undefined && join === undefined && miterlimit === undefined && dash === undefined && dash_phase === undefined) {
                     var __args = arguments;
                     {
-                        var __args_15 = arguments;
+                        var __args_17 = arguments;
                         var width_1 = 1.0;
                         var cap_2 = BasicStroke.CAP_SQUARE;
                         var join_2 = BasicStroke.JOIN_MITER;
@@ -13782,6 +14113,438 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        /**
+         * Creates a <code>GridBagConstraints</code> object with all of its fields set to the passed-in
+         * arguments.
+         *
+         * <p>Note: Because the use of this constructor hinders readability of source code, this
+         * constructor should only be used by automatic source code generation tools.
+         *
+         * @param {number} gridx The initial gridx value.
+         * @param {number} gridy The initial gridy value.
+         * @param {number} gridwidth The initial gridwidth value.
+         * @param {number} gridheight The initial gridheight value.
+         * @param {number} weightx The initial weightx value.
+         * @param {number} weighty The initial weighty value.
+         * @param {number} anchor The initial anchor value.
+         * @param {number} fill The initial fill value.
+         * @param {java.awt.Insets} insets The initial insets value.
+         * @param {number} ipadx The initial ipadx value.
+         * @param {number} ipady The initial ipady value.
+         * @see java.awt.GridBagConstraints#gridx
+         * @see java.awt.GridBagConstraints#gridy
+         * @see java.awt.GridBagConstraints#gridwidth
+         * @see java.awt.GridBagConstraints#gridheight
+         * @see java.awt.GridBagConstraints#weightx
+         * @see java.awt.GridBagConstraints#weighty
+         * @see java.awt.GridBagConstraints#anchor
+         * @see java.awt.GridBagConstraints#fill
+         * @see java.awt.GridBagConstraints#insets
+         * @see java.awt.GridBagConstraints#ipadx
+         * @see java.awt.GridBagConstraints#ipady
+         * @since 1.2
+         * @class
+         */
+        var GridBagConstraints = /** @class */ (function () {
+            function GridBagConstraints(gridx, gridy, gridwidth, gridheight, weightx, weighty, anchor, fill, insets, ipadx, ipady) {
+                if (((typeof gridx === 'number') || gridx === null) && ((typeof gridy === 'number') || gridy === null) && ((typeof gridwidth === 'number') || gridwidth === null) && ((typeof gridheight === 'number') || gridheight === null) && ((typeof weightx === 'number') || weightx === null) && ((typeof weighty === 'number') || weighty === null) && ((typeof anchor === 'number') || anchor === null) && ((typeof fill === 'number') || fill === null) && ((insets != null && insets instanceof java.awt.Insets) || insets === null) && ((typeof ipadx === 'number') || ipadx === null) && ((typeof ipady === 'number') || ipady === null)) {
+                    var __args = arguments;
+                    if (this.gridx === undefined) {
+                        this.gridx = 0;
+                    }
+                    if (this.gridy === undefined) {
+                        this.gridy = 0;
+                    }
+                    if (this.gridwidth === undefined) {
+                        this.gridwidth = 0;
+                    }
+                    if (this.gridheight === undefined) {
+                        this.gridheight = 0;
+                    }
+                    if (this.weightx === undefined) {
+                        this.weightx = 0;
+                    }
+                    if (this.weighty === undefined) {
+                        this.weighty = 0;
+                    }
+                    if (this.anchor === undefined) {
+                        this.anchor = 0;
+                    }
+                    if (this.fill === undefined) {
+                        this.fill = 0;
+                    }
+                    if (this.insets === undefined) {
+                        this.insets = null;
+                    }
+                    if (this.ipadx === undefined) {
+                        this.ipadx = 0;
+                    }
+                    if (this.ipady === undefined) {
+                        this.ipady = 0;
+                    }
+                    if (this.tempX === undefined) {
+                        this.tempX = 0;
+                    }
+                    if (this.tempY === undefined) {
+                        this.tempY = 0;
+                    }
+                    if (this.tempWidth === undefined) {
+                        this.tempWidth = 0;
+                    }
+                    if (this.tempHeight === undefined) {
+                        this.tempHeight = 0;
+                    }
+                    if (this.minWidth === undefined) {
+                        this.minWidth = 0;
+                    }
+                    if (this.minHeight === undefined) {
+                        this.minHeight = 0;
+                    }
+                    if (this.ascent === undefined) {
+                        this.ascent = 0;
+                    }
+                    if (this.descent === undefined) {
+                        this.descent = 0;
+                    }
+                    if (this.centerPadding === undefined) {
+                        this.centerPadding = 0;
+                    }
+                    if (this.centerOffset === undefined) {
+                        this.centerOffset = 0;
+                    }
+                    this.gridx = gridx;
+                    this.gridy = gridy;
+                    this.gridwidth = gridwidth;
+                    this.gridheight = gridheight;
+                    this.fill = fill;
+                    this.ipadx = ipadx;
+                    this.ipady = ipady;
+                    this.insets = insets;
+                    this.anchor = anchor;
+                    this.weightx = weightx;
+                    this.weighty = weighty;
+                }
+                else if (gridx === undefined && gridy === undefined && gridwidth === undefined && gridheight === undefined && weightx === undefined && weighty === undefined && anchor === undefined && fill === undefined && insets === undefined && ipadx === undefined && ipady === undefined) {
+                    var __args = arguments;
+                    if (this.gridx === undefined) {
+                        this.gridx = 0;
+                    }
+                    if (this.gridy === undefined) {
+                        this.gridy = 0;
+                    }
+                    if (this.gridwidth === undefined) {
+                        this.gridwidth = 0;
+                    }
+                    if (this.gridheight === undefined) {
+                        this.gridheight = 0;
+                    }
+                    if (this.weightx === undefined) {
+                        this.weightx = 0;
+                    }
+                    if (this.weighty === undefined) {
+                        this.weighty = 0;
+                    }
+                    if (this.anchor === undefined) {
+                        this.anchor = 0;
+                    }
+                    if (this.fill === undefined) {
+                        this.fill = 0;
+                    }
+                    if (this.insets === undefined) {
+                        this.insets = null;
+                    }
+                    if (this.ipadx === undefined) {
+                        this.ipadx = 0;
+                    }
+                    if (this.ipady === undefined) {
+                        this.ipady = 0;
+                    }
+                    if (this.tempX === undefined) {
+                        this.tempX = 0;
+                    }
+                    if (this.tempY === undefined) {
+                        this.tempY = 0;
+                    }
+                    if (this.tempWidth === undefined) {
+                        this.tempWidth = 0;
+                    }
+                    if (this.tempHeight === undefined) {
+                        this.tempHeight = 0;
+                    }
+                    if (this.minWidth === undefined) {
+                        this.minWidth = 0;
+                    }
+                    if (this.minHeight === undefined) {
+                        this.minHeight = 0;
+                    }
+                    if (this.ascent === undefined) {
+                        this.ascent = 0;
+                    }
+                    if (this.descent === undefined) {
+                        this.descent = 0;
+                    }
+                    if (this.centerPadding === undefined) {
+                        this.centerPadding = 0;
+                    }
+                    if (this.centerOffset === undefined) {
+                        this.centerOffset = 0;
+                    }
+                    this.gridx = GridBagConstraints.RELATIVE;
+                    this.gridy = GridBagConstraints.RELATIVE;
+                    this.gridwidth = 1;
+                    this.gridheight = 1;
+                    this.weightx = 0;
+                    this.weighty = 0;
+                    this.anchor = GridBagConstraints.CENTER;
+                    this.fill = GridBagConstraints.NONE;
+                    this.insets = new java.awt.Insets(0, 0, 0, 0);
+                    this.ipadx = 0;
+                    this.ipady = 0;
+                }
+                else
+                    throw new Error('invalid overload');
+            }
+            /**
+             * Creates a copy of this grid bag constraint.
+             *
+             * @return {*} a copy of this grid bag constraint
+             */
+            GridBagConstraints.prototype.clone = function () {
+                try {
+                    var c = (function (o) { var clone = Object.create(o); for (var p in o) {
+                        if (o.hasOwnProperty(p))
+                            clone[p] = o[p];
+                    } return clone; })(this);
+                    c.insets = (function (o) { if (o.clone != undefined) {
+                        return o.clone();
+                    }
+                    else {
+                        var clone = Object.create(o);
+                        for (var p in o) {
+                            if (o.hasOwnProperty(p))
+                                clone[p] = o[p];
+                        }
+                        return clone;
+                    } })(this.insets);
+                    return c;
+                }
+                catch (e) {
+                    throw new java.lang.InternalError(e);
+                }
+            };
+            GridBagConstraints.prototype.isVerticallyResizable = function () {
+                return (this.fill === GridBagConstraints.BOTH || this.fill === GridBagConstraints.VERTICAL);
+            };
+            /**
+             * Specifies that this component is the next-to-last component in its column or row (<code>
+             * gridwidth</code>, <code>gridheight</code>), or that this component be placed next to the
+             * previously added component (<code>gridx</code>, <code>gridy</code>).
+             *
+             * @see java.awt.GridBagConstraints#gridwidth
+             * @see java.awt.GridBagConstraints#gridheight
+             * @see java.awt.GridBagConstraints#gridx
+             * @see java.awt.GridBagConstraints#gridy
+             */
+            GridBagConstraints.RELATIVE = -1;
+            /**
+             * Specifies that this component is the last component in its column or row.
+             */
+            GridBagConstraints.REMAINDER = 0;
+            /**
+             * Do not resize the component.
+             */
+            GridBagConstraints.NONE = 0;
+            /**
+             * Resize the component both horizontally and vertically.
+             */
+            GridBagConstraints.BOTH = 1;
+            /**
+             * Resize the component horizontally but not vertically.
+             */
+            GridBagConstraints.HORIZONTAL = 2;
+            /**
+             * Resize the component vertically but not horizontally.
+             */
+            GridBagConstraints.VERTICAL = 3;
+            /**
+             * Put the component in the center of its display area.
+             */
+            GridBagConstraints.CENTER = 10;
+            /**
+             * Put the component at the top of its display area, centered horizontally.
+             */
+            GridBagConstraints.NORTH = 11;
+            /**
+             * Put the component at the top-right corner of its display area.
+             */
+            GridBagConstraints.NORTHEAST = 12;
+            /**
+             * Put the component on the right side of its display area, centered vertically.
+             */
+            GridBagConstraints.EAST = 13;
+            /**
+             * Put the component at the bottom-right corner of its display area.
+             */
+            GridBagConstraints.SOUTHEAST = 14;
+            /**
+             * Put the component at the bottom of its display area, centered horizontally.
+             */
+            GridBagConstraints.SOUTH = 15;
+            /**
+             * Put the component at the bottom-left corner of its display area.
+             */
+            GridBagConstraints.SOUTHWEST = 16;
+            /**
+             * Put the component on the left side of its display area, centered vertically.
+             */
+            GridBagConstraints.WEST = 17;
+            /**
+             * Put the component at the top-left corner of its display area.
+             */
+            GridBagConstraints.NORTHWEST = 18;
+            /**
+             * Place the component centered along the edge of its display area associated with the start of a
+             * page for the current {@code ComponentOrientation}. Equal to NORTH for horizontal orientations.
+             */
+            GridBagConstraints.PAGE_START = 19;
+            /**
+             * Place the component centered along the edge of its display area associated with the end of a
+             * page for the current {@code ComponentOrientation}. Equal to SOUTH for horizontal orientations.
+             */
+            GridBagConstraints.PAGE_END = 20;
+            /**
+             * Place the component centered along the edge of its display area where lines of text would
+             * normally begin for the current {@code ComponentOrientation}. Equal to WEST for horizontal,
+             * left-to-right orientations and EAST for horizontal, right-to-left orientations.
+             */
+            GridBagConstraints.LINE_START = 21;
+            /**
+             * Place the component centered along the edge of its display area where lines of text would
+             * normally end for the current {@code ComponentOrientation}. Equal to EAST for horizontal,
+             * left-to-right orientations and WEST for horizontal, right-to-left orientations.
+             */
+            GridBagConstraints.LINE_END = 22;
+            /**
+             * Place the component in the corner of its display area where the first line of text on a page
+             * would normally begin for the current {@code ComponentOrientation}. Equal to NORTHWEST for
+             * horizontal, left-to-right orientations and NORTHEAST for horizontal, right-to-left
+             * orientations.
+             */
+            GridBagConstraints.FIRST_LINE_START = 23;
+            /**
+             * Place the component in the corner of its display area where the first line of text on a page
+             * would normally end for the current {@code ComponentOrientation}. Equal to NORTHEAST for
+             * horizontal, left-to-right orientations and NORTHWEST for horizontal, right-to-left
+             * orientations.
+             */
+            GridBagConstraints.FIRST_LINE_END = 24;
+            /**
+             * Place the component in the corner of its display area where the last line of text on a page
+             * would normally start for the current {@code ComponentOrientation}. Equal to SOUTHWEST for
+             * horizontal, left-to-right orientations and SOUTHEAST for horizontal, right-to-left
+             * orientations.
+             */
+            GridBagConstraints.LAST_LINE_START = 25;
+            /**
+             * Place the component in the corner of its display area where the last line of text on a page
+             * would normally end for the current {@code ComponentOrientation}. Equal to SOUTHEAST for
+             * horizontal, left-to-right orientations and SOUTHWEST for horizontal, right-to-left
+             * orientations.
+             */
+            GridBagConstraints.LAST_LINE_END = 26;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally centered and vertically aligned along the baseline of the prevailing row. If the
+             * component does not have a baseline it will be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.BASELINE = 256;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally placed along the leading edge. For components with a left-to-right orientation,
+             * the leading edge is the left edge. Vertically the component is aligned along the baseline of
+             * the prevailing row. If the component does not have a baseline it will be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.BASELINE_LEADING = 512;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally placed along the trailing edge. For components with a left-to-right orientation,
+             * the trailing edge is the right edge. Vertically the component is aligned along the baseline of
+             * the prevailing row. If the component does not have a baseline it will be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.BASELINE_TRAILING = 768;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally centered. Vertically the component is positioned so that its bottom edge touches
+             * the baseline of the starting row. If the starting row does not have a baseline it will be
+             * vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.ABOVE_BASELINE = 1024;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally placed along the leading edge. For components with a left-to-right orientation,
+             * the leading edge is the left edge. Vertically the component is positioned so that its bottom
+             * edge touches the baseline of the starting row. If the starting row does not have a baseline it
+             * will be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.ABOVE_BASELINE_LEADING = 1280;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally placed along the trailing edge. For components with a left-to-right orientation,
+             * the trailing edge is the right edge. Vertically the component is positioned so that its bottom
+             * edge touches the baseline of the starting row. If the starting row does not have a baseline it
+             * will be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.ABOVE_BASELINE_TRAILING = 1536;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally centered. Vertically the component is positioned so that its top edge touches the
+             * baseline of the starting row. If the starting row does not have a baseline it will be
+             * vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.BELOW_BASELINE = 1792;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally placed along the leading edge. For components with a left-to-right orientation,
+             * the leading edge is the left edge. Vertically the component is positioned so that its top edge
+             * touches the baseline of the starting row. If the starting row does not have a baseline it will
+             * be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.BELOW_BASELINE_LEADING = 2048;
+            /**
+             * Possible value for the <code>anchor</code> field. Specifies that the component should be
+             * horizontally placed along the trailing edge. For components with a left-to-right orientation,
+             * the trailing edge is the right edge. Vertically the component is positioned so that its top
+             * edge touches the baseline of the starting row. If the starting row does not have a baseline it
+             * will be vertically centered.
+             *
+             * @since 1.6
+             */
+            GridBagConstraints.BELOW_BASELINE_TRAILING = 2304;
+            return GridBagConstraints;
+        }());
+        awt.GridBagConstraints = GridBagConstraints;
+        GridBagConstraints["__class"] = "java.awt.GridBagConstraints";
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         var RenderingHints = /** @class */ (function () {
             function RenderingHints() {
             }
@@ -13849,9 +14612,9 @@ var java;
                 else if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && hgap === undefined && vgap === undefined) {
                     var __args = arguments;
                     {
-                        var __args_16 = arguments;
-                        var hgap_4 = 0;
-                        var vgap_4 = 0;
+                        var __args_18 = arguments;
+                        var hgap_6 = 0;
+                        var vgap_6 = 0;
                         if (this.parent === undefined) {
                             this.parent = null;
                         }
@@ -13873,8 +14636,8 @@ var java;
                         this.created = false;
                         this.rows = rows;
                         this.cols = cols;
-                        this.hgap = hgap_4;
-                        this.vgap = vgap_4;
+                        this.hgap = hgap_6;
+                        this.vgap = vgap_6;
                     }
                     if (this.parent === undefined) {
                         this.parent = null;
@@ -15235,6 +15998,24 @@ var java;
 })(java || (java = {}));
 (function (java) {
     var applet;
+    (function (applet) {
+        var AudioClip = /** @class */ (function () {
+            function AudioClip() {
+            }
+            AudioClip.prototype.loop = function () {
+            };
+            AudioClip.prototype.play = function () {
+            };
+            AudioClip.prototype.stop = function () {
+            };
+            return AudioClip;
+        }());
+        applet.AudioClip = AudioClip;
+        AudioClip["__class"] = "java.applet.AudioClip";
+    })(applet = java.applet || (java.applet = {}));
+})(java || (java = {}));
+(function (java) {
+    var applet;
     (function (applet_1) {
         var AppletContext = /** @class */ (function () {
             function AppletContext(applet) {
@@ -15571,7 +16352,7 @@ var sun;
                     else if (((c != null && c instanceof sun.awt.geom.Curve) || c === null) && ((typeof ctag === 'number') || ctag === null) && etag === undefined) {
                         var __args = arguments;
                         {
-                            var __args_17 = arguments;
+                            var __args_19 = arguments;
                             var etag_1 = sun.awt.geom.AreaOp.ETAG_IGNORE;
                             if (this.curve === undefined) {
                                 this.curve = null;
@@ -18167,28 +18948,23 @@ var javax;
         var table;
         (function (table) {
             /**
-             * This abstract class provides default implementations for most of
-             * the methods in the <code>TableModel</code> interface. It takes care of
-             * the management of listeners and provides some conveniences for generating
-             * <code>TableModelEvents</code> and dispatching them to the listeners.
-             * To create a concrete <code>TableModel</code> as a subclass of
-             * <code>AbstractTableModel</code> you need only provide implementations
-             * for the following three methods:
+             * This abstract class provides default implementations for most of the methods in the <code>
+             * TableModel</code> interface. It takes care of the management of listeners and provides some
+             * conveniences for generating <code>TableModelEvents</code> and dispatching them to the listeners.
+             * To create a concrete <code>TableModel</code> as a subclass of <code>AbstractTableModel</code> you
+             * need only provide implementations for the following three methods:
              *
              * <pre>
              * public int getRowCount();
              * public int getColumnCount();
              * public Object getValueAt(int row, int column);
              * </pre>
-             * <p>
-             * <strong>Warning:</strong>
-             * Serialized objects of this class will not be compatible with
-             * future Swing releases. The current serialization support is
-             * appropriate for short term storage or RMI between applications running
-             * the same version of Swing.  As of 1.4, support for long term storage
-             * of all JavaBeans&trade;
-             * has been added to the <code>java.beans</code> package.
-             * Please see {@link java.beans.XMLEncoder}.
+             *
+             * <p><strong>Warning:</strong> Serialized objects of this class will not be compatible with future
+             * Swing releases. The current serialization support is appropriate for short term storage or RMI
+             * between applications running the same version of Swing. As of 1.4, support for long term storage
+             * of all JavaBeans&trade; has been added to the <code>java.beans</code> package. Please see {@link
+             * java.beans.XMLEncoder}.
              *
              * @author Alan Chung
              * @author Philip Milne
@@ -18199,11 +18975,10 @@ var javax;
                     this.listenerList = new javax.swing.event.EventListenerList();
                 }
                 /**
-                 * Returns a default name for the column using spreadsheet conventions:
-                 * A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
-                 * returns an empty string.
+                 * Returns a default name for the column using spreadsheet conventions: A, B, C, ... Z, AA, AB,
+                 * etc. If <code>column</code> cannot be found, returns an empty string.
                  *
-                 * @param {number} column  the column being queried
+                 * @param {number} column the column being queried
                  * @return {string} a string containing the default name of <code>column</code>
                  */
                 AbstractTableModel.prototype.getColumnName = function (column) {
@@ -18217,11 +18992,9 @@ var javax;
                     return result;
                 };
                 /**
-                 * Returns a column given its name.
-                 * Implementation is naive so this should be overridden if
-                 * this method is to be called often. This method is not
-                 * in the <code>TableModel</code> interface and is not used by the
-                 * <code>JTable</code>.
+                 * Returns a column given its name. Implementation is naive so this should be overridden if this
+                 * method is to be called often. This method is not in the <code>TableModel</code> interface and
+                 * is not used by the <code>JTable</code>.
                  *
                  * @param {string} columnName string containing name of column to be located
                  * @return {number} the column with <code>columnName</code>, or -1 if not found
@@ -18240,72 +19013,64 @@ var javax;
                 /**
                  * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
                  *
-                 * @param {number} columnIndex  the column being queried
+                 * @param {number} columnIndex the column being queried
                  * @return {java.lang.Class} the Object.class
                  */
                 AbstractTableModel.prototype.getColumnClass = function (columnIndex) {
                     return Object;
                 };
                 /**
-                 * Returns false.  This is the default implementation for all cells.
+                 * Returns false. This is the default implementation for all cells.
                  *
-                 * @param  {number} rowIndex  the row being queried
-                 * @param  {number} columnIndex the column being queried
+                 * @param {number} rowIndex the row being queried
+                 * @param {number} columnIndex the column being queried
                  * @return {boolean} false
                  */
                 AbstractTableModel.prototype.isCellEditable = function (rowIndex, columnIndex) {
                     return false;
                 };
                 /**
-                 * This empty implementation is provided so users don't have to implement
-                 * this method if their data model is not editable.
+                 * This empty implementation is provided so users don't have to implement this method if their
+                 * data model is not editable.
                  *
-                 * @param  {*} aValue   value to assign to cell
-                 * @param  {number} rowIndex   row of cell
-                 * @param  {number} columnIndex  column of cell
+                 * @param {*} aValue value to assign to cell
+                 * @param {number} rowIndex row of cell
+                 * @param {number} columnIndex column of cell
                  */
                 AbstractTableModel.prototype.setValueAt = function (aValue, rowIndex, columnIndex) {
                 };
                 /**
-                 * Adds a listener to the list that's notified each time a change
-                 * to the data model occurs.
+                 * Adds a listener to the list that's notified each time a change to the data model occurs.
                  *
-                 * @param   {*} l               the TableModelListener
+                 * @param {*} l the TableModelListener
                  */
                 AbstractTableModel.prototype.addTableModelListener = function (l) {
                     this.listenerList.add("javax.swing.event.TableModelListener", l);
                 };
                 /**
-                 * Removes a listener from the list that's notified each time a
-                 * change to the data model occurs.
+                 * Removes a listener from the list that's notified each time a change to the data model occurs.
                  *
-                 * @param   {*} l               the TableModelListener
+                 * @param {*} l the TableModelListener
                  */
                 AbstractTableModel.prototype.removeTableModelListener = function (l) {
                     this.listenerList.remove("javax.swing.event.TableModelListener", l);
                 };
                 /**
-                 * Returns an array of all the table model listeners
-                 * registered on this model.
+                 * Returns an array of all the table model listeners registered on this model.
                  *
-                 * @return {javax.swing.event.TableModelListener[]} all of this model's <code>TableModelListener</code>s
-                 * or an empty
-                 * array if no table model listeners are currently registered
-                 *
+                 * @return {javax.swing.event.TableModelListener[]} all of this model's <code>TableModelListener</code>s or an empty array if no table
+                 * model listeners are currently registered
                  * @see #addTableModelListener
                  * @see #removeTableModelListener
-                 *
                  * @since 1.4
                  */
                 AbstractTableModel.prototype.getTableModelListeners = function () {
                     return this.listenerList.getListeners$java_lang_Class("javax.swing.event.TableModelListener");
                 };
                 /**
-                 * Notifies all listeners that all cell values in the table's
-                 * rows may have changed. The number of rows may also have changed
-                 * and the <code>JTable</code> should redraw the
-                 * table from scratch. The structure of the table (as in the order of the
-                 * columns) is assumed to be the same.
+                 * Notifies all listeners that all cell values in the table's rows may have changed. The number of
+                 * rows may also have changed and the <code>JTable</code> should redraw the table from scratch.
+                 * The structure of the table (as in the order of the columns) is assumed to be the same.
                  *
                  * @see TableModelEvent
                  * @see EventListenerList
@@ -18315,15 +19080,12 @@ var javax;
                     this.fireTableChanged(new javax.swing.event.TableModelEvent(this));
                 };
                 /**
-                 * Notifies all listeners that the table's structure has changed.
-                 * The number of columns in the table, and the names and types of
-                 * the new columns may be different from the previous state.
-                 * If the <code>JTable</code> receives this event and its
-                 * <code>autoCreateColumnsFromModel</code>
-                 * flag is set it discards any table columns that it had and reallocates
-                 * default columns in the order they appear in the model. This is the
-                 * same as calling <code>setModel(TableModel)</code> on the
-                 * <code>JTable</code>.
+                 * Notifies all listeners that the table's structure has changed. The number of columns in the
+                 * table, and the names and types of the new columns may be different from the previous state. If
+                 * the <code>JTable</code> receives this event and its <code>autoCreateColumnsFromModel</code>
+                 * flag is set it discards any table columns that it had and reallocates default columns in the
+                 * order they appear in the model. This is the same as calling <code>setModel(TableModel)</code>
+                 * on the <code>JTable</code>.
                  *
                  * @see TableModelEvent
                  * @see EventListenerList
@@ -18332,12 +19094,11 @@ var javax;
                     this.fireTableChanged(new javax.swing.event.TableModelEvent(this, javax.swing.event.TableModelEvent.HEADER_ROW));
                 };
                 /**
-                 * Notifies all listeners that rows in the range
-                 * <code>[firstRow, lastRow]</code>, inclusive, have been inserted.
+                 * Notifies all listeners that rows in the range <code>[firstRow, lastRow]</code>, inclusive, have
+                 * been inserted.
                  *
-                 * @param  {number} firstRow  the first row
-                 * @param  {number} lastRow   the last row
-                 *
+                 * @param {number} firstRow the first row
+                 * @param {number} lastRow the last row
                  * @see TableModelEvent
                  * @see EventListenerList
                  */
@@ -18345,12 +19106,11 @@ var javax;
                     this.fireTableChanged(new javax.swing.event.TableModelEvent(this, firstRow, lastRow, javax.swing.event.TableModelEvent.ALL_COLUMNS, javax.swing.event.TableModelEvent.INSERT));
                 };
                 /**
-                 * Notifies all listeners that rows in the range
-                 * <code>[firstRow, lastRow]</code>, inclusive, have been updated.
+                 * Notifies all listeners that rows in the range <code>[firstRow, lastRow]</code>, inclusive, have
+                 * been updated.
                  *
-                 * @param {number} firstRow  the first row
-                 * @param {number} lastRow   the last row
-                 *
+                 * @param {number} firstRow the first row
+                 * @param {number} lastRow the last row
                  * @see TableModelEvent
                  * @see EventListenerList
                  */
@@ -18358,12 +19118,11 @@ var javax;
                     this.fireTableChanged(new javax.swing.event.TableModelEvent(this, firstRow, lastRow, javax.swing.event.TableModelEvent.ALL_COLUMNS, javax.swing.event.TableModelEvent.UPDATE));
                 };
                 /**
-                 * Notifies all listeners that rows in the range
-                 * <code>[firstRow, lastRow]</code>, inclusive, have been deleted.
+                 * Notifies all listeners that rows in the range <code>[firstRow, lastRow]</code>, inclusive, have
+                 * been deleted.
                  *
-                 * @param {number} firstRow  the first row
-                 * @param {number} lastRow   the last row
-                 *
+                 * @param {number} firstRow the first row
+                 * @param {number} lastRow the last row
                  * @see TableModelEvent
                  * @see EventListenerList
                  */
@@ -18371,11 +19130,11 @@ var javax;
                     this.fireTableChanged(new javax.swing.event.TableModelEvent(this, firstRow, lastRow, javax.swing.event.TableModelEvent.ALL_COLUMNS, javax.swing.event.TableModelEvent.DELETE));
                 };
                 /**
-                 * Notifies all listeners that the value of the cell at
-                 * <code>[row, column]</code> has been updated.
+                 * Notifies all listeners that the value of the cell at <code>[row, column]</code> has been
+                 * updated.
                  *
-                 * @param {number} row  row of cell which has been updated
-                 * @param {number} column  column of cell which has been updated
+                 * @param {number} row row of cell which has been updated
+                 * @param {number} column column of cell which has been updated
                  * @see TableModelEvent
                  * @see EventListenerList
                  */
@@ -18383,12 +19142,10 @@ var javax;
                     this.fireTableChanged(new javax.swing.event.TableModelEvent(this, row, row, column));
                 };
                 /**
-                 * Forwards the given notification event to all
-                 * <code>TableModelListeners</code> that registered
+                 * Forwards the given notification event to all <code>TableModelListeners</code> that registered
                  * themselves as listeners for this table model.
                  *
-                 * @param {javax.swing.event.TableModelEvent} e  the event to be forwarded
-                 *
+                 * @param {javax.swing.event.TableModelEvent} e the event to be forwarded
                  * @see #addTableModelListener
                  * @see TableModelEvent
                  * @see EventListenerList
@@ -18405,39 +19162,27 @@ var javax;
                     }
                 };
                 /**
-                 * Returns an array of all the objects currently registered
-                 * as <code><em>Foo</em>Listener</code>s
-                 * upon this <code>AbstractTableModel</code>.
-                 * <code><em>Foo</em>Listener</code>s are registered using the
-                 * <code>add<em>Foo</em>Listener</code> method.
+                 * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
+                 * upon this <code>AbstractTableModel</code>. <code><em>Foo</em>Listener</code>s are registered
+                 * using the <code>add<em>Foo</em>Listener</code> method.
                  *
-                 * <p>
+                 * <p>You can specify the <code>listenerType</code> argument with a class literal, such as <code>
+                 * <em>Foo</em>Listener.class</code>. For example, you can query a model <code>m</code> for its
+                 * table model listeners with the following code:
                  *
-                 * You can specify the <code>listenerType</code> argument
-                 * with a class literal,
-                 * such as
-                 * <code><em>Foo</em>Listener.class</code>.
-                 * For example, you can query a
-                 * model <code>m</code>
-                 * for its table model listeners with the following code:
-                 *
-                 * <pre>TableModelListener[] tmls = (TableModelListener[])(m.getListeners(TableModelListener.class));</pre>
+                 * <pre>
+                 * TableModelListener[] tmls = (TableModelListener[])(m.getListeners(TableModelListener.class));
+                 * </pre>
                  *
                  * If no such listeners exist, this method returns an empty array.
                  *
-                 * @param {java.lang.Class} listenerType the type of listeners requested; this parameter
-                 * should specify an interface that descends from
-                 * <code>java.util.EventListener</code>
-                 * @return {T[]} an array of all objects registered as
-                 * <code><em>Foo</em>Listener</code>s on this component,
-                 * or an empty array if no such
-                 * listeners have been added
-                 * @exception ClassCastException if <code>listenerType</code>
-                 * doesn't specify a class or interface that implements
-                 * <code>java.util.EventListener</code>
-                 *
+                 * @param {java.lang.Class} listenerType the type of listeners requested; this parameter should specify an interface
+                 * that descends from <code>java.util.EventListener</code>
+                 * @return {T[]} an array of all objects registered as <code><em>Foo</em>Listener</code>s on this
+                 * component, or an empty array if no such listeners have been added
+                 * @exception ClassCastException if <code>listenerType</code> doesn't specify a class or interface
+                 * that implements <code>java.util.EventListener</code>
                  * @see #getTableModelListeners
-                 *
                  * @since 1.3
                  */
                 AbstractTableModel.prototype.getListeners = function (listenerType) {
@@ -18632,8 +19377,8 @@ var javax;
         var event;
         (function (event) {
             /**
-             * This event notifies listeners that rows in the range [firstRow, lastRow]
-             * have been inserted, updated or deleted.
+             * This event notifies listeners that rows in the range [firstRow, lastRow] have been inserted,
+             * updated or deleted.
              * @param {*} source
              * @param {number} firstRow
              * @param {number} lastRow
@@ -18669,7 +19414,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_18 = arguments;
+                            var __args_20 = arguments;
                             var type_1 = TableModelEvent.UPDATE;
                             _this = _super.call(this, source) || this;
                             if (_this.type === undefined) {
@@ -18705,7 +19450,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_19 = arguments;
+                            var __args_21 = arguments;
                             var column_1 = TableModelEvent.ALL_COLUMNS;
                             var type_2 = TableModelEvent.UPDATE;
                             _this = _super.call(this, source) || this;
@@ -18743,7 +19488,7 @@ var javax;
                         var __args = arguments;
                         var row = __args[1];
                         {
-                            var __args_20 = arguments;
+                            var __args_22 = arguments;
                             var firstRow_1 = row;
                             var lastRow_1 = row;
                             var column_2 = TableModelEvent.ALL_COLUMNS;
@@ -18782,7 +19527,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("javax.swing.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_21 = arguments;
+                            var __args_23 = arguments;
                             var firstRow_2 = 0;
                             var lastRow_2 = javaemul.internal.IntegerHelper.MAX_VALUE;
                             var column_3 = TableModelEvent.ALL_COLUMNS;
@@ -19266,7 +20011,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_22 = arguments;
+                        var __args_24 = arguments;
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -19325,8 +20070,8 @@ var javax;
                 else if (((typeof filename === 'string') || filename === null) && description === undefined) {
                     var __args = arguments;
                     {
-                        var __args_23 = arguments;
-                        var description_1 = __args_23[0];
+                        var __args_25 = arguments;
+                        var description_1 = __args_25[0];
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -19388,8 +20133,8 @@ var javax;
                     var __args = arguments;
                     var location_2 = __args[0];
                     {
-                        var __args_24 = arguments;
-                        var description_2 = __args_24[0].toString();
+                        var __args_26 = arguments;
+                        var description_2 = __args_26[0].toString();
                         if (this.filename === undefined) {
                             this.filename = null;
                         }
@@ -19639,7 +20384,7 @@ var javax;
                 if (((typeof name === 'string') || name === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null)) {
                     var __args = arguments;
                     {
-                        var __args_25 = arguments;
+                        var __args_27 = arguments;
                         if (this.arrayTable === undefined) {
                             this.arrayTable = null;
                         }
@@ -21848,7 +22593,7 @@ var javax;
                     else if (r === undefined) {
                         var __args = arguments;
                         {
-                            var __args_26 = arguments;
+                            var __args_28 = arguments;
                             var r_3 = null;
                             if (this.updateLevel === undefined) {
                                 this.updateLevel = 0;
@@ -22391,7 +23136,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_27 = arguments;
+                        var __args_29 = arguments;
                         var width_2 = d.width;
                         var height_1 = d.height;
                         _this = _super.call(this) || this;
@@ -22414,7 +23159,7 @@ var javax;
                 else if (width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_28 = arguments;
+                        var __args_30 = arguments;
                         var width_3 = 0;
                         var height_2 = 0;
                         _this = _super.call(this) || this;
@@ -22581,7 +23326,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_29 = arguments;
+                        var __args_31 = arguments;
                         var x_2 = p.x;
                         var y_2 = p.y;
                         _this = _super.call(this) || this;
@@ -22604,7 +23349,7 @@ var javax;
                 else if (x === undefined && y === undefined) {
                     var __args = arguments;
                     {
-                        var __args_30 = arguments;
+                        var __args_32 = arguments;
                         var x_3 = 0;
                         var y_3 = 0;
                         _this = _super.call(this) || this;
@@ -23351,7 +24096,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_31 = arguments;
+                                var __args_33 = arguments;
                                 var at_1 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.floatCoords === undefined) {
@@ -23383,7 +24128,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_32 = arguments;
+                                var __args_34 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.floatCoords === undefined) {
@@ -23399,7 +24144,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_33 = arguments;
+                                var __args_35 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -24058,7 +24803,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_34 = arguments;
+                                var __args_36 = arguments;
                                 var at_2 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -24090,7 +24835,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_35 = arguments;
+                                var __args_37 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -24106,7 +24851,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_36 = arguments;
+                                var __args_38 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -26684,7 +27429,7 @@ var javax;
                     else if (type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_37 = arguments;
+                            var __args_39 = arguments;
                             var type_5 = Arc2D.OPEN;
                             _this = _super.call(this) || this;
                             if (_this.type === undefined) {
@@ -27890,6 +28635,33 @@ var javax;
         })(geom = awt.geom || (awt.geom = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var MenuItem = /** @class */ (function (_super) {
+            __extends(MenuItem, _super);
+            function MenuItem(label) {
+                var _this = this;
+                if (((typeof label === 'string') || label === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (label === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            MenuItem.prototype.addActionListener = function (l) {
+            };
+            return MenuItem;
+        }(java.awt.MenuComponent));
+        awt.MenuItem = MenuItem;
+        MenuItem["__class"] = "java.awt.MenuItem";
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
 (function (javax) {
     var swing;
     (function (swing) {
@@ -27978,6 +28750,23 @@ var javax;
         }(java.awt.Graphics));
         awt.Graphics2D = Graphics2D;
         Graphics2D["__class"] = "java.awt.Graphics2D";
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var CropImageFilter = /** @class */ (function (_super) {
+                __extends(CropImageFilter, _super);
+                function CropImageFilter(x, y, w, h) {
+                    return _super.call(this) || this;
+                }
+                return CropImageFilter;
+            }(java.awt.image.ImageFilter));
+            image.CropImageFilter = CropImageFilter;
+            CropImageFilter["__class"] = "java.awt.image.CropImageFilter";
+        })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -28138,7 +28927,7 @@ var javax;
                         var __args = arguments;
                         var modifiers_2 = __args[3];
                         {
-                            var __args_38 = arguments;
+                            var __args_40 = arguments;
                             var when_2 = 0;
                             _this = _super.call(this, source, id) || this;
                             if (_this.actionCommand === undefined) {
@@ -28167,10 +28956,10 @@ var javax;
                     else if (((source != null) || source === null) && ((typeof id === 'number') || id === null) && ((typeof command === 'string') || command === null) && when === undefined && modifiers === undefined) {
                         var __args = arguments;
                         {
-                            var __args_39 = arguments;
+                            var __args_41 = arguments;
                             var modifiers_3 = 0;
                             {
-                                var __args_40 = arguments;
+                                var __args_42 = arguments;
                                 var when_3 = 0;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.actionCommand === undefined) {
@@ -28371,7 +29160,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("java.awt.Adjustable") >= 0)) || source === null) && ((typeof id === 'number') || id === null) && ((typeof type === 'number') || type === null) && ((typeof value === 'number') || value === null) && isAdjusting === undefined) {
                         var __args = arguments;
                         {
-                            var __args_41 = arguments;
+                            var __args_43 = arguments;
                             var isAdjusting_1 = false;
                             _this = _super.call(this, source, id) || this;
                             if (_this.adjustable === undefined) {
@@ -28525,6 +29314,73 @@ var javax;
 (function (java) {
     var awt;
     (function (awt) {
+        var TextArea = /** @class */ (function (_super) {
+            __extends(TextArea, _super);
+            function TextArea(text, rows, columns, scrollbars) {
+                var _this = this;
+                if (((typeof text === 'string') || text === null) && ((typeof rows === 'number') || rows === null) && ((typeof columns === 'number') || columns === null) && ((typeof scrollbars === 'number') || scrollbars === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (((typeof text === 'string') || text === null) && ((typeof rows === 'number') || rows === null) && ((typeof columns === 'number') || columns === null) && scrollbars === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (((typeof text === 'number') || text === null) && ((typeof rows === 'number') || rows === null) && columns === undefined && scrollbars === undefined) {
+                    var __args = arguments;
+                    var rows_2 = __args[0];
+                    var columns_1 = __args[1];
+                    _this = _super.call(this) || this;
+                }
+                else if (((typeof text === 'string') || text === null) && rows === undefined && columns === undefined && scrollbars === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (text === undefined && rows === undefined && columns === undefined && scrollbars === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            TextArea.prototype.append = function (str) {
+            };
+            TextArea.prototype.setText = function (t) {
+            };
+            TextArea.prototype.getFontMetrics$ = function () {
+                return null;
+            };
+            TextArea.prototype.getFontMetrics$java_awt_Font = function (font) {
+                return null;
+            };
+            TextArea.prototype.getFontMetrics = function (font) {
+                if (((font != null && font instanceof java.awt.Font) || font === null)) {
+                    return this.getFontMetrics$java_awt_Font(font);
+                }
+                else if (font === undefined) {
+                    return this.getFontMetrics$();
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            /**
+             *
+             */
+            TextArea.prototype.createHTML = function () {
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-text-area";
+            };
+            return TextArea;
+        }(java.awt.Component));
+        awt.TextArea = TextArea;
+        TextArea["__class"] = "java.awt.TextArea";
+        TextArea["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         /**
          * Constructs a new scroll bar with the specified orientation, initial value, visible amount, and
          * minimum and maximum values.
@@ -28574,7 +29430,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_42 = arguments;
+                        var __args_44 = arguments;
                         var value_1 = 0;
                         var visible_1 = 10;
                         var minimum_1 = 0;
@@ -28632,7 +29488,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_43 = arguments;
+                        var __args_45 = arguments;
                         var orientation_1 = Scrollbar.VERTICAL;
                         var value_2 = 0;
                         var visible_2 = 10;
@@ -29304,7 +30160,7 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((group != null && group instanceof java.awt.CheckboxGroup) || group === null) && ((typeof state === 'boolean') || state === null)) {
                     var __args = arguments;
                     {
-                        var __args_44 = arguments;
+                        var __args_46 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
                             _this.label = null;
@@ -29386,7 +30242,7 @@ var javax;
                     var __args = arguments;
                     var state_2 = __args[1];
                     {
-                        var __args_45 = arguments;
+                        var __args_47 = arguments;
                         var group_2 = null;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -29437,7 +30293,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_46 = arguments;
+                        var __args_48 = arguments;
                         var state_3 = false;
                         var group_3 = null;
                         _this = _super.call(this) || this;
@@ -29489,7 +30345,7 @@ var javax;
                 else if (label === undefined && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_47 = arguments;
+                        var __args_49 = arguments;
                         var label_1 = "";
                         var state_4 = false;
                         var group_4 = null;
@@ -29814,7 +30670,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_48 = arguments;
+                        var __args_50 = arguments;
                         var alignment_1 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
@@ -29832,7 +30688,7 @@ var javax;
                 else if (text === undefined && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_49 = arguments;
+                        var __args_51 = arguments;
                         var text_1 = "";
                         var alignment_2 = Label.LEFT;
                         _this = _super.call(this) || this;
@@ -30029,7 +30885,7 @@ var javax;
                 if (((config != null) || config === null)) {
                     var __args = arguments;
                     {
-                        var __args_50 = arguments;
+                        var __args_52 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvasElement === undefined) {
                             _this.htmlCanvasElement = null;
@@ -32508,7 +33364,7 @@ var javax;
                     var p = __args[0];
                     var d = __args[1];
                     {
-                        var __args_51 = arguments;
+                        var __args_53 = arguments;
                         var x_4 = p.x;
                         var y_4 = p.y;
                         var width_4 = d.width;
@@ -32549,7 +33405,7 @@ var javax;
                     var width_5 = __args[0];
                     var height_4 = __args[1];
                     {
-                        var __args_52 = arguments;
+                        var __args_54 = arguments;
                         var x_5 = 0;
                         var y_5 = 0;
                         _this = _super.call(this) || this;
@@ -32587,7 +33443,7 @@ var javax;
                     var __args = arguments;
                     var r = __args[0];
                     {
-                        var __args_53 = arguments;
+                        var __args_55 = arguments;
                         var x_6 = r.x;
                         var y_6 = r.y;
                         var width_6 = r.width;
@@ -32627,7 +33483,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_54 = arguments;
+                        var __args_56 = arguments;
                         var x_7 = p.x;
                         var y_7 = p.y;
                         var width_7 = 0;
@@ -32667,7 +33523,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_55 = arguments;
+                        var __args_57 = arguments;
                         var x_8 = 0;
                         var y_8 = 0;
                         var width_8 = d.width;
@@ -32706,7 +33562,7 @@ var javax;
                 else if (x === undefined && y === undefined && width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_56 = arguments;
+                        var __args_58 = arguments;
                         var x_9 = 0;
                         var y_9 = 0;
                         var width_9 = 0;
@@ -33610,6 +34466,53 @@ var javax;
         awt.Rectangle = Rectangle;
         Rectangle["__class"] = "java.awt.Rectangle";
         Rectangle["__interfaces"] = ["java.awt.Shape", "java.lang.Cloneable", "java.io.Serializable"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var Menu = /** @class */ (function (_super) {
+            __extends(Menu, _super);
+            function Menu(label, tearOff) {
+                var _this = this;
+                if (((typeof label === 'string') || label === null) && ((typeof tearOff === 'boolean') || tearOff === null)) {
+                    var __args = arguments;
+                    {
+                        var __args_59 = arguments;
+                        _this = _super.call(this) || this;
+                    }
+                }
+                else if (((typeof label === 'string') || label === null) && tearOff === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (label === undefined && tearOff === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            Menu.prototype.add$java_awt_MenuItem = function (mi) {
+                return mi;
+            };
+            Menu.prototype.add = function (mi) {
+                if (((mi != null && mi instanceof java.awt.MenuItem) || mi === null)) {
+                    return this.add$java_awt_MenuItem(mi);
+                }
+                else if (((typeof mi === 'string') || mi === null)) {
+                    return this.add$java_lang_String(mi);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            Menu.prototype.add$java_lang_String = function (label) {
+            };
+            return Menu;
+        }(java.awt.MenuItem));
+        awt.Menu = Menu;
+        Menu["__class"] = "java.awt.Menu";
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -34536,7 +35439,7 @@ var javax;
                         var oldState_1 = __args[2];
                         var newState_1 = __args[3];
                         {
-                            var __args_57 = arguments;
+                            var __args_60 = arguments;
                             var opposite_1 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.opposite === undefined) {
@@ -34565,7 +35468,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && ((opposite != null && opposite instanceof java.awt.Window) || opposite === null) && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_58 = arguments;
+                            var __args_61 = arguments;
                             var oldState_2 = 0;
                             var newState_2 = 0;
                             _this = _super.call(this, source, id) || this;
@@ -34595,7 +35498,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && opposite === undefined && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_59 = arguments;
+                            var __args_62 = arguments;
                             var opposite_2 = null;
                             var oldState_3 = 0;
                             var newState_3 = 0;
@@ -34834,7 +35737,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof temporary === 'boolean') || temporary === null) && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_60 = arguments;
+                            var __args_63 = arguments;
                             var opposite_3 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.temporary === undefined) {
@@ -34856,10 +35759,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && temporary === undefined && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_61 = arguments;
+                            var __args_64 = arguments;
                             var temporary_1 = false;
                             {
-                                var __args_62 = arguments;
+                                var __args_65 = arguments;
                                 var opposite_4 = null;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.temporary === undefined) {
@@ -35063,7 +35966,7 @@ var javax;
                 else if (layout === undefined) {
                     var __args = arguments;
                     {
-                        var __args_63 = arguments;
+                        var __args_66 = arguments;
                         var layout_1 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -35670,7 +36573,7 @@ var javax;
                     else if (((sourceBean != null) || sourceBean === null) && notifyOnEDT === undefined) {
                         var __args = arguments;
                         {
-                            var __args_64 = arguments;
+                            var __args_67 = arguments;
                             var notifyOnEDT_1 = false;
                             _this = _super.call(this, sourceBean) || this;
                             if (_this.notifyOnEDT === undefined) {
@@ -36168,6 +37071,33 @@ var javax;
 (function (java) {
     var awt;
     (function (awt) {
+        var PopupMenu = /** @class */ (function (_super) {
+            __extends(PopupMenu, _super);
+            function PopupMenu(label) {
+                var _this = this;
+                if (((typeof label === 'string') || label === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else if (label === undefined) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            PopupMenu.prototype.show = function (origin, x, y) {
+            };
+            return PopupMenu;
+        }(java.awt.Menu));
+        awt.PopupMenu = PopupMenu;
+        PopupMenu["__class"] = "java.awt.PopupMenu";
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
         var event;
         (function (event) {
             var MouseEvent = /** @class */ (function (_super) {
@@ -36232,7 +37162,7 @@ var javax;
                         var popupTrigger_1 = __args[7];
                         var button_1 = __args[8];
                         {
-                            var __args_65 = arguments;
+                            var __args_68 = arguments;
                             var xAbs_1 = 0;
                             var yAbs_1 = 0;
                             _this = _super.call(this, source, id, when, modifiers) || this;
@@ -36327,10 +37257,10 @@ var javax;
                         var clickCount_2 = __args[6];
                         var popupTrigger_2 = __args[7];
                         {
-                            var __args_66 = arguments;
+                            var __args_69 = arguments;
                             var button_2 = MouseEvent.NOBUTTON;
                             {
-                                var __args_67 = arguments;
+                                var __args_70 = arguments;
                                 var xAbs_2 = 0;
                                 var yAbs_2 = 0;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
@@ -36730,7 +37660,7 @@ var javax;
                     if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && ((typeof keyLocation === 'number') || keyLocation === null) && ((typeof isProxyActive === 'boolean') || isProxyActive === null)) {
                         var __args = arguments;
                         {
-                            var __args_68 = arguments;
+                            var __args_71 = arguments;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
                                 _this.isProxyActive = false;
@@ -36837,7 +37767,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_69 = arguments;
+                            var __args_72 = arguments;
                             var keyLocation_1 = KeyEvent.KEY_LOCATION_UNKNOWN;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
@@ -36899,10 +37829,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && keyChar === undefined && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_70 = arguments;
-                            var keyChar_1 = String.fromCharCode(__args_70[4]);
+                            var __args_73 = arguments;
+                            var keyChar_1 = String.fromCharCode(__args_73[4]);
                             {
-                                var __args_71 = arguments;
+                                var __args_74 = arguments;
                                 var keyLocation_2 = KeyEvent.KEY_LOCATION_UNKNOWN;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
                                 if (_this.isProxyActive === undefined) {
@@ -37932,7 +38862,7 @@ var javax;
                 else if (title === undefined) {
                     var __args = arguments;
                     {
-                        var __args_72 = arguments;
+                        var __args_75 = arguments;
                         var title_1 = "";
                         _this = _super.call(this) || this;
                         if (_this.maximizedBounds === undefined) {
@@ -38213,7 +39143,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_73 = arguments;
+                        var __args_76 = arguments;
                         var dataModel_1 = new JList.JList$0(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -38292,7 +39222,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_74 = arguments;
+                        var __args_77 = arguments;
                         var dataModel_2 = new JList.JList$1(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -38370,7 +39300,7 @@ var javax;
                 else if (dataModel === undefined) {
                     var __args = arguments;
                     {
-                        var __args_75 = arguments;
+                        var __args_78 = arguments;
                         var dataModel_3 = new JList.JList$2(_this);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39778,7 +40708,7 @@ var javax;
                 else if (orientation === undefined) {
                     var __args = arguments;
                     {
-                        var __args_76 = arguments;
+                        var __args_79 = arguments;
                         var orientation_2 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         _this.orientation = javax.swing.SwingConstants.HORIZONTAL;
@@ -40243,7 +41173,7 @@ var javax;
                     var max_1 = __args[1];
                     var value_3 = __args[2];
                     {
-                        var __args_77 = arguments;
+                        var __args_80 = arguments;
                         var orientation_3 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
@@ -40296,9 +41226,9 @@ var javax;
                     var min_2 = __args[0];
                     var max_2 = __args[1];
                     {
-                        var __args_78 = arguments;
+                        var __args_81 = arguments;
                         var orientation_4 = javax.swing.SwingConstants.HORIZONTAL;
-                        var value_4 = ((__args_78[1] + __args_78[2]) / 2 | 0);
+                        var value_4 = ((__args_81[1] + __args_81[2]) / 2 | 0);
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
@@ -40375,7 +41305,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_79 = arguments;
+                        var __args_82 = arguments;
                         var min_3 = 0;
                         var max_3 = 100;
                         var value_5 = 50;
@@ -40428,7 +41358,7 @@ var javax;
                 else if (orientation === undefined && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_80 = arguments;
+                        var __args_83 = arguments;
                         var orientation_5 = javax.swing.SwingConstants.HORIZONTAL;
                         var min_4 = 0;
                         var max_4 = 100;
@@ -40812,7 +41742,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_81 = arguments;
+                        var __args_84 = arguments;
                         var value_7 = 0;
                         var extent_3 = 10;
                         var min_5 = 0;
@@ -40849,7 +41779,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_82 = arguments;
+                        var __args_85 = arguments;
                         var orientation_6 = java.awt.Adjustable.VERTICAL;
                         var value_8 = 0;
                         var extent_4 = 10;
@@ -41018,7 +41948,7 @@ var javax;
                 else if (((layout != null && (layout.constructor != null && layout.constructor["__interfaces"] != null && layout.constructor["__interfaces"].indexOf("java.awt.LayoutManager") >= 0)) || layout === null) && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_83 = arguments;
+                        var __args_86 = arguments;
                         var isDoubleBuffered_1 = true;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -41034,7 +41964,7 @@ var javax;
                     var __args = arguments;
                     var isDoubleBuffered_2 = __args[0];
                     {
-                        var __args_84 = arguments;
+                        var __args_87 = arguments;
                         var layout_2 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -41049,10 +41979,10 @@ var javax;
                 else if (layout === undefined && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_85 = arguments;
+                        var __args_88 = arguments;
                         var isDoubleBuffered_3 = true;
                         {
-                            var __args_86 = arguments;
+                            var __args_89 = arguments;
                             var layout_3 = new java.awt.FlowLayout();
                             _this = _super.call(this) || this;
                             if (_this.htmlCanvas === undefined) {
@@ -41240,7 +42170,7 @@ var javax;
                 else if (model === undefined) {
                     var __args = arguments;
                     {
-                        var __args_87 = arguments;
+                        var __args_90 = arguments;
                         var model_1 = new javax.swing.SpinnerNumberModel(0, null, null, 1);
                         _this = _super.call(this) || this;
                         if (_this.model === undefined) {
@@ -42900,7 +43830,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_88 = arguments;
+                        var __args_91 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -43010,7 +43940,7 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_89 = arguments;
+                        var __args_92 = arguments;
                         var text_4 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
@@ -43119,7 +44049,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_90 = arguments;
+                        var __args_93 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -43229,7 +44159,7 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_91 = arguments;
+                        var __args_94 = arguments;
                         var text_5 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
@@ -43339,7 +44269,7 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_92 = arguments;
+                        var __args_95 = arguments;
                         var text_6 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
@@ -43795,8 +44725,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_93 = arguments;
-                            var preciseWheelRotation_1 = __args_93[12];
+                            var __args_96 = arguments;
+                            var preciseWheelRotation_1 = __args_96[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -43836,12 +44766,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_94 = arguments;
+                            var __args_97 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_95 = arguments;
-                                var preciseWheelRotation_2 = __args_95[12];
+                                var __args_98 = arguments;
+                                var preciseWheelRotation_2 = __args_98[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -45049,10 +45979,10 @@ var javax;
                 else if (((typeof doc === 'string') || doc === null) && ((typeof text === 'number') || text === null) && ((typeof rows === 'number') || rows === null) && columns === undefined) {
                     var __args = arguments;
                     var text_8 = __args[0];
-                    var rows_1 = __args[1];
-                    var columns_1 = __args[2];
+                    var rows_3 = __args[1];
+                    var columns_2 = __args[2];
                     {
-                        var __args_96 = arguments;
+                        var __args_99 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -45073,16 +46003,16 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_1;
-                        _this.columns = columns_1;
+                        _this.rows = rows_3;
+                        _this.columns = columns_2;
                         if (text_8 != null) {
                             _this.setText(text_8);
                         }
-                        if (rows_1 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_1);
+                        if (rows_3 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_3);
                         }
-                        if (columns_1 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_1);
+                        if (columns_2 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_2);
                         }
                     }
                     if (_this.rows === undefined) {
@@ -45106,10 +46036,10 @@ var javax;
                 }
                 else if (((typeof doc === 'number') || doc === null) && ((typeof text === 'number') || text === null) && rows === undefined && columns === undefined) {
                     var __args = arguments;
-                    var rows_2 = __args[0];
-                    var columns_2 = __args[1];
+                    var rows_4 = __args[0];
+                    var columns_3 = __args[1];
                     {
-                        var __args_97 = arguments;
+                        var __args_100 = arguments;
                         var doc_2 = null;
                         var text_9 = null;
                         _this = _super.call(this) || this;
@@ -45131,16 +46061,16 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_2;
-                        _this.columns = columns_2;
+                        _this.rows = rows_4;
+                        _this.columns = columns_3;
                         if (text_9 != null) {
                             _this.setText(text_9);
                         }
-                        if (rows_2 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_2);
+                        if (rows_4 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_4);
                         }
-                        if (columns_2 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_2);
+                        if (columns_3 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_3);
                         }
                     }
                     if (_this.rows === undefined) {
@@ -45166,10 +46096,10 @@ var javax;
                     var __args = arguments;
                     var text_10 = __args[0];
                     {
-                        var __args_98 = arguments;
+                        var __args_101 = arguments;
                         var doc_3 = null;
-                        var rows_3 = 0;
-                        var columns_3 = 0;
+                        var rows_5 = 0;
+                        var columns_4 = 0;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
                             _this.rows = 0;
@@ -45189,16 +46119,16 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_3;
-                        _this.columns = columns_3;
+                        _this.rows = rows_5;
+                        _this.columns = columns_4;
                         if (text_10 != null) {
                             _this.setText(text_10);
                         }
-                        if (rows_3 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_3);
+                        if (rows_5 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_5);
                         }
-                        if (columns_3 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_3);
+                        if (columns_4 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_4);
                         }
                     }
                     if (_this.rows === undefined) {
@@ -45223,11 +46153,11 @@ var javax;
                 else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_99 = arguments;
+                        var __args_102 = arguments;
                         var doc_4 = null;
                         var text_11 = null;
-                        var rows_4 = 0;
-                        var columns_4 = 0;
+                        var rows_6 = 0;
+                        var columns_5 = 0;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
                             _this.rows = 0;
@@ -45247,16 +46177,16 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_4;
-                        _this.columns = columns_4;
+                        _this.rows = rows_6;
+                        _this.columns = columns_5;
                         if (text_11 != null) {
                             _this.setText(text_11);
                         }
-                        if (rows_4 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_4);
+                        if (rows_6 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_6);
                         }
-                        if (columns_4 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_4);
+                        if (columns_5 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_5);
                         }
                     }
                     if (_this.rows === undefined) {
@@ -45427,9 +46357,9 @@ var javax;
                 else if (((typeof doc === 'string') || doc === null) && ((typeof text === 'number') || text === null) && columns === undefined) {
                     var __args = arguments;
                     var text_12 = __args[0];
-                    var columns_5 = __args[1];
+                    var columns_6 = __args[1];
                     {
-                        var __args_100 = arguments;
+                        var __args_103 = arguments;
                         var doc_5 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -45448,10 +46378,10 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_5 < 0) {
+                        if (columns_6 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_5;
+                        _this.columns = columns_6;
                         if (text_12 != null) {
                             _this.setText(text_12);
                         }
@@ -45477,9 +46407,9 @@ var javax;
                     var __args = arguments;
                     var text_13 = __args[0];
                     {
-                        var __args_101 = arguments;
+                        var __args_104 = arguments;
                         var doc_6 = null;
-                        var columns_6 = 0;
+                        var columns_7 = 0;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
                             _this.action = null;
@@ -45497,10 +46427,10 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_6 < 0) {
+                        if (columns_7 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_6;
+                        _this.columns = columns_7;
                         if (text_13 != null) {
                             _this.setText(text_13);
                         }
@@ -45524,9 +46454,9 @@ var javax;
                 }
                 else if (((typeof doc === 'number') || doc === null) && text === undefined && columns === undefined) {
                     var __args = arguments;
-                    var columns_7 = __args[0];
+                    var columns_8 = __args[0];
                     {
-                        var __args_102 = arguments;
+                        var __args_105 = arguments;
                         var doc_7 = null;
                         var text_14 = null;
                         _this = _super.call(this) || this;
@@ -45546,10 +46476,10 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_7 < 0) {
+                        if (columns_8 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_7;
+                        _this.columns = columns_8;
                         if (text_14 != null) {
                             _this.setText(text_14);
                         }
@@ -45574,10 +46504,10 @@ var javax;
                 else if (doc === undefined && text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_103 = arguments;
+                        var __args_106 = arguments;
                         var doc_8 = null;
                         var text_15 = null;
-                        var columns_8 = 0;
+                        var columns_9 = 0;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
                             _this.action = null;
@@ -45595,10 +46525,10 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_8 < 0) {
+                        if (columns_9 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_8;
+                        _this.columns = columns_9;
                         if (text_15 != null) {
                             _this.setText(text_15);
                         }
@@ -46053,7 +46983,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_104 = arguments;
+                        var __args_107 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46068,7 +46998,7 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_105 = arguments;
+                        var __args_108 = arguments;
                         var text_16 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46082,7 +47012,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_106 = arguments;
+                        var __args_109 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46096,7 +47026,7 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_107 = arguments;
+                        var __args_110 = arguments;
                         var text_17 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
@@ -46110,7 +47040,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_108 = arguments;
+                        var __args_111 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -46125,9 +47055,9 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_109 = arguments;
+                        var __args_112 = arguments;
                         {
-                            var __args_110 = arguments;
+                            var __args_113 = arguments;
                             var text_18 = null;
                             var icon_10 = null;
                             var selected_6 = false;
@@ -46147,7 +47077,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_111 = arguments;
+                        var __args_114 = arguments;
                         var text_19 = null;
                         var icon_11 = null;
                         var selected_7 = false;
@@ -46300,7 +47230,7 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_112 = arguments;
+                        var __args_115 = arguments;
                         var text_20 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -46312,7 +47242,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_113 = arguments;
+                        var __args_116 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -46325,9 +47255,9 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_114 = arguments;
+                        var __args_117 = arguments;
                         {
-                            var __args_115 = arguments;
+                            var __args_118 = arguments;
                             var text_21 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
@@ -46345,7 +47275,7 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_116 = arguments;
+                        var __args_119 = arguments;
                         var text_22 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
@@ -46674,7 +47604,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_117 = arguments;
+                        var __args_120 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -46835,7 +47765,7 @@ var javax;
                     var __args = arguments;
                     var selected_8 = __args[1];
                     {
-                        var __args_118 = arguments;
+                        var __args_121 = arguments;
                         var icon_17 = null;
                         _this = _super.call(this, text, icon_17, selected_8) || this;
                         if (_this.name === undefined) {
@@ -46864,7 +47794,7 @@ var javax;
                     var icon_18 = __args[0];
                     var selected_9 = __args[1];
                     {
-                        var __args_119 = arguments;
+                        var __args_122 = arguments;
                         var text_23 = null;
                         _this = _super.call(this, text_23, icon_18, selected_9) || this;
                         if (_this.name === undefined) {
@@ -46891,7 +47821,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_120 = arguments;
+                        var __args_123 = arguments;
                         var icon_19 = null;
                         var selected_10 = false;
                         _this = _super.call(this, text, icon_19, selected_10) || this;
@@ -46920,7 +47850,7 @@ var javax;
                     var __args = arguments;
                     var icon_20 = __args[0];
                     {
-                        var __args_121 = arguments;
+                        var __args_124 = arguments;
                         var text_24 = null;
                         var selected_11 = false;
                         _this = _super.call(this, text_24, icon_20, selected_11) || this;
@@ -46948,7 +47878,7 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_122 = arguments;
+                        var __args_125 = arguments;
                         var text_25 = null;
                         var icon_21 = null;
                         var selected_12 = false;
@@ -47074,7 +48004,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_123 = arguments;
+                        var __args_126 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -47115,7 +48045,7 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_124 = arguments;
+                        var __args_127 = arguments;
                         var label_2 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
@@ -47302,7 +48232,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_125 = arguments;
+                        var __args_128 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -47338,9 +48268,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_126 = arguments;
+                        var __args_129 = arguments;
                         {
-                            var __args_127 = arguments;
+                            var __args_130 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -47376,7 +48306,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_128 = arguments;
+                        var __args_131 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -48127,7 +49057,7 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_129 = arguments;
+                        var __args_132 = arguments;
                         var label_3 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {
