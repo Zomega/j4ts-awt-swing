@@ -1,19 +1,67 @@
 package java.awt;
 
-import java.awt.event.ActionListener;
+import static def.dom.Globals.document;
 
-public class MenuItem extends MenuComponent {
+import def.dom.HTMLLIElement;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+import jsweet.util.StringTypes;
+
+public class MenuItem extends MenuComponent implements HTMLComponent {
+  private String label;
+  private Vector<ActionListener> actionListeners = new Vector<>();
+  protected HTMLLIElement htmlElement;
+
   public MenuItem() {
-    // TODO: Implement
+    this("");
   }
 
   public MenuItem(String label) {
-    // TODO: Implement
+    this.label = label;
+    createHTML();
+    initHTML();
   }
-
-  // TODO: Probably not needed? MenuItem(String label, MenuShortcut s)
 
   public void addActionListener(ActionListener l) {
-    // TODO: Implement.
+    actionListeners.add(l);
   }
+
+  public void removeActionListener(ActionListener l) {
+    actionListeners.remove(l);
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+    htmlElement.textContent = label;
+  }
+
+  @Override
+  public void createHTML() {
+    htmlElement = (HTMLLIElement) document.createElement(StringTypes.li);
+    htmlElement.textContent = label;
+    htmlElement.addEventListener(
+        "click",
+        (e) -> {
+          ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, label);
+          for (ActionListener listener : actionListeners) {
+            listener.actionPerformed(event);
+          }
+        });
+  }
+
+  @Override
+  public HTMLLIElement getHTMLElement() {
+    return htmlElement;
+  }
+
+  @Override
+  public void initHTML() {}
+
+  @Override
+  public void bindHTML(def.dom.HTMLElement htmlElement) {}
 }

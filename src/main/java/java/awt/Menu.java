@@ -1,26 +1,37 @@
 package java.awt;
 
+import static def.dom.Globals.document;
+
+import def.dom.HTMLUListElement;
+import java.util.Vector;
+import jsweet.util.StringTypes;
+
 public class Menu extends MenuItem {
-  // TODO: Implement the rest.
+  private Vector<MenuItem> items = new Vector<>();
+  protected HTMLUListElement ulElement;
 
   public Menu() {
-    // TODO: Implement
+    this("");
   }
 
   public Menu(String label) {
-    // TODO: Implement
+    super(label);
+    ulElement = (HTMLUListElement) document.createElement(StringTypes.ul);
+    htmlElement.appendChild(ulElement);
   }
 
   public Menu(String label, boolean tearOff) {
     this(label);
+    // tearOff is not supported in this implementation
   }
 
   public MenuItem add(MenuItem mi) {
-    // TODO: Implement
+    items.add(mi);
+    ulElement.appendChild(mi.getHTMLElement());
     return mi;
   }
 
   public void add(String label) {
-    // TODO: Implement
+    add(new MenuItem(label));
   }
 }

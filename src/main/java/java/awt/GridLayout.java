@@ -2,6 +2,7 @@ package java.awt;
 
 import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
+import static jsweet.util.Lang.object;
 
 import def.dom.*;
 import jsweet.util.StringTypes;
@@ -52,12 +53,12 @@ public class GridLayout implements LayoutManager2 {
       gridContainer.className = "applet-grid-layout";
 
       // Set the CSS properties for the grid layout dynamically.
-      gridContainer.style.display = "grid";
-      // TODO: gridContainer.style.gridTemplateRows = "repeat(" + this.rows + ", 1fr)";
-      // TODO: gridContainer.style.gridTemplateColumns = "repeat(" + this.cols + ", 1fr)";
-
-      // Use the hgap and vgap to set the CSS gap property
-      // TODO: gridContainer.style.gap = this.vgap + "px " + this.hgap + "px";
+      object(gridContainer.style).$set("display", "grid");
+      object(gridContainer.style)
+          .$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
+      object(gridContainer.style)
+          .$set("grid-template-columns", "repeat(" + this.cols + ", 1fr)");
+      object(gridContainer.style).$set("gap", this.vgap + "px " + this.hgap + "px");
 
       gridContainer.style.width = "100%";
       gridContainer.style.height = "100%";
