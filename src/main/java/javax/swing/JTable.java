@@ -26,6 +26,7 @@ public class JTable extends JComponent {
   protected TableModel dataModel;
   protected TableColumnModel columnModel;
   protected ListSelectionModel selectionModel;
+  protected TableModelListener tableModelListener;
   protected TableCellRenderer defaultRenderer;
   protected TableCellEditor defaultCellEditor;
   protected JTableHeader tableHeader;
@@ -69,11 +70,20 @@ public class JTable extends JComponent {
         throw new IllegalArgumentException("Cannot set a null TableModel");
     }
     if (this.dataModel != null) {
-        this.dataModel.removeTableModelListener(this::tableChanged);
+        this.dataModel.removeTableModelListener(tableModelListener);
     }
     this.dataModel = dataModel;
-    this.dataModel.addTableModelListener(this::tableChanged);
+    if (this.tableModelListener == null) {
+        this.tableModelListener = new TableModelHandler();
+    }
+    this.dataModel.addTableModelListener(this.tableModelListener);
     refreshTable();
+  }
+
+  private class TableModelHandler implements TableModelListener {
+      public void tableChanged(javax.swing.event.TableModelEvent e) {
+          JTable.this.tableChanged(e);
+      }
   }
 
   public TableModel getModel() {
