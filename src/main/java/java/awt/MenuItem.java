@@ -2,6 +2,7 @@ package java.awt;
 
 import static def.dom.Globals.document;
 
+import def.dom.HTMLElement;
 import def.dom.HTMLLIElement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,10 +45,11 @@ public class MenuItem extends MenuComponent implements HTMLComponent {
   public void createHTML() {
     htmlElement = (HTMLLIElement) document.createElement(StringTypes.li);
     htmlElement.textContent = label;
+    MenuItem self = this;
     htmlElement.addEventListener(
         "click",
         (e) -> {
-          ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, label);
+          ActionEvent event = new ActionEvent(self, ActionEvent.ACTION_PERFORMED, label);
           for (ActionListener listener : actionListeners) {
             listener.actionPerformed(event);
           }

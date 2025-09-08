@@ -2,6 +2,8 @@ package java.awt;
 
 import static def.dom.Globals.document;
 
+import def.js.Function;
+
 public class PopupMenu extends Menu {
 
   public PopupMenu() {
@@ -29,9 +31,10 @@ public class PopupMenu extends Menu {
     // This prevents the same click event that showed the menu from immediately
     // triggering the hide listener.
     def.dom.Globals.setTimeout(
-        () -> {
-          final def.dom.EventListener[] listenerHolder = new def.dom.EventListener[1];
-          listenerHolder[0] =
+        (Function)
+            () -> {
+              final def.dom.EventListener[] listenerHolder = new def.dom.EventListener[1];
+              listenerHolder[0] =
               (e) -> {
                 htmlElement.style.display = "none";
                 document.removeEventListener("click", listenerHolder[0]);
