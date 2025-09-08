@@ -1,13 +1,41 @@
 package javax.swing;
 
-class JFormattedTextField extends JTextField {
-  // TODO: Implement.
+import java.text.Format;
+import java.text.NumberFormat;
 
-  JFormattedTextField() {
-    // TODO: Implement.
+public class JFormattedTextField extends JTextField {
+  private Format format;
+
+  public JFormattedTextField() {
+    super();
   }
 
-  JFormattedTextField(Object format) {
-    // TODO: Implement. Support NumberFormats.
+  public JFormattedTextField(Object value) {
+    this();
+    setValue(value);
+  }
+
+  public void setValue(Object value) {
+    if (format == null) {
+      setText(value == null ? "" : value.toString());
+    } else {
+      try {
+        setText(format.format(value));
+      } catch (IllegalArgumentException e) {
+        // ignore
+      }
+    }
+  }
+
+  public Object getValue() {
+    String text = getText();
+    if (format == null) {
+      return text;
+    }
+    try {
+      return format.parseObject(text);
+    } catch (Exception e) {
+      return getText();
+    }
   }
 }

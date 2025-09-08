@@ -7,8 +7,6 @@ import def.dom.*;
 import jsweet.util.StringTypes;
 
 public class GridBagLayout implements LayoutManager2 {
-  // TODO: Implement, similar to GridLayout.
-
   boolean created = false;
 
   Container parent;
@@ -17,7 +15,6 @@ public class GridBagLayout implements LayoutManager2 {
   int hgap, vgap;
 
   public GridBagLayout() {
-    // TODO: Implement this. What's the correct functionality?
     this(1, 1, 0, 0);
   }
 
@@ -59,11 +56,11 @@ public class GridBagLayout implements LayoutManager2 {
 
       // Set the CSS properties for the grid layout dynamically.
       gridContainer.style.display = "grid";
-      // TODO: gridContainer.style.gridTemplateRows = "repeat(" + this.rows + ", 1fr)";
-      // TODO: gridContainer.style.gridTemplateColumns = "repeat(" + this.cols + ", 1fr)";
+      gridContainer.style.gridTemplateRows = "repeat(" + this.rows + ", 1fr)";
+      gridContainer.style.gridTemplateColumns = "repeat(" + this.cols + ", 1fr)";
 
       // Use the hgap and vgap to set the CSS gap property
-      // TODO: gridContainer.style.gap = this.vgap + "px " + this.hgap + "px";
+      gridContainer.style.gap = this.vgap + "px " + this.hgap + "px";
 
       gridContainer.style.width = "100%";
       gridContainer.style.height = "100%";
@@ -75,6 +72,9 @@ public class GridBagLayout implements LayoutManager2 {
 
   @Override
   public void addLayoutComponent(Component component, Object o) {
+    if (o instanceof GridBagConstraints) {
+      setConstraints(component, (GridBagConstraints) o);
+    }
     addLayoutComponent((String) null, component);
   }
 
@@ -92,6 +92,10 @@ public class GridBagLayout implements LayoutManager2 {
   public void invalidateLayout(Container container) {}
 
   public void setConstraints(Component comp, GridBagConstraints constraints) {
-    // TODO: Implement
+    HTMLElement element = comp.getHTMLElement();
+    element.style.gridColumnStart = "" + (constraints.gridx + 1);
+    element.style.gridColumnEnd = "span " + constraints.gridwidth;
+    element.style.gridRowStart = "" + (constraints.gridy + 1);
+    element.style.gridRowEnd = "span " + constraints.gridheight;
   }
 }

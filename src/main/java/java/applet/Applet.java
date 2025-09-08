@@ -145,8 +145,11 @@ public class Applet extends Panel {
   }
 
   public Image getImage(URL url, String name) {
-    // TODO: implement
-    return null; // TODO
+    try {
+      return getImage(new URL(url, name));
+    } catch (MalformedURLException e) {
+      return null;
+    }
   }
 
   public AppletContext getAppletContext() {
