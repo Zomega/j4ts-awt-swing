@@ -437,7 +437,6 @@ public class JComboBox<E> extends JComponent
     setPopupVisible(false);
   }
 
-  @Override
   public void setPopupVisible(boolean v) {
     if (popupVisible == v) {
       return;
@@ -457,7 +456,6 @@ public class JComboBox<E> extends JComponent
     }
   }
 
-  @Override
   public boolean isPopupVisible() {
     return popupVisible;
   }
