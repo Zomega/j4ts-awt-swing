@@ -15997,6 +15997,69 @@ var java;
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
+    var awt;
+    (function (awt) {
+        var AWTEventMulticaster = /** @class */ (function () {
+            function AWTEventMulticaster(a, b) {
+                if (this.a === undefined) {
+                    this.a = null;
+                }
+                if (this.b === undefined) {
+                    this.b = null;
+                }
+                this.a = a;
+                this.b = b;
+            }
+            AWTEventMulticaster.prototype.actionPerformed = function (e) {
+                if (this.a != null)
+                    this.a.actionPerformed(e);
+                if (this.b != null)
+                    this.b.actionPerformed(e);
+            };
+            AWTEventMulticaster.add = function (a, b) {
+                return AWTEventMulticaster.addInternal(a, b);
+            };
+            AWTEventMulticaster.remove = function (l, oldl) {
+                return AWTEventMulticaster.removeInternal(l, oldl);
+            };
+            AWTEventMulticaster.addInternal = function (a, b) {
+                if (a == null)
+                    return b;
+                if (b == null)
+                    return a;
+                return new AWTEventMulticaster(a, b);
+            };
+            AWTEventMulticaster.removeInternal = function (l, oldl) {
+                if (l === oldl || l == null) {
+                    return null;
+                }
+                else if (l != null && l instanceof java.awt.AWTEventMulticaster) {
+                    return l.remove(oldl);
+                }
+                else {
+                    return l;
+                }
+            };
+            AWTEventMulticaster.prototype.remove = function (oldl) {
+                if (oldl === this.a)
+                    return this.b;
+                if (oldl === this.b)
+                    return this.a;
+                var a2 = AWTEventMulticaster.removeInternal(this.a, oldl);
+                var b2 = AWTEventMulticaster.removeInternal(this.b, oldl);
+                if (a2 === this.a && b2 === this.b) {
+                    return this;
+                }
+                return AWTEventMulticaster.addInternal(a2, b2);
+            };
+            return AWTEventMulticaster;
+        }());
+        awt.AWTEventMulticaster = AWTEventMulticaster;
+        AWTEventMulticaster["__class"] = "java.awt.AWTEventMulticaster";
+        AWTEventMulticaster["__interfaces"] = ["java.util.EventListener", "java.awt.event.ActionListener"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
     var applet;
     (function (applet) {
         var AudioClip = /** @class */ (function () {
@@ -18932,21 +18995,6 @@ var javax;
     (function (swing) {
         var table;
         (function (table) {
-            var TableCellRenderer = /** @class */ (function () {
-                function TableCellRenderer() {
-                }
-                return TableCellRenderer;
-            }());
-            table.TableCellRenderer = TableCellRenderer;
-            TableCellRenderer["__class"] = "javax.swing.table.TableCellRenderer";
-        })(table = swing.table || (swing.table = {}));
-    })(swing = javax.swing || (javax.swing = {}));
-})(javax || (javax = {}));
-(function (javax) {
-    var swing;
-    (function (swing) {
-        var table;
-        (function (table) {
             /**
              * This abstract class provides default implementations for most of the methods in the <code>
              * TableModel</code> interface. It takes care of the management of listeners and provides some
@@ -19202,9 +19250,41 @@ var javax;
         var table;
         (function (table) {
             var TableColumn = /** @class */ (function () {
-                function TableColumn() {
+                function TableColumn(modelIndex) {
+                    if (this.headerValue === undefined) {
+                        this.headerValue = null;
+                    }
+                    if (this.modelIndex === undefined) {
+                        this.modelIndex = 0;
+                    }
+                    if (this.cellRenderer === undefined) {
+                        this.cellRenderer = null;
+                    }
+                    if (this.cellEditor === undefined) {
+                        this.cellEditor = null;
+                    }
+                    this.modelIndex = modelIndex;
                 }
+                TableColumn.prototype.getModelIndex = function () {
+                    return this.modelIndex;
+                };
+                TableColumn.prototype.setHeaderValue = function (headerValue) {
+                    this.headerValue = headerValue;
+                };
+                TableColumn.prototype.getHeaderValue = function () {
+                    return this.headerValue;
+                };
                 TableColumn.prototype.setCellRenderer = function (cellRenderer) {
+                    this.cellRenderer = cellRenderer;
+                };
+                TableColumn.prototype.getCellRenderer = function () {
+                    return this.cellRenderer;
+                };
+                TableColumn.prototype.setCellEditor = function (cellEditor) {
+                    this.cellEditor = cellEditor;
+                };
+                TableColumn.prototype.getCellEditor = function () {
+                    return this.cellEditor;
                 };
                 return TableColumn;
             }());
@@ -19219,13 +19299,47 @@ var javax;
     (function (swing) {
         var table;
         (function (table) {
-            var TableCellEditor = /** @class */ (function () {
-                function TableCellEditor() {
+            var DefaultTableColumnModel = /** @class */ (function () {
+                function DefaultTableColumnModel() {
+                    if (this.tableColumns === undefined) {
+                        this.tableColumns = null;
+                    }
+                    this.tableColumns = (new java.util.ArrayList());
                 }
-                return TableCellEditor;
+                /**
+                 *
+                 * @param {javax.swing.table.TableColumn} aColumn
+                 */
+                DefaultTableColumnModel.prototype.addColumn = function (aColumn) {
+                    this.tableColumns.add(aColumn);
+                };
+                /**
+                 *
+                 * @param {javax.swing.table.TableColumn} aColumn
+                 */
+                DefaultTableColumnModel.prototype.removeColumn = function (aColumn) {
+                    this.tableColumns.remove(aColumn);
+                };
+                /**
+                 *
+                 * @param {number} columnIndex
+                 * @return {javax.swing.table.TableColumn}
+                 */
+                DefaultTableColumnModel.prototype.getColumn = function (columnIndex) {
+                    return this.tableColumns.get(columnIndex);
+                };
+                /**
+                 *
+                 * @return {number}
+                 */
+                DefaultTableColumnModel.prototype.getColumnCount = function () {
+                    return this.tableColumns.size();
+                };
+                return DefaultTableColumnModel;
             }());
-            table.TableCellEditor = TableCellEditor;
-            TableCellEditor["__class"] = "javax.swing.table.TableCellEditor";
+            table.DefaultTableColumnModel = DefaultTableColumnModel;
+            DefaultTableColumnModel["__class"] = "javax.swing.table.DefaultTableColumnModel";
+            DefaultTableColumnModel["__interfaces"] = ["javax.swing.table.TableColumnModel"];
         })(table = swing.table || (swing.table = {}));
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
@@ -22271,23 +22385,68 @@ var javax;
          */
         var SpinnerNumberModel = /** @class */ (function () {
             function SpinnerNumberModel(value, minimum, maximum, stepSize) {
-                if (this.value === undefined) {
-                    this.value = null;
+                if (((typeof value === 'number') || value === null) && ((typeof minimum === 'number') || minimum === null) && ((typeof maximum === 'number') || maximum === null) && ((typeof stepSize === 'number') || stepSize === null)) {
+                    var __args = arguments;
+                    if (this.value === undefined) {
+                        this.value = null;
+                    }
+                    if (this.minimum === undefined) {
+                        this.minimum = null;
+                    }
+                    if (this.maximum === undefined) {
+                        this.maximum = null;
+                    }
+                    if (this.stepSize === undefined) {
+                        this.stepSize = null;
+                    }
+                    this.listeners = [];
+                    this.value = value != null ? /* doubleValue */ value : null;
+                    this.minimum = minimum != null ? /* doubleValue */ minimum : null;
+                    this.maximum = maximum != null ? /* doubleValue */ maximum : null;
+                    this.stepSize = stepSize != null ? /* doubleValue */ stepSize : null;
                 }
-                if (this.minimum === undefined) {
-                    this.minimum = null;
+                else if (value === undefined && minimum === undefined && maximum === undefined && stepSize === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_28 = arguments;
+                        var value_1 = 0;
+                        var minimum_1 = null;
+                        var maximum_1 = null;
+                        var stepSize_1 = 1;
+                        if (this.value === undefined) {
+                            this.value = null;
+                        }
+                        if (this.minimum === undefined) {
+                            this.minimum = null;
+                        }
+                        if (this.maximum === undefined) {
+                            this.maximum = null;
+                        }
+                        if (this.stepSize === undefined) {
+                            this.stepSize = null;
+                        }
+                        this.listeners = [];
+                        this.value = value_1 != null ? /* doubleValue */ value_1 : null;
+                        this.minimum = minimum_1 != null ? /* doubleValue */ minimum_1 : null;
+                        this.maximum = maximum_1 != null ? /* doubleValue */ maximum_1 : null;
+                        this.stepSize = stepSize_1 != null ? /* doubleValue */ stepSize_1 : null;
+                    }
+                    if (this.value === undefined) {
+                        this.value = null;
+                    }
+                    if (this.minimum === undefined) {
+                        this.minimum = null;
+                    }
+                    if (this.maximum === undefined) {
+                        this.maximum = null;
+                    }
+                    if (this.stepSize === undefined) {
+                        this.stepSize = null;
+                    }
+                    this.listeners = [];
                 }
-                if (this.maximum === undefined) {
-                    this.maximum = null;
-                }
-                if (this.stepSize === undefined) {
-                    this.stepSize = null;
-                }
-                this.listeners = [];
-                this.value = value != null ? /* doubleValue */ value : null;
-                this.minimum = minimum != null ? /* doubleValue */ minimum : null;
-                this.maximum = maximum != null ? /* doubleValue */ maximum : null;
-                this.stepSize = stepSize != null ? /* doubleValue */ stepSize : null;
+                else
+                    throw new Error('invalid overload');
             }
             /**
              *
@@ -22355,14 +22514,87 @@ var javax;
             SpinnerNumberModel.prototype.fireStateChanged = function (oldValue, newValue) {
             };
             SpinnerNumberModel.prototype.setMinimum = function (minimum) {
+                this.minimum = minimum != null ? /* doubleValue */ minimum : null;
             };
             SpinnerNumberModel.prototype.setMaximum = function (maximum) {
+                this.maximum = maximum != null ? /* doubleValue */ maximum : null;
+            };
+            SpinnerNumberModel.prototype.getStepSize = function () {
+                return this.stepSize;
+            };
+            SpinnerNumberModel.prototype.getMinimum = function () {
+                return this.minimum;
+            };
+            SpinnerNumberModel.prototype.getMaximum = function () {
+                return this.maximum;
             };
             return SpinnerNumberModel;
         }());
         swing.SpinnerNumberModel = SpinnerNumberModel;
         SpinnerNumberModel["__class"] = "javax.swing.SpinnerNumberModel";
         SpinnerNumberModel["__interfaces"] = ["javax.swing.SpinnerModel"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var DefaultCellEditor = /** @class */ (function () {
+            function DefaultCellEditor(textField) {
+                if (((textField != null && textField instanceof javax.swing.JTextField) || textField === null)) {
+                    var __args = arguments;
+                    if (this.editorComponent === undefined) {
+                        this.editorComponent = null;
+                    }
+                    this.editorComponent = textField;
+                }
+                else if (((textField != null && textField instanceof javax.swing.JCheckBox) || textField === null)) {
+                    var __args = arguments;
+                    var checkBox = __args[0];
+                    if (this.editorComponent === undefined) {
+                        this.editorComponent = null;
+                    }
+                    this.editorComponent = checkBox;
+                }
+                else if (((textField != null && textField instanceof javax.swing.JComboBox) || textField === null)) {
+                    var __args = arguments;
+                    var comboBox = __args[0];
+                    if (this.editorComponent === undefined) {
+                        this.editorComponent = null;
+                    }
+                    this.editorComponent = comboBox;
+                }
+                else
+                    throw new Error('invalid overload');
+            }
+            DefaultCellEditor.prototype.getTableCellEditorComponent = function (table, value, isSelected, row, column) {
+                if (this.editorComponent != null && this.editorComponent instanceof javax.swing.JTextField) {
+                    this.editorComponent.setText((value != null) ? value.toString() : "");
+                }
+                else if (this.editorComponent != null && this.editorComponent instanceof javax.swing.JCheckBox) {
+                    this.editorComponent.setState(value);
+                }
+                else if (this.editorComponent != null && this.editorComponent instanceof javax.swing.JComboBox) {
+                    this.editorComponent.setSelectedItem(value);
+                }
+                return this.editorComponent;
+            };
+            DefaultCellEditor.prototype.getCellEditorValue = function () {
+                if (this.editorComponent != null && this.editorComponent instanceof javax.swing.JTextField) {
+                    return this.editorComponent.getText();
+                }
+                else if (this.editorComponent != null && this.editorComponent instanceof javax.swing.JCheckBox) {
+                    return this.editorComponent.getState();
+                }
+                else if (this.editorComponent != null && this.editorComponent instanceof javax.swing.JComboBox) {
+                    return this.editorComponent.getSelectedItem();
+                }
+                return null;
+            };
+            return DefaultCellEditor;
+        }());
+        swing.DefaultCellEditor = DefaultCellEditor;
+        DefaultCellEditor["__class"] = "javax.swing.DefaultCellEditor";
+        DefaultCellEditor["__interfaces"] = ["javax.swing.table.TableCellEditor"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -22593,7 +22825,7 @@ var javax;
                     else if (r === undefined) {
                         var __args = arguments;
                         {
-                            var __args_28 = arguments;
+                            var __args_29 = arguments;
                             var r_3 = null;
                             if (this.updateLevel === undefined) {
                                 this.updateLevel = 0;
@@ -23136,7 +23368,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_29 = arguments;
+                        var __args_30 = arguments;
                         var width_2 = d.width;
                         var height_1 = d.height;
                         _this = _super.call(this) || this;
@@ -23159,7 +23391,7 @@ var javax;
                 else if (width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_30 = arguments;
+                        var __args_31 = arguments;
                         var width_3 = 0;
                         var height_2 = 0;
                         _this = _super.call(this) || this;
@@ -23326,7 +23558,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_31 = arguments;
+                        var __args_32 = arguments;
                         var x_2 = p.x;
                         var y_2 = p.y;
                         _this = _super.call(this) || this;
@@ -23349,7 +23581,7 @@ var javax;
                 else if (x === undefined && y === undefined) {
                     var __args = arguments;
                     {
-                        var __args_32 = arguments;
+                        var __args_33 = arguments;
                         var x_3 = 0;
                         var y_3 = 0;
                         _this = _super.call(this) || this;
@@ -24096,7 +24328,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_33 = arguments;
+                                var __args_34 = arguments;
                                 var at_1 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.floatCoords === undefined) {
@@ -24128,7 +24360,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_34 = arguments;
+                                var __args_35 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.floatCoords === undefined) {
@@ -24144,7 +24376,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_35 = arguments;
+                                var __args_36 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -24803,7 +25035,7 @@ var javax;
                         else if (((s != null && (s.constructor != null && s.constructor["__interfaces"] != null && s.constructor["__interfaces"].indexOf("java.awt.Shape") >= 0)) || s === null) && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_36 = arguments;
+                                var __args_37 = arguments;
                                 var at_2 = null;
                                 _this = _super.call(this) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -24835,7 +25067,7 @@ var javax;
                             var __args = arguments;
                             var rule = __args[0];
                             {
-                                var __args_37 = arguments;
+                                var __args_38 = arguments;
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
                                 if (_this.doubleCoords === undefined) {
@@ -24851,7 +25083,7 @@ var javax;
                         else if (s === undefined && at === undefined) {
                             var __args = arguments;
                             {
-                                var __args_38 = arguments;
+                                var __args_39 = arguments;
                                 var rule = java.awt.geom.Path2D.WIND_NON_ZERO_$LI$();
                                 var initialCapacity = java.awt.geom.Path2D.INIT_SIZE;
                                 _this = _super.call(this, rule, initialCapacity) || this;
@@ -27429,7 +27661,7 @@ var javax;
                     else if (type === undefined) {
                         var __args = arguments;
                         {
-                            var __args_39 = arguments;
+                            var __args_40 = arguments;
                             var type_5 = Arc2D.OPEN;
                             _this = _super.call(this) || this;
                             if (_this.type === undefined) {
@@ -28927,7 +29159,7 @@ var javax;
                         var __args = arguments;
                         var modifiers_2 = __args[3];
                         {
-                            var __args_40 = arguments;
+                            var __args_41 = arguments;
                             var when_2 = 0;
                             _this = _super.call(this, source, id) || this;
                             if (_this.actionCommand === undefined) {
@@ -28956,10 +29188,10 @@ var javax;
                     else if (((source != null) || source === null) && ((typeof id === 'number') || id === null) && ((typeof command === 'string') || command === null) && when === undefined && modifiers === undefined) {
                         var __args = arguments;
                         {
-                            var __args_41 = arguments;
+                            var __args_42 = arguments;
                             var modifiers_3 = 0;
                             {
-                                var __args_42 = arguments;
+                                var __args_43 = arguments;
                                 var when_3 = 0;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.actionCommand === undefined) {
@@ -29160,7 +29392,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("java.awt.Adjustable") >= 0)) || source === null) && ((typeof id === 'number') || id === null) && ((typeof type === 'number') || type === null) && ((typeof value === 'number') || value === null) && isAdjusting === undefined) {
                         var __args = arguments;
                         {
-                            var __args_43 = arguments;
+                            var __args_44 = arguments;
                             var isAdjusting_1 = false;
                             _this = _super.call(this, source, id) || this;
                             if (_this.adjustable === undefined) {
@@ -29430,11 +29662,11 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_44 = arguments;
-                        var value_1 = 0;
+                        var __args_45 = arguments;
+                        var value_2 = 0;
                         var visible_1 = 10;
-                        var minimum_1 = 0;
-                        var maximum_1 = 100;
+                        var minimum_2 = 0;
+                        var maximum_2 = 100;
                         _this = _super.call(this) || this;
                         if (_this.orientation === undefined) {
                             _this.orientation = 0;
@@ -29461,7 +29693,7 @@ var javax;
                             throw new java.lang.IllegalArgumentException("invalid orientation");
                         }
                         _this.orientation = orientation;
-                        _this.setValues(value_1, visible_1, minimum_1, maximum_1);
+                        _this.setValues(value_2, visible_1, minimum_2, maximum_2);
                     }
                     if (_this.orientation === undefined) {
                         _this.orientation = 0;
@@ -29488,12 +29720,12 @@ var javax;
                 else if (orientation === undefined && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_45 = arguments;
+                        var __args_46 = arguments;
                         var orientation_1 = Scrollbar.VERTICAL;
-                        var value_2 = 0;
+                        var value_3 = 0;
                         var visible_2 = 10;
-                        var minimum_2 = 0;
-                        var maximum_2 = 100;
+                        var minimum_3 = 0;
+                        var maximum_3 = 100;
                         _this = _super.call(this) || this;
                         if (_this.orientation === undefined) {
                             _this.orientation = 0;
@@ -29520,7 +29752,7 @@ var javax;
                             throw new java.lang.IllegalArgumentException("invalid orientation");
                         }
                         _this.orientation = orientation_1;
-                        _this.setValues(value_2, visible_2, minimum_2, maximum_2);
+                        _this.setValues(value_3, visible_2, minimum_3, maximum_3);
                     }
                     if (_this.orientation === undefined) {
                         _this.orientation = 0;
@@ -29864,46 +30096,6 @@ var javax;
 (function (java) {
     var awt;
     (function (awt) {
-        var ScrollPane = /** @class */ (function (_super) {
-            __extends(ScrollPane, _super);
-            function ScrollPane(view) {
-                var _this = this;
-                if (((view != null && view instanceof java.awt.Component) || view === null)) {
-                    var __args = arguments;
-                    _this = _super.call(this) || this;
-                }
-                else if (view === undefined) {
-                    var __args = arguments;
-                    _this = _super.call(this) || this;
-                }
-                else
-                    throw new Error('invalid overload');
-                return _this;
-            }
-            ScrollPane.prototype.add = function (view) {
-            };
-            /**
-             *
-             */
-            ScrollPane.prototype.createHTML = function () {
-                if (this.htmlElement != null) {
-                    return;
-                }
-                this.htmlElement = document.createElement("div");
-                this.htmlElement.className = "applet-scrollpane";
-            };
-            ScrollPane.prototype.doLayout = function () {
-            };
-            return ScrollPane;
-        }(java.awt.Component));
-        awt.ScrollPane = ScrollPane;
-        ScrollPane["__class"] = "java.awt.ScrollPane";
-        ScrollPane["__interfaces"] = ["java.awt.HTMLComponent"];
-    })(awt = java.awt || (java.awt = {}));
-})(java || (java = {}));
-(function (java) {
-    var awt;
-    (function (awt) {
         var Choice = /** @class */ (function (_super) {
             __extends(Choice, _super);
             function Choice() {
@@ -30160,7 +30352,7 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((group != null && group instanceof java.awt.CheckboxGroup) || group === null) && ((typeof state === 'boolean') || state === null)) {
                     var __args = arguments;
                     {
-                        var __args_46 = arguments;
+                        var __args_47 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
                             _this.label = null;
@@ -30242,7 +30434,7 @@ var javax;
                     var __args = arguments;
                     var state_2 = __args[1];
                     {
-                        var __args_47 = arguments;
+                        var __args_48 = arguments;
                         var group_2 = null;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -30293,7 +30485,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_48 = arguments;
+                        var __args_49 = arguments;
                         var state_3 = false;
                         var group_3 = null;
                         _this = _super.call(this) || this;
@@ -30345,7 +30537,7 @@ var javax;
                 else if (label === undefined && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_49 = arguments;
+                        var __args_50 = arguments;
                         var label_1 = "";
                         var state_4 = false;
                         var group_4 = null;
@@ -30575,14 +30767,100 @@ var javax;
                 if (((typeof text === 'string') || text === null) && ((typeof columns === 'number') || columns === null)) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
+                    if (_this.text === undefined) {
+                        _this.text = null;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                    _this.text = text;
+                    _this.columns = columns;
+                }
+                else if (((typeof text === 'string') || text === null) && columns === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_51 = arguments;
+                        var columns_2 = 0;
+                        _this = _super.call(this) || this;
+                        if (_this.text === undefined) {
+                            _this.text = null;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
+                        _this.text = text;
+                        _this.columns = columns_2;
+                    }
+                    if (_this.text === undefined) {
+                        _this.text = null;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
                     if (_this.actionListener === undefined) {
                         _this.actionListener = null;
                     }
                 }
                 else if (((typeof text === 'number') || text === null) && columns === undefined) {
                     var __args = arguments;
-                    var cols = __args[0];
-                    _this = _super.call(this) || this;
+                    var columns_3 = __args[0];
+                    {
+                        var __args_52 = arguments;
+                        var text_1 = "";
+                        _this = _super.call(this) || this;
+                        if (_this.text === undefined) {
+                            _this.text = null;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
+                        _this.text = text_1;
+                        _this.columns = columns_3;
+                    }
+                    if (_this.text === undefined) {
+                        _this.text = null;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                }
+                else if (text === undefined && columns === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_53 = arguments;
+                        var text_2 = "";
+                        var columns_4 = 0;
+                        _this = _super.call(this) || this;
+                        if (_this.text === undefined) {
+                            _this.text = null;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
+                        _this.text = text_2;
+                        _this.columns = columns_4;
+                    }
+                    if (_this.text === undefined) {
+                        _this.text = null;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
                     if (_this.actionListener === undefined) {
                         _this.actionListener = null;
                     }
@@ -30614,14 +30892,23 @@ var javax;
              */
             TextField.prototype.initHTML = function () {
                 _super.prototype.initHTML.call(this);
+                if (this.text != null) {
+                    this.getHTMLElement().value = this.text;
+                }
+                if (this.columns > 0) {
+                    this.getHTMLElement().size = this.columns;
+                }
                 this.initActionListener();
             };
             /*private*/ TextField.prototype.initActionListener = function () {
                 var _this = this;
                 if (this.actionListener != null) {
-                    this.htmlElement.onclick = function (e) {
-                        _this.actionListener.actionPerformed(new java.awt.event.ActionEvent(_this, 0, null));
-                        return e;
+                    this.htmlElement.onkeydown = function (e) {
+                        var ke = e;
+                        if (ke.keyCode === 13) {
+                            _this.actionListener.actionPerformed(new java.awt.event.ActionEvent(_this, 0, null));
+                        }
+                        return ke;
                     };
                 }
             };
@@ -30670,7 +30957,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_50 = arguments;
+                        var __args_54 = arguments;
                         var alignment_1 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
@@ -30688,15 +30975,15 @@ var javax;
                 else if (text === undefined && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_51 = arguments;
-                        var text_1 = "";
+                        var __args_55 = arguments;
+                        var text_3 = "";
                         var alignment_2 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
                             _this.text = null;
                         }
                         _this.alignment = Label.LEFT;
-                        _this.text = text_1;
+                        _this.text = text_3;
                         _this.setAlignment(alignment_2);
                     }
                     if (_this.text === undefined) {
@@ -30802,13 +31089,91 @@ var javax;
         var List = /** @class */ (function (_super) {
             __extends(List, _super);
             function List(rows, multipleMode) {
-                if (rows === void 0) { rows = 0; }
-                if (multipleMode === void 0) { multipleMode = false; }
-                return _super.call(this) || this;
+                var _this = this;
+                if (((typeof rows === 'number') || rows === null) && ((typeof multipleMode === 'boolean') || multipleMode === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.rows === undefined) {
+                        _this.rows = 0;
+                    }
+                    if (_this.multipleMode === undefined) {
+                        _this.multipleMode = false;
+                    }
+                    if (_this.itemListener === undefined) {
+                        _this.itemListener = null;
+                    }
+                    _this.items = (new java.util.Vector());
+                    _this.rows = rows;
+                    _this.multipleMode = multipleMode;
+                }
+                else if (((typeof rows === 'number') || rows === null) && multipleMode === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_56 = arguments;
+                        var multipleMode_1 = false;
+                        _this = _super.call(this) || this;
+                        if (_this.rows === undefined) {
+                            _this.rows = 0;
+                        }
+                        if (_this.multipleMode === undefined) {
+                            _this.multipleMode = false;
+                        }
+                        if (_this.itemListener === undefined) {
+                            _this.itemListener = null;
+                        }
+                        _this.items = (new java.util.Vector());
+                        _this.rows = rows;
+                        _this.multipleMode = multipleMode_1;
+                    }
+                    if (_this.rows === undefined) {
+                        _this.rows = 0;
+                    }
+                    if (_this.multipleMode === undefined) {
+                        _this.multipleMode = false;
+                    }
+                    if (_this.itemListener === undefined) {
+                        _this.itemListener = null;
+                    }
+                    _this.items = (new java.util.Vector());
+                }
+                else if (rows === undefined && multipleMode === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_57 = arguments;
+                        var rows_3 = 0;
+                        var multipleMode_2 = false;
+                        _this = _super.call(this) || this;
+                        if (_this.rows === undefined) {
+                            _this.rows = 0;
+                        }
+                        if (_this.multipleMode === undefined) {
+                            _this.multipleMode = false;
+                        }
+                        if (_this.itemListener === undefined) {
+                            _this.itemListener = null;
+                        }
+                        _this.items = (new java.util.Vector());
+                        _this.rows = rows_3;
+                        _this.multipleMode = multipleMode_2;
+                    }
+                    if (_this.rows === undefined) {
+                        _this.rows = 0;
+                    }
+                    if (_this.multipleMode === undefined) {
+                        _this.multipleMode = false;
+                    }
+                    if (_this.itemListener === undefined) {
+                        _this.itemListener = null;
+                    }
+                    _this.items = (new java.util.Vector());
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
             }
             /**
              *
-             * @return {HTMLDivElement}
+             * @return {HTMLSelectElement}
              */
             List.prototype.getHTMLElement = function () {
                 return _super.prototype.getHTMLElement.call(this);
@@ -30817,23 +31182,59 @@ var javax;
              *
              */
             List.prototype.createHTML = function () {
-                this.htmlElement = document.createElement("div");
+                this.htmlElement = document.createElement("select");
                 this.htmlElement.className = "applet-list";
+                if (this.multipleMode) {
+                    this.getHTMLElement().multiple = true;
+                }
+                if (this.rows > 0) {
+                    this.getHTMLElement().size = this.rows;
+                }
             };
             /**
              *
              */
             List.prototype.initHTML = function () {
+                var _this = this;
                 _super.prototype.initHTML.call(this);
+                this.getHTMLElement().onchange = function (e) {
+                    if (_this.itemListener != null) {
+                        _this.itemListener.itemStateChanged(new java.awt.event.ItemEvent(_this, java.awt.event.ItemEvent.ITEM_STATE_CHANGED_$LI$(), null, 0));
+                    }
+                    return e;
+                };
             };
             List.prototype.addItemListener = function (l) {
+                this.itemListener = l;
+            };
+            List.prototype.removeItemListener = function (l) {
+                if (this.itemListener === l) {
+                    this.itemListener = null;
+                }
             };
             List.prototype.getSelectedIndex = function () {
-                return -1;
+                return (this.getHTMLElement().selectedIndex | 0);
+            };
+            List.prototype.getSelectedObjects = function () {
+                var selectedIndex = this.getSelectedIndex();
+                if (selectedIndex >= 0) {
+                    var items = [null];
+                    items[0] = this.getItem(selectedIndex);
+                    return items;
+                }
+                return [];
             };
             List.prototype.add$java_lang_String = function (item) {
+                this.add$java_lang_String$int(item, -1);
             };
             List.prototype.add$java_lang_String$int = function (item, index) {
+                if (index < 0) {
+                    this.items.add(item);
+                }
+                else {
+                    this.items.add(index, item);
+                }
+                this.rebuildOptions();
             };
             List.prototype.add = function (item, index) {
                 if (((typeof item === 'string') || item === null) && ((typeof index === 'number') || index === null)) {
@@ -30845,25 +31246,56 @@ var javax;
                 else
                     throw new Error('invalid overload');
             };
-            List.prototype.remove = function (position) {
+            List.prototype.remove$java_lang_String = function (item) {
+                this.items.remove(item);
+                this.rebuildOptions();
+            };
+            List.prototype.remove = function (item) {
+                if (((typeof item === 'string') || item === null)) {
+                    return this.remove$java_lang_String(item);
+                }
+                else if (((typeof item === 'number') || item === null)) {
+                    return this.remove$int(item);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            List.prototype.remove$int = function (position) {
+                this.items.remove(position);
+                this.rebuildOptions();
             };
             List.prototype.removeAll = function () {
+                this.items.clear();
+                this.rebuildOptions();
             };
             List.prototype.replaceItem = function (newValue, index) {
+                this.items.set(index, newValue);
+                this.rebuildOptions();
+            };
+            /*private*/ List.prototype.rebuildOptions = function () {
+                this.getHTMLElement().innerHTML = "";
+                for (var index = this.items.iterator(); index.hasNext();) {
+                    var item = index.next();
+                    {
+                        var option = document.createElement("option");
+                        option.text = item;
+                        this.getHTMLElement().add(option);
+                    }
+                }
             };
             List.prototype.makeVisible = function (index) {
             };
             List.prototype.getItemCount = function () {
-                return 0;
+                return this.items.size();
             };
             List.prototype.getItem = function (index) {
-                return "";
+                return this.items.get(index);
             };
             return List;
         }(java.awt.Component));
         awt.List = List;
         List["__class"] = "java.awt.List";
-        List["__interfaces"] = ["java.awt.HTMLComponent"];
+        List["__interfaces"] = ["java.awt.ItemSelectable", "java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -30885,7 +31317,7 @@ var javax;
                 if (((config != null) || config === null)) {
                     var __args = arguments;
                     {
-                        var __args_52 = arguments;
+                        var __args_58 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvasElement === undefined) {
                             _this.htmlCanvasElement = null;
@@ -32729,37 +33161,6 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
-        var DefaultCellEditor = /** @class */ (function (_super) {
-            __extends(DefaultCellEditor, _super);
-            function DefaultCellEditor(textField) {
-                var _this = this;
-                if (((textField != null && textField instanceof javax.swing.JTextField) || textField === null)) {
-                    var __args = arguments;
-                    _this = _super.call(this) || this;
-                }
-                else if (((textField != null && textField instanceof javax.swing.JCheckBox) || textField === null)) {
-                    var __args = arguments;
-                    var checkBox = __args[0];
-                    _this = _super.call(this) || this;
-                }
-                else if (((textField != null && textField instanceof javax.swing.JComboBox) || textField === null)) {
-                    var __args = arguments;
-                    var comboBox = __args[0];
-                    _this = _super.call(this) || this;
-                }
-                else
-                    throw new Error('invalid overload');
-                return _this;
-            }
-            return DefaultCellEditor;
-        }(javax.swing.table.TableCellEditor));
-        swing.DefaultCellEditor = DefaultCellEditor;
-        DefaultCellEditor["__class"] = "javax.swing.DefaultCellEditor";
-    })(swing = javax.swing || (javax.swing = {}));
-})(javax || (javax = {}));
-(function (javax) {
-    var swing;
-    (function (swing) {
         /**
          * Constructs a DefaultComboBoxModel object initialized with an array of objects.
          *
@@ -33364,7 +33765,7 @@ var javax;
                     var p = __args[0];
                     var d = __args[1];
                     {
-                        var __args_53 = arguments;
+                        var __args_59 = arguments;
                         var x_4 = p.x;
                         var y_4 = p.y;
                         var width_4 = d.width;
@@ -33405,7 +33806,7 @@ var javax;
                     var width_5 = __args[0];
                     var height_4 = __args[1];
                     {
-                        var __args_54 = arguments;
+                        var __args_60 = arguments;
                         var x_5 = 0;
                         var y_5 = 0;
                         _this = _super.call(this) || this;
@@ -33443,7 +33844,7 @@ var javax;
                     var __args = arguments;
                     var r = __args[0];
                     {
-                        var __args_55 = arguments;
+                        var __args_61 = arguments;
                         var x_6 = r.x;
                         var y_6 = r.y;
                         var width_6 = r.width;
@@ -33483,7 +33884,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_56 = arguments;
+                        var __args_62 = arguments;
                         var x_7 = p.x;
                         var y_7 = p.y;
                         var width_7 = 0;
@@ -33523,7 +33924,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_57 = arguments;
+                        var __args_63 = arguments;
                         var x_8 = 0;
                         var y_8 = 0;
                         var width_8 = d.width;
@@ -33562,7 +33963,7 @@ var javax;
                 else if (x === undefined && y === undefined && width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_58 = arguments;
+                        var __args_64 = arguments;
                         var x_9 = 0;
                         var y_9 = 0;
                         var width_9 = 0;
@@ -34478,7 +34879,7 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((typeof tearOff === 'boolean') || tearOff === null)) {
                     var __args = arguments;
                     {
-                        var __args_59 = arguments;
+                        var __args_65 = arguments;
                         _this = _super.call(this) || this;
                     }
                 }
@@ -35439,7 +35840,7 @@ var javax;
                         var oldState_1 = __args[2];
                         var newState_1 = __args[3];
                         {
-                            var __args_60 = arguments;
+                            var __args_66 = arguments;
                             var opposite_1 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.opposite === undefined) {
@@ -35468,7 +35869,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && ((opposite != null && opposite instanceof java.awt.Window) || opposite === null) && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_61 = arguments;
+                            var __args_67 = arguments;
                             var oldState_2 = 0;
                             var newState_2 = 0;
                             _this = _super.call(this, source, id) || this;
@@ -35498,7 +35899,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && opposite === undefined && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_62 = arguments;
+                            var __args_68 = arguments;
                             var opposite_2 = null;
                             var oldState_3 = 0;
                             var newState_3 = 0;
@@ -35737,7 +36138,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof temporary === 'boolean') || temporary === null) && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_63 = arguments;
+                            var __args_69 = arguments;
                             var opposite_3 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.temporary === undefined) {
@@ -35759,10 +36160,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && temporary === undefined && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_64 = arguments;
+                            var __args_70 = arguments;
                             var temporary_1 = false;
                             {
-                                var __args_65 = arguments;
+                                var __args_71 = arguments;
                                 var opposite_4 = null;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.temporary === undefined) {
@@ -35966,7 +36367,7 @@ var javax;
                 else if (layout === undefined) {
                     var __args = arguments;
                     {
-                        var __args_66 = arguments;
+                        var __args_72 = arguments;
                         var layout_1 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -36059,6 +36460,92 @@ var javax;
         awt.Panel = Panel;
         Panel["__class"] = "java.awt.Panel";
         Panel["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var ScrollPane = /** @class */ (function (_super) {
+            __extends(ScrollPane, _super);
+            function ScrollPane(view) {
+                var _this = this;
+                if (((view != null && view instanceof java.awt.Component) || view === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this) || this;
+                    if (_this.view === undefined) {
+                        _this.view = null;
+                    }
+                    _this.view = view;
+                    if (view != null) {
+                        _this.add$java_awt_Component(view);
+                    }
+                }
+                else if (view === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_73 = arguments;
+                        var view_1 = null;
+                        _this = _super.call(this) || this;
+                        if (_this.view === undefined) {
+                            _this.view = null;
+                        }
+                        _this.view = view_1;
+                        if (view_1 != null) {
+                            _this.add$java_awt_Component(view_1);
+                        }
+                    }
+                    if (_this.view === undefined) {
+                        _this.view = null;
+                    }
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            ScrollPane.prototype.add = function (component, constraints, index) {
+                if (((component != null && component instanceof java.awt.Component) || component === null) && ((constraints != null) || constraints === null) && ((typeof index === 'number') || index === null)) {
+                    _super.prototype.add.call(this, component, constraints, index);
+                }
+                else if (((typeof component === 'string') || component === null) && ((constraints != null && constraints instanceof java.awt.Component) || constraints === null) && index === undefined) {
+                    return this.add$java_lang_String$java_awt_Component(component, constraints);
+                }
+                else if (((component != null && component instanceof java.awt.Component) || component === null) && ((typeof constraints === 'number') || constraints === null) && index === undefined) {
+                    return this.add$java_awt_Component$int(component, constraints);
+                }
+                else if (((component != null && component instanceof java.awt.Component) || component === null) && ((constraints != null) || constraints === null) && index === undefined) {
+                    return this.add$java_awt_Component$java_lang_Object(component, constraints);
+                }
+                else if (((component != null && component instanceof java.awt.Component) || component === null) && constraints === undefined && index === undefined) {
+                    return this.add$java_awt_Component(component);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            ScrollPane.prototype.add$java_awt_Component$java_lang_Object = function (comp, constraints) {
+                this.view = comp;
+                _super.prototype.add$java_awt_Component$java_lang_Object.call(this, comp, constraints);
+                if (this.htmlElement != null) {
+                    this.htmlElement.appendChild(comp.getHTMLElement());
+                }
+            };
+            /**
+             *
+             */
+            ScrollPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-scrollpane";
+                this.htmlElement.style.overflow = "auto";
+            };
+            ScrollPane.prototype.doLayout = function () {
+            };
+            return ScrollPane;
+        }(java.awt.Container));
+        awt.ScrollPane = ScrollPane;
+        ScrollPane["__class"] = "java.awt.ScrollPane";
+        ScrollPane["__interfaces"] = ["java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -36573,7 +37060,7 @@ var javax;
                     else if (((sourceBean != null) || sourceBean === null) && notifyOnEDT === undefined) {
                         var __args = arguments;
                         {
-                            var __args_67 = arguments;
+                            var __args_74 = arguments;
                             var notifyOnEDT_1 = false;
                             _this = _super.call(this, sourceBean) || this;
                             if (_this.notifyOnEDT === undefined) {
@@ -37162,7 +37649,7 @@ var javax;
                         var popupTrigger_1 = __args[7];
                         var button_1 = __args[8];
                         {
-                            var __args_68 = arguments;
+                            var __args_75 = arguments;
                             var xAbs_1 = 0;
                             var yAbs_1 = 0;
                             _this = _super.call(this, source, id, when, modifiers) || this;
@@ -37257,10 +37744,10 @@ var javax;
                         var clickCount_2 = __args[6];
                         var popupTrigger_2 = __args[7];
                         {
-                            var __args_69 = arguments;
+                            var __args_76 = arguments;
                             var button_2 = MouseEvent.NOBUTTON;
                             {
-                                var __args_70 = arguments;
+                                var __args_77 = arguments;
                                 var xAbs_2 = 0;
                                 var yAbs_2 = 0;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
@@ -37660,7 +38147,7 @@ var javax;
                     if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && ((typeof keyLocation === 'number') || keyLocation === null) && ((typeof isProxyActive === 'boolean') || isProxyActive === null)) {
                         var __args = arguments;
                         {
-                            var __args_71 = arguments;
+                            var __args_78 = arguments;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
                                 _this.isProxyActive = false;
@@ -37767,7 +38254,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_72 = arguments;
+                            var __args_79 = arguments;
                             var keyLocation_1 = KeyEvent.KEY_LOCATION_UNKNOWN;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
@@ -37829,10 +38316,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && keyChar === undefined && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_73 = arguments;
-                            var keyChar_1 = String.fromCharCode(__args_73[4]);
+                            var __args_80 = arguments;
+                            var keyChar_1 = String.fromCharCode(__args_80[4]);
                             {
-                                var __args_74 = arguments;
+                                var __args_81 = arguments;
                                 var keyLocation_2 = KeyEvent.KEY_LOCATION_UNKNOWN;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
                                 if (_this.isProxyActive === undefined) {
@@ -38862,7 +39349,7 @@ var javax;
                 else if (title === undefined) {
                     var __args = arguments;
                     {
-                        var __args_75 = arguments;
+                        var __args_82 = arguments;
                         var title_1 = "";
                         _this = _super.call(this) || this;
                         if (_this.maximizedBounds === undefined) {
@@ -39066,12 +39553,240 @@ var javax;
     (function (awt) {
         var Dialog = /** @class */ (function (_super) {
             __extends(Dialog, _super);
-            function Dialog(frame, bool) {
-                return _super.call(this) || this;
+            function Dialog(owner, title, modal) {
+                var _this = this;
+                if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'string') || title === null) && ((typeof modal === 'boolean') || modal === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this, owner) || this;
+                    if (_this.title === undefined) {
+                        _this.title = null;
+                    }
+                    if (_this.modal === undefined) {
+                        _this.modal = false;
+                    }
+                    if (_this.titleBar === undefined) {
+                        _this.titleBar = null;
+                    }
+                    if (_this.contentArea === undefined) {
+                        _this.contentArea = null;
+                    }
+                    if (_this.modalOverlay === undefined) {
+                        _this.modalOverlay = null;
+                    }
+                    _this.title = title;
+                    _this.modal = modal;
+                }
+                else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'string') || title === null) && modal === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_83 = arguments;
+                        var modal_1 = false;
+                        _this = _super.call(this, owner) || this;
+                        if (_this.title === undefined) {
+                            _this.title = null;
+                        }
+                        if (_this.modal === undefined) {
+                            _this.modal = false;
+                        }
+                        if (_this.titleBar === undefined) {
+                            _this.titleBar = null;
+                        }
+                        if (_this.contentArea === undefined) {
+                            _this.contentArea = null;
+                        }
+                        if (_this.modalOverlay === undefined) {
+                            _this.modalOverlay = null;
+                        }
+                        _this.title = title;
+                        _this.modal = modal_1;
+                    }
+                    if (_this.title === undefined) {
+                        _this.title = null;
+                    }
+                    if (_this.modal === undefined) {
+                        _this.modal = false;
+                    }
+                    if (_this.titleBar === undefined) {
+                        _this.titleBar = null;
+                    }
+                    if (_this.contentArea === undefined) {
+                        _this.contentArea = null;
+                    }
+                    if (_this.modalOverlay === undefined) {
+                        _this.modalOverlay = null;
+                    }
+                }
+                else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'boolean') || title === null) && modal === undefined) {
+                    var __args = arguments;
+                    var modal_2 = __args[1];
+                    {
+                        var __args_84 = arguments;
+                        var title_2 = "";
+                        _this = _super.call(this, owner) || this;
+                        if (_this.title === undefined) {
+                            _this.title = null;
+                        }
+                        if (_this.modal === undefined) {
+                            _this.modal = false;
+                        }
+                        if (_this.titleBar === undefined) {
+                            _this.titleBar = null;
+                        }
+                        if (_this.contentArea === undefined) {
+                            _this.contentArea = null;
+                        }
+                        if (_this.modalOverlay === undefined) {
+                            _this.modalOverlay = null;
+                        }
+                        _this.title = title_2;
+                        _this.modal = modal_2;
+                    }
+                    if (_this.title === undefined) {
+                        _this.title = null;
+                    }
+                    if (_this.modal === undefined) {
+                        _this.modal = false;
+                    }
+                    if (_this.titleBar === undefined) {
+                        _this.titleBar = null;
+                    }
+                    if (_this.contentArea === undefined) {
+                        _this.contentArea = null;
+                    }
+                    if (_this.modalOverlay === undefined) {
+                        _this.modalOverlay = null;
+                    }
+                }
+                else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && title === undefined && modal === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_85 = arguments;
+                        var title_3 = "";
+                        var modal_3 = false;
+                        _this = _super.call(this, owner) || this;
+                        if (_this.title === undefined) {
+                            _this.title = null;
+                        }
+                        if (_this.modal === undefined) {
+                            _this.modal = false;
+                        }
+                        if (_this.titleBar === undefined) {
+                            _this.titleBar = null;
+                        }
+                        if (_this.contentArea === undefined) {
+                            _this.contentArea = null;
+                        }
+                        if (_this.modalOverlay === undefined) {
+                            _this.modalOverlay = null;
+                        }
+                        _this.title = title_3;
+                        _this.modal = modal_3;
+                    }
+                    if (_this.title === undefined) {
+                        _this.title = null;
+                    }
+                    if (_this.modal === undefined) {
+                        _this.modal = false;
+                    }
+                    if (_this.titleBar === undefined) {
+                        _this.titleBar = null;
+                    }
+                    if (_this.contentArea === undefined) {
+                        _this.contentArea = null;
+                    }
+                    if (_this.modalOverlay === undefined) {
+                        _this.modalOverlay = null;
+                    }
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
             }
+            /**
+             *
+             */
+            Dialog.prototype.createHTML = function () {
+                _super.prototype.createHTML.call(this);
+                this.htmlElement.className = "applet-dialog";
+                this.htmlElement.style.position = "fixed";
+                this.htmlElement.style.top = "50%";
+                this.htmlElement.style.left = "50%";
+                this.htmlElement.style.transform = "translate(-50%, -50%)";
+                this.htmlElement.style.backgroundColor = "white";
+                this.htmlElement.style.border = "1px solid black";
+                this.htmlElement.style.padding = "10px";
+                this.htmlElement.style.zIndex = "1000";
+                this.titleBar = document.createElement("div");
+                this.titleBar.className = "applet-dialog-titlebar";
+                this.titleBar.innerText = this.title;
+                this.htmlElement.appendChild(this.titleBar);
+                this.contentArea = document.createElement("div");
+                this.contentArea.className = "applet-dialog-content";
+                this.htmlElement.appendChild(this.contentArea);
+                if (this.modal) {
+                    this.modalOverlay = document.createElement("div");
+                    this.modalOverlay.className = "applet-dialog-overlay";
+                    this.modalOverlay.style.position = "fixed";
+                    this.modalOverlay.style.top = "0";
+                    this.modalOverlay.style.left = "0";
+                    this.modalOverlay.style.width = "100%";
+                    this.modalOverlay.style.height = "100%";
+                    this.modalOverlay.style.backgroundColor = "rgba(0,0,0,0.5)";
+                    this.modalOverlay.style.zIndex = "999";
+                    this.modalOverlay.style.display = "none";
+                    document.body.appendChild(this.modalOverlay);
+                }
+            };
+            Dialog.prototype.add = function (component, constraints, index) {
+                if (((component != null && component instanceof java.awt.Component) || component === null) && ((constraints != null) || constraints === null) && ((typeof index === 'number') || index === null)) {
+                    _super.prototype.add.call(this, component, constraints, index);
+                }
+                else if (((typeof component === 'string') || component === null) && ((constraints != null && constraints instanceof java.awt.Component) || constraints === null) && index === undefined) {
+                    return this.add$java_lang_String$java_awt_Component(component, constraints);
+                }
+                else if (((component != null && component instanceof java.awt.Component) || component === null) && ((typeof constraints === 'number') || constraints === null) && index === undefined) {
+                    return this.add$java_awt_Component$int(component, constraints);
+                }
+                else if (((component != null && component instanceof java.awt.Component) || component === null) && ((constraints != null) || constraints === null) && index === undefined) {
+                    return this.add$java_awt_Component$java_lang_Object(component, constraints);
+                }
+                else if (((component != null && component instanceof java.awt.Component) || component === null) && constraints === undefined && index === undefined) {
+                    return this.add$java_awt_Component(component);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            Dialog.prototype.add$java_awt_Component$java_lang_Object = function (comp, constraints) {
+                if (this.contentArea == null) {
+                    _super.prototype.add$java_awt_Component$java_lang_Object.call(this, comp, constraints);
+                    return;
+                }
+                this.contentArea.appendChild(comp.getHTMLElement());
+            };
+            /**
+             *
+             * @param {boolean} b
+             */
+            Dialog.prototype.setVisible = function (b) {
+                _super.prototype.setVisible.call(this, b);
+                if (this.modalOverlay != null) {
+                    this.modalOverlay.style.display = b ? "block" : "none";
+                }
+            };
             Dialog.prototype.dispose = function () {
+                this.setVisible(false);
+                if (this.htmlElement != null) {
+                    this.htmlElement.remove();
+                }
+                if (this.modalOverlay != null) {
+                    this.modalOverlay.remove();
+                }
             };
             Dialog.prototype.setTitle = function (title) {
+                this.title = title;
+                if (this.titleBar != null) {
+                    this.titleBar.innerText = title;
+                }
             };
             return Dialog;
         }(java.awt.Window));
@@ -39143,7 +39858,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_76 = arguments;
+                        var __args_86 = arguments;
                         var dataModel_1 = new JList.JList$0(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39222,7 +39937,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_77 = arguments;
+                        var __args_87 = arguments;
                         var dataModel_2 = new JList.JList$1(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39300,7 +40015,7 @@ var javax;
                 else if (dataModel === undefined) {
                     var __args = arguments;
                     {
-                        var __args_78 = arguments;
+                        var __args_88 = arguments;
                         var dataModel_3 = new JList.JList$2(_this);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39383,6 +40098,54 @@ var javax;
              *
              */
             JList.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jlist";
+                this.htmlElement.style.overflow = "auto";
+                this.htmlElement.style.border = "1px solid #C0C0C0";
+            };
+            /**
+             *
+             */
+            JList.prototype.initHTML = function () {
+                _super.prototype.initHTML.call(this);
+                this.refreshItems();
+            };
+            JList.prototype.refreshItems = function () {
+                var _this = this;
+                if (this.htmlElement == null) {
+                    return;
+                }
+                this.htmlElement.innerHTML = "";
+                var model = this.getModel();
+                for (var i = 0; i < model.getSize(); i++) {
+                    {
+                        var index = i;
+                        var item = model.getElementAt(i);
+                        var itemElement = document.createElement("div");
+                        itemElement.className = "applet-jlist-item";
+                        itemElement.innerText = item.toString();
+                        itemElement.style.padding = "2px 4px";
+                        if (this.getSelectionModel().isSelectedIndex(index)) {
+                            itemElement.style.backgroundColor = this.getSelectionBackground().toHTML();
+                            itemElement.style.color = this.getSelectionForeground().toHTML();
+                        }
+                        else {
+                            itemElement.style.backgroundColor = this.getBackground().toHTML();
+                            itemElement.style.color = this.getForeground().toHTML();
+                        }
+                        itemElement.onclick = (function (index) {
+                            return function (e) {
+                                _this.getSelectionModel().setSelectionInterval(index, index);
+                                return e;
+                            };
+                        })(index);
+                        this.htmlElement.appendChild(itemElement);
+                    }
+                    ;
+                }
             };
             JList.prototype.updateFixedCellSize = function () {
                 var cr = this.getCellRenderer();
@@ -40064,6 +40827,7 @@ var javax;
                     }
                     ;
                 }
+                this.refreshItems();
             };
             /**
              * Adds a listener to the list, to be notified each time a change to the selection occurs; the
@@ -40708,7 +41472,7 @@ var javax;
                 else if (orientation === undefined) {
                     var __args = arguments;
                     {
-                        var __args_79 = arguments;
+                        var __args_89 = arguments;
                         var orientation_2 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         _this.orientation = javax.swing.SwingConstants.HORIZONTAL;
@@ -40808,8 +41572,46 @@ var javax;
     (function (swing) {
         var JTable = /** @class */ (function (_super) {
             __extends(JTable, _super);
-            function JTable() {
-                return _super.call(this) || this;
+            function JTable(dm) {
+                var _this = _super.call(this) || this;
+                if (_this.dataModel === undefined) {
+                    _this.dataModel = null;
+                }
+                if (_this.columnModel === undefined) {
+                    _this.columnModel = null;
+                }
+                if (_this.selectionModel === undefined) {
+                    _this.selectionModel = null;
+                }
+                if (_this.tableModelListener === undefined) {
+                    _this.tableModelListener = null;
+                }
+                if (_this.defaultRenderer === undefined) {
+                    _this.defaultRenderer = null;
+                }
+                if (_this.defaultCellEditor === undefined) {
+                    _this.defaultCellEditor = null;
+                }
+                if (_this.tableHeader === undefined) {
+                    _this.tableHeader = null;
+                }
+                if (_this.tableElement === undefined) {
+                    _this.tableElement = null;
+                }
+                if (_this.tableBody === undefined) {
+                    _this.tableBody = null;
+                }
+                _this.editingRow = -1;
+                _this.editingColumn = -1;
+                _this.columnModel = new javax.swing.table.DefaultTableColumnModel();
+                _this.selectionModel = new javax.swing.DefaultListSelectionModel();
+                _this.selectionModel.addListSelectionListener({ valueChanged: function (e) { return _this.refreshTable(); } });
+                _this.tableHeader = new javax.swing.table.JTableHeader(_this.columnModel);
+                _this.defaultRenderer = new javax.swing.table.DefaultTableCellRenderer();
+                _this.defaultCellEditor = new javax.swing.DefaultCellEditor(new javax.swing.JTextField());
+                _this.setModel(dm);
+                _this.createDefaultColumnsFromModel();
+                return _this;
             }
             /**
              *
@@ -40819,15 +41621,124 @@ var javax;
                     return;
                 }
                 this.htmlElement = document.createElement("div");
-                this.htmlElement.className = "applet-jtable";
+                this.htmlElement.className = "applet-jtable-container";
+                this.htmlElement.style.overflow = "auto";
+                this.tableElement = document.createElement("table");
+                this.tableElement.className = "applet-jtable";
+                this.htmlElement.appendChild(this.tableElement);
+                this.tableElement.appendChild(this.getTableHeader().getHTMLElement());
+                this.tableBody = document.createElement("tbody");
+                this.tableElement.appendChild(this.tableBody);
             };
             JTable.prototype.setModel = function (dataModel) {
+                if (dataModel == null) {
+                    throw new java.lang.IllegalArgumentException("Cannot set a null TableModel");
+                }
+                if (this.dataModel != null) {
+                    this.dataModel.removeTableModelListener(this.tableModelListener);
+                }
+                this.dataModel = dataModel;
+                if (this.tableModelListener == null) {
+                    this.tableModelListener = new JTable.TableModelHandler(this);
+                }
+                this.dataModel.addTableModelListener(this.tableModelListener);
+                this.refreshTable();
             };
             JTable.prototype.getModel = function () {
-                return null;
+                return this.dataModel;
+            };
+            JTable.prototype.tableChanged = function (e) {
+                this.refreshTable();
+            };
+            JTable.prototype.refreshTable = function () {
+                var _this = this;
+                if (this.tableBody == null) {
+                    return;
+                }
+                this.tableBody.innerHTML = "";
+                for (var i = 0; i < this.dataModel.getRowCount(); i++) {
+                    {
+                        var tr = document.createElement("tr");
+                        for (var j = 0; j < this.dataModel.getColumnCount(); j++) {
+                            {
+                                var row_1 = i;
+                                var col = j;
+                                var td = document.createElement("td");
+                                var column = this.getColumnModel().getColumn(j);
+                                var renderer = column.getCellRenderer();
+                                if (renderer == null) {
+                                    renderer = this.defaultRenderer;
+                                }
+                                var isSelected = this.getSelectionModel().isSelectedIndex(i);
+                                var cellComponent = renderer.getTableCellRendererComponent(this, this.dataModel.getValueAt(i, j), isSelected, false, i, j);
+                                td.appendChild(cellComponent.getHTMLElement());
+                                td.onclick = (function (col, row) {
+                                    return function (e) {
+                                        if (_this.getModel().isCellEditable(row, col)) {
+                                            _this.editCellAt(row, col);
+                                        }
+                                        return e;
+                                    };
+                                })(col, row_1);
+                                tr.appendChild(td);
+                            }
+                            ;
+                        }
+                        var row = i;
+                        tr.onclick = (function (row) {
+                            return function (e) {
+                                _this.getSelectionModel().setSelectionInterval(row, row);
+                                return e;
+                            };
+                        })(row);
+                        if (this.getSelectionModel().isSelectedIndex(i)) {
+                            tr.style.backgroundColor = "highlight";
+                            tr.style.color = "highlighttext";
+                        }
+                        this.tableBody.appendChild(tr);
+                    }
+                    ;
+                }
+            };
+            JTable.prototype.editCellAt = function (row, column) {
+                var _this = this;
+                if (this.editingRow !== -1) {
+                    this.stopEditing();
+                }
+                this.editingRow = row;
+                this.editingColumn = column;
+                var tr = this.tableBody.rows.item(row);
+                var td = tr.cells.item(column);
+                var tableColumn = this.getColumnModel().getColumn(column);
+                var editor = tableColumn.getCellEditor();
+                if (editor == null) {
+                    editor = this.defaultCellEditor;
+                }
+                var editorComponent = editor.getTableCellEditorComponent(this, this.getValueAt(row, column), true, row, column);
+                td.innerHTML = "";
+                td.appendChild(editorComponent.getHTMLElement());
+                editorComponent.getHTMLElement().focus();
+                editorComponent.getHTMLElement().onblur = function (e) {
+                    _this.stopEditing();
+                    return e;
+                };
+            };
+            JTable.prototype.stopEditing = function () {
+                if (this.editingRow === -1) {
+                    return;
+                }
+                var tableColumn = this.getColumnModel().getColumn(this.editingColumn);
+                var editor = tableColumn.getCellEditor();
+                if (editor == null) {
+                    editor = this.defaultCellEditor;
+                }
+                var value = editor.getCellEditorValue();
+                this.setValueAt(value, this.editingRow, this.editingColumn);
+                this.editingRow = -1;
+                this.editingColumn = -1;
             };
             JTable.prototype.getSelectionModel = function () {
-                return null;
+                return this.selectionModel;
             };
             JTable.prototype.getColumnCount = function () {
                 return 0;
@@ -40836,10 +41747,37 @@ var javax;
                 return null;
             };
             JTable.prototype.getTableHeader = function () {
-                return null;
+                return this.tableHeader;
             };
             JTable.prototype.getColumnModel = function () {
-                return null;
+                return this.columnModel;
+            };
+            JTable.prototype.createDefaultColumnsFromModel = function () {
+                var tm = this.getModel();
+                if (tm != null) {
+                    var cm = this.getColumnModel();
+                    while ((cm.getColumnCount() > 0)) {
+                        {
+                            cm.removeColumn(cm.getColumn(0));
+                        }
+                    }
+                    ;
+                    for (var i = 0; i < tm.getColumnCount(); i++) {
+                        {
+                            var newColumn = new javax.swing.table.TableColumn(i);
+                            this.addColumn(newColumn);
+                        }
+                        ;
+                    }
+                }
+            };
+            JTable.prototype.addColumn = function (aColumn) {
+                if (aColumn.getHeaderValue() == null) {
+                    var modelColumn = aColumn.getModelIndex();
+                    var columnName = this.getModel().getColumnName(modelColumn);
+                    aColumn.setHeaderValue(columnName);
+                }
+                this.getColumnModel().addColumn(aColumn);
             };
             JTable.prototype.setColumnSelectionAllowed = function (columnSelectionAllowed) {
             };
@@ -40865,16 +41803,18 @@ var javax;
                     throw new Error('invalid overload');
             };
             JTable.prototype.getSelectedRow = function () {
-                return -1;
+                return this.getSelectionModel().getMinSelectionIndex();
             };
             JTable.prototype.setRowHeight = function (rowHeight) {
             };
             JTable.prototype.clearSelection = function () {
+                this.getSelectionModel().clearSelection();
             };
             JTable.prototype.getValueAt = function (row, column) {
-                return null;
+                return this.getModel().getValueAt(row, column);
             };
             JTable.prototype.setValueAt = function (aValue, row, column) {
+                this.getModel().setValueAt(aValue, row, column);
             };
             JTable.prototype.setAutoResizeMode = function (mode) {
             };
@@ -40890,6 +41830,64 @@ var javax;
         swing.JTable = JTable;
         JTable["__class"] = "javax.swing.JTable";
         JTable["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+        (function (JTable) {
+            var TableModelHandler = /** @class */ (function () {
+                function TableModelHandler(__parent) {
+                    this.__parent = __parent;
+                }
+                TableModelHandler.prototype.tableChanged = function (e) {
+                    this.tableChanged(e);
+                };
+                return TableModelHandler;
+            }());
+            JTable.TableModelHandler = TableModelHandler;
+            TableModelHandler["__class"] = "javax.swing.JTable.TableModelHandler";
+            TableModelHandler["__interfaces"] = ["java.util.EventListener", "javax.swing.event.TableModelListener"];
+        })(JTable = swing.JTable || (swing.JTable = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var table;
+        (function (table) {
+            var JTableHeader = /** @class */ (function (_super) {
+                __extends(JTableHeader, _super);
+                function JTableHeader(columnModel) {
+                    var _this = _super.call(this) || this;
+                    if (_this.columnModel === undefined) {
+                        _this.columnModel = null;
+                    }
+                    _this.columnModel = columnModel;
+                    return _this;
+                }
+                /**
+                 *
+                 */
+                JTableHeader.prototype.createHTML = function () {
+                    if (this.htmlElement != null) {
+                        return;
+                    }
+                    this.htmlElement = document.createElement("thead");
+                    this.htmlElement.className = "applet-jtable-header";
+                    var headerRow = document.createElement("tr");
+                    for (var i = 0; i < this.columnModel.getColumnCount(); i++) {
+                        {
+                            var column = this.columnModel.getColumn(i);
+                            var th = document.createElement("th");
+                            th.innerText = column.getHeaderValue();
+                            headerRow.appendChild(th);
+                        }
+                        ;
+                    }
+                    this.htmlElement.appendChild(headerRow);
+                };
+                return JTableHeader;
+            }(javax.swing.JComponent));
+            table.JTableHeader = JTableHeader;
+            JTableHeader["__class"] = "javax.swing.table.JTableHeader";
+            JTableHeader["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+        })(table = swing.table || (swing.table = {}));
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -41146,6 +42144,9 @@ var javax;
                     if (_this.sliderModel === undefined) {
                         _this.sliderModel = null;
                     }
+                    if (_this.ticksDataList === undefined) {
+                        _this.ticksDataList = null;
+                    }
                     if (_this.majorTickSpacing === undefined) {
                         _this.majorTickSpacing = 0;
                     }
@@ -41171,13 +42172,16 @@ var javax;
                     var __args = arguments;
                     var min_1 = __args[0];
                     var max_1 = __args[1];
-                    var value_3 = __args[2];
+                    var value_4 = __args[2];
                     {
-                        var __args_80 = arguments;
+                        var __args_90 = arguments;
                         var orientation_3 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
+                        }
+                        if (_this.ticksDataList === undefined) {
+                            _this.ticksDataList = null;
                         }
                         if (_this.majorTickSpacing === undefined) {
                             _this.majorTickSpacing = 0;
@@ -41198,10 +42202,13 @@ var javax;
                         _this.changeEvent = null;
                         _this.checkOrientation(orientation_3);
                         _this.orientation = orientation_3;
-                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_3, 0, min_1, max_1));
+                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_4, 0, min_1, max_1));
                     }
                     if (_this.sliderModel === undefined) {
                         _this.sliderModel = null;
+                    }
+                    if (_this.ticksDataList === undefined) {
+                        _this.ticksDataList = null;
                     }
                     if (_this.majorTickSpacing === undefined) {
                         _this.majorTickSpacing = 0;
@@ -41226,12 +42233,15 @@ var javax;
                     var min_2 = __args[0];
                     var max_2 = __args[1];
                     {
-                        var __args_81 = arguments;
+                        var __args_91 = arguments;
                         var orientation_4 = javax.swing.SwingConstants.HORIZONTAL;
-                        var value_4 = ((__args_81[1] + __args_81[2]) / 2 | 0);
+                        var value_5 = ((__args_91[1] + __args_91[2]) / 2 | 0);
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
+                        }
+                        if (_this.ticksDataList === undefined) {
+                            _this.ticksDataList = null;
                         }
                         if (_this.majorTickSpacing === undefined) {
                             _this.majorTickSpacing = 0;
@@ -41252,10 +42262,13 @@ var javax;
                         _this.changeEvent = null;
                         _this.checkOrientation(orientation_4);
                         _this.orientation = orientation_4;
-                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_4, 0, min_2, max_2));
+                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_5, 0, min_2, max_2));
                     }
                     if (_this.sliderModel === undefined) {
                         _this.sliderModel = null;
+                    }
+                    if (_this.ticksDataList === undefined) {
+                        _this.ticksDataList = null;
                     }
                     if (_this.majorTickSpacing === undefined) {
                         _this.majorTickSpacing = 0;
@@ -41282,6 +42295,9 @@ var javax;
                     if (_this.sliderModel === undefined) {
                         _this.sliderModel = null;
                     }
+                    if (_this.ticksDataList === undefined) {
+                        _this.ticksDataList = null;
+                    }
                     if (_this.majorTickSpacing === undefined) {
                         _this.majorTickSpacing = 0;
                     }
@@ -41305,13 +42321,16 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_82 = arguments;
+                        var __args_92 = arguments;
                         var min_3 = 0;
                         var max_3 = 100;
-                        var value_5 = 50;
+                        var value_6 = 50;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
+                        }
+                        if (_this.ticksDataList === undefined) {
+                            _this.ticksDataList = null;
                         }
                         if (_this.majorTickSpacing === undefined) {
                             _this.majorTickSpacing = 0;
@@ -41332,10 +42351,13 @@ var javax;
                         _this.changeEvent = null;
                         _this.checkOrientation(orientation);
                         _this.orientation = orientation;
-                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_5, 0, min_3, max_3));
+                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_6, 0, min_3, max_3));
                     }
                     if (_this.sliderModel === undefined) {
                         _this.sliderModel = null;
+                    }
+                    if (_this.ticksDataList === undefined) {
+                        _this.ticksDataList = null;
                     }
                     if (_this.majorTickSpacing === undefined) {
                         _this.majorTickSpacing = 0;
@@ -41358,14 +42380,17 @@ var javax;
                 else if (orientation === undefined && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_83 = arguments;
+                        var __args_93 = arguments;
                         var orientation_5 = javax.swing.SwingConstants.HORIZONTAL;
                         var min_4 = 0;
                         var max_4 = 100;
-                        var value_6 = 50;
+                        var value_7 = 50;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
+                        }
+                        if (_this.ticksDataList === undefined) {
+                            _this.ticksDataList = null;
                         }
                         if (_this.majorTickSpacing === undefined) {
                             _this.majorTickSpacing = 0;
@@ -41386,10 +42411,13 @@ var javax;
                         _this.changeEvent = null;
                         _this.checkOrientation(orientation_5);
                         _this.orientation = orientation_5;
-                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_6, 0, min_4, max_4));
+                        _this.setModel(new javax.swing.DefaultBoundedRangeModel(value_7, 0, min_4, max_4));
                     }
                     if (_this.sliderModel === undefined) {
                         _this.sliderModel = null;
+                    }
+                    if (_this.ticksDataList === undefined) {
+                        _this.ticksDataList = null;
                     }
                     if (_this.majorTickSpacing === undefined) {
                         _this.majorTickSpacing = 0;
@@ -41413,12 +42441,11 @@ var javax;
                     throw new Error('invalid overload');
                 return _this;
             }
-            /**
-             *
-             * @return {HTMLInputElement}
-             */
-            JSlider.prototype.getHTMLElement = function () {
-                return _super.prototype.getHTMLElement.call(this);
+            JSlider.prototype.getSliderElement = function () {
+                if (this.htmlElement == null) {
+                    return null;
+                }
+                return this.htmlElement.firstElementChild;
             };
             /**
              *
@@ -41428,37 +42455,48 @@ var javax;
                 if (this.htmlElement != null) {
                     return;
                 }
-                this.htmlElement = document.createElement("input");
-                this.getHTMLElement().style.margin = "0px";
-                this.getHTMLElement().style.padding = "0px";
-                this.getHTMLElement().type = "range";
-                this.getHTMLElement().onchange = function (e) {
-                    _this.setValue(javaemul.internal.IntegerHelper.parseInt(_this.getHTMLElement().value));
-                    return null;
-                };
-                this.getHTMLElement().oninput = function (e) {
-                    _this.setValue(javaemul.internal.IntegerHelper.parseInt(_this.getHTMLElement().value));
-                    return null;
-                };
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jslider-container";
+                var slider = document.createElement("input");
+                slider.style.margin = "0px";
+                slider.style.padding = "0px";
+                slider.type = "range";
+                slider.onchange = (function (slider) {
+                    return function (e) {
+                        _this.setValue(javaemul.internal.IntegerHelper.parseInt(slider.value));
+                        return null;
+                    };
+                })(slider);
+                slider.oninput = (function (slider) {
+                    return function (e) {
+                        _this.setValue(javaemul.internal.IntegerHelper.parseInt(slider.value));
+                        return null;
+                    };
+                })(slider);
+                this.htmlElement.appendChild(slider);
+                this.ticksDataList = document.createElement("datalist");
+                this.ticksDataList.id = "ticks-" + slider.id;
+                slider.setAttribute("list", this.ticksDataList.id);
+                this.htmlElement.appendChild(this.ticksDataList);
             };
             /**
              *
              */
             JSlider.prototype.initHTML = function () {
                 _super.prototype.initHTML.call(this);
-                this.getHTMLElement().min = "" + this.getMinimum();
-                this.getHTMLElement().max = "" + this.getMaximum();
-                this.getHTMLElement().step = "" + 1;
-                this.getHTMLElement().value = "" + this.getValue();
+                this.getSliderElement().min = "" + this.getMinimum();
+                this.getSliderElement().max = "" + this.getMaximum();
+                this.getSliderElement().step = "" + 1;
+                this.getSliderElement().value = "" + this.getValue();
                 try {
-                    if (this.getHTMLElement().hasAttribute("orient")) {
-                        this.getHTMLElement().setAttribute("orient", this.getOrientation() === javax.swing.SwingConstants.VERTICAL ? "vertical" : "horizontal");
+                    if (this.getSliderElement().hasAttribute("orient")) {
+                        this.getSliderElement().setAttribute("orient", this.getOrientation() === javax.swing.SwingConstants.VERTICAL ? "vertical" : "horizontal");
                     }
-                    if (this.getHTMLElement().hasAttribute("-webkit-appearance")) {
-                        this.getHTMLElement().setAttribute("-webkit-appearance", this.getOrientation() === javax.swing.SwingConstants.VERTICAL ? "slider-vertical" : "slider-horizontal");
+                    if (this.getSliderElement().hasAttribute("-webkit-appearance")) {
+                        this.getSliderElement().setAttribute("-webkit-appearance", this.getOrientation() === javax.swing.SwingConstants.VERTICAL ? "slider-vertical" : "slider-horizontal");
                     }
-                    if (this.getHTMLElement().hasAttribute("writing-mode")) {
-                        this.getHTMLElement().setAttribute("writing-mode", this.getOrientation() === javax.swing.SwingConstants.VERTICAL ? "bt-lr" : null);
+                    if (this.getSliderElement().hasAttribute("writing-mode")) {
+                        this.getSliderElement().setAttribute("writing-mode", this.getOrientation() === javax.swing.SwingConstants.VERTICAL ? "bt-lr" : null);
                     }
                 }
                 catch (e) {
@@ -41530,8 +42568,8 @@ var javax;
                     return;
                 }
                 m.setValue(n);
-                if (this.getHTMLElement().valueAsNumber !== this.getValue()) {
-                    this.getHTMLElement().valueAsNumber = this.getValue();
+                if (this.getSliderElement().valueAsNumber !== this.getValue()) {
+                    this.getSliderElement().valueAsNumber = this.getValue();
                 }
             };
             JSlider.prototype.getMinimum = function () {
@@ -41599,6 +42637,105 @@ var javax;
                 _super.prototype.setFont.call(this, font);
             };
             /**
+             * This method returns the major tick spacing. The number that is returned represents the
+             * distance, measured in values, between each major tick mark. If you have a slider with a range
+             * from 0 to 50 and the major tick spacing is set to 10, you will get major ticks next to the
+             * following values: 0, 10, 20, 30, 40, 50.
+             *
+             * @return {number} the number of values between major ticks
+             * @see #setMajorTickSpacing
+             */
+            JSlider.prototype.getMajorTickSpacing = function () {
+                return this.majorTickSpacing;
+            };
+            JSlider.prototype.setMajorTickSpacing = function (n) {
+                var oldValue = this.majorTickSpacing;
+                this.majorTickSpacing = n;
+                if (this.getSnapToTicks() && this.getSliderElement() != null) {
+                    this.getSliderElement().step = "" + this.majorTickSpacing;
+                }
+                this.firePropertyChange("majorTickSpacing", oldValue, this.majorTickSpacing);
+                if (this.htmlElement != null) {
+                    this.initHTML();
+                }
+            };
+            JSlider.prototype.getMinorTickSpacing = function () {
+                return this.minorTickSpacing;
+            };
+            JSlider.prototype.setMinorTickSpacing = function (n) {
+                var oldValue = this.minorTickSpacing;
+                this.minorTickSpacing = n;
+                this.firePropertyChange("minorTickSpacing", oldValue, this.minorTickSpacing);
+                if (this.htmlElement != null) {
+                    this.initHTML();
+                }
+            };
+            JSlider.prototype.getSnapToTicks = function () {
+                return this.snapToTicks;
+            };
+            JSlider.prototype.getSnapToValue = function () {
+                return this.snapToValue;
+            };
+            JSlider.prototype.setSnapToTicks = function (b) {
+                var oldValue = this.snapToTicks;
+                this.snapToTicks = b;
+                if (this.getSliderElement() != null) {
+                    if (this.snapToTicks) {
+                        this.getSliderElement().step = "" + this.getMajorTickSpacing();
+                    }
+                    else {
+                        this.getSliderElement().step = "" + 1;
+                    }
+                }
+                this.firePropertyChange("snapToTicks", oldValue, this.snapToTicks);
+            };
+            JSlider.prototype.setSnapToValue = function (b) {
+                var oldValue = this.snapToValue;
+                this.snapToValue = b;
+                this.firePropertyChange("snapToValue", oldValue, this.snapToValue);
+            };
+            JSlider.prototype.getPaintTicks = function () {
+                return this.paintTicks;
+            };
+            JSlider.prototype.setPaintTicks = function (b) {
+                var oldValue = this.paintTicks;
+                this.paintTicks = b;
+                this.firePropertyChange("paintTicks", oldValue, this.paintTicks);
+                if (this.ticksDataList != null) {
+                    this.ticksDataList.innerHTML = "";
+                    if (this.paintTicks && this.getMajorTickSpacing() > 0) {
+                        for (var i = this.getMinimum(); i <= this.getMaximum(); i += this.getMajorTickSpacing()) {
+                            {
+                                var option = document.createElement("option");
+                                option.value = "" + i;
+                                this.ticksDataList.appendChild(option);
+                            }
+                            ;
+                        }
+                    }
+                }
+            };
+            JSlider.prototype.getPaintTrack = function () {
+                return this.paintTrack;
+            };
+            JSlider.prototype.setPaintTrack = function (b) {
+                var oldValue = this.paintTrack;
+                this.paintTrack = b;
+                this.firePropertyChange("paintTrack", oldValue, this.paintTrack);
+                if (this.paintTrack !== oldValue) {
+                }
+            };
+            JSlider.prototype.getPaintLabels = function () {
+                return this.paintLabels;
+            };
+            JSlider.prototype.setPaintLabels = function (b) {
+                var oldValue = this.paintLabels;
+                this.paintLabels = b;
+                this.firePropertyChange("paintLabels", oldValue, this.paintLabels);
+                if (this.paintLabels !== oldValue) {
+                }
+            };
+            /**
              * Returns a string representation of this JSlider. This method is intended to be used only for
              * debugging purposes, and the content and format of the returned string may vary between
              * implementations. The returned string may be empty but may not be <code>null</code>.
@@ -41644,35 +42781,8 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
-        var JTextPane = /** @class */ (function (_super) {
-            __extends(JTextPane, _super);
-            function JTextPane() {
-                return _super.call(this) || this;
-            }
-            /**
-             *
-             */
-            JTextPane.prototype.createHTML = function () {
-                if (this.htmlElement != null) {
-                    return;
-                }
-                this.htmlElement = document.createElement("div");
-                this.htmlElement.className = "applet-jtextpane";
-            };
-            JTextPane.prototype.setPage = function (page) {
-            };
-            return JTextPane;
-        }(javax.swing.JComponent));
-        swing.JTextPane = JTextPane;
-        JTextPane["__class"] = "javax.swing.JTextPane";
-        JTextPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
-    })(swing = javax.swing || (javax.swing = {}));
-})(javax || (javax = {}));
-(function (javax) {
-    var swing;
-    (function (swing) {
         var text;
-        (function (text_2) {
+        (function (text_4) {
             var JTextComponent = /** @class */ (function (_super) {
                 __extends(JTextComponent, _super);
                 function JTextComponent() {
@@ -41695,7 +42805,7 @@ var javax;
                 };
                 return JTextComponent;
             }(javax.swing.JComponent));
-            text_2.JTextComponent = JTextComponent;
+            text_4.JTextComponent = JTextComponent;
             JTextComponent["__class"] = "javax.swing.text.JTextComponent";
             JTextComponent["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
         })(text = swing.text || (swing.text = {}));
@@ -41742,8 +42852,8 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_84 = arguments;
-                        var value_7 = 0;
+                        var __args_94 = arguments;
+                        var value_8 = 0;
                         var extent_3 = 10;
                         var min_5 = 0;
                         var max_5 = 100;
@@ -41761,7 +42871,7 @@ var javax;
                             _this.blockIncrement = 0;
                         }
                         _this.orientation = orientation;
-                        _this.model = new javax.swing.DefaultBoundedRangeModel(value_7, extent_3, min_5, max_5);
+                        _this.model = new javax.swing.DefaultBoundedRangeModel(value_8, extent_3, min_5, max_5);
                     }
                     if (_this.model === undefined) {
                         _this.model = null;
@@ -41779,9 +42889,9 @@ var javax;
                 else if (orientation === undefined && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_85 = arguments;
+                        var __args_95 = arguments;
                         var orientation_6 = java.awt.Adjustable.VERTICAL;
-                        var value_8 = 0;
+                        var value_9 = 0;
                         var extent_4 = 10;
                         var min_6 = 0;
                         var max_6 = 100;
@@ -41799,7 +42909,7 @@ var javax;
                             _this.blockIncrement = 0;
                         }
                         _this.orientation = orientation_6;
-                        _this.model = new javax.swing.DefaultBoundedRangeModel(value_8, extent_4, min_6, max_6);
+                        _this.model = new javax.swing.DefaultBoundedRangeModel(value_9, extent_4, min_6, max_6);
                     }
                     if (_this.model === undefined) {
                         _this.model = null;
@@ -41895,7 +43005,16 @@ var javax;
         var JTabbedPane = /** @class */ (function (_super) {
             __extends(JTabbedPane, _super);
             function JTabbedPane() {
-                return _super.call(this) || this;
+                var _this = _super.call(this) || this;
+                _this.tabPlacement = javax.swing.SwingConstants.TOP;
+                _this.tabs = (new java.util.ArrayList());
+                if (_this.tabContainer === undefined) {
+                    _this.tabContainer = null;
+                }
+                if (_this.contentContainer === undefined) {
+                    _this.contentContainer = null;
+                }
+                return _this;
             }
             /**
              *
@@ -41906,10 +43025,84 @@ var javax;
                 }
                 this.htmlElement = document.createElement("div");
                 this.htmlElement.className = "applet-jtabbedpane";
+                this.htmlElement.style.display = "flex";
+                this.tabContainer = document.createElement("div");
+                this.tabContainer.className = "applet-jtabbedpane-tabs";
+                this.contentContainer = document.createElement("div");
+                this.contentContainer.className = "applet-jtabbedpane-content";
+                this.updateLayout();
             };
             JTabbedPane.prototype.setTabPlacement = function (tabPlacement) {
+                if (tabPlacement !== javax.swing.SwingConstants.TOP && tabPlacement !== javax.swing.SwingConstants.BOTTOM && tabPlacement !== javax.swing.SwingConstants.LEFT && tabPlacement !== javax.swing.SwingConstants.RIGHT) {
+                    throw new java.lang.IllegalArgumentException("invalid tab placement");
+                }
+                this.tabPlacement = tabPlacement;
+                this.updateLayout();
+            };
+            JTabbedPane.prototype.updateLayout = function () {
+                if (this.htmlElement == null) {
+                    return;
+                }
+                while ((this.htmlElement.firstChild != null)) {
+                    {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                }
+                ;
+                if (this.tabPlacement === javax.swing.SwingConstants.TOP || this.tabPlacement === javax.swing.SwingConstants.LEFT) {
+                    this.htmlElement.appendChild(this.tabContainer);
+                    this.htmlElement.appendChild(this.contentContainer);
+                }
+                else {
+                    this.htmlElement.appendChild(this.contentContainer);
+                    this.htmlElement.appendChild(this.tabContainer);
+                }
+                if (this.tabPlacement === javax.swing.SwingConstants.TOP || this.tabPlacement === javax.swing.SwingConstants.BOTTOM) {
+                    this.htmlElement.style.flexDirection = "column";
+                    this.tabContainer.style.flexDirection = "row";
+                }
+                else {
+                    this.htmlElement.style.flexDirection = "row";
+                    this.tabContainer.style.flexDirection = "column";
+                }
             };
             JTabbedPane.prototype.addTab = function (title, icon, component, tip) {
+                var _this = this;
+                var tab = new JTabbedPane.Tab(title, icon, component, tip);
+                this.tabs.add(tab);
+                tab.tabButton = document.createElement("div");
+                tab.tabButton.className = "applet-jtabbedpane-tab";
+                tab.tabButton.innerText = title;
+                tab.tabButton.title = tip;
+                tab.tabButton.onclick = (function (tab) {
+                    return function (e) {
+                        _this.setSelectedTab(tab);
+                        return e;
+                    };
+                })(tab);
+                this.tabContainer.appendChild(tab.tabButton);
+                this.contentContainer.appendChild(component.getHTMLElement());
+                if (this.tabs.size() === 1) {
+                    this.setSelectedTab(tab);
+                }
+                else {
+                    component.getHTMLElement().style.display = "none";
+                }
+            };
+            JTabbedPane.prototype.setSelectedTab = function (selectedTab) {
+                for (var index = this.tabs.iterator(); index.hasNext();) {
+                    var tab = index.next();
+                    {
+                        var isSelected = tab === selectedTab;
+                        tab.component.getHTMLElement().style.display = isSelected ? "block" : "none";
+                        if (isSelected) {
+                            tab.tabButton.classList.add("active");
+                        }
+                        else {
+                            tab.tabButton.classList.remove("active");
+                        }
+                    }
+                }
             };
             JTabbedPane.prototype.getModel = function () {
                 return null;
@@ -41918,7 +43111,35 @@ var javax;
         }(javax.swing.JComponent));
         swing.JTabbedPane = JTabbedPane;
         JTabbedPane["__class"] = "javax.swing.JTabbedPane";
-        JTabbedPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+        JTabbedPane["__interfaces"] = ["java.awt.HTMLComponent", "javax.swing.SwingConstants", "java.io.Serializable"];
+        (function (JTabbedPane) {
+            var Tab = /** @class */ (function () {
+                function Tab(title, icon, component, tip) {
+                    if (this.title === undefined) {
+                        this.title = null;
+                    }
+                    if (this.icon === undefined) {
+                        this.icon = null;
+                    }
+                    if (this.component === undefined) {
+                        this.component = null;
+                    }
+                    if (this.tip === undefined) {
+                        this.tip = null;
+                    }
+                    if (this.tabButton === undefined) {
+                        this.tabButton = null;
+                    }
+                    this.title = title;
+                    this.icon = icon;
+                    this.component = component;
+                    this.tip = tip;
+                }
+                return Tab;
+            }());
+            JTabbedPane.Tab = Tab;
+            Tab["__class"] = "javax.swing.JTabbedPane.Tab";
+        })(JTabbedPane = swing.JTabbedPane || (swing.JTabbedPane = {}));
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -41948,7 +43169,7 @@ var javax;
                 else if (((layout != null && (layout.constructor != null && layout.constructor["__interfaces"] != null && layout.constructor["__interfaces"].indexOf("java.awt.LayoutManager") >= 0)) || layout === null) && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_86 = arguments;
+                        var __args_96 = arguments;
                         var isDoubleBuffered_1 = true;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -41964,7 +43185,7 @@ var javax;
                     var __args = arguments;
                     var isDoubleBuffered_2 = __args[0];
                     {
-                        var __args_87 = arguments;
+                        var __args_97 = arguments;
                         var layout_2 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -41979,10 +43200,10 @@ var javax;
                 else if (layout === undefined && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_88 = arguments;
+                        var __args_98 = arguments;
                         var isDoubleBuffered_3 = true;
                         {
-                            var __args_89 = arguments;
+                            var __args_99 = arguments;
                             var layout_3 = new java.awt.FlowLayout();
                             _this = _super.call(this) || this;
                             if (_this.htmlCanvas === undefined) {
@@ -42128,14 +43349,6 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
-        /**
-         * Constructs a spinner for the given model. The spinner has a set of previous/next buttons, and
-         * an editor appropriate for the model.
-         *
-         * @param {*} model the SpinnerModel that defines the sequence of values.
-         * @class
-         * @extends javax.swing.JComponent
-         */
         var JSpinner = /** @class */ (function (_super) {
             __extends(JSpinner, _super);
             function JSpinner(model) {
@@ -42146,71 +43359,29 @@ var javax;
                     if (_this.model === undefined) {
                         _this.model = null;
                     }
-                    if (_this.spinnerElement === undefined) {
-                        _this.spinnerElement = null;
-                    }
-                    if (_this.valueEditor === undefined) {
-                        _this.valueEditor = null;
-                    }
-                    if (_this.upButton === undefined) {
-                        _this.upButton = null;
-                    }
-                    if (_this.downButton === undefined) {
-                        _this.downButton = null;
-                    }
                     if (model == null) {
                         throw new java.lang.NullPointerException("model cannot be null");
                     }
                     _this.model = model;
-                    _this.createHTML();
-                    _this.model.addChangeListener({ stateChanged: function (e) {
-                            _this.updateValueInEditor();
-                        } });
+                    _this.model.addChangeListener({ stateChanged: function (e) { return _this.updateValueInEditor(); } });
                 }
                 else if (model === undefined) {
                     var __args = arguments;
                     {
-                        var __args_90 = arguments;
-                        var model_1 = new javax.swing.SpinnerNumberModel(0, null, null, 1);
+                        var __args_100 = arguments;
+                        var model_1 = new javax.swing.SpinnerNumberModel();
                         _this = _super.call(this) || this;
                         if (_this.model === undefined) {
                             _this.model = null;
-                        }
-                        if (_this.spinnerElement === undefined) {
-                            _this.spinnerElement = null;
-                        }
-                        if (_this.valueEditor === undefined) {
-                            _this.valueEditor = null;
-                        }
-                        if (_this.upButton === undefined) {
-                            _this.upButton = null;
-                        }
-                        if (_this.downButton === undefined) {
-                            _this.downButton = null;
                         }
                         if (model_1 == null) {
                             throw new java.lang.NullPointerException("model cannot be null");
                         }
                         _this.model = model_1;
-                        _this.createHTML();
-                        _this.model.addChangeListener({ stateChanged: function (e) {
-                                _this.updateValueInEditor();
-                            } });
+                        _this.model.addChangeListener({ stateChanged: function (e) { return _this.updateValueInEditor(); } });
                     }
                     if (_this.model === undefined) {
                         _this.model = null;
-                    }
-                    if (_this.spinnerElement === undefined) {
-                        _this.spinnerElement = null;
-                    }
-                    if (_this.valueEditor === undefined) {
-                        _this.valueEditor = null;
-                    }
-                    if (_this.upButton === undefined) {
-                        _this.upButton = null;
-                    }
-                    if (_this.downButton === undefined) {
-                        _this.downButton = null;
                     }
                 }
                 else
@@ -42219,48 +43390,43 @@ var javax;
             }
             /**
              *
+             * @return {HTMLInputElement}
              */
-            JSpinner.prototype.createHTML = function () {
-                var _this = this;
-                if (this.spinnerElement != null) {
-                    return;
-                }
-                this.spinnerElement = document.createElement("div");
-                this.spinnerElement.className = "applet-jspinner";
-                this.valueEditor = document.createElement("input");
-                this.valueEditor.type = "text";
-                this.valueEditor.className = "applet-jspinner-input";
-                this.spinnerElement.appendChild(this.valueEditor);
-                var buttonsContainer = document.createElement("div");
-                buttonsContainer.className = "applet-jspinner-buttons";
-                this.upButton = document.createElement("button");
-                this.upButton.className = "applet-jspinner-button-up";
-                this.upButton.textContent = "\u25b2";
-                buttonsContainer.appendChild(this.upButton);
-                this.downButton = document.createElement("button");
-                this.downButton.className = "applet-jspinner-button-down";
-                this.downButton.textContent = "\u25bc";
-                buttonsContainer.appendChild(this.downButton);
-                this.spinnerElement.appendChild(buttonsContainer);
-                this.upButton.addEventListener("click", function (e) {
-                    var nextValue = _this.model.getNextValue();
-                    if (nextValue != null) {
-                        _this.model.setValue(nextValue);
-                    }
-                });
-                this.downButton.addEventListener("click", function (e) {
-                    var previousValue = _this.model.getPreviousValue();
-                    if (previousValue != null) {
-                        _this.model.setValue(previousValue);
-                    }
-                });
+            JSpinner.prototype.getHTMLElement = function () {
+                return _super.prototype.getHTMLElement.call(this);
             };
             /**
              *
-             * @return {HTMLElement}
              */
-            JSpinner.prototype.getHTMLElement = function () {
-                return this.spinnerElement;
+            JSpinner.prototype.createHTML = function () {
+                var _this = this;
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("input");
+                this.getHTMLElement().type = "number";
+                this.getHTMLElement().className = "applet-jspinner";
+                this.getHTMLElement().onchange = function (e) {
+                    _this.setValue(_this.getHTMLElement().valueAsNumber);
+                    return e;
+                };
+            };
+            /**
+             *
+             */
+            JSpinner.prototype.initHTML = function () {
+                _super.prototype.initHTML.call(this);
+                this.updateValueInEditor();
+                if (this.model != null && this.model instanceof javax.swing.SpinnerNumberModel) {
+                    var numberModel = this.model;
+                    this.getHTMLElement().step = numberModel.getStepSize().toString();
+                    if (numberModel.getMinimum() != null) {
+                        this.getHTMLElement().min = numberModel.getMinimum().toString();
+                    }
+                    if (numberModel.getMaximum() != null) {
+                        this.getHTMLElement().max = numberModel.getMaximum().toString();
+                    }
+                }
             };
             /**
              * Returns the SpinnerModel that defines this spinner's sequence of values.
@@ -42270,16 +43436,19 @@ var javax;
             JSpinner.prototype.getModel = function () {
                 return this.model;
             };
-            /**
-             * Changes the model that represents the value of this spinner.
-             *
-             * @param {*} model the new SpinnerModel
-             */
             JSpinner.prototype.setModel = function (model) {
-                var oldModel = this.getModel();
-                if (oldModel != null) {
+                var _this = this;
+                if (model == null) {
+                    throw new java.lang.NullPointerException("model cannot be null");
+                }
+                if (this.model != null) {
+                    this.model.removeChangeListener({ stateChanged: function (e) { return _this.updateValueInEditor(); } });
                 }
                 this.model = model;
+                this.model.addChangeListener({ stateChanged: function (e) { return _this.updateValueInEditor(); } });
+                if (this.htmlElement != null) {
+                    this.initHTML();
+                }
             };
             /**
              * Returns the current value of the model.
@@ -42298,8 +43467,14 @@ var javax;
                 this.model.setValue(value);
             };
             /*private*/ JSpinner.prototype.updateValueInEditor = function () {
-                if (this.valueEditor != null && this.model != null) {
-                    this.valueEditor.value = this.model.getValue().toString();
+                if (this.getHTMLElement() != null && this.model != null) {
+                    var value = this.model.getValue();
+                    if (typeof value === 'number') {
+                        this.getHTMLElement().valueAsNumber = /* doubleValue */ value;
+                    }
+                    else {
+                        this.getHTMLElement().value = value.toString();
+                    }
                 }
             };
             JSpinner.prototype.addChangeListener = function (listener) {
@@ -42313,6 +43488,43 @@ var javax;
         swing.JSpinner = JSpinner;
         JSpinner["__class"] = "javax.swing.JSpinner";
         JSpinner["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JViewport = /** @class */ (function (_super) {
+            __extends(JViewport, _super);
+            function JViewport() {
+                var _this = _super.call(this) || this;
+                if (_this.view === undefined) {
+                    _this.view = null;
+                }
+                _this.setLayout(new java.awt.BorderLayout());
+                return _this;
+            }
+            /**
+             *
+             */
+            JViewport.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jviewport";
+            };
+            JViewport.prototype.setView = function (view) {
+                this.view = view;
+                this.add$java_awt_Component$java_lang_Object(view, java.awt.BorderLayout.CENTER);
+            };
+            JViewport.prototype.getView = function () {
+                return this.view;
+            };
+            return JViewport;
+        }(javax.swing.JComponent));
+        swing.JViewport = JViewport;
+        JViewport["__class"] = "javax.swing.JViewport";
+        JViewport["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
     })(swing = javax.swing || (javax.swing = {}));
 })(javax || (javax = {}));
 (function (javax) {
@@ -42619,8 +43831,8 @@ var javax;
                     this.mnemonicIndex = -1;
                 }
                 else {
-                    var text_3 = this.getText();
-                    var textLength = (text_3 == null) ? 0 : text_3.length;
+                    var text_5 = this.getText();
+                    var textLength = (text_5 == null) ? 0 : text_5.length;
                     if (index < -1 || index >= textLength) {
                         throw new java.lang.IllegalArgumentException("index == " + index);
                     }
@@ -43015,7 +44227,20 @@ var javax;
         var JScrollPane = /** @class */ (function (_super) {
             __extends(JScrollPane, _super);
             function JScrollPane(view) {
-                return _super.call(this) || this;
+                var _this = _super.call(this) || this;
+                if (_this.viewport === undefined) {
+                    _this.viewport = null;
+                }
+                if (_this.verticalScrollBar === undefined) {
+                    _this.verticalScrollBar = null;
+                }
+                _this.viewport = new javax.swing.JViewport();
+                _this.viewport.setView(view);
+                _this.verticalScrollBar = new javax.swing.JScrollBar(java.awt.Adjustable.VERTICAL);
+                _this.setLayout(new java.awt.BorderLayout());
+                _this.add$java_awt_Component$java_lang_Object(_this.viewport, java.awt.BorderLayout.CENTER);
+                _this.add$java_awt_Component$java_lang_Object(_this.verticalScrollBar, java.awt.BorderLayout.EAST);
+                return _this;
             }
             /**
              *
@@ -43026,12 +44251,16 @@ var javax;
                 }
                 this.htmlElement = document.createElement("div");
                 this.htmlElement.className = "applet-jscrollpane";
+                this.htmlElement.style.overflow = "auto";
+            };
+            JScrollPane.prototype.getView = function () {
+                return this.viewport.getView();
             };
             JScrollPane.prototype.getViewport = function () {
-                return null;
+                return this.viewport;
             };
             JScrollPane.prototype.getVerticalScrollBar = function () {
-                return null;
+                return this.verticalScrollBar;
             };
             return JScrollPane;
         }(javax.swing.JComponent));
@@ -43050,8 +44279,17 @@ var javax;
                 if (((aModel != null && (aModel.constructor != null && aModel.constructor["__interfaces"] != null && aModel.constructor["__interfaces"].indexOf("javax.swing.ComboBoxModel") >= 0)) || aModel === null)) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
-                    if (_this.lastSelected === undefined) {
-                        _this.lastSelected = 0;
+                    if (_this.displayArea === undefined) {
+                        _this.displayArea = null;
+                    }
+                    if (_this.selectedValueDisplay === undefined) {
+                        _this.selectedValueDisplay = null;
+                    }
+                    if (_this.arrowButton === undefined) {
+                        _this.arrowButton = null;
+                    }
+                    if (_this.popup === undefined) {
+                        _this.popup = null;
                     }
                     if (_this.dataModel === undefined) {
                         _this.dataModel = null;
@@ -43071,6 +44309,19 @@ var javax;
                     if (_this.actionPropertyChangeListener === undefined) {
                         _this.actionPropertyChangeListener = null;
                     }
+                    _this.popupVisible = false;
+                    _this.outsideClickListener = function (e) {
+                        var target = e.target;
+                        for (var n = target; n != null; n = n.parentNode) {
+                            {
+                                if (n === _this.htmlElement) {
+                                    return;
+                                }
+                            }
+                            ;
+                        }
+                        _this.setPopupVisible(false);
+                    };
                     _this.maximumRowCount = 8;
                     _this.__isEditable = false;
                     _this.keySelectionManager = null;
@@ -43085,8 +44336,17 @@ var javax;
                     var __args = arguments;
                     var items = __args[0];
                     _this = _super.call(this) || this;
-                    if (_this.lastSelected === undefined) {
-                        _this.lastSelected = 0;
+                    if (_this.displayArea === undefined) {
+                        _this.displayArea = null;
+                    }
+                    if (_this.selectedValueDisplay === undefined) {
+                        _this.selectedValueDisplay = null;
+                    }
+                    if (_this.arrowButton === undefined) {
+                        _this.arrowButton = null;
+                    }
+                    if (_this.popup === undefined) {
+                        _this.popup = null;
                     }
                     if (_this.dataModel === undefined) {
                         _this.dataModel = null;
@@ -43106,6 +44366,19 @@ var javax;
                     if (_this.actionPropertyChangeListener === undefined) {
                         _this.actionPropertyChangeListener = null;
                     }
+                    _this.popupVisible = false;
+                    _this.outsideClickListener = function (e) {
+                        var target = e.target;
+                        for (var n = target; n != null; n = n.parentNode) {
+                            {
+                                if (n === _this.htmlElement) {
+                                    return;
+                                }
+                            }
+                            ;
+                        }
+                        _this.setPopupVisible(false);
+                    };
                     _this.maximumRowCount = 8;
                     _this.__isEditable = false;
                     _this.keySelectionManager = null;
@@ -43120,8 +44393,17 @@ var javax;
                     var __args = arguments;
                     var items = __args[0];
                     _this = _super.call(this) || this;
-                    if (_this.lastSelected === undefined) {
-                        _this.lastSelected = 0;
+                    if (_this.displayArea === undefined) {
+                        _this.displayArea = null;
+                    }
+                    if (_this.selectedValueDisplay === undefined) {
+                        _this.selectedValueDisplay = null;
+                    }
+                    if (_this.arrowButton === undefined) {
+                        _this.arrowButton = null;
+                    }
+                    if (_this.popup === undefined) {
+                        _this.popup = null;
                     }
                     if (_this.dataModel === undefined) {
                         _this.dataModel = null;
@@ -43141,6 +44423,19 @@ var javax;
                     if (_this.actionPropertyChangeListener === undefined) {
                         _this.actionPropertyChangeListener = null;
                     }
+                    _this.popupVisible = false;
+                    _this.outsideClickListener = function (e) {
+                        var target = e.target;
+                        for (var n = target; n != null; n = n.parentNode) {
+                            {
+                                if (n === _this.htmlElement) {
+                                    return;
+                                }
+                            }
+                            ;
+                        }
+                        _this.setPopupVisible(false);
+                    };
                     _this.maximumRowCount = 8;
                     _this.__isEditable = false;
                     _this.keySelectionManager = null;
@@ -43154,8 +44449,17 @@ var javax;
                 else if (aModel === undefined) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
-                    if (_this.lastSelected === undefined) {
-                        _this.lastSelected = 0;
+                    if (_this.displayArea === undefined) {
+                        _this.displayArea = null;
+                    }
+                    if (_this.selectedValueDisplay === undefined) {
+                        _this.selectedValueDisplay = null;
+                    }
+                    if (_this.arrowButton === undefined) {
+                        _this.arrowButton = null;
+                    }
+                    if (_this.popup === undefined) {
+                        _this.popup = null;
                     }
                     if (_this.dataModel === undefined) {
                         _this.dataModel = null;
@@ -43175,6 +44479,19 @@ var javax;
                     if (_this.actionPropertyChangeListener === undefined) {
                         _this.actionPropertyChangeListener = null;
                     }
+                    _this.popupVisible = false;
+                    _this.outsideClickListener = function (e) {
+                        var target = e.target;
+                        for (var n = target; n != null; n = n.parentNode) {
+                            {
+                                if (n === _this.htmlElement) {
+                                    return;
+                                }
+                            }
+                            ;
+                        }
+                        _this.setPopupVisible(false);
+                    };
                     _this.maximumRowCount = 8;
                     _this.__isEditable = false;
                     _this.keySelectionManager = null;
@@ -43190,8 +44507,33 @@ var javax;
                 return _this;
             }
             JComboBox.prototype.createHTML = function () {
-                this.htmlElement = document.createElement("select");
+                this.htmlElement = document.createElement("div");
                 this.htmlElement.className = "applet-jcombobox";
+                this.htmlElement.style.position = "relative";
+                this.displayArea = document.createElement("div");
+                this.displayArea.className = "applet-jcombobox-display";
+                this.displayArea.style.display = "flex";
+                this.displayArea.style.border = "1px solid #767676";
+                this.htmlElement.appendChild(this.displayArea);
+                this.selectedValueDisplay = document.createElement("div");
+                this.selectedValueDisplay.className = "applet-jcombobox-value";
+                this.selectedValueDisplay.style.flexGrow = "1";
+                this.selectedValueDisplay.style.padding = "2px 4px";
+                this.displayArea.appendChild(this.selectedValueDisplay);
+                this.arrowButton = document.createElement("button");
+                this.arrowButton.className = "applet-jcombobox-arrow";
+                this.arrowButton.innerHTML = "&#9662;";
+                this.arrowButton.style.border = "none";
+                this.arrowButton.style.backgroundColor = "transparent";
+                this.displayArea.appendChild(this.arrowButton);
+                this.popup = document.createElement("div");
+                this.popup.className = "applet-jcombobox-popup";
+                this.popup.style.position = "absolute";
+                this.popup.style.display = "none";
+                this.popup.style.border = "1px solid black";
+                this.popup.style.backgroundColor = "white";
+                this.popup.style.zIndex = "1000";
+                this.htmlElement.appendChild(this.popup);
             };
             JComboBox.prototype.getHTMLElement = function () {
                 return this.htmlElement;
@@ -43199,34 +44541,12 @@ var javax;
             JComboBox.prototype.initHTML = function () {
                 var _this = this;
                 _super.prototype.initHTML.call(this);
-                this.getHTMLElement().onchange = function (e) {
-                    var i = (_this.getHTMLElement().selectedIndex | 0);
-                    _this.fireItemStateChanged(new java.awt.event.ItemEvent(_this, 0, _this.getItemAt(_this.lastSelected), java.awt.event.ItemEvent.DESELECTED));
-                    _this.fireItemStateChanged(new java.awt.event.ItemEvent(_this, 0, _this.getItemAt(i), java.awt.event.ItemEvent.SELECTED));
-                    _this.lastSelected = i;
-                    return e;
+                this.displayArea.onclick = function (e) {
+                    _this.setPopupVisible(!_this.isPopupVisible());
+                    return null;
                 };
-                var childNodes = this.getHTMLElement().childNodes;
-                for (var i = 0; i < childNodes.length; ++i) {
-                    {
-                        this.getHTMLElement().removeChild(childNodes[i]);
-                    }
-                    ;
-                }
-                for (var i = 0; i < this.getItemCount(); i++) {
-                    {
-                        var option = document.createElement("option");
-                        option.className = "applet-jcombobox-option";
-                        option.innerHTML = this.getItemAt(i).toString();
-                        option.value = this.getItemAt(i).toString();
-                        if (this.getSelectedIndex() === i) {
-                            option.selected = true;
-                            this.lastSelected = i;
-                        }
-                        this.getHTMLElement().appendChild(option);
-                    }
-                    ;
-                }
+                this.populatePopup();
+                this.updateSelectedValueDisplay();
             };
             JComboBox.prototype.init = function () {
             };
@@ -43404,9 +44724,95 @@ var javax;
                 this.setPopupVisible(false);
             };
             JComboBox.prototype.setPopupVisible = function (v) {
+                if (this.popupVisible === v) {
+                    return;
+                }
+                this.popupVisible = v;
+                if (v) {
+                    this.firePopupMenuWillBecomeVisible();
+                    this.popup.style.top = this.htmlElement.offsetHeight + "px";
+                    this.popup.style.left = "0px";
+                    this.popup.style.width = this.htmlElement.offsetWidth + "px";
+                    this.popup.style.display = "block";
+                    document.addEventListener("click", ((function (funcInst) { if (funcInst == null || typeof funcInst == 'function') {
+                        return funcInst;
+                    } return function (arg0) { return (funcInst['$apply'] ? funcInst['$apply'] : funcInst).call(funcInst, arg0); }; })(this.outsideClickListener)));
+                }
+                else {
+                    this.firePopupMenuWillBecomeInvisible();
+                    this.popup.style.display = "none";
+                    document.removeEventListener("click", ((function (funcInst) { if (funcInst == null || typeof funcInst == 'function') {
+                        return funcInst;
+                    } return function (arg0) { return (funcInst['$apply'] ? funcInst['$apply'] : funcInst).call(funcInst, arg0); }; })(this.outsideClickListener)));
+                }
             };
             JComboBox.prototype.isPopupVisible = function () {
-                return false;
+                return this.popupVisible;
+            };
+            JComboBox.prototype.populatePopup = function () {
+                var _this = this;
+                while ((this.popup.firstChild != null)) {
+                    {
+                        this.popup.removeChild(this.popup.firstChild);
+                    }
+                }
+                ;
+                if (this.getItemCount() === 0) {
+                    return;
+                }
+                var r = this.getRenderer();
+                if (r == null) {
+                    r = (new javax.swing.DefaultListCellRenderer());
+                }
+                for (var i = 0; i < this.getItemCount(); i++) {
+                    {
+                        var value = this.getItemAt(i);
+                        var comp = r.getListCellRendererComponent(null, value, i, false, false);
+                        if (comp.getHTMLElement() == null) {
+                            comp.initHTML();
+                        }
+                        var itemElement = comp.getHTMLElement();
+                        itemElement.className += " applet-jcombobox-item";
+                        itemElement.style.cursor = "default";
+                        itemElement.style.padding = "2px 4px";
+                        var index = i;
+                        itemElement.onclick = (function (index) {
+                            return function (e) {
+                                _this.setSelectedIndex(index);
+                                _this.setPopupVisible(false);
+                                e.stopPropagation();
+                                return null;
+                            };
+                        })(index);
+                        this.popup.appendChild(itemElement);
+                    }
+                    ;
+                }
+            };
+            JComboBox.prototype.updateSelectedValueDisplay = function () {
+                while ((this.selectedValueDisplay.firstChild != null)) {
+                    {
+                        this.selectedValueDisplay.removeChild(this.selectedValueDisplay.firstChild);
+                    }
+                }
+                ;
+                var selectedIndex = this.getSelectedIndex();
+                if (selectedIndex < 0) {
+                    return;
+                }
+                var r = this.getRenderer();
+                if (r == null) {
+                    r = (new javax.swing.DefaultListCellRenderer());
+                }
+                var value = this.getItemAt(selectedIndex);
+                var comp = r.getListCellRendererComponent(null, value, selectedIndex, true, false);
+                if (comp.getHTMLElement() == null) {
+                    comp.initHTML();
+                }
+                var selectedElement = comp.getHTMLElement();
+                selectedElement.style.backgroundColor = "";
+                selectedElement.style.color = "";
+                this.selectedValueDisplay.appendChild(selectedElement);
             };
             JComboBox.prototype.addItemListener = function (aListener) {
                 this.listenerList.add("java.awt.event.ItemListener", aListener);
@@ -43619,11 +45025,15 @@ var javax;
                         this.fireActionEvent();
                     }
                 }
+                this.populatePopup();
+                this.updateSelectedValueDisplay();
             };
             JComboBox.prototype.intervalAdded = function (e) {
                 if (this.selectedItemReminder !== this.dataModel.getSelectedItem()) {
                     this.selectedItemChanged();
                 }
+                this.populatePopup();
+                this.updateSelectedValueDisplay();
             };
             JComboBox.prototype.intervalRemoved = function (e) {
                 this.contentsChanged(e);
@@ -43830,7 +45240,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_91 = arguments;
+                        var __args_101 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -43940,8 +45350,8 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_92 = arguments;
-                        var text_4 = null;
+                        var __args_102 = arguments;
+                        var text_6 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -43988,8 +45398,8 @@ var javax;
                         }
                         _this.mnemonic = ('\u0000').charCodeAt(0);
                         _this.mnemonicIndex = -1;
-                        if (text_4 == null) {
-                            text_4 = "";
+                        if (text_6 == null) {
+                            text_6 = "";
                         }
                         _this.defaultIcon = null;
                         _this.disabledIcon = null;
@@ -43999,7 +45409,7 @@ var javax;
                         _this.horizontalTextPosition = javax.swing.SwingConstants.TRAILING;
                         _this.iconTextGap = 4;
                         _this.labelFor = null;
-                        _this.setText(text_4);
+                        _this.setText(text_6);
                         _this.setIcon(icon_2);
                         _this.setHorizontalAlignment(horizontalAlignment_2);
                     }
@@ -44049,7 +45459,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_93 = arguments;
+                        var __args_103 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -44159,8 +45569,8 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_94 = arguments;
-                        var text_5 = null;
+                        var __args_104 = arguments;
+                        var text_7 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
                         _this = _super.call(this) || this;
@@ -44208,8 +45618,8 @@ var javax;
                         }
                         _this.mnemonic = ('\u0000').charCodeAt(0);
                         _this.mnemonicIndex = -1;
-                        if (text_5 == null) {
-                            text_5 = "";
+                        if (text_7 == null) {
+                            text_7 = "";
                         }
                         _this.defaultIcon = null;
                         _this.disabledIcon = null;
@@ -44219,7 +45629,7 @@ var javax;
                         _this.horizontalTextPosition = javax.swing.SwingConstants.TRAILING;
                         _this.iconTextGap = 4;
                         _this.labelFor = null;
-                        _this.setText(text_5);
+                        _this.setText(text_7);
                         _this.setIcon(icon_4);
                         _this.setHorizontalAlignment(horizontalAlignment_4);
                     }
@@ -44269,8 +45679,8 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_95 = arguments;
-                        var text_6 = "";
+                        var __args_105 = arguments;
+                        var text_8 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -44318,8 +45728,8 @@ var javax;
                         }
                         _this.mnemonic = ('\u0000').charCodeAt(0);
                         _this.mnemonicIndex = -1;
-                        if (text_6 == null) {
-                            text_6 = "";
+                        if (text_8 == null) {
+                            text_8 = "";
                         }
                         _this.defaultIcon = null;
                         _this.disabledIcon = null;
@@ -44329,7 +45739,7 @@ var javax;
                         _this.horizontalTextPosition = javax.swing.SwingConstants.TRAILING;
                         _this.iconTextGap = 4;
                         _this.labelFor = null;
-                        _this.setText(text_6);
+                        _this.setText(text_8);
                         _this.setIcon(icon_5);
                         _this.setHorizontalAlignment(horizontalAlignment_5);
                     }
@@ -44491,8 +45901,8 @@ var javax;
                     this.mnemonicIndex = -1;
                 }
                 else {
-                    var text_7 = this.getText();
-                    var textLength = (text_7 == null) ? 0 : text_7.length;
+                    var text_9 = this.getText();
+                    var textLength = (text_9 == null) ? 0 : text_9.length;
                     if (index < -1 || index >= textLength) {
                         throw new java.lang.IllegalArgumentException("index == " + index);
                     }
@@ -44725,8 +46135,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_96 = arguments;
-                            var preciseWheelRotation_1 = __args_96[12];
+                            var __args_106 = arguments;
+                            var preciseWheelRotation_1 = __args_106[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -44766,12 +46176,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_97 = arguments;
+                            var __args_107 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_98 = arguments;
-                                var preciseWheelRotation_2 = __args_98[12];
+                                var __args_108 = arguments;
+                                var preciseWheelRotation_2 = __args_108[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -45939,6 +47349,100 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        var JDialog = /** @class */ (function (_super) {
+            __extends(JDialog, _super);
+            function JDialog(owner, title, modal) {
+                var _this = this;
+                if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'string') || title === null) && ((typeof modal === 'boolean') || modal === null)) {
+                    var __args = arguments;
+                    _this = _super.call(this, owner, title, modal) || this;
+                    if (_this.rootPane === undefined) {
+                        _this.rootPane = null;
+                    }
+                    _this.setRootPane(_this.createRootPane());
+                }
+                else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'string') || title === null) && modal === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_109 = arguments;
+                        var modal_4 = false;
+                        _this = _super.call(this, owner, title, modal_4) || this;
+                        if (_this.rootPane === undefined) {
+                            _this.rootPane = null;
+                        }
+                        _this.setRootPane(_this.createRootPane());
+                    }
+                    if (_this.rootPane === undefined) {
+                        _this.rootPane = null;
+                    }
+                }
+                else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'boolean') || title === null) && modal === undefined) {
+                    var __args = arguments;
+                    var modal_5 = __args[1];
+                    {
+                        var __args_110 = arguments;
+                        var title_4 = "";
+                        _this = _super.call(this, owner, title_4, modal_5) || this;
+                        if (_this.rootPane === undefined) {
+                            _this.rootPane = null;
+                        }
+                        _this.setRootPane(_this.createRootPane());
+                    }
+                    if (_this.rootPane === undefined) {
+                        _this.rootPane = null;
+                    }
+                }
+                else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && title === undefined && modal === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_111 = arguments;
+                        var title_5 = "";
+                        var modal_6 = false;
+                        _this = _super.call(this, owner, title_5, modal_6) || this;
+                        if (_this.rootPane === undefined) {
+                            _this.rootPane = null;
+                        }
+                        _this.setRootPane(_this.createRootPane());
+                    }
+                    if (_this.rootPane === undefined) {
+                        _this.rootPane = null;
+                    }
+                }
+                else
+                    throw new Error('invalid overload');
+                return _this;
+            }
+            JDialog.prototype.createRootPane = function () {
+                return new javax.swing.JRootPane();
+            };
+            JDialog.prototype.setRootPane = function (root) {
+                if (this.rootPane != null) {
+                    this.remove$java_awt_Component(this.rootPane);
+                }
+                this.rootPane = root;
+                if (this.rootPane != null) {
+                    this.add$java_awt_Component(this.rootPane);
+                }
+            };
+            JDialog.prototype.getRootPane = function () {
+                return this.rootPane;
+            };
+            JDialog.prototype.getContentPane = function () {
+                return this.getRootPane().getContentPane();
+            };
+            JDialog.prototype.setContentPane = function (contentPane) {
+                this.getRootPane().setContentPane(contentPane);
+            };
+            return JDialog;
+        }(java.awt.Dialog));
+        swing.JDialog = JDialog;
+        JDialog["__class"] = "javax.swing.JDialog";
+        JDialog["__interfaces"] = ["java.awt.HTMLComponent"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var JTextArea = /** @class */ (function (_super) {
             __extends(JTextArea, _super);
             function JTextArea(doc, text, rows, columns) {
@@ -45946,6 +47450,9 @@ var javax;
                 if (((doc != null) || doc === null) && ((typeof text === 'string') || text === null) && ((typeof rows === 'number') || rows === null) && ((typeof columns === 'number') || columns === null)) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
                     if (_this.rows === undefined) {
                         _this.rows = 0;
                     }
@@ -45978,13 +47485,16 @@ var javax;
                 }
                 else if (((typeof doc === 'string') || doc === null) && ((typeof text === 'number') || text === null) && ((typeof rows === 'number') || rows === null) && columns === undefined) {
                     var __args = arguments;
-                    var text_8 = __args[0];
-                    var rows_3 = __args[1];
-                    var columns_2 = __args[2];
+                    var text_10 = __args[0];
+                    var rows_4 = __args[1];
+                    var columns_5 = __args[2];
                     {
-                        var __args_99 = arguments;
+                        var __args_112 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
                         if (_this.rows === undefined) {
                             _this.rows = 0;
                         }
@@ -46003,17 +47513,20 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_3;
-                        _this.columns = columns_2;
-                        if (text_8 != null) {
-                            _this.setText(text_8);
+                        _this.rows = rows_4;
+                        _this.columns = columns_5;
+                        if (text_10 != null) {
+                            _this.setText(text_10);
                         }
-                        if (rows_3 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_3);
+                        if (rows_4 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_4);
                         }
-                        if (columns_2 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_2);
+                        if (columns_5 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_5);
                         }
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
                     }
                     if (_this.rows === undefined) {
                         _this.rows = 0;
@@ -46036,13 +47549,16 @@ var javax;
                 }
                 else if (((typeof doc === 'number') || doc === null) && ((typeof text === 'number') || text === null) && rows === undefined && columns === undefined) {
                     var __args = arguments;
-                    var rows_4 = __args[0];
-                    var columns_3 = __args[1];
+                    var rows_5 = __args[0];
+                    var columns_6 = __args[1];
                     {
-                        var __args_100 = arguments;
+                        var __args_113 = arguments;
                         var doc_2 = null;
-                        var text_9 = null;
+                        var text_11 = null;
                         _this = _super.call(this) || this;
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
                         if (_this.rows === undefined) {
                             _this.rows = 0;
                         }
@@ -46061,17 +47577,20 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_4;
-                        _this.columns = columns_3;
-                        if (text_9 != null) {
-                            _this.setText(text_9);
+                        _this.rows = rows_5;
+                        _this.columns = columns_6;
+                        if (text_11 != null) {
+                            _this.setText(text_11);
                         }
-                        if (rows_4 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_4);
+                        if (rows_5 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_5);
                         }
-                        if (columns_3 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_3);
+                        if (columns_6 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_6);
                         }
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
                     }
                     if (_this.rows === undefined) {
                         _this.rows = 0;
@@ -46094,13 +47613,16 @@ var javax;
                 }
                 else if (((typeof doc === 'string') || doc === null) && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
-                    var text_10 = __args[0];
+                    var text_12 = __args[0];
                     {
-                        var __args_101 = arguments;
+                        var __args_114 = arguments;
                         var doc_3 = null;
-                        var rows_5 = 0;
-                        var columns_4 = 0;
+                        var rows_6 = 0;
+                        var columns_7 = 0;
                         _this = _super.call(this) || this;
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
                         if (_this.rows === undefined) {
                             _this.rows = 0;
                         }
@@ -46119,17 +47641,20 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_5;
-                        _this.columns = columns_4;
-                        if (text_10 != null) {
-                            _this.setText(text_10);
+                        _this.rows = rows_6;
+                        _this.columns = columns_7;
+                        if (text_12 != null) {
+                            _this.setText(text_12);
                         }
-                        if (rows_5 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_5);
+                        if (rows_6 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_6);
                         }
-                        if (columns_4 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_4);
+                        if (columns_7 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_7);
                         }
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
                     }
                     if (_this.rows === undefined) {
                         _this.rows = 0;
@@ -46153,12 +47678,15 @@ var javax;
                 else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_102 = arguments;
+                        var __args_115 = arguments;
                         var doc_4 = null;
-                        var text_11 = null;
-                        var rows_6 = 0;
-                        var columns_5 = 0;
+                        var text_13 = null;
+                        var rows_7 = 0;
+                        var columns_8 = 0;
                         _this = _super.call(this) || this;
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
                         if (_this.rows === undefined) {
                             _this.rows = 0;
                         }
@@ -46177,17 +47705,20 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_6;
-                        _this.columns = columns_5;
-                        if (text_11 != null) {
-                            _this.setText(text_11);
+                        _this.rows = rows_7;
+                        _this.columns = columns_8;
+                        if (text_13 != null) {
+                            _this.setText(text_13);
                         }
-                        if (rows_6 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_6);
+                        if (rows_7 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_7);
                         }
-                        if (columns_5 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_5);
+                        if (columns_8 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_8);
                         }
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
                     }
                     if (_this.rows === undefined) {
                         _this.rows = 0;
@@ -46237,9 +47768,38 @@ var javax;
                 this.getHTMLElement().innerText = this.text;
                 this.getHTMLElement().contentEditable = /* valueOf */ String(this.isEditable()).toString();
                 this.getHTMLElement().style.backgroundColor = java.awt.Color.WHITE_$LI$().toHTML();
-                this.getHTMLElement().style.font = java.awt.Font.decode(null).toHTML();
-                this.getHTMLElement().style.minHeight = this.rows * 25 + "px";
-                this.getHTMLElement().style.minWidth = this.columns * 11 + "px";
+                var font = java.awt.Font.decode(null);
+                this.getHTMLElement().style.font = font.toHTML();
+                var metrics = new java.awt.FontMetrics(font);
+                if (this.rows > 0) {
+                    this.getHTMLElement().style.minHeight = (this.rows * metrics.getHeight()) + "px";
+                }
+                if (this.columns > 0) {
+                    var sb = new java.lang.StringBuilder();
+                    for (var i = 0; i < this.columns; i++) {
+                        {
+                            sb.append("m");
+                        }
+                        ;
+                    }
+                    this.getHTMLElement().style.minWidth = metrics.stringWidth(sb.toString()) + "px";
+                }
+                this.initActionListeners();
+            };
+            /*private*/ JTextArea.prototype.initActionListeners = function () {
+                var _this = this;
+                if (this.actionListener != null) {
+                    this.htmlElement.onkeydown = function (e) {
+                        var ke = e;
+                        if (ke.keyCode === 13) {
+                            _this.actionListener.actionPerformed(new java.awt.event.ActionEvent(_this, 0, null));
+                        }
+                        return ke;
+                    };
+                }
+            };
+            JTextArea.prototype.addActionListener = function (l) {
+                this.actionListener = l;
             };
             JTextArea.prototype.getUIClassID = function () {
                 return JTextArea.uiClassID;
@@ -46323,6 +47883,43 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        var JEditorPane = /** @class */ (function (_super) {
+            __extends(JEditorPane, _super);
+            function JEditorPane() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JEditorPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jeditorpane";
+                this.htmlElement.style.border = "1px solid #C0C0C0";
+                this.htmlElement.style.overflow = "auto";
+            };
+            /**
+             *
+             * @param {string} t
+             */
+            JEditorPane.prototype.setText = function (t) {
+                _super.prototype.setText.call(this, t);
+                if (this.htmlElement != null) {
+                    this.htmlElement.innerHTML = t;
+                }
+            };
+            return JEditorPane;
+        }(javax.swing.text.JTextComponent));
+        swing.JEditorPane = JEditorPane;
+        JEditorPane["__class"] = "javax.swing.JEditorPane";
+        JEditorPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var JTextField = /** @class */ (function (_super) {
             __extends(JTextField, _super);
             function JTextField(doc, text, columns) {
@@ -46356,10 +47953,10 @@ var javax;
                 }
                 else if (((typeof doc === 'string') || doc === null) && ((typeof text === 'number') || text === null) && columns === undefined) {
                     var __args = arguments;
-                    var text_12 = __args[0];
-                    var columns_6 = __args[1];
+                    var text_14 = __args[0];
+                    var columns_9 = __args[1];
                     {
-                        var __args_103 = arguments;
+                        var __args_116 = arguments;
                         var doc_5 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -46378,12 +47975,12 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_6 < 0) {
+                        if (columns_9 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_6;
-                        if (text_12 != null) {
-                            _this.setText(text_12);
+                        _this.columns = columns_9;
+                        if (text_14 != null) {
+                            _this.setText(text_14);
                         }
                     }
                     if (_this.action === undefined) {
@@ -46405,11 +48002,11 @@ var javax;
                 }
                 else if (((typeof doc === 'string') || doc === null) && text === undefined && columns === undefined) {
                     var __args = arguments;
-                    var text_13 = __args[0];
+                    var text_15 = __args[0];
                     {
-                        var __args_104 = arguments;
+                        var __args_117 = arguments;
                         var doc_6 = null;
-                        var columns_7 = 0;
+                        var columns_10 = 0;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
                             _this.action = null;
@@ -46427,12 +48024,12 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_7 < 0) {
+                        if (columns_10 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_7;
-                        if (text_13 != null) {
-                            _this.setText(text_13);
+                        _this.columns = columns_10;
+                        if (text_15 != null) {
+                            _this.setText(text_15);
                         }
                     }
                     if (_this.action === undefined) {
@@ -46454,11 +48051,11 @@ var javax;
                 }
                 else if (((typeof doc === 'number') || doc === null) && text === undefined && columns === undefined) {
                     var __args = arguments;
-                    var columns_8 = __args[0];
+                    var columns_11 = __args[0];
                     {
-                        var __args_105 = arguments;
+                        var __args_118 = arguments;
                         var doc_7 = null;
-                        var text_14 = null;
+                        var text_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
                             _this.action = null;
@@ -46476,12 +48073,12 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_8 < 0) {
+                        if (columns_11 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_8;
-                        if (text_14 != null) {
-                            _this.setText(text_14);
+                        _this.columns = columns_11;
+                        if (text_16 != null) {
+                            _this.setText(text_16);
                         }
                     }
                     if (_this.action === undefined) {
@@ -46504,10 +48101,10 @@ var javax;
                 else if (doc === undefined && text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_106 = arguments;
+                        var __args_119 = arguments;
                         var doc_8 = null;
-                        var text_15 = null;
-                        var columns_9 = 0;
+                        var text_17 = null;
+                        var columns_12 = 0;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
                             _this.action = null;
@@ -46525,12 +48122,12 @@ var javax;
                             _this.command = null;
                         }
                         _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_9 < 0) {
+                        if (columns_12 < 0) {
                             throw new java.lang.IllegalArgumentException("columns less than zero.");
                         }
-                        _this.columns = columns_9;
-                        if (text_15 != null) {
-                            _this.setText(text_15);
+                        _this.columns = columns_12;
+                        if (text_17 != null) {
+                            _this.setText(text_17);
                         }
                     }
                     if (_this.action === undefined) {
@@ -46983,7 +48580,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_107 = arguments;
+                        var __args_120 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -46998,13 +48595,13 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_108 = arguments;
-                        var text_16 = null;
+                        var __args_121 = arguments;
+                        var text_18 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
                         _this.setModel(new JToggleButton.ToggleButtonModel());
                         _this.model.setSelected(selected_2);
-                        _this.init(text_16, icon_6);
+                        _this.init(text_18, icon_6);
                     }
                     _this.buttonCreated = false;
                 }
@@ -47012,7 +48609,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_109 = arguments;
+                        var __args_122 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -47026,21 +48623,21 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_110 = arguments;
-                        var text_17 = null;
+                        var __args_123 = arguments;
+                        var text_19 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
                         _this.setModel(new JToggleButton.ToggleButtonModel());
                         _this.model.setSelected(selected_4);
-                        _this.init(text_17, icon_8);
+                        _this.init(text_19, icon_8);
                     }
                     _this.buttonCreated = false;
                 }
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_111 = arguments;
+                        var __args_124 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -47055,17 +48652,17 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_112 = arguments;
+                        var __args_125 = arguments;
                         {
-                            var __args_113 = arguments;
-                            var text_18 = null;
+                            var __args_126 = arguments;
+                            var text_20 = null;
                             var icon_10 = null;
                             var selected_6 = false;
                             _this = _super.call(this) || this;
                             _this.buttonCreated = false;
                             _this.setModel(new JToggleButton.ToggleButtonModel());
                             _this.model.setSelected(selected_6);
-                            _this.init(text_18, icon_10);
+                            _this.init(text_20, icon_10);
                         }
                         _this.buttonCreated = false;
                     }
@@ -47077,15 +48674,15 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_114 = arguments;
-                        var text_19 = null;
+                        var __args_127 = arguments;
+                        var text_21 = null;
                         var icon_11 = null;
                         var selected_7 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
                         _this.setModel(new JToggleButton.ToggleButtonModel());
                         _this.model.setSelected(selected_7);
-                        _this.init(text_19, icon_11);
+                        _this.init(text_21, icon_11);
                     }
                     _this.buttonCreated = false;
                 }
@@ -47230,19 +48827,19 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_115 = arguments;
-                        var text_20 = null;
+                        var __args_128 = arguments;
+                        var text_22 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
                         _this.setModel(new javax.swing.DefaultButtonModel());
-                        _this.init(text_20, icon_12);
+                        _this.init(text_22, icon_12);
                     }
                     _this.isMouseDragged = false;
                 }
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_116 = arguments;
+                        var __args_129 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -47255,15 +48852,15 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_117 = arguments;
+                        var __args_130 = arguments;
                         {
-                            var __args_118 = arguments;
-                            var text_21 = null;
+                            var __args_131 = arguments;
+                            var text_23 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
                             _this.isMouseDragged = false;
                             _this.setModel(new javax.swing.DefaultButtonModel());
-                            _this.init(text_21, icon_14);
+                            _this.init(text_23, icon_14);
                         }
                         _this.isMouseDragged = false;
                     }
@@ -47275,13 +48872,13 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_119 = arguments;
-                        var text_22 = null;
+                        var __args_132 = arguments;
+                        var text_24 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
                         _this.setModel(new javax.swing.DefaultButtonModel());
-                        _this.init(text_22, icon_15);
+                        _this.init(text_24, icon_15);
                     }
                     _this.isMouseDragged = false;
                 }
@@ -47604,7 +49201,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_120 = arguments;
+                        var __args_133 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -47707,6 +49304,129 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        var table;
+        (function (table_1) {
+            var DefaultTableCellRenderer = /** @class */ (function (_super) {
+                __extends(DefaultTableCellRenderer, _super);
+                function DefaultTableCellRenderer() {
+                    return _super.call(this) || this;
+                }
+                /**
+                 *
+                 * @param {javax.swing.JTable} table
+                 * @param {*} value
+                 * @param {boolean} isSelected
+                 * @param {boolean} hasFocus
+                 * @param {number} row
+                 * @param {number} column
+                 * @return {java.awt.Component}
+                 */
+                DefaultTableCellRenderer.prototype.getTableCellRendererComponent = function (table, value, isSelected, hasFocus, row, column) {
+                    this.setText((value == null) ? "" : value.toString());
+                    return this;
+                };
+                return DefaultTableCellRenderer;
+            }(javax.swing.JLabel));
+            table_1.DefaultTableCellRenderer = DefaultTableCellRenderer;
+            DefaultTableCellRenderer["__class"] = "javax.swing.table.DefaultTableCellRenderer";
+            DefaultTableCellRenderer["__interfaces"] = ["java.awt.HTMLComponent", "javax.swing.table.TableCellRenderer", "javax.swing.SwingConstants", "java.io.Serializable"];
+        })(table = swing.table || (swing.table = {}));
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var DefaultListCellRenderer = /** @class */ (function (_super) {
+            __extends(DefaultListCellRenderer, _super);
+            function DefaultListCellRenderer() {
+                var _this = _super.call(this) || this;
+                _this.setOpaque(true);
+                return _this;
+            }
+            /**
+             *
+             * @param {javax.swing.JList} list
+             * @param {*} value
+             * @param {number} index
+             * @param {boolean} isSelected
+             * @param {boolean} cellHasFocus
+             * @return {java.awt.Component}
+             */
+            DefaultListCellRenderer.prototype.getListCellRendererComponent = function (list, value, index, isSelected, cellHasFocus) {
+                this.setText((value == null) ? "" : value.toString());
+                if (isSelected) {
+                    this.setBackground(new java.awt.Color(0, 120, 215));
+                    this.setForeground(java.awt.Color.white_$LI$());
+                }
+                else {
+                    this.setBackground(java.awt.Color.white_$LI$());
+                    this.setForeground(java.awt.Color.black_$LI$());
+                }
+                this.setEnabled(list == null ? true : list.isEnabled());
+                this.setFont(list == null ? null : list.getFont());
+                return this;
+            };
+            return DefaultListCellRenderer;
+        }(javax.swing.JLabel));
+        swing.DefaultListCellRenderer = DefaultListCellRenderer;
+        DefaultListCellRenderer["__class"] = "javax.swing.DefaultListCellRenderer";
+        DefaultListCellRenderer["__interfaces"] = ["javax.swing.ListCellRenderer", "java.awt.HTMLComponent", "javax.swing.SwingConstants", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
+        var JTextPane = /** @class */ (function (_super) {
+            __extends(JTextPane, _super);
+            function JTextPane() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JTextPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-jtextpane";
+            };
+            JTextPane.prototype.setPage = function (page) {
+                var _this = this;
+                if (page == null) {
+                    throw new java.lang.NullPointerException("page must be non-null.");
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", page.toString(), true);
+                xhr.onreadystatechange = (function (xhr) {
+                    return function (e) {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status >= 200 && xhr.status < 300) {
+                                _this.setText(xhr.responseText);
+                            }
+                            else {
+                                _this.setText("<html><body><h1>Error loading page: " + xhr.statusText + "</h1></body></html>");
+                            }
+                        }
+                        return null;
+                    };
+                })(xhr);
+                xhr.onerror = function (e) {
+                    _this.setText("<html><body><h1>Network error occurred.</h1></body></html>");
+                    return null;
+                };
+                xhr.send();
+            };
+            return JTextPane;
+        }(javax.swing.JEditorPane));
+        swing.JTextPane = JTextPane;
+        JTextPane["__class"] = "javax.swing.JTextPane";
+        JTextPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var JFormattedTextField = /** @class */ (function (_super) {
             __extends(JFormattedTextField, _super);
             function JFormattedTextField(format) {
@@ -47765,7 +49485,7 @@ var javax;
                     var __args = arguments;
                     var selected_8 = __args[1];
                     {
-                        var __args_121 = arguments;
+                        var __args_134 = arguments;
                         var icon_17 = null;
                         _this = _super.call(this, text, icon_17, selected_8) || this;
                         if (_this.name === undefined) {
@@ -47794,9 +49514,9 @@ var javax;
                     var icon_18 = __args[0];
                     var selected_9 = __args[1];
                     {
-                        var __args_122 = arguments;
-                        var text_23 = null;
-                        _this = _super.call(this, text_23, icon_18, selected_9) || this;
+                        var __args_135 = arguments;
+                        var text_25 = null;
+                        _this = _super.call(this, text_25, icon_18, selected_9) || this;
                         if (_this.name === undefined) {
                             _this.name = null;
                         }
@@ -47821,7 +49541,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_123 = arguments;
+                        var __args_136 = arguments;
                         var icon_19 = null;
                         var selected_10 = false;
                         _this = _super.call(this, text, icon_19, selected_10) || this;
@@ -47850,10 +49570,10 @@ var javax;
                     var __args = arguments;
                     var icon_20 = __args[0];
                     {
-                        var __args_124 = arguments;
-                        var text_24 = null;
+                        var __args_137 = arguments;
+                        var text_26 = null;
                         var selected_11 = false;
-                        _this = _super.call(this, text_24, icon_20, selected_11) || this;
+                        _this = _super.call(this, text_26, icon_20, selected_11) || this;
                         if (_this.name === undefined) {
                             _this.name = null;
                         }
@@ -47878,11 +49598,11 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_125 = arguments;
-                        var text_25 = null;
+                        var __args_138 = arguments;
+                        var text_27 = null;
                         var icon_21 = null;
                         var selected_12 = false;
-                        _this = _super.call(this, text_25, icon_21, selected_12) || this;
+                        _this = _super.call(this, text_27, icon_21, selected_12) || this;
                         if (_this.name === undefined) {
                             _this.name = null;
                         }
@@ -48004,7 +49724,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_126 = arguments;
+                        var __args_139 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -48045,7 +49765,7 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_127 = arguments;
+                        var __args_140 = arguments;
                         var label_2 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
@@ -48232,7 +49952,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_128 = arguments;
+                        var __args_141 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -48268,9 +49988,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_129 = arguments;
+                        var __args_142 = arguments;
                         {
-                            var __args_130 = arguments;
+                            var __args_143 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -48306,7 +50026,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_131 = arguments;
+                        var __args_144 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -49057,7 +50777,7 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_132 = arguments;
+                        var __args_145 = arguments;
                         var label_3 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {

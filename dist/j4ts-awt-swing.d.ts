@@ -7653,6 +7653,19 @@ declare namespace java.awt {
         removeItemListener(l: java.awt.event.ItemListener): any;
     }
 }
+declare namespace java.awt {
+    class AWTEventMulticaster implements java.awt.event.ActionListener {
+        a: java.util.EventListener;
+        b: java.util.EventListener;
+        constructor(a: java.util.EventListener, b: java.util.EventListener);
+        actionPerformed(e: java.awt.event.ActionEvent): void;
+        static add(a: java.awt.event.ActionListener, b: java.awt.event.ActionListener): java.awt.event.ActionListener;
+        static remove(l: java.awt.event.ActionListener, oldl: java.awt.event.ActionListener): java.awt.event.ActionListener;
+        static addInternal(a: java.util.EventListener, b: java.util.EventListener): java.util.EventListener;
+        static removeInternal(l: java.util.EventListener, oldl: java.util.EventListener): java.util.EventListener;
+        remove(oldl: java.util.EventListener): java.util.EventListener;
+    }
+}
 declare namespace java.applet {
     class AudioClip {
         loop(): void;
@@ -8411,7 +8424,8 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing.table {
-    class TableCellRenderer {
+    interface TableCellRenderer {
+        getTableCellRendererComponent(table: javax.swing.JTable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number): java.awt.Component;
     }
 }
 declare namespace javax.swing.table {
@@ -8702,12 +8716,59 @@ declare namespace javax.swing.table {
 }
 declare namespace javax.swing.table {
     class TableColumn implements java.io.Serializable {
+        headerValue: any;
+        modelIndex: number;
+        cellRenderer: javax.swing.table.TableCellRenderer;
+        constructor(modelIndex: number);
+        getModelIndex(): number;
+        setHeaderValue(headerValue: any): void;
+        getHeaderValue(): any;
         setCellRenderer(cellRenderer: javax.swing.table.TableCellRenderer): void;
-        constructor();
+        getCellRenderer(): javax.swing.table.TableCellRenderer;
+        cellEditor: javax.swing.table.TableCellEditor;
+        setCellEditor(cellEditor: javax.swing.table.TableCellEditor): void;
+        getCellEditor(): javax.swing.table.TableCellEditor;
     }
 }
 declare namespace javax.swing.table {
-    class TableCellEditor {
+    interface TableCellEditor {
+        getTableCellEditorComponent(table: javax.swing.JTable, value: any, isSelected: boolean, row: number, column: number): java.awt.Component;
+        getCellEditorValue(): any;
+    }
+}
+declare namespace javax.swing.table {
+    interface TableColumnModel {
+        addColumn(aColumn: javax.swing.table.TableColumn): any;
+        removeColumn(aColumn: javax.swing.table.TableColumn): any;
+        getColumn(columnIndex: number): javax.swing.table.TableColumn;
+        getColumnCount(): number;
+    }
+}
+declare namespace javax.swing.table {
+    class DefaultTableColumnModel implements javax.swing.table.TableColumnModel {
+        tableColumns: java.util.List<javax.swing.table.TableColumn>;
+        constructor();
+        /**
+         *
+         * @param {javax.swing.table.TableColumn} aColumn
+         */
+        addColumn(aColumn: javax.swing.table.TableColumn): void;
+        /**
+         *
+         * @param {javax.swing.table.TableColumn} aColumn
+         */
+        removeColumn(aColumn: javax.swing.table.TableColumn): void;
+        /**
+         *
+         * @param {number} columnIndex
+         * @return {javax.swing.table.TableColumn}
+         */
+        getColumn(columnIndex: number): javax.swing.table.TableColumn;
+        /**
+         *
+         * @return {number}
+         */
+        getColumnCount(): number;
     }
 }
 declare namespace javax.swing {
@@ -10632,7 +10693,7 @@ declare namespace javax.swing {
         maximum: number;
         stepSize: number;
         listeners: javax.swing.event.ChangeListener[];
-        constructor(value: number, minimum: number, maximum: number, stepSize: number);
+        constructor(value?: any, minimum?: any, maximum?: any, stepSize?: any);
         /**
          *
          * @return {*}
@@ -10666,6 +10727,9 @@ declare namespace javax.swing {
         fireStateChanged(oldValue: any, newValue: any): void;
         setMinimum(minimum: number): void;
         setMaximum(maximum: number): void;
+        getStepSize(): number;
+        getMinimum(): number;
+        getMaximum(): number;
     }
 }
 declare namespace javax.swing {
@@ -10899,6 +10963,14 @@ declare namespace javax.swing {
         getPreviousValue(): any;
         addChangeListener(listener: javax.swing.event.ChangeListener): any;
         removeChangeListener(listener: javax.swing.event.ChangeListener): any;
+    }
+}
+declare namespace javax.swing {
+    class DefaultCellEditor implements javax.swing.table.TableCellEditor {
+        editorComponent: javax.swing.JComponent;
+        constructor(textField?: any);
+        getTableCellEditorComponent(table: javax.swing.JTable, value: any, isSelected: boolean, row: number, column: number): java.awt.Component;
+        getCellEditorValue(): any;
     }
 }
 declare namespace javax.swing {
@@ -14580,17 +14652,6 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
-    class ScrollPane extends java.awt.Component {
-        constructor(view?: any);
-        add(view: java.awt.Component): void;
-        /**
-         *
-         */
-        createHTML(): void;
-        doLayout(): void;
-    }
-}
-declare namespace java.awt {
     class Choice extends java.awt.Component implements java.awt.ItemSelectable {
         pItems: java.util.Vector<string>;
         selectedIndex: number;
@@ -14674,6 +14735,8 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     class TextField extends java.awt.Component {
+        text: string;
+        columns: number;
         actionListener: java.awt.event.ActionListener;
         constructor(text?: any, columns?: any);
         /**
@@ -14733,13 +14796,17 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
-    class List extends java.awt.Component {
-        constructor(rows?: number, multipleMode?: boolean);
+    class List extends java.awt.Component implements java.awt.ItemSelectable {
+        items: java.util.Vector<string>;
+        rows: number;
+        multipleMode: boolean;
+        itemListener: java.awt.event.ItemListener;
+        constructor(rows?: any, multipleMode?: any);
         /**
          *
-         * @return {HTMLDivElement}
+         * @return {HTMLSelectElement}
          */
-        getHTMLElement(): HTMLDivElement;
+        getHTMLElement(): HTMLSelectElement;
         /**
          *
          */
@@ -14749,13 +14816,18 @@ declare namespace java.awt {
          */
         initHTML(): void;
         addItemListener(l: java.awt.event.ItemListener): void;
+        removeItemListener(l: java.awt.event.ItemListener): void;
         getSelectedIndex(): number;
+        getSelectedObjects(): any[];
         add$java_lang_String(item: string): void;
         add$java_lang_String$int(item: string, index: number): void;
         add(item?: any, index?: any): any;
-        remove(position: number): void;
+        remove$java_lang_String(item: string): void;
+        remove(item?: any): any;
+        remove$int(position: number): void;
         removeAll(): void;
         replaceItem(newValue: string, index: number): void;
+        rebuildOptions(): void;
         makeVisible(index: number): void;
         getItemCount(): number;
         getItem(index: number): string;
@@ -15130,11 +15202,6 @@ declare namespace sun.awt.geom {
         getReversedCurve(): sun.awt.geom.Curve;
         getSegment(coords: number[]): number;
         controlPointString(): string;
-    }
-}
-declare namespace javax.swing {
-    class DefaultCellEditor extends javax.swing.table.TableCellEditor {
-        constructor(textField?: any);
     }
 }
 declare namespace javax.swing {
@@ -16540,6 +16607,19 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    class ScrollPane extends java.awt.Container {
+        view: java.awt.Component;
+        constructor(view?: any);
+        add(component?: any, constraints?: any, index?: any): any;
+        add$java_awt_Component$java_lang_Object(comp: java.awt.Component, constraints: any): void;
+        /**
+         *
+         */
+        createHTML(): void;
+        doLayout(): void;
+    }
+}
+declare namespace java.awt {
     class Window extends java.awt.Container {
         static loaded: boolean;
         getElement(): HTMLDivElement;
@@ -17472,7 +17552,23 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     class Dialog extends java.awt.Window {
-        constructor(frame: any, bool: boolean);
+        title: string;
+        modal: boolean;
+        titleBar: HTMLDivElement;
+        contentArea: HTMLDivElement;
+        modalOverlay: HTMLElement;
+        constructor(owner?: any, title?: any, modal?: any);
+        /**
+         *
+         */
+        createHTML(): void;
+        add(component?: any, constraints?: any, index?: any): any;
+        add$java_awt_Component$java_lang_Object(comp: java.awt.Component, constraints: any): void;
+        /**
+         *
+         * @param {boolean} b
+         */
+        setVisible(b: boolean): void;
         dispose(): void;
         setTitle(title: string): void;
     }
@@ -17493,6 +17589,11 @@ declare namespace javax.swing {
          *
          */
         createHTML(): void;
+        /**
+         *
+         */
+        initHTML(): void;
+        refreshItems(): void;
         /**
          * Indicates a vertical layout of cells, in a single column; the default layout.
          *
@@ -18473,17 +18574,35 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     class JTable extends javax.swing.JComponent {
+        dataModel: javax.swing.table.TableModel;
+        columnModel: javax.swing.table.TableColumnModel;
+        selectionModel: javax.swing.ListSelectionModel;
+        tableModelListener: javax.swing.event.TableModelListener;
+        defaultRenderer: javax.swing.table.TableCellRenderer;
+        defaultCellEditor: javax.swing.table.TableCellEditor;
+        tableHeader: javax.swing.table.JTableHeader;
+        tableElement: HTMLTableElement;
+        tableBody: HTMLTableSectionElement;
+        editingRow: number;
+        editingColumn: number;
+        constructor(dm: javax.swing.table.TableModel);
         /**
          *
          */
         createHTML(): void;
         setModel(dataModel: javax.swing.table.TableModel): void;
         getModel(): javax.swing.table.TableModel;
-        getSelectionModel(): javax.swing.SingleSelectionModel;
+        tableChanged(e: javax.swing.event.TableModelEvent): void;
+        refreshTable(): void;
+        editCellAt(row: number, column: number): void;
+        stopEditing(): void;
+        getSelectionModel(): javax.swing.ListSelectionModel;
         getColumnCount(): number;
         getColumn(identifier: any): javax.swing.table.TableColumn;
-        getTableHeader(): any;
-        getColumnModel(): any;
+        getTableHeader(): javax.swing.table.JTableHeader;
+        getColumnModel(): javax.swing.table.TableColumnModel;
+        createDefaultColumnsFromModel(): void;
+        addColumn(aColumn: javax.swing.table.TableColumn): void;
         setColumnSelectionAllowed(columnSelectionAllowed: boolean): void;
         setRowSelectionAllowed(rowSelectionAllowed: boolean): void;
         getRowCount(): number;
@@ -18499,7 +18618,23 @@ declare namespace javax.swing {
         getAutoResizeMode(): number;
         setGridColor(gridColor: java.awt.Color): void;
         setIntercellSpacing(intercellSpacing: java.awt.Dimension): void;
-        constructor();
+    }
+    namespace JTable {
+        class TableModelHandler implements javax.swing.event.TableModelListener {
+            __parent: any;
+            tableChanged(e: javax.swing.event.TableModelEvent): void;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace javax.swing.table {
+    class JTableHeader extends javax.swing.JComponent {
+        columnModel: javax.swing.table.TableColumnModel;
+        constructor(columnModel: javax.swing.table.TableColumnModel);
+        /**
+         *
+         */
+        createHTML(): void;
     }
 }
 declare namespace javax.swing {
@@ -18664,11 +18799,7 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     class JSlider extends javax.swing.JComponent implements javax.swing.SwingConstants {
-        /**
-         *
-         * @return {HTMLInputElement}
-         */
-        getHTMLElement(): HTMLInputElement;
+        getSliderElement(): HTMLInputElement;
         /**
          *
          */
@@ -18687,6 +18818,7 @@ declare namespace javax.swing {
         paintLabels: boolean;
         isInverted: boolean;
         sliderModel: javax.swing.BoundedRangeModel;
+        ticksDataList: HTMLDataListElement;
         majorTickSpacing: number;
         minorTickSpacing: number;
         snapToTicks: boolean;
@@ -18730,6 +18862,29 @@ declare namespace javax.swing {
          */
         setFont(font: java.awt.Font): void;
         /**
+         * This method returns the major tick spacing. The number that is returned represents the
+         * distance, measured in values, between each major tick mark. If you have a slider with a range
+         * from 0 to 50 and the major tick spacing is set to 10, you will get major ticks next to the
+         * following values: 0, 10, 20, 30, 40, 50.
+         *
+         * @return {number} the number of values between major ticks
+         * @see #setMajorTickSpacing
+         */
+        getMajorTickSpacing(): number;
+        setMajorTickSpacing(n: number): void;
+        getMinorTickSpacing(): number;
+        setMinorTickSpacing(n: number): void;
+        getSnapToTicks(): boolean;
+        getSnapToValue(): boolean;
+        setSnapToTicks(b: boolean): void;
+        setSnapToValue(b: boolean): void;
+        getPaintTicks(): boolean;
+        setPaintTicks(b: boolean): void;
+        getPaintTrack(): boolean;
+        setPaintTrack(b: boolean): void;
+        getPaintLabels(): boolean;
+        setPaintLabels(b: boolean): void;
+        /**
          * Returns a string representation of this JSlider. This method is intended to be used only for
          * debugging purposes, and the content and format of the returned string may vary between
          * implementations. The returned string may be empty but may not be <code>null</code>.
@@ -18744,16 +18899,6 @@ declare namespace javax.swing {
             stateChanged(e: javax.swing.event.ChangeEvent): void;
             constructor(__parent: any);
         }
-    }
-}
-declare namespace javax.swing {
-    class JTextPane extends javax.swing.JComponent {
-        /**
-         *
-         */
-        createHTML(): void;
-        setPage(page: java.net.URL): void;
-        constructor();
     }
 }
 declare namespace javax.swing.text {
@@ -18831,15 +18976,31 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
-    class JTabbedPane extends javax.swing.JComponent {
+    class JTabbedPane extends javax.swing.JComponent implements javax.swing.SwingConstants {
+        tabPlacement: number;
+        tabs: java.util.List<JTabbedPane.Tab>;
+        tabContainer: HTMLDivElement;
+        contentContainer: HTMLDivElement;
         /**
          *
          */
         createHTML(): void;
         setTabPlacement(tabPlacement: number): void;
+        updateLayout(): void;
         addTab(title: string, icon: javax.swing.Icon, component: java.awt.Component, tip: string): void;
+        setSelectedTab(selectedTab: JTabbedPane.Tab): void;
         getModel(): javax.swing.SingleSelectionModel;
         constructor();
+    }
+    namespace JTabbedPane {
+        class Tab {
+            title: string;
+            icon: javax.swing.Icon;
+            component: java.awt.Component;
+            tip: string;
+            tabButton: HTMLDivElement;
+            constructor(title: string, icon: javax.swing.Icon, component: java.awt.Component, tip: string);
+        }
     }
 }
 declare namespace javax.swing {
@@ -18903,41 +19064,28 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
-    /**
-     * Constructs a spinner for the given model. The spinner has a set of previous/next buttons, and
-     * an editor appropriate for the model.
-     *
-     * @param {*} model the SpinnerModel that defines the sequence of values.
-     * @class
-     * @extends javax.swing.JComponent
-     */
     class JSpinner extends javax.swing.JComponent {
         model: javax.swing.SpinnerModel;
-        spinnerElement: HTMLElement;
-        valueEditor: HTMLInputElement;
-        upButton: HTMLElement;
-        downButton: HTMLElement;
         constructor(model?: any);
+        /**
+         *
+         * @return {HTMLInputElement}
+         */
+        getHTMLElement(): HTMLInputElement;
         /**
          *
          */
         createHTML(): void;
         /**
          *
-         * @return {HTMLElement}
          */
-        getHTMLElement(): HTMLElement;
+        initHTML(): void;
         /**
          * Returns the SpinnerModel that defines this spinner's sequence of values.
          *
          * @return {*} the SpinnerModel
          */
         getModel(): javax.swing.SpinnerModel;
-        /**
-         * Changes the model that represents the value of this spinner.
-         *
-         * @param {*} model the new SpinnerModel
-         */
         setModel(model: javax.swing.SpinnerModel): void;
         /**
          * Returns the current value of the model.
@@ -18954,6 +19102,18 @@ declare namespace javax.swing {
         updateValueInEditor(): void;
         addChangeListener(listener: javax.swing.event.ChangeListener): void;
         removeChangeListener(listener: javax.swing.event.ChangeListener): void;
+    }
+}
+declare namespace javax.swing {
+    class JViewport extends javax.swing.JComponent {
+        view: java.awt.Component;
+        constructor();
+        /**
+         *
+         */
+        createHTML(): void;
+        setView(view: java.awt.Component): void;
+        getView(): java.awt.Component;
     }
 }
 declare namespace javax.swing {
@@ -19304,20 +19464,28 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     class JScrollPane extends javax.swing.JComponent {
+        viewport: javax.swing.JViewport;
+        verticalScrollBar: javax.swing.JScrollBar;
         constructor(view: java.awt.Component);
         /**
          *
          */
         createHTML(): void;
-        getViewport(): any;
+        getView(): java.awt.Component;
+        getViewport(): javax.swing.JViewport;
         getVerticalScrollBar(): javax.swing.JScrollBar;
     }
 }
 declare namespace javax.swing {
     class JComboBox<E> extends javax.swing.JComponent implements java.awt.ItemSelectable, javax.swing.event.ListDataListener, java.awt.event.ActionListener {
-        lastSelected: number;
+        displayArea: HTMLDivElement;
+        selectedValueDisplay: HTMLDivElement;
+        arrowButton: HTMLButtonElement;
+        popup: HTMLDivElement;
+        popupVisible: boolean;
+        outsideClickListener: EventListener;
         createHTML(): void;
-        getHTMLElement(): HTMLSelectElement;
+        getHTMLElement(): HTMLDivElement;
         initHTML(): void;
         /**
          * This protected field is implementation specific. Do not access directly or override. Use the
@@ -19416,6 +19584,8 @@ declare namespace javax.swing {
         hidePopup(): void;
         setPopupVisible(v: boolean): void;
         isPopupVisible(): boolean;
+        populatePopup(): void;
+        updateSelectedValueDisplay(): void;
         addItemListener(aListener: java.awt.event.ItemListener): void;
         removeItemListener(aListener: java.awt.event.ItemListener): void;
         getItemListeners(): java.awt.event.ItemListener[];
@@ -19906,7 +20076,19 @@ declare namespace javax.swing {
     }
 }
 declare namespace javax.swing {
+    class JDialog extends java.awt.Dialog {
+        rootPane: javax.swing.JRootPane;
+        constructor(owner?: any, title?: any, modal?: any);
+        createRootPane(): javax.swing.JRootPane;
+        setRootPane(root: javax.swing.JRootPane): void;
+        getRootPane(): javax.swing.JRootPane;
+        getContentPane(): java.awt.Container;
+        setContentPane(contentPane: java.awt.Container): void;
+    }
+}
+declare namespace javax.swing {
     class JTextArea extends javax.swing.text.JTextComponent {
+        actionListener: java.awt.event.ActionListener;
         rows: number;
         columns: number;
         columnWidth: number;
@@ -19926,6 +20108,8 @@ declare namespace javax.swing {
          *
          */
         initHTML(): void;
+        initActionListeners(): void;
+        addActionListener(l: java.awt.event.ActionListener): void;
         static uiClassID: string;
         constructor(doc?: any, text?: any, rows?: any, columns?: any);
         getUIClassID(): string;
@@ -19947,6 +20131,20 @@ declare namespace javax.swing {
         getColumns(): number;
         setColumns(columns: number): void;
         paramString(): string;
+    }
+}
+declare namespace javax.swing {
+    class JEditorPane extends javax.swing.text.JTextComponent {
+        constructor();
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @param {string} t
+         */
+        setText(t: string): void;
     }
 }
 declare namespace javax.swing {
@@ -20355,6 +20553,47 @@ declare namespace javax.swing {
         addActionListener(actionListener: java.awt.event.ActionListener): void;
         removeActionListener(actionListener: java.awt.event.ActionListener): void;
         setBackground(background: java.awt.Color): void;
+    }
+}
+declare namespace javax.swing.table {
+    class DefaultTableCellRenderer extends javax.swing.JLabel implements javax.swing.table.TableCellRenderer {
+        constructor();
+        /**
+         *
+         * @param {javax.swing.JTable} table
+         * @param {*} value
+         * @param {boolean} isSelected
+         * @param {boolean} hasFocus
+         * @param {number} row
+         * @param {number} column
+         * @return {java.awt.Component}
+         */
+        getTableCellRendererComponent(table: javax.swing.JTable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number): java.awt.Component;
+    }
+}
+declare namespace javax.swing {
+    class DefaultListCellRenderer<E> extends javax.swing.JLabel implements javax.swing.ListCellRenderer<E> {
+        constructor();
+        /**
+         *
+         * @param {javax.swing.JList} list
+         * @param {*} value
+         * @param {number} index
+         * @param {boolean} isSelected
+         * @param {boolean} cellHasFocus
+         * @return {java.awt.Component}
+         */
+        getListCellRendererComponent(list: javax.swing.JList<any>, value: E, index: number, isSelected: boolean, cellHasFocus: boolean): java.awt.Component;
+    }
+}
+declare namespace javax.swing {
+    class JTextPane extends javax.swing.JEditorPane {
+        constructor();
+        /**
+         *
+         */
+        createHTML(): void;
+        setPage(page: java.net.URL): void;
     }
 }
 declare namespace javax.swing {
