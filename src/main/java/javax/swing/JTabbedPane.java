@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import jsweet.util.StringTypes;
 
-public class JTabbedPane extends JComponent {
+public class JTabbedPane extends JComponent implements SwingConstants {
 
+  private int tabPlacement = TOP;
   private List<Tab> tabs = new ArrayList<>();
   private HTMLDivElement tabContainer;
   private HTMLDivElement contentContainer;
@@ -36,18 +37,49 @@ public class JTabbedPane extends JComponent {
     }
     htmlElement = document.createElement(StringTypes.div);
     htmlElement.className = "applet-jtabbedpane";
+    htmlElement.style.display = "flex";
 
     tabContainer = (HTMLDivElement) document.createElement(StringTypes.div);
     tabContainer.className = "applet-jtabbedpane-tabs";
-    htmlElement.appendChild(tabContainer);
 
     contentContainer = (HTMLDivElement) document.createElement(StringTypes.div);
     contentContainer.className = "applet-jtabbedpane-content";
-    htmlElement.appendChild(contentContainer);
+
+    updateLayout();
   }
 
   public void setTabPlacement(int tabPlacement) {
-    // TODO
+    if (tabPlacement != TOP && tabPlacement != BOTTOM && tabPlacement != LEFT && tabPlacement != RIGHT) {
+        throw new IllegalArgumentException("invalid tab placement");
+    }
+    this.tabPlacement = tabPlacement;
+    updateLayout();
+  }
+
+  private void updateLayout() {
+      if (htmlElement == null) {
+          return;
+      }
+      // Clear and re-add children in the correct order
+      while(htmlElement.firstChild != null) {
+          htmlElement.removeChild(htmlElement.firstChild);
+      }
+
+      if (tabPlacement == TOP || tabPlacement == LEFT) {
+          htmlElement.appendChild(tabContainer);
+          htmlElement.appendChild(contentContainer);
+      } else {
+          htmlElement.appendChild(contentContainer);
+          htmlElement.appendChild(tabContainer);
+      }
+
+      if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+          htmlElement.style.flexDirection = "column";
+          tabContainer.style.flexDirection = "row";
+      } else {
+          htmlElement.style.flexDirection = "row";
+          tabContainer.style.flexDirection = "column";
+      }
   }
 
   public void addTab(String title, Icon icon, Component component, String tip) {
