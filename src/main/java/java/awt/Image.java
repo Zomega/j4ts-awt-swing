@@ -30,6 +30,7 @@ import def.dom.CanvasRenderingContext2D;
 import def.dom.HTMLCanvasElement;
 import def.dom.HTMLImageElement;
 import def.dom.ImageData;
+import def.js.Uint8Array;
 import java.awt.image.ColorModel;
 import java.awt.image.ImageConsumer;
 import java.awt.image.ImageObserver;
@@ -166,7 +167,7 @@ public class Image implements ImageProducer {
     CanvasRenderingContext2D ctx = (CanvasRenderingContext2D) canvas.getContext("2d");
     ctx.drawImage(source, 0, 0);
     ImageData imageData = ctx.getImageData(0, 0, w, h);
-    def.js.Array<Double> data = imageData.data;
+    Uint8Array data = imageData.data;
     int[] pixels = new int[w * h];
     for (int i = 0; i < pixels.length; i++) {
       double r = data.$get(i * 4);
