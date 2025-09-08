@@ -25,10 +25,12 @@
 package javax.swing;
 
 import static def.dom.Globals.document;
-
-import def.dom.HTMLOptionElement;
-import def.dom.HTMLSelectElement;
-import def.dom.NodeList;
+import def.dom.HTMLButtonElement;
+import def.dom.HTMLDivElement;
+import def.dom.HTMLElement;
+import def.dom.Node;
+import def.js.EventListener;
+import java.awt.Component;
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,44 +51,69 @@ import jsweet.util.StringTypes;
 @SuppressWarnings("serial")
 public class JComboBox<E> extends JComponent
     implements ItemSelectable, ListDataListener, ActionListener {
-  int lastSelected;
+
+  private HTMLDivElement displayArea;
+  private HTMLDivElement selectedValueDisplay;
+  private HTMLButtonElement arrowButton;
+  private HTMLDivElement popup;
+  private boolean popupVisible = false;
+
+  private final EventListener outsideClickListener =
+      (e) -> {
+        if (!htmlElement.contains((Node) e.target)) {
+          setPopupVisible(false);
+        }
+      };
 
   public void createHTML() {
-    htmlElement = document.createElement(StringTypes.select);
+    htmlElement = document.createElement(StringTypes.div);
     htmlElement.className = "applet-jcombobox";
+    htmlElement.style.position = "relative";
+
+    displayArea = document.createElement(StringTypes.div);
+    displayArea.className = "applet-jcombobox-display";
+    displayArea.style.display = "flex";
+    displayArea.style.border = "1px solid #767676";
+    htmlElement.appendChild(displayArea);
+
+    selectedValueDisplay = document.createElement(StringTypes.div);
+    selectedValueDisplay.className = "applet-jcombobox-value";
+    selectedValueDisplay.style.flexGrow = "1";
+    selectedValueDisplay.style.padding = "2px 4px";
+    displayArea.appendChild(selectedValueDisplay);
+
+    arrowButton = document.createElement(StringTypes.button);
+    arrowButton.className = "applet-jcombobox-arrow";
+    arrowButton.innerHTML = "&#9662;";
+    arrowButton.style.border = "none";
+    arrowButton.style.backgroundColor = "transparent";
+    displayArea.appendChild(arrowButton);
+
+    popup = document.createElement(StringTypes.div);
+    popup.className = "applet-jcombobox-popup";
+    popup.style.position = "absolute";
+    popup.style.display = "none";
+    popup.style.border = "1px solid black";
+    popup.style.backgroundColor = "white";
+    popup.style.zIndex = "1000";
+    htmlElement.appendChild(popup);
   }
 
-  public HTMLSelectElement getHTMLElement() {
-    return (HTMLSelectElement) htmlElement;
+  public HTMLDivElement getHTMLElement() {
+    return (HTMLDivElement) htmlElement;
   }
 
   public void initHTML() {
     super.initHTML();
-    getHTMLElement().onchange =
-        e -> {
-          int i = (int) getHTMLElement().selectedIndex;
-          fireItemStateChanged(
-              new ItemEvent(this, 0, getItemAt(lastSelected), ItemEvent.DESELECTED));
-          fireItemStateChanged(new ItemEvent(this, 0, getItemAt(i), ItemEvent.SELECTED));
-          lastSelected = i;
-          return e;
+
+    displayArea.onclick =
+        (e) -> {
+          setPopupVisible(!isPopupVisible());
+          return null;
         };
-    NodeList childNodes = getHTMLElement().childNodes;
-    for (int i = 0; i < childNodes.length; ++i) {
-      getHTMLElement().removeChild(childNodes.$get(i));
-    }
-    for (int i = 0; i < getItemCount(); i++) {
-      HTMLOptionElement option = document.createElement(StringTypes.option);
-      option.className = "applet-jcombobox-option";
-      // TODO: use renderer
-      option.innerHTML = getItemAt(i).toString();
-      option.value = getItemAt(i).toString();
-      if (getSelectedIndex() == i) {
-        option.selected = true;
-        lastSelected = i;
-      }
-      getHTMLElement().appendChild(option);
-    }
+
+    populatePopup();
+    updateSelectedValueDisplay();
   }
 
   /**
@@ -406,10 +433,94 @@ public class JComboBox<E> extends JComponent
     setPopupVisible(false);
   }
 
-  public void setPopupVisible(boolean v) {}
+  @Override
+  public void setPopupVisible(boolean v) {
+    if (popupVisible == v) {
+      return;
+    }
+    popupVisible = v;
+    if (v) {
+      firePopupMenuWillBecomeVisible();
+      popup.style.top = htmlElement.offsetHeight + "px";
+      popup.style.left = "0px";
+      popup.style.width = htmlElement.offsetWidth + "px";
+      popup.style.display = "block";
+      document.addEventListener("click", outsideClickListener);
+    } else {
+      firePopupMenuWillBecomeInvisible();
+      popup.style.display = "none";
+      document.removeEventListener("click", outsideClickListener);
+    }
+  }
 
+  @Override
   public boolean isPopupVisible() {
-    return false;
+    return popupVisible;
+  }
+
+  private void populatePopup() {
+    while (popup.firstChild != null) {
+      popup.removeChild(popup.firstChild);
+    }
+
+    if (getItemCount() == 0) {
+      return;
+    }
+
+    ListCellRenderer<? super E> r = getRenderer();
+    if (r == null) {
+      r = new DefaultListCellRenderer<>();
+    }
+
+    for (int i = 0; i < getItemCount(); i++) {
+      E value = getItemAt(i);
+      Component comp = r.getListCellRendererComponent(null, value, i, false, false);
+      if (comp.getHTMLElement() == null) {
+        comp.initHTML();
+      }
+      HTMLElement itemElement = comp.getHTMLElement();
+      itemElement.className += " applet-jcombobox-item";
+      itemElement.style.cursor = "default";
+      itemElement.style.padding = "2px 4px";
+
+      final int index = i;
+      itemElement.onclick =
+          (e) -> {
+            setSelectedIndex(index);
+            setPopupVisible(false);
+            e.stopPropagation();
+            return null;
+          };
+
+      popup.appendChild(itemElement);
+    }
+  }
+
+  private void updateSelectedValueDisplay() {
+    while (selectedValueDisplay.firstChild != null) {
+      selectedValueDisplay.removeChild(selectedValueDisplay.firstChild);
+    }
+
+    int selectedIndex = getSelectedIndex();
+    if (selectedIndex < 0) {
+      return;
+    }
+
+    ListCellRenderer<? super E> r = getRenderer();
+    if (r == null) {
+      r = new DefaultListCellRenderer<>();
+    }
+
+    E value = getItemAt(selectedIndex);
+    Component comp = r.getListCellRendererComponent(null, value, selectedIndex, true, false);
+    if (comp.getHTMLElement() == null) {
+      comp.initHTML();
+    }
+    HTMLElement selectedElement = comp.getHTMLElement();
+    // Don't show selection visuals in the display area
+    selectedElement.style.backgroundColor = "";
+    selectedElement.style.color = "";
+    selectedValueDisplay.appendChild(selectedElement);
   }
 
   public void addItemListener(ItemListener aListener) {
@@ -650,6 +761,7 @@ public class JComboBox<E> extends JComponent
     setActionCommand(oldCommand);
   }
 
+  @Override
   public void contentsChanged(ListDataEvent e) {
     Object oldSelection = selectedItemReminder;
     Object newSelection = dataModel.getSelectedItem();
@@ -659,12 +771,17 @@ public class JComboBox<E> extends JComponent
         fireActionEvent();
       }
     }
+    populatePopup();
+    updateSelectedValueDisplay();
   }
 
+  @Override
   public void intervalAdded(ListDataEvent e) {
     if (selectedItemReminder != dataModel.getSelectedItem()) {
       selectedItemChanged();
     }
+    populatePopup();
+    updateSelectedValueDisplay();
   }
 
   public void intervalRemoved(ListDataEvent e) {
