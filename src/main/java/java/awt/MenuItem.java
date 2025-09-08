@@ -11,7 +11,7 @@ import jsweet.util.StringTypes;
 public class MenuItem extends MenuComponent implements HTMLComponent {
   private String label;
   private Vector<ActionListener> actionListeners = new Vector<>();
-  protected HTMLLIElement htmlElement;
+  protected HTMLElement htmlElement;
 
   public MenuItem() {
     this("");
@@ -55,7 +55,7 @@ public class MenuItem extends MenuComponent implements HTMLComponent {
   }
 
   @Override
-  public HTMLLIElement getHTMLElement() {
+  public HTMLElement getHTMLElement() {
     return htmlElement;
   }
 

@@ -24,15 +24,20 @@ public class PopupMenu extends Menu {
     htmlElement.style.top = y + "px";
     htmlElement.style.display = "block";
 
-    // Add a one-time event listener to hide the menu when the user clicks elsewhere
-    def.dom.EventListener listener =
-        (e) -> {
-          htmlElement.style.display = "none";
-        };
-    document.addEventListener("click", listener, new def.js.Object() {
-      {
-        $set("once", true);
-      }
-    });
+    // Add a one-time event listener to hide the menu when the user clicks elsewhere.
+    // We use setTimeout to delay the listener registration to the next event loop cycle.
+    // This prevents the same click event that showed the menu from immediately
+    // triggering the hide listener.
+    def.dom.Globals.setTimeout(
+        () -> {
+          final def.dom.EventListener[] listenerHolder = new def.dom.EventListener[1];
+          listenerHolder[0] =
+              (e) -> {
+                htmlElement.style.display = "none";
+                document.removeEventListener("click", listenerHolder[0]);
+              };
+          document.addEventListener("click", listenerHolder[0]);
+        },
+        0);
   }
 }

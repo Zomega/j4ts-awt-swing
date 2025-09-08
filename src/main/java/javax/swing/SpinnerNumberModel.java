@@ -4,6 +4,12 @@ import java.util.Vector;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * A `SpinnerModel` for a sequence of numbers. The `JSpinner` component that uses this model is
+ * responsible for calling `setValue` with the value returned by `getNextValue` or
+ * `getPreviousValue`. This model does not change its own state when `getNextValue` or
+ * `getPreviousValue` are called.
+ */
 public class SpinnerNumberModel implements SpinnerModel {
   private Double value;
   private Double minimum;
@@ -29,37 +35,38 @@ public class SpinnerNumberModel implements SpinnerModel {
 
   @Override
   public void setValue(Object value) {
-    if (value instanceof Number) {
-      Double oldValue = this.value;
-      this.value = ((Number) value).doubleValue();
-      if (oldValue.doubleValue() != this.value.doubleValue()) {
-        fireStateChanged();
-      }
-    } else {
+    if (!(value instanceof Number)) {
       throw new IllegalArgumentException("Invalid value type");
+    }
+    Number num = (Number) value;
+    if (this.value == null || this.value.doubleValue() != num.doubleValue()) {
+      this.value = num.doubleValue();
+      fireStateChanged();
     }
   }
 
   @Override
   public Object getNextValue() {
-    if (this.maximum != null && this.value != null && this.maximum.compareTo(this.value) <= 0) {
-      return null;
-    }
     if (this.value == null || this.stepSize == null) {
       return null;
     }
-    return this.value + this.stepSize;
+    double next = this.value + this.stepSize;
+    if (this.maximum != null && next > this.maximum) {
+      return null;
+    }
+    return next;
   }
 
   @Override
   public Object getPreviousValue() {
-    if (this.minimum != null && this.value != null && this.minimum.compareTo(this.value) >= 0) {
-      return null;
-    }
     if (this.value == null || this.stepSize == null) {
       return null;
     }
-    return this.value - this.stepSize;
+    double prev = this.value - this.stepSize;
+    if (this.minimum != null && prev < this.minimum) {
+      return null;
+    }
+    return prev;
   }
 
   @Override

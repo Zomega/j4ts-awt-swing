@@ -54,10 +54,24 @@ public class GridLayout implements LayoutManager2 {
 
       // Set the CSS properties for the grid layout dynamically.
       object(gridContainer.style).$set("display", "grid");
-      object(gridContainer.style)
-          .$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
-      object(gridContainer.style)
-          .$set("grid-template-columns", "repeat(" + this.cols + ", 1fr)");
+
+      // In AWT, a value of 0 for rows or cols means "any number".
+      // For CSS Grid, not setting the 'grid-template-rows' or 'grid-template-columns'
+      // property achieves a similar auto-placement behavior.
+      if (rows == 0 && cols == 0) {
+        // AWT would throw an IllegalArgumentException here. We'll default to a single column.
+        object(gridContainer.style).$set("grid-template-columns", "repeat(1, 1fr)");
+      } else {
+        if (rows > 0) {
+          object(gridContainer.style)
+              .$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
+        }
+        if (cols > 0) {
+          object(gridContainer.style)
+              .$set("grid-template-columns", "repeat(" + this.cols + ", 1fr)");
+        }
+      }
+
       object(gridContainer.style).$set("gap", this.vgap + "px " + this.hgap + "px");
 
       gridContainer.style.width = "100%";

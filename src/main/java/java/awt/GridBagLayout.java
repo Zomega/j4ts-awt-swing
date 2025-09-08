@@ -7,28 +7,17 @@ import static jsweet.util.Lang.object;
 import def.dom.*;
 import jsweet.util.StringTypes;
 
+/**
+ * A simplified implementation of `GridBagLayout` that uses CSS Grid. NOTE: This implementation is
+ * not a full `GridBagLayout`. It creates a basic grid and respects `gridx`, `gridy`, `gridwidth`,
+ * and `gridheight` from `GridBagConstraints`. It does not support weights, anchoring, or other
+ * advanced features. It is intended to provide a "good enough" layout for semi-working
+ * transpilation.
+ */
 public class GridBagLayout implements LayoutManager2 {
   boolean created = false;
-
   Container parent;
   public HTMLDivElement gridContainer;
-  int rows, cols;
-  int hgap, vgap;
-
-  public GridBagLayout() {
-    this(1, 1, 0, 0);
-  }
-
-  public GridBagLayout(int rows, int cols) {
-    this(rows, cols, 0, 0); // Default to no gaps
-  }
-
-  public GridBagLayout(int rows, int cols, int hgap, int vgap) {
-    this.rows = rows;
-    this.cols = cols;
-    this.hgap = hgap;
-    this.vgap = vgap;
-  }
 
   @Override
   public void addLayoutComponent(String name, Component component) {
@@ -39,9 +28,11 @@ public class GridBagLayout implements LayoutManager2 {
 
   @Override
   public void removeLayoutComponent(Component component) {
-    HTMLElement componentElement = component.getHTMLElement();
-    if (gridContainer.contains(componentElement)) {
-      gridContainer.removeChild(componentElement);
+    if (gridContainer != null && component.getHTMLElement() != null) {
+      HTMLElement componentElement = component.getHTMLElement();
+      if (gridContainer.contains(componentElement)) {
+        gridContainer.removeChild(componentElement);
+      }
     }
   }
 
@@ -51,52 +42,58 @@ public class GridBagLayout implements LayoutManager2 {
       this.parent = parent;
       created = true;
       HTMLDivElement parentElement = any(parent.getHTMLElement());
-
       gridContainer = document.createElement(StringTypes.div);
       gridContainer.className = "applet-grid-layout";
-
-      // Set the CSS properties for the grid layout dynamically.
       object(gridContainer.style).$set("display", "grid");
-      object(gridContainer.style)
-          .$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
-      object(gridContainer.style)
-          .$set("grid-template-columns", "repeat(" + this.cols + ", 1fr)");
-      object(gridContainer.style).$set("gap", this.vgap + "px " + this.hgap + "px");
-
       gridContainer.style.width = "100%";
       gridContainer.style.height = "100%";
-
-      // Append the new grid container to the parent element.
       parentElement.appendChild(gridContainer);
     }
   }
 
   @Override
-  public void addLayoutComponent(Component component, Object o) {
-    if (o instanceof GridBagConstraints) {
-      setConstraints(component, (GridBagConstraints) o);
+  public void addLayoutComponent(Component component, Object constraints) {
+    if (constraints instanceof GridBagConstraints) {
+      setConstraints(component, (GridBagConstraints) constraints);
     }
     addLayoutComponent((String) null, component);
   }
 
   @Override
   public float getLayoutAlignmentX(Container container) {
-    return 0;
+    return 0.5f;
   }
 
   @Override
   public float getLayoutAlignmentY(Container container) {
-    return 0;
+    return 0.5f;
   }
 
   @Override
-  public void invalidateLayout(Container container) {}
+  public void invalidateLayout(Container container) {
+    created = false;
+  }
 
   public void setConstraints(Component comp, GridBagConstraints constraints) {
     HTMLElement element = comp.getHTMLElement();
-    object(element.style).$set("grid-column-start", "" + (constraints.gridx + 1));
-    object(element.style).$set("grid-column-end", "span " + constraints.gridwidth);
-    object(element.style).$set("grid-row-start", "" + (constraints.gridy + 1));
-    object(element.style).$set("grid-row-end", "span " + constraints.gridheight);
+    if (element != null) {
+      object(element.style).$set("grid-column-start", "" + (constraints.gridx + 1));
+      object(element.style).$set("grid-column-end", "span " + constraints.gridwidth);
+      object(element.style).$set("grid-row-start", "" + (constraints.gridy + 1));
+      object(element.style).$set("grid-row-end", "span " + constraints.gridheight);
+    }
+  }
+
+  // Stubs for other LayoutManager methods
+  public Dimension preferredLayoutSize(Container parent) {
+    return new Dimension(0, 0);
+  }
+
+  public Dimension minimumLayoutSize(Container parent) {
+    return new Dimension(0, 0);
+  }
+
+  public Dimension maximumLayoutSize(Container target) {
+    return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
   }
 }
