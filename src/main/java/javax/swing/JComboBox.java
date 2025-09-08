@@ -26,10 +26,10 @@ package javax.swing;
 
 import static def.dom.Globals.document;
 import def.dom.HTMLButtonElement;
+import def.dom.EventListener;
 import def.dom.HTMLDivElement;
 import def.dom.HTMLElement;
 import def.dom.Node;
-import def.js.EventListener;
 import java.awt.Component;
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;

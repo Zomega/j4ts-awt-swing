@@ -25,11 +25,11 @@ public class DefaultListCellRenderer<E> extends JLabel implements ListCellRender
     Color fg = null;
 
     if (isSelected) {
-      bg = UIManager.getColor("List.selectionBackground");
-      fg = UIManager.getColor("List.selectionForeground");
+      bg = (Color) UIManager.get("List.selectionBackground");
+      fg = (Color) UIManager.get("List.selectionForeground");
     } else {
-      bg = UIManager.getColor("List.background");
-      fg = UIManager.getColor("List.foreground");
+      bg = (Color) UIManager.get("List.background");
+      fg = (Color) UIManager.get("List.foreground");
     }
 
     setBackground(bg);
