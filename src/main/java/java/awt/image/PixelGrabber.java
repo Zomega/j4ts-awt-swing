@@ -18,9 +18,6 @@ public class PixelGrabber implements ImageConsumer {
 
   public PixelGrabber(Image img, int x, int y, int w, int h, boolean forceRGB) {
     this(img.getSource(), x, y, w, h, null, 0, w);
-    if (forceRGB) {
-      this.flags |= ImageConsumer.FORCE_RGB;
-    }
   }
 
   public PixelGrabber(Image img, int x, int y, int w, int h, int[] pix, int off, int scansize) {
@@ -47,21 +44,8 @@ public class PixelGrabber implements ImageConsumer {
     if ((flags & (ImageConsumer.IMAGEABORTED | ImageConsumer.IMAGEERROR)) != 0) {
       return false;
     }
+    grabbing = true;
     producer.startProduction(this);
-    long end = System.currentTimeMillis() + ms;
-    while (grabbing
-        && (flags & (ImageConsumer.IMAGEABORTED | ImageConsumer.IMAGEERROR | ImageConsumer.STATICIMAGEDONE))
-            == 0) {
-      if (ms == 0) {
-        wait();
-      } else {
-        long delay = end - System.currentTimeMillis();
-        if (delay <= 0) {
-          break;
-        }
-        wait(delay);
-      }
-    }
     return (flags & (ImageConsumer.IMAGEABORTED | ImageConsumer.IMAGEERROR)) == 0;
   }
 
@@ -69,14 +53,21 @@ public class PixelGrabber implements ImageConsumer {
   public synchronized void imageComplete(int status) {
     grabbing = false;
     this.flags = status;
-    notifyAll();
   }
 
   @Override
   public void setColorModel(ColorModel model) {}
 
   @Override
-  public void setDimensions(int width, int height) {}
+  public void setDimensions(int width, int height) {
+    if (dstBuffer == null) {
+      dstBuffer = new int[width * height];
+      dstOffset = 0;
+      dstScan = width;
+      dstW = width;
+      dstH = height;
+    }
+  }
 
   @Override
   public void setHints(int hintflags) {}
@@ -84,11 +75,6 @@ public class PixelGrabber implements ImageConsumer {
   @Override
   public void setPixels(
       int x, int y, int w, int h, ColorModel model, byte[] pixels, int off, int scansize) {
-    if (dstBuffer == null) {
-      dstBuffer = new int[dstW * dstH];
-      dstOffset = 0;
-      dstScan = dstW;
-    }
     int[] intPixels = new int[w * h];
     for (int i = 0; i < w * h; i++) {
       intPixels[i] = model.getRGB(pixels[off + i] & 0xff);
@@ -118,6 +104,9 @@ public class PixelGrabber implements ImageConsumer {
       w = dstX + dstW - x;
     }
     if (w <= 0 || h <= 0) {
+      return;
+    }
+    if (dstBuffer == null) {
       return;
     }
     int dstPtr = dstOffset + (y - dstY) * dstScan + (x - dstX);

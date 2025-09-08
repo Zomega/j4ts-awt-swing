@@ -64,7 +64,7 @@ public class MemoryImageSource implements ImageProducer {
       ic.setHints(
           animated
               ? (ImageConsumer.SINGLEPASS)
-              : (ImageConsumer.SINGLEPASS | ImageConsumer.IMAGECOMPLETE));
+              : (ImageConsumer.SINGLEPASS | ImageConsumer.STATICIMAGEDONE));
       sendPixels(ic, 0, 0, width, height);
       if (!animated) {
         ic.imageComplete(ImageConsumer.STATICIMAGEDONE);

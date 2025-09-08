@@ -16,7 +16,8 @@ public class AudioClip {
   private final HTMLAudioElement audio;
 
   public AudioClip(URL url) {
-    this.audio = new HTMLAudioElement(url.toString());
+    this.audio = new HTMLAudioElement();
+    this.audio.src = url.toString();
   }
   /** Starts playing this audio clip in a loop. */
   public void loop() {

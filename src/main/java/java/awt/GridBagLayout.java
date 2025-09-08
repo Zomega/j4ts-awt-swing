@@ -2,6 +2,7 @@ package java.awt;
 
 import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
+import static jsweet.util.Lang.object;
 
 import def.dom.*;
 import jsweet.util.StringTypes;
@@ -55,12 +56,12 @@ public class GridBagLayout implements LayoutManager2 {
       gridContainer.className = "applet-grid-layout";
 
       // Set the CSS properties for the grid layout dynamically.
-      gridContainer.style.display = "grid";
-      gridContainer.style.gridTemplateRows = "repeat(" + this.rows + ", 1fr)";
-      gridContainer.style.gridTemplateColumns = "repeat(" + this.cols + ", 1fr)";
-
-      // Use the hgap and vgap to set the CSS gap property
-      gridContainer.style.gap = this.vgap + "px " + this.hgap + "px";
+      object(gridContainer.style).$set("display", "grid");
+      object(gridContainer.style)
+          .$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
+      object(gridContainer.style)
+          .$set("grid-template-columns", "repeat(" + this.cols + ", 1fr)");
+      object(gridContainer.style).$set("gap", this.vgap + "px " + this.hgap + "px");
 
       gridContainer.style.width = "100%";
       gridContainer.style.height = "100%";
@@ -93,9 +94,9 @@ public class GridBagLayout implements LayoutManager2 {
 
   public void setConstraints(Component comp, GridBagConstraints constraints) {
     HTMLElement element = comp.getHTMLElement();
-    element.style.gridColumnStart = "" + (constraints.gridx + 1);
-    element.style.gridColumnEnd = "span " + constraints.gridwidth;
-    element.style.gridRowStart = "" + (constraints.gridy + 1);
-    element.style.gridRowEnd = "span " + constraints.gridheight;
+    object(element.style).$set("grid-column-start", "" + (constraints.gridx + 1));
+    object(element.style).$set("grid-column-end", "span " + constraints.gridwidth);
+    object(element.style).$set("grid-row-start", "" + (constraints.gridy + 1));
+    object(element.style).$set("grid-row-end", "span " + constraints.gridheight);
   }
 }

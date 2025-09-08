@@ -26,11 +26,18 @@ package java.awt;
 
 import static def.dom.Globals.document;
 
+import def.dom.CanvasRenderingContext2D;
+import def.dom.HTMLCanvasElement;
 import def.dom.HTMLImageElement;
+import def.dom.ImageData;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageConsumer;
 import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+import java.util.Vector;
 import jsweet.util.StringTypes;
 
-public class Image {
+public class Image implements ImageProducer {
 
   // @Interface
   // class ImageSource {
@@ -110,5 +117,75 @@ public class Image {
 
   public void flush() {
     // do nothing
+  }
+
+  private Vector<ImageConsumer> consumers = new Vector<>();
+
+  public ImageProducer getSource() {
+    return this;
+  }
+
+  @Override
+  public synchronized void addConsumer(ImageConsumer ic) {
+    if (!consumers.contains(ic)) {
+      consumers.addElement(ic);
+    }
+  }
+
+  @Override
+  public synchronized boolean isConsumer(ImageConsumer ic) {
+    return consumers.contains(ic);
+  }
+
+  @Override
+  public synchronized void removeConsumer(ImageConsumer ic) {
+    consumers.removeElement(ic);
+  }
+
+  @Override
+  public void startProduction(ImageConsumer ic) {
+    addConsumer(ic);
+    if (source.complete) {
+      imageLoaded();
+    } else {
+      source.onload =
+          (e) -> {
+            imageLoaded();
+            return null;
+          };
+    }
+  }
+
+  private void imageLoaded() {
+    int w = (int) source.width;
+    int h = (int) source.height;
+
+    HTMLCanvasElement canvas = (HTMLCanvasElement) document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    CanvasRenderingContext2D ctx = (CanvasRenderingContext2D) canvas.getContext("2d");
+    ctx.drawImage(source, 0, 0);
+    ImageData imageData = ctx.getImageData(0, 0, w, h);
+    def.js.Array<Double> data = imageData.data;
+    int[] pixels = new int[w * h];
+    for (int i = 0; i < pixels.length; i++) {
+      double r = data.$get(i * 4);
+      double g = data.$get(i * 4 + 1);
+      double b = data.$get(i * 4 + 2);
+      double a = data.$get(i * 4 + 3);
+      pixels[i] = ((int) a << 24) | ((int) r << 16) | ((int) g << 8) | (int) b;
+    }
+
+    for (ImageConsumer consumer : consumers) {
+      consumer.setDimensions(w, h);
+      consumer.setPixels(0, 0, w, h, ColorModel.getRGBdefault(), pixels, 0, w);
+      consumer.imageComplete(ImageConsumer.STATICIMAGEDONE);
+    }
+    consumers.clear();
+  }
+
+  @Override
+  public void requestTopDownLeftRightResend(ImageConsumer ic) {
+    // not implemented
   }
 }
