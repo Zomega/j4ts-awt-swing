@@ -60,9 +60,13 @@ public class JComboBox<E> extends JComponent
 
   private final EventListener outsideClickListener =
       (e) -> {
-        if (!htmlElement.contains((Node) e.target)) {
-          setPopupVisible(false);
+        Node target = (Node) e.target;
+        for (Node n = target; n != null; n = n.parentNode) {
+          if (n == htmlElement) {
+            return;
+          }
         }
+        setPopupVisible(false);
       };
 
   public void createHTML() {
@@ -761,7 +765,6 @@ public class JComboBox<E> extends JComponent
     setActionCommand(oldCommand);
   }
 
-  @Override
   public void contentsChanged(ListDataEvent e) {
     Object oldSelection = selectedItemReminder;
     Object newSelection = dataModel.getSelectedItem();
@@ -775,7 +778,6 @@ public class JComboBox<E> extends JComponent
     updateSelectedValueDisplay();
   }
 
-  @Override
   public void intervalAdded(ListDataEvent e) {
     if (selectedItemReminder != dataModel.getSelectedItem()) {
       selectedItemChanged();

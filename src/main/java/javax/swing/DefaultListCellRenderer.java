@@ -21,19 +21,13 @@ public class DefaultListCellRenderer<E> extends JLabel implements ListCellRender
 
     setText((value == null) ? "" : value.toString());
 
-    Color bg = null;
-    Color fg = null;
-
     if (isSelected) {
-      bg = (Color) UIManager.get("List.selectionBackground");
-      fg = (Color) UIManager.get("List.selectionForeground");
+      setBackground(new Color(0, 120, 215)); // Standard blue selection color
+      setForeground(Color.white);
     } else {
-      bg = (Color) UIManager.get("List.background");
-      fg = (Color) UIManager.get("List.foreground");
+      setBackground(Color.white);
+      setForeground(Color.black);
     }
-
-    setBackground(bg);
-    setForeground(fg);
 
     setEnabled(list == null ? true : list.isEnabled());
     setFont(list == null ? null : list.getFont());
