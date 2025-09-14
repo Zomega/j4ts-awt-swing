@@ -33,12 +33,12 @@ public class PopupMenu extends Menu {
             () -> {
               final def.dom.EventListener[] listenerHolder = new def.dom.EventListener[1];
               listenerHolder[0] =
-              (e) -> {
-                htmlElement.style.display = "none";
-                document.removeEventListener("click", listenerHolder[0]);
-              };
-          document.addEventListener("click", listenerHolder[0]);
-        },
+                  (e) -> {
+                    htmlElement.style.display = "none";
+                    document.removeEventListener("click", listenerHolder[0]);
+                  };
+              document.addEventListener("click", listenerHolder[0]);
+            },
         0);
   }
 }

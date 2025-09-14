@@ -15,17 +15,17 @@ public class ScrollPane extends Container {
   public ScrollPane(Component view) {
     this.view = view;
     if (view != null) {
-        add(view);
+      add(view);
     }
   }
 
   @Override
   public void add(Component comp, Object constraints) {
-      this.view = comp;
-      super.add(comp, constraints);
-      if (htmlElement != null) {
-          htmlElement.appendChild(comp.getHTMLElement());
-      }
+    this.view = comp;
+    super.add(comp, constraints);
+    if (htmlElement != null) {
+      htmlElement.appendChild(comp.getHTMLElement());
+    }
   }
 
   @Override

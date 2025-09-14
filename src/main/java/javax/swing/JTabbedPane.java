@@ -23,10 +23,10 @@ public class JTabbedPane extends JComponent implements SwingConstants {
     HTMLDivElement tabButton;
 
     Tab(String title, Icon icon, Component component, String tip) {
-        this.title = title;
-        this.icon = icon;
-        this.component = component;
-        this.tip = tip;
+      this.title = title;
+      this.icon = icon;
+      this.component = component;
+      this.tip = tip;
     }
   }
 
@@ -49,37 +49,40 @@ public class JTabbedPane extends JComponent implements SwingConstants {
   }
 
   public void setTabPlacement(int tabPlacement) {
-    if (tabPlacement != TOP && tabPlacement != BOTTOM && tabPlacement != LEFT && tabPlacement != RIGHT) {
-        throw new IllegalArgumentException("invalid tab placement");
+    if (tabPlacement != TOP
+        && tabPlacement != BOTTOM
+        && tabPlacement != LEFT
+        && tabPlacement != RIGHT) {
+      throw new IllegalArgumentException("invalid tab placement");
     }
     this.tabPlacement = tabPlacement;
     updateLayout();
   }
 
   private void updateLayout() {
-      if (htmlElement == null) {
-          return;
-      }
-      // Clear and re-add children in the correct order
-      while(htmlElement.firstChild != null) {
-          htmlElement.removeChild(htmlElement.firstChild);
-      }
+    if (htmlElement == null) {
+      return;
+    }
+    // Clear and re-add children in the correct order
+    while (htmlElement.firstChild != null) {
+      htmlElement.removeChild(htmlElement.firstChild);
+    }
 
-      if (tabPlacement == TOP || tabPlacement == LEFT) {
-          htmlElement.appendChild(tabContainer);
-          htmlElement.appendChild(contentContainer);
-      } else {
-          htmlElement.appendChild(contentContainer);
-          htmlElement.appendChild(tabContainer);
-      }
+    if (tabPlacement == TOP || tabPlacement == LEFT) {
+      htmlElement.appendChild(tabContainer);
+      htmlElement.appendChild(contentContainer);
+    } else {
+      htmlElement.appendChild(contentContainer);
+      htmlElement.appendChild(tabContainer);
+    }
 
-      if (tabPlacement == TOP || tabPlacement == BOTTOM) {
-          htmlElement.style.flexDirection = "column";
-          tabContainer.style.flexDirection = "row";
-      } else {
-          htmlElement.style.flexDirection = "row";
-          tabContainer.style.flexDirection = "column";
-      }
+    if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+      htmlElement.style.flexDirection = "column";
+      tabContainer.style.flexDirection = "row";
+    } else {
+      htmlElement.style.flexDirection = "row";
+      tabContainer.style.flexDirection = "column";
+    }
   }
 
   public void addTab(String title, Icon icon, Component component, String tip) {
@@ -91,31 +94,32 @@ public class JTabbedPane extends JComponent implements SwingConstants {
     tab.tabButton.innerText = title;
     tab.tabButton.title = tip;
 
-    tab.tabButton.onclick = (e) -> {
-        setSelectedTab(tab);
-        return e;
-    };
+    tab.tabButton.onclick =
+        (e) -> {
+          setSelectedTab(tab);
+          return e;
+        };
 
     tabContainer.appendChild(tab.tabButton);
     contentContainer.appendChild(component.getHTMLElement());
 
     if (tabs.size() == 1) {
-        setSelectedTab(tab);
+      setSelectedTab(tab);
     } else {
-        component.getHTMLElement().style.display = "none";
+      component.getHTMLElement().style.display = "none";
     }
   }
 
   private void setSelectedTab(Tab selectedTab) {
-      for (Tab tab : tabs) {
-          boolean isSelected = tab == selectedTab;
-          tab.component.getHTMLElement().style.display = isSelected ? "block" : "none";
-          if (isSelected) {
-              tab.tabButton.classList.add("active");
-          } else {
-              tab.tabButton.classList.remove("active");
-          }
+    for (Tab tab : tabs) {
+      boolean isSelected = tab == selectedTab;
+      tab.component.getHTMLElement().style.display = isSelected ? "block" : "none";
+      if (isSelected) {
+        tab.tabButton.classList.add("active");
+      } else {
+        tab.tabButton.classList.remove("active");
       }
+    }
   }
 
   // TODO: Get model.

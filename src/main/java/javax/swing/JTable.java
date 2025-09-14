@@ -2,24 +2,21 @@ package javax.swing;
 
 import static def.dom.Globals.document;
 
+import def.dom.HTMLTableElement;
+import def.dom.HTMLTableSectionElement;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import jsweet.util.StringTypes;
-import javax.swing.ListSelectionModel;
-import javax.swing.DefaultListSelectionModel;
-import def.dom.HTMLTableElement;
-import def.dom.HTMLTableSectionElement;
 
 public class JTable extends JComponent {
 
@@ -36,14 +33,14 @@ public class JTable extends JComponent {
   protected int editingColumn = -1;
 
   public JTable(TableModel dm) {
-      this.columnModel = new DefaultTableColumnModel();
-      this.selectionModel = new DefaultListSelectionModel();
-      this.selectionModel.addListSelectionListener(e -> refreshTable());
-      this.tableHeader = new JTableHeader(columnModel);
-      this.defaultRenderer = new DefaultTableCellRenderer();
-      this.defaultCellEditor = new DefaultCellEditor(new JTextField());
-      setModel(dm);
-      createDefaultColumnsFromModel();
+    this.columnModel = new DefaultTableColumnModel();
+    this.selectionModel = new DefaultListSelectionModel();
+    this.selectionModel.addListSelectionListener(e -> refreshTable());
+    this.tableHeader = new JTableHeader(columnModel);
+    this.defaultRenderer = new DefaultTableCellRenderer();
+    this.defaultCellEditor = new DefaultCellEditor(new JTextField());
+    setModel(dm);
+    createDefaultColumnsFromModel();
   }
 
   @Override
@@ -67,23 +64,23 @@ public class JTable extends JComponent {
 
   public void setModel(TableModel dataModel) {
     if (dataModel == null) {
-        throw new IllegalArgumentException("Cannot set a null TableModel");
+      throw new IllegalArgumentException("Cannot set a null TableModel");
     }
     if (this.dataModel != null) {
-        this.dataModel.removeTableModelListener(tableModelListener);
+      this.dataModel.removeTableModelListener(tableModelListener);
     }
     this.dataModel = dataModel;
     if (this.tableModelListener == null) {
-        this.tableModelListener = new TableModelHandler();
+      this.tableModelListener = new TableModelHandler();
     }
     this.dataModel.addTableModelListener(this.tableModelListener);
     refreshTable();
   }
 
   private class TableModelHandler implements TableModelListener {
-      public void tableChanged(javax.swing.event.TableModelEvent e) {
-          JTable.this.tableChanged(e);
-      }
+    public void tableChanged(javax.swing.event.TableModelEvent e) {
+      JTable.this.tableChanged(e);
+    }
   }
 
   public TableModel getModel() {
@@ -91,100 +88,108 @@ public class JTable extends JComponent {
   }
 
   private void tableChanged(javax.swing.event.TableModelEvent e) {
-      refreshTable();
+    refreshTable();
   }
 
   private void refreshTable() {
-      if (tableBody == null) {
-          return;
-      }
+    if (tableBody == null) {
+      return;
+    }
 
-      // Clear existing content
-      tableBody.innerHTML = "";
+    // Clear existing content
+    tableBody.innerHTML = "";
 
-      // Create body
-      for (int i = 0; i < dataModel.getRowCount(); i++) {
-          def.dom.HTMLTableRowElement tr = (def.dom.HTMLTableRowElement) document.createElement(StringTypes.tr);
-          for (int j = 0; j < dataModel.getColumnCount(); j++) {
-              final int row = i;
-              final int col = j;
-              def.dom.HTMLTableCellElement td = (def.dom.HTMLTableCellElement) document.createElement(StringTypes.td);
-              TableColumn column = getColumnModel().getColumn(j);
-              TableCellRenderer renderer = column.getCellRenderer();
-              if (renderer == null) {
-                  renderer = defaultRenderer;
+    // Create body
+    for (int i = 0; i < dataModel.getRowCount(); i++) {
+      def.dom.HTMLTableRowElement tr =
+          (def.dom.HTMLTableRowElement) document.createElement(StringTypes.tr);
+      for (int j = 0; j < dataModel.getColumnCount(); j++) {
+        final int row = i;
+        final int col = j;
+        def.dom.HTMLTableCellElement td =
+            (def.dom.HTMLTableCellElement) document.createElement(StringTypes.td);
+        TableColumn column = getColumnModel().getColumn(j);
+        TableCellRenderer renderer = column.getCellRenderer();
+        if (renderer == null) {
+          renderer = defaultRenderer;
+        }
+        boolean isSelected = getSelectionModel().isSelectedIndex(i);
+        Component cellComponent =
+            renderer.getTableCellRendererComponent(
+                this, dataModel.getValueAt(i, j), isSelected, false, i, j);
+        td.appendChild(cellComponent.getHTMLElement());
+
+        td.onclick =
+            (e) -> {
+              if (getModel().isCellEditable(row, col)) {
+                editCellAt(row, col);
               }
-              boolean isSelected = getSelectionModel().isSelectedIndex(i);
-              Component cellComponent = renderer.getTableCellRendererComponent(this, dataModel.getValueAt(i, j), isSelected, false, i, j);
-              td.appendChild(cellComponent.getHTMLElement());
-
-              td.onclick = (e) -> {
-                  if (getModel().isCellEditable(row, col)) {
-                      editCellAt(row, col);
-                  }
-                  return e;
-              };
-
-              tr.appendChild(td);
-          }
-          final int row = i;
-          tr.onclick = (e) -> {
-              getSelectionModel().setSelectionInterval(row, row);
               return e;
-          };
-          if (getSelectionModel().isSelectedIndex(i)) {
-              tr.style.backgroundColor = "highlight";
-              tr.style.color = "highlighttext";
-          }
-          tableBody.appendChild(tr);
+            };
+
+        tr.appendChild(td);
       }
+      final int row = i;
+      tr.onclick =
+          (e) -> {
+            getSelectionModel().setSelectionInterval(row, row);
+            return e;
+          };
+      if (getSelectionModel().isSelectedIndex(i)) {
+        tr.style.backgroundColor = "highlight";
+        tr.style.color = "highlighttext";
+      }
+      tableBody.appendChild(tr);
+    }
   }
 
   public void editCellAt(int row, int column) {
-      if (editingRow != -1) {
-          stopEditing();
-      }
+    if (editingRow != -1) {
+      stopEditing();
+    }
 
-      editingRow = row;
-      editingColumn = column;
+    editingRow = row;
+    editingColumn = column;
 
-      def.dom.HTMLTableRowElement tr = (def.dom.HTMLTableRowElement) tableBody.rows.item(row);
-      def.dom.HTMLTableCellElement td = (def.dom.HTMLTableCellElement) tr.cells.item(column);
+    def.dom.HTMLTableRowElement tr = (def.dom.HTMLTableRowElement) tableBody.rows.item(row);
+    def.dom.HTMLTableCellElement td = (def.dom.HTMLTableCellElement) tr.cells.item(column);
 
-      TableColumn tableColumn = getColumnModel().getColumn(column);
-      TableCellEditor editor = tableColumn.getCellEditor();
-      if (editor == null) {
-          editor = defaultCellEditor;
-      }
+    TableColumn tableColumn = getColumnModel().getColumn(column);
+    TableCellEditor editor = tableColumn.getCellEditor();
+    if (editor == null) {
+      editor = defaultCellEditor;
+    }
 
-      Component editorComponent = editor.getTableCellEditorComponent(this, getValueAt(row, column), true, row, column);
-      td.innerHTML = "";
-      td.appendChild(editorComponent.getHTMLElement());
+    Component editorComponent =
+        editor.getTableCellEditorComponent(this, getValueAt(row, column), true, row, column);
+    td.innerHTML = "";
+    td.appendChild(editorComponent.getHTMLElement());
 
-      editorComponent.getHTMLElement().focus();
-      editorComponent.getHTMLElement().onblur = (e) -> {
+    editorComponent.getHTMLElement().focus();
+    editorComponent.getHTMLElement().onblur =
+        (e) -> {
           stopEditing();
           return e;
-      };
+        };
   }
 
   public void stopEditing() {
-      if (editingRow == -1) {
-          return;
-      }
+    if (editingRow == -1) {
+      return;
+    }
 
-      TableColumn tableColumn = getColumnModel().getColumn(editingColumn);
-      TableCellEditor editor = tableColumn.getCellEditor();
-      if (editor == null) {
-          editor = defaultCellEditor;
-      }
+    TableColumn tableColumn = getColumnModel().getColumn(editingColumn);
+    TableCellEditor editor = tableColumn.getCellEditor();
+    if (editor == null) {
+      editor = defaultCellEditor;
+    }
 
-      Object value = editor.getCellEditorValue();
-      setValueAt(value, editingRow, editingColumn);
+    Object value = editor.getCellEditorValue();
+    setValueAt(value, editingRow, editingColumn);
 
-      editingRow = -1;
-      editingColumn = -1;
-      // The model listener will call refreshTable()
+    editingRow = -1;
+    editingColumn = -1;
+    // The model listener will call refreshTable()
   }
 
   public ListSelectionModel getSelectionModel() {
@@ -208,29 +213,29 @@ public class JTable extends JComponent {
   }
 
   public void createDefaultColumnsFromModel() {
-      TableModel tm = getModel();
-      if (tm != null) {
-          // Remove any existing columns
-          TableColumnModel cm = getColumnModel();
-          while (cm.getColumnCount() > 0) {
-              cm.removeColumn(cm.getColumn(0));
-          }
-
-          // Create new columns from the data model info
-          for (int i = 0; i < tm.getColumnCount(); i++) {
-              TableColumn newColumn = new TableColumn(i);
-              addColumn(newColumn);
-          }
+    TableModel tm = getModel();
+    if (tm != null) {
+      // Remove any existing columns
+      TableColumnModel cm = getColumnModel();
+      while (cm.getColumnCount() > 0) {
+        cm.removeColumn(cm.getColumn(0));
       }
+
+      // Create new columns from the data model info
+      for (int i = 0; i < tm.getColumnCount(); i++) {
+        TableColumn newColumn = new TableColumn(i);
+        addColumn(newColumn);
+      }
+    }
   }
 
   public void addColumn(TableColumn aColumn) {
-      if (aColumn.getHeaderValue() == null) {
-          int modelColumn = aColumn.getModelIndex();
-          String columnName = getModel().getColumnName(modelColumn);
-          aColumn.setHeaderValue(columnName);
-      }
-      getColumnModel().addColumn(aColumn);
+    if (aColumn.getHeaderValue() == null) {
+      int modelColumn = aColumn.getModelIndex();
+      String columnName = getModel().getColumnName(modelColumn);
+      aColumn.setHeaderValue(columnName);
+    }
+    getColumnModel().addColumn(aColumn);
   }
 
   public void setColumnSelectionAllowed(boolean columnSelectionAllowed) {

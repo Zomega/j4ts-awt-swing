@@ -15801,10 +15801,10 @@ var java;
     var awt;
     (function (awt) {
         /**
-         * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully
-         * functional. It assumes that all media (images) are loaded instantly and synchronously. The
-         * `waitForAll` and `waitForID` methods are no-ops and do not block. This class is primarily a stub
-         * to allow code that uses it to compile.
+         * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully functional.
+         * It assumes that all media (images) are loaded instantly and synchronously. The `waitForAll` and
+         * `waitForID` methods are no-ops and do not block. This class is primarily a stub to allow code
+         * that uses it to compile.
          * @param {java.awt.Component} comp
          * @class
          */
@@ -20062,6 +20062,8 @@ var javax;
                 TableColumn.prototype.setPreferredWidth = function (preferredWidth) {
                 };
                 TableColumn.prototype.setMaxWidth = function (maxWidth) {
+                };
+                TableColumn.prototype.setMinWidth = function (minWidth) {
                 };
                 return TableColumn;
             }());
@@ -43002,6 +43004,50 @@ var javax;
 (function (javax) {
     var swing;
     (function (swing) {
+        var JOptionPane = /** @class */ (function (_super) {
+            __extends(JOptionPane, _super);
+            function JOptionPane() {
+                return _super.call(this) || this;
+            }
+            /**
+             *
+             */
+            JOptionPane.prototype.createHTML = function () {
+                if (this.htmlElement != null) {
+                    return;
+                }
+                this.htmlElement = document.createElement("div");
+                this.htmlElement.className = "applet-joptionpane";
+            };
+            JOptionPane.showMessageDialog$java_awt_Component$java_lang_Object = function (parentComponent, message) {
+            };
+            JOptionPane.showMessageDialog$java_awt_Component$java_lang_Object$java_lang_String$int = function (parentComponent, message, title, messageType) {
+            };
+            JOptionPane.showMessageDialog$java_awt_Component$java_lang_Object$java_lang_String$int$javax_swing_Icon = function (parentComponent, message, title, messageType, icon) {
+            };
+            JOptionPane.showMessageDialog = function (parentComponent, message, title, messageType, icon) {
+                if (((parentComponent != null && parentComponent instanceof java.awt.Component) || parentComponent === null) && ((message != null) || message === null) && ((typeof title === 'string') || title === null) && ((typeof messageType === 'number') || messageType === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null)) {
+                    return javax.swing.JOptionPane.showMessageDialog$java_awt_Component$java_lang_Object$java_lang_String$int$javax_swing_Icon(parentComponent, message, title, messageType, icon);
+                }
+                else if (((parentComponent != null && parentComponent instanceof java.awt.Component) || parentComponent === null) && ((message != null) || message === null) && ((typeof title === 'string') || title === null) && ((typeof messageType === 'number') || messageType === null) && icon === undefined) {
+                    return javax.swing.JOptionPane.showMessageDialog$java_awt_Component$java_lang_Object$java_lang_String$int(parentComponent, message, title, messageType);
+                }
+                else if (((parentComponent != null && parentComponent instanceof java.awt.Component) || parentComponent === null) && ((message != null) || message === null) && title === undefined && messageType === undefined && icon === undefined) {
+                    return javax.swing.JOptionPane.showMessageDialog$java_awt_Component$java_lang_Object(parentComponent, message);
+                }
+                else
+                    throw new Error('invalid overload');
+            };
+            return JOptionPane;
+        }(javax.swing.JComponent));
+        swing.JOptionPane = JOptionPane;
+        JOptionPane["__class"] = "javax.swing.JOptionPane";
+        JOptionPane["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
+    })(swing = javax.swing || (javax.swing = {}));
+})(javax || (javax = {}));
+(function (javax) {
+    var swing;
+    (function (swing) {
         var table;
         (function (table) {
             var JTableHeader = /** @class */ (function (_super) {
@@ -43034,6 +43080,10 @@ var javax;
                         ;
                     }
                     this.htmlElement.appendChild(headerRow);
+                };
+                JTableHeader.prototype.setReorderingAllowed = function (reorderingAllowed) {
+                };
+                JTableHeader.prototype.setResizingAllowed = function (resizingAllowed) {
                 };
                 return JTableHeader;
             }(javax.swing.JComponent));

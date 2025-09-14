@@ -13,11 +13,7 @@ public class DefaultListCellRenderer<E> extends JLabel implements ListCellRender
 
   @Override
   public Component getListCellRendererComponent(
-      JList<? extends E> list,
-      E value,
-      int index,
-      boolean isSelected,
-      boolean cellHasFocus) {
+      JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
 
     setText((value == null) ? "" : value.toString());
 

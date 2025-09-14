@@ -89,8 +89,7 @@ public class JTextArea extends JTextComponent {
           (e) -> {
             KeyboardEvent ke = (KeyboardEvent) e;
             if (ke.keyCode == 13) {
-              actionListener.actionPerformed(
-                  new java.awt.event.ActionEvent(this, 0, null));
+              actionListener.actionPerformed(new java.awt.event.ActionEvent(this, 0, null));
             }
             return ke;
           };
@@ -98,7 +97,7 @@ public class JTextArea extends JTextComponent {
   }
 
   public void addActionListener(ActionListener l) {
-      actionListener = l;
+    actionListener = l;
   }
 
   private static final String uiClassID = "TextAreaUI";

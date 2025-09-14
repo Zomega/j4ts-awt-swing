@@ -1,6 +1,5 @@
 package java.awt.image;
 
-import java.util.Hashtable;
 
 public interface ImageProducer {
   void addConsumer(ImageConsumer ic);

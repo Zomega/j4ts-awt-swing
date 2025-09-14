@@ -3,10 +3,10 @@ package java.awt;
 import java.util.Vector;
 
 /**
- * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully
- * functional. It assumes that all media (images) are loaded instantly and synchronously. The
- * `waitForAll` and `waitForID` methods are no-ops and do not block. This class is primarily a stub
- * to allow code that uses it to compile.
+ * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully functional.
+ * It assumes that all media (images) are loaded instantly and synchronously. The `waitForAll` and
+ * `waitForID` methods are no-ops and do not block. This class is primarily a stub to allow code
+ * that uses it to compile.
  */
 public class MediaTracker {
   private Component target;

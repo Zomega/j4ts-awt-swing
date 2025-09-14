@@ -4,49 +4,53 @@ import java.io.Serializable;
 
 public class TableColumn implements Serializable {
 
-    protected Object headerValue;
-    protected int modelIndex;
-    protected TableCellRenderer cellRenderer;
+  protected Object headerValue;
+  protected int modelIndex;
+  protected TableCellRenderer cellRenderer;
 
-    public TableColumn(int modelIndex) {
-        this.modelIndex = modelIndex;
-    }
+  public TableColumn(int modelIndex) {
+    this.modelIndex = modelIndex;
+  }
 
-    public int getModelIndex() {
-        return modelIndex;
-    }
+  public int getModelIndex() {
+    return modelIndex;
+  }
 
-    public void setHeaderValue(Object headerValue) {
-        this.headerValue = headerValue;
-    }
+  public void setHeaderValue(Object headerValue) {
+    this.headerValue = headerValue;
+  }
 
-    public Object getHeaderValue() {
-        return headerValue;
-    }
+  public Object getHeaderValue() {
+    return headerValue;
+  }
 
-    public void setCellRenderer(TableCellRenderer cellRenderer) {
-        this.cellRenderer = cellRenderer;
-    }
+  public void setCellRenderer(TableCellRenderer cellRenderer) {
+    this.cellRenderer = cellRenderer;
+  }
 
-    public TableCellRenderer getCellRenderer() {
-        return cellRenderer;
-    }
+  public TableCellRenderer getCellRenderer() {
+    return cellRenderer;
+  }
 
-    protected TableCellEditor cellEditor;
+  protected TableCellEditor cellEditor;
 
-    public void setCellEditor(TableCellEditor cellEditor) {
-        this.cellEditor = cellEditor;
-    }
+  public void setCellEditor(TableCellEditor cellEditor) {
+    this.cellEditor = cellEditor;
+  }
 
-    public TableCellEditor getCellEditor() {
-        return cellEditor;
-    }
+  public TableCellEditor getCellEditor() {
+    return cellEditor;
+  }
 
-    public void setPreferredWidth(int preferredWidth) {
-        // TODO: Implement
-    }
+  public void setPreferredWidth(int preferredWidth) {
+    // TODO: Implement
+  }
 
-    public void setMaxWidth(int maxWidth) {
-        // TODO: Implement
-    }
+  public void setMaxWidth(int maxWidth) {
+    // TODO: Implement
+  }
+
+  public void setMinWidth(int minWidth) {
+    // TODO: Implement
+  }
 }

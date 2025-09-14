@@ -1,7 +1,6 @@
 package javax.swing;
 
 import java.text.Format;
-import java.text.NumberFormat;
 
 public class JFormattedTextField extends JTextField {
   private Format format;

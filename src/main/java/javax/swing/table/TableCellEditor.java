@@ -4,8 +4,8 @@ import java.awt.Component;
 import javax.swing.JTable;
 
 public interface TableCellEditor {
-    Component getTableCellEditorComponent(JTable table, Object value,
-                                          boolean isSelected,
-                                          int row, int column);
-    Object getCellEditorValue();
+  Component getTableCellEditorComponent(
+      JTable table, Object value, boolean isSelected, int row, int column);
+
+  Object getCellEditorValue();
 }

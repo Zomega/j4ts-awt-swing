@@ -332,7 +332,6 @@ public class JSlider extends JComponent implements SwingConstants {
    * @return the number of values between major ticks
    * @see #setMajorTickSpacing
    */
-
   public int getMajorTickSpacing() {
     return majorTickSpacing;
   }

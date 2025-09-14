@@ -29,8 +29,6 @@ import static def.dom.Globals.document;
 import static jsweet.util.Lang.any;
 
 import def.dom.HTMLDivElement;
-import jsweet.util.StringTypes;
-import def.js.Array;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -46,6 +44,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.Position;
+import jsweet.util.StringTypes;
 
 /**
  * A component that displays a list of objects and allows the user to select one or more items. A
@@ -267,7 +266,7 @@ public class JList<E> extends JComponent {
   @Override
   public void createHTML() {
     if (htmlElement != null) {
-        return;
+      return;
     }
     htmlElement = document.createElement(StringTypes.div);
     htmlElement.className = "applet-jlist";
@@ -277,40 +276,41 @@ public class JList<E> extends JComponent {
 
   @Override
   public void initHTML() {
-      super.initHTML();
-      refreshItems();
+    super.initHTML();
+    refreshItems();
   }
 
   private void refreshItems() {
-      if (htmlElement == null) {
-          return;
+    if (htmlElement == null) {
+      return;
+    }
+    htmlElement.innerHTML = "";
+    ListModel<E> model = getModel();
+    for (int i = 0; i < model.getSize(); i++) {
+      final int index = i;
+      E item = model.getElementAt(i);
+
+      HTMLDivElement itemElement = (HTMLDivElement) document.createElement(StringTypes.div);
+      itemElement.className = "applet-jlist-item";
+      itemElement.innerText = item.toString();
+      itemElement.style.padding = "2px 4px";
+
+      if (getSelectionModel().isSelectedIndex(index)) {
+        itemElement.style.backgroundColor = getSelectionBackground().toHTML();
+        itemElement.style.color = getSelectionForeground().toHTML();
+      } else {
+        itemElement.style.backgroundColor = getBackground().toHTML();
+        itemElement.style.color = getForeground().toHTML();
       }
-      htmlElement.innerHTML = "";
-      ListModel<E> model = getModel();
-      for (int i = 0; i < model.getSize(); i++) {
-          final int index = i;
-          E item = model.getElementAt(i);
 
-          HTMLDivElement itemElement = (HTMLDivElement) document.createElement(StringTypes.div);
-          itemElement.className = "applet-jlist-item";
-          itemElement.innerText = item.toString();
-          itemElement.style.padding = "2px 4px";
-
-          if (getSelectionModel().isSelectedIndex(index)) {
-              itemElement.style.backgroundColor = getSelectionBackground().toHTML();
-              itemElement.style.color = getSelectionForeground().toHTML();
-          } else {
-              itemElement.style.backgroundColor = getBackground().toHTML();
-              itemElement.style.color = getForeground().toHTML();
-          }
-
-          itemElement.onclick = (e) -> {
-              getSelectionModel().setSelectionInterval(index, index);
-              return e;
+      itemElement.onclick =
+          (e) -> {
+            getSelectionModel().setSelectionInterval(index, index);
+            return e;
           };
 
-          htmlElement.appendChild(itemElement);
-      }
+      htmlElement.appendChild(itemElement);
+    }
   }
 
   /**

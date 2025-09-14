@@ -7560,10 +7560,10 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     /**
-     * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully
-     * functional. It assumes that all media (images) are loaded instantly and synchronously. The
-     * `waitForAll` and `waitForID` methods are no-ops and do not block. This class is primarily a stub
-     * to allow code that uses it to compile.
+     * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully functional.
+     * It assumes that all media (images) are loaded instantly and synchronously. The `waitForAll` and
+     * `waitForID` methods are no-ops and do not block. This class is primarily a stub to allow code
+     * that uses it to compile.
      * @param {java.awt.Component} comp
      * @class
      */
@@ -9022,6 +9022,7 @@ declare namespace javax.swing.table {
         getCellEditor(): javax.swing.table.TableCellEditor;
         setPreferredWidth(preferredWidth: number): void;
         setMaxWidth(maxWidth: number): void;
+        setMinWidth(minWidth: number): void;
     }
 }
 declare namespace javax.swing.table {
@@ -18984,6 +18985,19 @@ declare namespace javax.swing {
         }
     }
 }
+declare namespace javax.swing {
+    class JOptionPane extends javax.swing.JComponent {
+        /**
+         *
+         */
+        createHTML(): void;
+        static showMessageDialog$java_awt_Component$java_lang_Object(parentComponent: java.awt.Component, message: any): void;
+        static showMessageDialog$java_awt_Component$java_lang_Object$java_lang_String$int(parentComponent: java.awt.Component, message: any, title: string, messageType: number): void;
+        static showMessageDialog$java_awt_Component$java_lang_Object$java_lang_String$int$javax_swing_Icon(parentComponent: java.awt.Component, message: any, title: string, messageType: number, icon: javax.swing.Icon): void;
+        static showMessageDialog(parentComponent?: any, message?: any, title?: any, messageType?: any, icon?: any): any;
+        constructor();
+    }
+}
 declare namespace javax.swing.table {
     class JTableHeader extends javax.swing.JComponent {
         columnModel: javax.swing.table.TableColumnModel;
@@ -18992,6 +19006,8 @@ declare namespace javax.swing.table {
          *
          */
         createHTML(): void;
+        setReorderingAllowed(reorderingAllowed: boolean): void;
+        setResizingAllowed(resizingAllowed: boolean): void;
     }
 }
 declare namespace javax.swing {

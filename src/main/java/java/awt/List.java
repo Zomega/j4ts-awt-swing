@@ -65,9 +65,9 @@ public class List extends Component implements ItemSelectable {
   }
 
   public void removeItemListener(ItemListener l) {
-      if (this.itemListener == l) {
-          this.itemListener = null;
-      }
+    if (this.itemListener == l) {
+      this.itemListener = null;
+    }
   }
 
   public int getSelectedIndex() {
@@ -75,13 +75,13 @@ public class List extends Component implements ItemSelectable {
   }
 
   public Object[] getSelectedObjects() {
-      int selectedIndex = getSelectedIndex();
-      if (selectedIndex >= 0) {
-          Object[] items = new Object[1];
-          items[0] = getItem(selectedIndex);
-          return items;
-      }
-      return new Object[0];
+    int selectedIndex = getSelectedIndex();
+    if (selectedIndex >= 0) {
+      Object[] items = new Object[1];
+      items[0] = getItem(selectedIndex);
+      return items;
+    }
+    return new Object[0];
   }
 
   public void add(String item) {

@@ -63,8 +63,7 @@ public class GridLayout implements LayoutManager2 {
         object(gridContainer.style).$set("grid-template-columns", "repeat(1, 1fr)");
       } else {
         if (rows > 0) {
-          object(gridContainer.style)
-              .$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
+          object(gridContainer.style).$set("grid-template-rows", "repeat(" + this.rows + ", 1fr)");
         }
         if (cols > 0) {
           object(gridContainer.style)

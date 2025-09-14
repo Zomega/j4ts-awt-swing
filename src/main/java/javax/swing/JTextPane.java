@@ -10,9 +10,9 @@ import jsweet.util.StringTypes;
 
 public class JTextPane extends JEditorPane {
 
-    public JTextPane() {
-        super();
-    }
+  public JTextPane() {
+    super();
+  }
 
   @Override
   public void createHTML() {
@@ -25,27 +25,30 @@ public class JTextPane extends JEditorPane {
 
   public void setPage(URL page) {
     if (page == null) {
-        throw new NullPointerException("page must be non-null.");
+      throw new NullPointerException("page must be non-null.");
     }
 
     XMLHttpRequest xhr = new XMLHttpRequest();
     xhr.open("GET", page.toString(), true);
 
-    xhr.onreadystatechange = (ProgressEvent e) -> {
-        if (xhr.readyState == 4) { // DONE
+    xhr.onreadystatechange =
+        (ProgressEvent e) -> {
+          if (xhr.readyState == 4) { // DONE
             if (xhr.status >= 200 && xhr.status < 300) {
-                setText(xhr.responseText);
+              setText(xhr.responseText);
             } else {
-                setText("<html><body><h1>Error loading page: " + xhr.statusText + "</h1></body></html>");
+              setText(
+                  "<html><body><h1>Error loading page: " + xhr.statusText + "</h1></body></html>");
             }
-        }
-        return null;
-    };
+          }
+          return null;
+        };
 
-    xhr.onerror = (Event e) -> {
-        setText("<html><body><h1>Network error occurred.</h1></body></html>");
-        return null;
-    };
+    xhr.onerror =
+        (Event e) -> {
+          setText("<html><body><h1>Network error occurred.</h1></body></html>");
+          return null;
+        };
 
     xhr.send();
   }

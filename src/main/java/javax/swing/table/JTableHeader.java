@@ -7,27 +7,37 @@ import jsweet.util.StringTypes;
 
 public class JTableHeader extends JComponent {
 
-    protected TableColumnModel columnModel;
+  protected TableColumnModel columnModel;
 
-    public JTableHeader(TableColumnModel columnModel) {
-        this.columnModel = columnModel;
+  public JTableHeader(TableColumnModel columnModel) {
+    this.columnModel = columnModel;
+  }
+
+  @Override
+  public void createHTML() {
+    if (htmlElement != null) {
+      return;
     }
+    htmlElement = document.createElement(StringTypes.thead);
+    htmlElement.className = "applet-jtable-header";
 
-    @Override
-    public void createHTML() {
-        if (htmlElement != null) {
-            return;
-        }
-        htmlElement = document.createElement(StringTypes.thead);
-        htmlElement.className = "applet-jtable-header";
-
-        def.dom.HTMLTableRowElement headerRow = (def.dom.HTMLTableRowElement) document.createElement(StringTypes.tr);
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            TableColumn column = columnModel.getColumn(i);
-            def.dom.HTMLTableCellElement th = (def.dom.HTMLTableCellElement) document.createElement(StringTypes.th);
-            th.innerText = (String) column.getHeaderValue();
-            headerRow.appendChild(th);
-        }
-        htmlElement.appendChild(headerRow);
+    def.dom.HTMLTableRowElement headerRow =
+        (def.dom.HTMLTableRowElement) document.createElement(StringTypes.tr);
+    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+      TableColumn column = columnModel.getColumn(i);
+      def.dom.HTMLTableCellElement th =
+          (def.dom.HTMLTableCellElement) document.createElement(StringTypes.th);
+      th.innerText = (String) column.getHeaderValue();
+      headerRow.appendChild(th);
     }
+    htmlElement.appendChild(headerRow);
+  }
+
+  public void setReorderingAllowed(boolean reorderingAllowed) {
+    // TODO: Reimplement? I don't know how to do this.
+  }
+
+  public void setResizingAllowed(boolean resizingAllowed) {
+    // TODO: Reimplement? I don't know how to do this.
+  }
 }
