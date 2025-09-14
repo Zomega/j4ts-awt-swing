@@ -41,4 +41,12 @@ public class TableColumn implements Serializable {
     public TableCellEditor getCellEditor() {
         return cellEditor;
     }
+
+    public void setPreferredWidth(int preferredWidth) {
+        // TODO: Implement
+    }
+
+    public void setMaxWidth(int maxWidth) {
+        // TODO: Implement
+    }
 }

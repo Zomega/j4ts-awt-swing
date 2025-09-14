@@ -11,7 +11,7 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
-    class Image {
+    class Image implements java.awt.image.ImageProducer {
         constructor(src: string);
         setScale(scale: number): void;
         getWidth(observer: java.awt.image.ImageObserver): number;
@@ -36,6 +36,35 @@ declare namespace java.awt {
         static SCALE_REPLICATE: number;
         static SCALE_AREA_AVERAGING: number;
         flush(): void;
+        consumers: java.util.Vector<java.awt.image.ImageConsumer>;
+        getSource(): java.awt.image.ImageProducer;
+        /**
+         *
+         * @param {*} ic
+         */
+        addConsumer(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         * @return {boolean}
+         */
+        isConsumer(ic: java.awt.image.ImageConsumer): boolean;
+        /**
+         *
+         * @param {*} ic
+         */
+        removeConsumer(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         */
+        startProduction(ic: java.awt.image.ImageConsumer): void;
+        imageLoaded(): void;
+        /**
+         *
+         * @param {*} ic
+         */
+        requestTopDownLeftRightResend(ic: java.awt.image.ImageConsumer): void;
     }
 }
 declare namespace java.awt {
@@ -4485,15 +4514,18 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    /**
+     * A simplified implementation of `GridBagLayout` that uses CSS Grid. NOTE: This implementation is
+     * not a full `GridBagLayout`. It creates a basic grid and respects `gridx`, `gridy`, `gridwidth`,
+     * and `gridheight` from `GridBagConstraints`. It does not support weights, anchoring, or other
+     * advanced features. It is intended to provide a "good enough" layout for semi-working
+     * transpilation.
+     * @class
+     */
     class GridBagLayout implements java.awt.LayoutManager2 {
         created: boolean;
         parent: java.awt.Container;
         gridContainer: HTMLDivElement;
-        rows: number;
-        cols: number;
-        hgap: number;
-        vgap: number;
-        constructor(rows?: any, cols?: any, hgap?: any, vgap?: any);
         addLayoutComponent$java_lang_String$java_awt_Component(name: string, component: java.awt.Component): void;
         /**
          *
@@ -4511,7 +4543,7 @@ declare namespace java.awt {
          * @param {java.awt.Container} parent
          */
         layoutContainer(parent: java.awt.Container): void;
-        addLayoutComponent$java_awt_Component$java_lang_Object(component: java.awt.Component, o: any): void;
+        addLayoutComponent$java_awt_Component$java_lang_Object(component: java.awt.Component, constraints: any): void;
         /**
          *
          * @param {java.awt.Container} container
@@ -4530,6 +4562,10 @@ declare namespace java.awt {
          */
         invalidateLayout(container: java.awt.Container): void;
         setConstraints(comp: java.awt.Component, constraints: java.awt.GridBagConstraints): void;
+        preferredLayoutSize(parent: java.awt.Container): java.awt.Dimension;
+        minimumLayoutSize(parent: java.awt.Container): java.awt.Dimension;
+        maximumLayoutSize(target: java.awt.Container): java.awt.Dimension;
+        constructor();
     }
 }
 declare namespace java.awt {
@@ -5464,11 +5500,61 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt.image {
-    class PixelGrabber {
+    class PixelGrabber implements java.awt.image.ImageConsumer {
+        producer: java.awt.image.ImageProducer;
+        dstX: number;
+        dstY: number;
+        dstW: number;
+        dstH: number;
+        dstBuffer: number[];
+        dstOffset: number;
+        dstScan: number;
+        grabbing: boolean;
+        flags: number;
         constructor(img?: any, x?: any, y?: any, w?: any, h?: any, pix?: any, off?: any, scansize?: any);
         grabPixels$(): boolean;
         grabPixels$long(ms: number): boolean;
         grabPixels(ms?: any): boolean;
+        /**
+         *
+         * @param {number} status
+         */
+        imageComplete(status: number): void;
+        /**
+         *
+         * @param {java.awt.image.ColorModel} model
+         */
+        setColorModel(model: java.awt.image.ColorModel): void;
+        /**
+         *
+         * @param {number} width
+         * @param {number} height
+         */
+        setDimensions(width: number, height: number): void;
+        /**
+         *
+         * @param {number} hintflags
+         */
+        setHints(hintflags: number): void;
+        setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int(x: number, y: number, w: number, h: number, model: java.awt.image.ColorModel, pixels: number[], off: number, scansize: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @param {java.awt.image.ColorModel} model
+         * @param {byte[]} pixels
+         * @param {number} off
+         * @param {number} scansize
+         */
+        setPixels(x?: any, y?: any, w?: any, h?: any, model?: any, pixels?: any, off?: any, scansize?: any): any;
+        setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x: number, y: number, w: number, h: number, model: java.awt.image.ColorModel, pixels: number[], off: number, scansize: number): void;
+        /**
+         *
+         * @param {java.util.Hashtable} props
+         */
+        setProperties(props: java.util.Hashtable<any, any>): void;
     }
 }
 declare namespace java.awt.image {
@@ -5494,22 +5580,169 @@ declare namespace java.awt.image {
     }
 }
 declare namespace java.awt.image {
-    class ImageProducer {
+    interface ImageProducer {
+        addConsumer(ic: java.awt.image.ImageConsumer): any;
+        isConsumer(ic: java.awt.image.ImageConsumer): boolean;
+        removeConsumer(ic: java.awt.image.ImageConsumer): any;
+        requestTopDownLeftRightResend(ic: java.awt.image.ImageConsumer): any;
+        startProduction(ic: java.awt.image.ImageConsumer): any;
     }
 }
 declare namespace java.awt.image {
-    class ImageFilter {
+    class ImageFilter implements java.awt.image.ImageConsumer, java.lang.Cloneable {
+        consumer: java.awt.image.ImageConsumer;
+        getFilterInstance(ic: java.awt.image.ImageConsumer): ImageFilter;
+        /**
+         *
+         * @param {number} width
+         * @param {number} height
+         */
+        setDimensions(width: number, height: number): void;
+        /**
+         *
+         * @param {java.util.Hashtable} props
+         */
+        setProperties(props: java.util.Hashtable<any, any>): void;
+        /**
+         *
+         * @param {java.awt.image.ColorModel} model
+         */
+        setColorModel(model: java.awt.image.ColorModel): void;
+        /**
+         *
+         * @param {number} hintflags
+         */
+        setHints(hintflags: number): void;
+        setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int(x: number, y: number, w: number, h: number, model: java.awt.image.ColorModel, pixels: number[], off: number, scansize: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @param {java.awt.image.ColorModel} model
+         * @param {byte[]} pixels
+         * @param {number} off
+         * @param {number} scansize
+         */
+        setPixels(x?: any, y?: any, w?: any, h?: any, model?: any, pixels?: any, off?: any, scansize?: any): any;
+        setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x: number, y: number, w: number, h: number, model: java.awt.image.ColorModel, pixels: number[], off: number, scansize: number): void;
+        /**
+         *
+         * @param {number} status
+         */
+        imageComplete(status: number): void;
+        clone(): any;
+        constructor();
     }
 }
 declare namespace java.awt.image {
-    class FilteredImageSource {
+    class FilteredImageSource implements java.awt.image.ImageProducer {
+        src: java.awt.image.ImageProducer;
+        filter: java.awt.image.ImageFilter;
         constructor(orig: java.awt.image.ImageProducer, imgf: java.awt.image.ImageFilter);
+        consumers: java.util.Hashtable<any, any>;
+        /**
+         *
+         * @param {*} ic
+         */
+        addConsumer(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         * @return {boolean}
+         */
+        isConsumer(ic: java.awt.image.ImageConsumer): boolean;
+        /**
+         *
+         * @param {*} ic
+         */
+        removeConsumer(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         */
+        startProduction(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         */
+        requestTopDownLeftRightResend(ic: java.awt.image.ImageConsumer): void;
     }
 }
 declare namespace java.awt.image {
-    class MemoryImageSource {
+    interface ImageConsumer {
+        imageComplete(status: number): any;
+        setColorModel(model: java.awt.image.ColorModel): any;
+        setDimensions(width: number, height: number): any;
+        setHints(hintflags: number): any;
+        setPixels(x?: any, y?: any, w?: any, h?: any, model?: any, pixels?: any, off?: any, scansize?: any): any;
+        setProperties(props: java.util.Hashtable<any, any>): any;
+    }
+    namespace ImageConsumer {
+        const IMAGEERROR: number;
+        const SINGLEFRAMEDONE: number;
+        const STATICIMAGEDONE: number;
+        const IMAGEABORTED: number;
+        const RANDOMPIXELORDER: number;
+        const TOPDOWNLEFTRIGHT: number;
+        const COMPLETESCANLINES: number;
+        const SINGLEPASS: number;
+        const SINGLEFRAME: number;
+    }
+}
+declare namespace java.awt.image {
+    class MemoryImageSource implements java.awt.image.ImageProducer {
+        width: number;
+        height: number;
+        model: java.awt.image.ColorModel;
+        pixels: number[];
+        offset: number;
+        scan: number;
+        properties: java.util.Hashtable<any, any>;
+        consumers: java.util.Vector<any>;
+        animated: boolean;
         constructor(w?: any, h?: any, pix?: any, off?: any, scan?: any, props?: any);
+        /**
+         *
+         * @param {*} ic
+         */
+        addConsumer(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         * @return {boolean}
+         */
+        isConsumer(ic: java.awt.image.ImageConsumer): boolean;
+        /**
+         *
+         * @param {*} ic
+         */
+        removeConsumer(ic: java.awt.image.ImageConsumer): void;
+        /**
+         *
+         * @param {*} ic
+         */
+        startProduction(ic: java.awt.image.ImageConsumer): void;
+        sendPixels(ic: java.awt.image.ImageConsumer, x: number, y: number, w: number, h: number): void;
+        /**
+         *
+         * @param {*} ic
+         */
+        requestTopDownLeftRightResend(ic: java.awt.image.ImageConsumer): void;
         setAnimated(animated: boolean): void;
+        newPixels$(): void;
+        newPixels$int$int$int$int(x: number, y: number, w: number, h: number): void;
+        newPixels$int$int$int$int$boolean(x: number, y: number, w: number, h: number, framenotify: boolean): void;
+        newPixels(x?: any, y?: any, w?: any, h?: any, framenotify?: any): any;
+    }
+}
+declare namespace java.awt.image {
+    class ColorModel {
+        static aRGBmodel: ColorModel;
+        static aRGBmodel_$LI$(): ColorModel;
+        static getRGBdefault(): ColorModel;
+        getRGB(pixel: number): number;
     }
 }
 declare namespace java.awt.image {
@@ -7326,17 +7559,49 @@ declare namespace java.awt {
     }
 }
 declare namespace java.awt {
+    /**
+     * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully
+     * functional. It assumes that all media (images) are loaded instantly and synchronously. The
+     * `waitForAll` and `waitForID` methods are no-ops and do not block. This class is primarily a stub
+     * to allow code that uses it to compile.
+     * @param {java.awt.Component} comp
+     * @class
+     */
     class MediaTracker {
+        target: java.awt.Component;
+        images: java.util.Vector<MediaTracker.TrackedImage>;
+        static LOADING: number;
+        static ABORTED: number;
+        static ERRORED: number;
+        static COMPLETE: number;
         constructor(comp: java.awt.Component);
-        checkAll(load?: boolean): boolean;
+        addImage(image: java.awt.Image, id: number, w?: number, h?: number): void;
+        checkAll$(): boolean;
+        checkAll$boolean(load: boolean): boolean;
+        checkAll(load?: any): boolean;
         isErrorAny(): boolean;
         waitForAll$(): void;
         waitForAll$long(ms: number): boolean;
+        /**
+         * This method is a no-op in this implementation because blocking is not feasible in a
+         * single-threaded JavaScript environment.
+         *
+         * @return {boolean} always returns true
+         * @param {number} ms
+         */
         waitForAll(ms?: any): any;
-        addImage$java_awt_Image$int(image: java.awt.Image, id: number): void;
-        addImage$java_awt_Image$int$int$int(image: java.awt.Image, id: number, w: number, h: number): void;
-        addImage(image?: any, id?: any, w?: any, h?: any): any;
         statusID(id: number, load: boolean): number;
+    }
+    namespace MediaTracker {
+        class TrackedImage {
+            __parent: any;
+            image: java.awt.Image;
+            id: number;
+            width: number;
+            height: number;
+            status: number;
+            constructor(__parent: any, image: java.awt.Image, id: number, w: number, h: number);
+        }
     }
 }
 declare namespace java.awt {
@@ -7667,9 +7932,30 @@ declare namespace java.awt {
     }
 }
 declare namespace java.applet {
+    /**
+     * The <code>AudioClip</code> class is a simple abstraction for playing a sound clip. Multiple
+     * <code>AudioClip</code> items can be playing at the same time, and the resulting sound is mixed
+     * together to produce a composite sound.
+     *
+     * @author Arthur van Hoff
+     * @since 1.0
+     * @param {java.net.URL} url
+     * @class
+     */
     class AudioClip {
+        audio: HTMLAudioElement;
+        constructor(url: java.net.URL);
+        /**
+         * Starts playing this audio clip in a loop.
+         */
         loop(): void;
+        /**
+         * Starts playing this audio clip. Each time this method is called, the clip is restarted from
+         */
         play(): void;
+        /**
+         * Stops playing this audio clip.
+         */
         stop(): void;
     }
 }
@@ -7681,6 +7967,12 @@ declare namespace java.applet {
         getApplets(): java.util.Enumeration<java.applet.Applet>;
         showDocument(url: java.net.URL, target?: string): void;
         getImage(url: java.net.URL): java.awt.Image;
+    }
+}
+declare namespace java.text {
+    class Format {
+        format(obj: any): string;
+        parseObject(source: string): any;
     }
 }
 declare namespace java.beans {
@@ -8728,6 +9020,8 @@ declare namespace javax.swing.table {
         cellEditor: javax.swing.table.TableCellEditor;
         setCellEditor(cellEditor: javax.swing.table.TableCellEditor): void;
         getCellEditor(): javax.swing.table.TableCellEditor;
+        setPreferredWidth(preferredWidth: number): void;
+        setMaxWidth(maxWidth: number): void;
     }
 }
 declare namespace javax.swing.table {
@@ -10678,9 +10972,10 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     /**
-     * An example implementation of SpinnerModel that defines a sequence of numbers.
-     *
-     * <p>TODO: AI Implemented Stub. Finish
+     * A `SpinnerModel` for a sequence of numbers. The `JSpinner` component that uses this model is
+     * responsible for calling `setValue` with the value returned by `getNextValue` or
+     * `getPreviousValue`. This model does not change its own state when `getNextValue` or
+     * `getPreviousValue` are called.
      * @param {number} value
      * @param {number} minimum
      * @param {number} maximum
@@ -10692,7 +10987,7 @@ declare namespace javax.swing {
         minimum: number;
         maximum: number;
         stepSize: number;
-        listeners: javax.swing.event.ChangeListener[];
+        listeners: java.util.Vector<javax.swing.event.ChangeListener>;
         constructor(value?: any, minimum?: any, maximum?: any, stepSize?: any);
         /**
          *
@@ -10724,7 +11019,7 @@ declare namespace javax.swing {
          * @param {*} listener
          */
         removeChangeListener(listener: javax.swing.event.ChangeListener): void;
-        fireStateChanged(oldValue: any, newValue: any): void;
+        fireStateChanged(): void;
         setMinimum(minimum: number): void;
         setMaximum(maximum: number): void;
         getStepSize(): number;
@@ -14272,9 +14567,33 @@ declare namespace java.awt.geom {
     }
 }
 declare namespace java.awt {
-    class MenuItem extends java.awt.MenuComponent {
+    class MenuItem extends java.awt.MenuComponent implements java.awt.HTMLComponent {
+        label: string;
+        actionListeners: java.util.Vector<java.awt.event.ActionListener>;
+        htmlElement: HTMLElement;
         constructor(label?: any);
         addActionListener(l: java.awt.event.ActionListener): void;
+        removeActionListener(l: java.awt.event.ActionListener): void;
+        getLabel(): string;
+        setLabel(label: string): void;
+        /**
+         *
+         */
+        createHTML(): void;
+        /**
+         *
+         * @return {HTMLElement}
+         */
+        getHTMLElement(): HTMLElement;
+        /**
+         *
+         */
+        initHTML(): void;
+        /**
+         *
+         * @param {HTMLElement} htmlElement
+         */
+        bindHTML(htmlElement: HTMLElement): void;
     }
 }
 declare namespace javax.swing.event {
@@ -14312,7 +14631,36 @@ declare namespace java.awt {
 }
 declare namespace java.awt.image {
     class CropImageFilter extends java.awt.image.ImageFilter {
+        cropX: number;
+        cropY: number;
+        cropW: number;
+        cropH: number;
         constructor(x: number, y: number, w: number, h: number);
+        /**
+         *
+         * @param {number} w
+         * @param {number} h
+         */
+        setDimensions(w: number, h: number): void;
+        setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int(x: number, y: number, w: number, h: number, model: java.awt.image.ColorModel, pixels: number[], off: number, scansize: number): void;
+        /**
+         *
+         * @param {number} x
+         * @param {number} y
+         * @param {number} w
+         * @param {number} h
+         * @param {java.awt.image.ColorModel} model
+         * @param {byte[]} pixels
+         * @param {number} off
+         * @param {number} scansize
+         */
+        setPixels(x?: any, y?: any, w?: any, h?: any, model?: any, pixels?: any, off?: any, scansize?: any): any;
+        setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x: number, y: number, w: number, h: number, model: java.awt.image.ColorModel, pixels: number[], off: number, scansize: number): void;
+        /**
+         *
+         * @param {java.util.Hashtable} props
+         */
+        setProperties(props: java.util.Hashtable<any, any>): void;
     }
 }
 declare namespace java.awt.event {
@@ -14554,9 +14902,12 @@ declare namespace java.awt.event {
 }
 declare namespace java.awt {
     class TextArea extends java.awt.Component {
+        textAreaElement: HTMLTextAreaElement;
         constructor(text?: any, rows?: any, columns?: any, scrollbars?: any);
         append(str: string): void;
         setText(t: string): void;
+        getText(): string;
+        setScrollbars(scrollbars: number): void;
         getFontMetrics$(): java.awt.FontMetrics;
         getFontMetrics$java_awt_Font(font: java.awt.Font): java.awt.FontMetrics;
         getFontMetrics(font?: any): java.awt.FontMetrics;
@@ -14564,6 +14915,10 @@ declare namespace java.awt {
          *
          */
         createHTML(): void;
+        static SCROLLBARS_BOTH: number;
+        static SCROLLBARS_VERTICAL_ONLY: number;
+        static SCROLLBARS_HORIZONTAL_ONLY: number;
+        static SCROLLBARS_NONE: number;
     }
 }
 declare namespace java.awt {
@@ -15833,6 +16188,8 @@ declare namespace java.awt {
 }
 declare namespace java.awt {
     class Menu extends java.awt.MenuItem {
+        items: java.util.Vector<java.awt.MenuItem>;
+        ulElement: HTMLUListElement;
         constructor(label?: any, tearOff?: any);
         add$java_awt_MenuItem(mi: java.awt.MenuItem): java.awt.MenuItem;
         add(mi?: any): any;
@@ -20598,7 +20955,10 @@ declare namespace javax.swing {
 }
 declare namespace javax.swing {
     class JFormattedTextField extends javax.swing.JTextField {
-        constructor(format?: any);
+        format: java.text.Format;
+        constructor(value?: any);
+        setValue(value: any): void;
+        getValue(): any;
     }
 }
 declare namespace javax.swing {

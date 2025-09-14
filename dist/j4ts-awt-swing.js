@@ -61,6 +61,7 @@ var java;
                 if (this.source === undefined) {
                     this.source = null;
                 }
+                this.consumers = (new java.util.Vector());
                 this.source = document.createElement("img");
                 this.source.className = "applet-image";
                 this.source.src = src;
@@ -96,6 +97,88 @@ var java;
             };
             Image.prototype.flush = function () {
             };
+            Image.prototype.getSource = function () {
+                return this;
+            };
+            /**
+             *
+             * @param {*} ic
+             */
+            Image.prototype.addConsumer = function (ic) {
+                if (!this.consumers.contains(ic)) {
+                    this.consumers.addElement(ic);
+                }
+            };
+            /**
+             *
+             * @param {*} ic
+             * @return {boolean}
+             */
+            Image.prototype.isConsumer = function (ic) {
+                return this.consumers.contains(ic);
+            };
+            /**
+             *
+             * @param {*} ic
+             */
+            Image.prototype.removeConsumer = function (ic) {
+                this.consumers.removeElement(ic);
+            };
+            /**
+             *
+             * @param {*} ic
+             */
+            Image.prototype.startProduction = function (ic) {
+                var _this = this;
+                this.addConsumer(ic);
+                if (this.source.complete) {
+                    this.imageLoaded();
+                }
+                else {
+                    this.source.onload = function (e) {
+                        _this.imageLoaded();
+                        return null;
+                    };
+                }
+            };
+            /*private*/ Image.prototype.imageLoaded = function () {
+                var w = (this.source.width | 0);
+                var h = (this.source.height | 0);
+                var canvas = document.createElement("canvas");
+                canvas.width = w;
+                canvas.height = h;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(this.source, 0, 0);
+                var imageData = ctx.getImageData(0, 0, w, h);
+                var data = imageData.data;
+                var pixels = (function (s) { var a = []; while (s-- > 0)
+                    a.push(0); return a; })(w * h);
+                for (var i = 0; i < pixels.length; i++) {
+                    {
+                        var r = data[i * 4];
+                        var g = data[i * 4 + 1];
+                        var b = data[i * 4 + 2];
+                        var a = data[i * 4 + 3];
+                        pixels[i] = ((a | 0) << 24) | ((r | 0) << 16) | ((g | 0) << 8) | (b | 0);
+                    }
+                    ;
+                }
+                for (var index = this.consumers.iterator(); index.hasNext();) {
+                    var consumer = index.next();
+                    {
+                        consumer.setDimensions(w, h);
+                        consumer['setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int'](0, 0, w, h, java.awt.image.ColorModel.getRGBdefault(), pixels, 0, w);
+                        consumer.imageComplete(java.awt.image.ImageConsumer.STATICIMAGEDONE);
+                    }
+                }
+                this.consumers.clear();
+            };
+            /**
+             *
+             * @param {*} ic
+             */
+            Image.prototype.requestTopDownLeftRightResend = function (ic) {
+            };
             /**
              * Use the default image-scaling algorithm.
              *
@@ -116,6 +199,7 @@ var java;
         }());
         awt.Image = Image;
         Image["__class"] = "java.awt.Image";
+        Image["__interfaces"] = ["java.awt.image.ImageProducer"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -10243,138 +10327,23 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        /**
+         * A simplified implementation of `GridBagLayout` that uses CSS Grid. NOTE: This implementation is
+         * not a full `GridBagLayout`. It creates a basic grid and respects `gridx`, `gridy`, `gridwidth`,
+         * and `gridheight` from `GridBagConstraints`. It does not support weights, anchoring, or other
+         * advanced features. It is intended to provide a "good enough" layout for semi-working
+         * transpilation.
+         * @class
+         */
         var GridBagLayout = /** @class */ (function () {
-            function GridBagLayout(rows, cols, hgap, vgap) {
-                if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && ((typeof hgap === 'number') || hgap === null) && ((typeof vgap === 'number') || vgap === null)) {
-                    var __args = arguments;
-                    if (this.parent === undefined) {
-                        this.parent = null;
-                    }
-                    if (this.gridContainer === undefined) {
-                        this.gridContainer = null;
-                    }
-                    if (this.rows === undefined) {
-                        this.rows = 0;
-                    }
-                    if (this.cols === undefined) {
-                        this.cols = 0;
-                    }
-                    if (this.hgap === undefined) {
-                        this.hgap = 0;
-                    }
-                    if (this.vgap === undefined) {
-                        this.vgap = 0;
-                    }
-                    this.created = false;
-                    this.rows = rows;
-                    this.cols = cols;
-                    this.hgap = hgap;
-                    this.vgap = vgap;
+            function GridBagLayout() {
+                this.created = false;
+                if (this.parent === undefined) {
+                    this.parent = null;
                 }
-                else if (((typeof rows === 'number') || rows === null) && ((typeof cols === 'number') || cols === null) && hgap === undefined && vgap === undefined) {
-                    var __args = arguments;
-                    {
-                        var __args_4 = arguments;
-                        var hgap_3 = 0;
-                        var vgap_3 = 0;
-                        if (this.parent === undefined) {
-                            this.parent = null;
-                        }
-                        if (this.gridContainer === undefined) {
-                            this.gridContainer = null;
-                        }
-                        if (this.rows === undefined) {
-                            this.rows = 0;
-                        }
-                        if (this.cols === undefined) {
-                            this.cols = 0;
-                        }
-                        if (this.hgap === undefined) {
-                            this.hgap = 0;
-                        }
-                        if (this.vgap === undefined) {
-                            this.vgap = 0;
-                        }
-                        this.created = false;
-                        this.rows = rows;
-                        this.cols = cols;
-                        this.hgap = hgap_3;
-                        this.vgap = vgap_3;
-                    }
-                    if (this.parent === undefined) {
-                        this.parent = null;
-                    }
-                    if (this.gridContainer === undefined) {
-                        this.gridContainer = null;
-                    }
-                    if (this.rows === undefined) {
-                        this.rows = 0;
-                    }
-                    if (this.cols === undefined) {
-                        this.cols = 0;
-                    }
-                    if (this.hgap === undefined) {
-                        this.hgap = 0;
-                    }
-                    if (this.vgap === undefined) {
-                        this.vgap = 0;
-                    }
-                    this.created = false;
+                if (this.gridContainer === undefined) {
+                    this.gridContainer = null;
                 }
-                else if (rows === undefined && cols === undefined && hgap === undefined && vgap === undefined) {
-                    var __args = arguments;
-                    {
-                        var __args_5 = arguments;
-                        var rows_1 = 1;
-                        var cols_1 = 1;
-                        var hgap_4 = 0;
-                        var vgap_4 = 0;
-                        if (this.parent === undefined) {
-                            this.parent = null;
-                        }
-                        if (this.gridContainer === undefined) {
-                            this.gridContainer = null;
-                        }
-                        if (this.rows === undefined) {
-                            this.rows = 0;
-                        }
-                        if (this.cols === undefined) {
-                            this.cols = 0;
-                        }
-                        if (this.hgap === undefined) {
-                            this.hgap = 0;
-                        }
-                        if (this.vgap === undefined) {
-                            this.vgap = 0;
-                        }
-                        this.created = false;
-                        this.rows = rows_1;
-                        this.cols = cols_1;
-                        this.hgap = hgap_4;
-                        this.vgap = vgap_4;
-                    }
-                    if (this.parent === undefined) {
-                        this.parent = null;
-                    }
-                    if (this.gridContainer === undefined) {
-                        this.gridContainer = null;
-                    }
-                    if (this.rows === undefined) {
-                        this.rows = 0;
-                    }
-                    if (this.cols === undefined) {
-                        this.cols = 0;
-                    }
-                    if (this.hgap === undefined) {
-                        this.hgap = 0;
-                    }
-                    if (this.vgap === undefined) {
-                        this.vgap = 0;
-                    }
-                    this.created = false;
-                }
-                else
-                    throw new Error('invalid overload');
             }
             GridBagLayout.prototype.addLayoutComponent$java_lang_String$java_awt_Component = function (name, component) {
                 if (this.gridContainer != null) {
@@ -10401,9 +10370,11 @@ var java;
              * @param {java.awt.Component} component
              */
             GridBagLayout.prototype.removeLayoutComponent = function (component) {
-                var componentElement = component.getHTMLElement();
-                if (this.gridContainer.contains(componentElement)) {
-                    this.gridContainer.removeChild(componentElement);
+                if (this.gridContainer != null && component.getHTMLElement() != null) {
+                    var componentElement = component.getHTMLElement();
+                    if (this.gridContainer.contains(componentElement)) {
+                        this.gridContainer.removeChild(componentElement);
+                    }
                 }
             };
             /**
@@ -10417,13 +10388,16 @@ var java;
                     var parentElement = parent.getHTMLElement();
                     this.gridContainer = document.createElement("div");
                     this.gridContainer.className = "applet-grid-layout";
-                    this.gridContainer.style.display = "grid";
+                    (this.gridContainer.style)["display"] = "grid";
                     this.gridContainer.style.width = "100%";
                     this.gridContainer.style.height = "100%";
                     parentElement.appendChild(this.gridContainer);
                 }
             };
-            GridBagLayout.prototype.addLayoutComponent$java_awt_Component$java_lang_Object = function (component, o) {
+            GridBagLayout.prototype.addLayoutComponent$java_awt_Component$java_lang_Object = function (component, constraints) {
+                if (constraints != null && constraints instanceof java.awt.GridBagConstraints) {
+                    this.setConstraints(component, constraints);
+                }
                 this.addLayoutComponent$java_lang_String$java_awt_Component(null, component);
             };
             /**
@@ -10432,7 +10406,7 @@ var java;
              * @return {number}
              */
             GridBagLayout.prototype.getLayoutAlignmentX = function (container) {
-                return 0;
+                return 0.5;
             };
             /**
              *
@@ -10440,15 +10414,32 @@ var java;
              * @return {number}
              */
             GridBagLayout.prototype.getLayoutAlignmentY = function (container) {
-                return 0;
+                return 0.5;
             };
             /**
              *
              * @param {java.awt.Container} container
              */
             GridBagLayout.prototype.invalidateLayout = function (container) {
+                this.created = false;
             };
             GridBagLayout.prototype.setConstraints = function (comp, constraints) {
+                var element = comp.getHTMLElement();
+                if (element != null) {
+                    (element.style)["grid-column-start"] = "" + (constraints.gridx + 1);
+                    (element.style)["grid-column-end"] = "span " + constraints.gridwidth;
+                    (element.style)["grid-row-start"] = "" + (constraints.gridy + 1);
+                    (element.style)["grid-row-end"] = "span " + constraints.gridheight;
+                }
+            };
+            GridBagLayout.prototype.preferredLayoutSize = function (parent) {
+                return new java.awt.Dimension(0, 0);
+            };
+            GridBagLayout.prototype.minimumLayoutSize = function (parent) {
+                return new java.awt.Dimension(0, 0);
+            };
+            GridBagLayout.prototype.maximumLayoutSize = function (target) {
+                return new java.awt.Dimension(javaemul.internal.IntegerHelper.MAX_VALUE, javaemul.internal.IntegerHelper.MAX_VALUE);
             };
             return GridBagLayout;
         }());
@@ -11184,9 +11175,9 @@ var java;
                 else if (hgap === undefined && vgap === undefined) {
                     var __args = arguments;
                     {
-                        var __args_6 = arguments;
-                        var hgap_5 = 0;
-                        var vgap_5 = 0;
+                        var __args_4 = arguments;
+                        var hgap_3 = 0;
+                        var vgap_3 = 0;
                         if (this.parent === undefined) {
                             this.parent = null;
                         }
@@ -11230,8 +11221,8 @@ var java;
                             this.lastItem = null;
                         }
                         this.created = false;
-                        this.hgap = hgap_5;
-                        this.vgap = vgap_5;
+                        this.hgap = hgap_3;
+                        this.vgap = vgap_3;
                     }
                     if (this.parent === undefined) {
                         this.parent = null;
@@ -11578,23 +11569,213 @@ var java;
                 function PixelGrabber(img, x, y, w, h, pix, off, scansize) {
                     if (((img != null && img instanceof java.awt.Image) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
                         var __args = arguments;
+                        {
+                            var __args_5 = arguments;
+                            var ip = img.getSource();
+                            if (this.producer === undefined) {
+                                this.producer = null;
+                            }
+                            if (this.dstX === undefined) {
+                                this.dstX = 0;
+                            }
+                            if (this.dstY === undefined) {
+                                this.dstY = 0;
+                            }
+                            if (this.dstW === undefined) {
+                                this.dstW = 0;
+                            }
+                            if (this.dstH === undefined) {
+                                this.dstH = 0;
+                            }
+                            if (this.dstBuffer === undefined) {
+                                this.dstBuffer = null;
+                            }
+                            if (this.dstOffset === undefined) {
+                                this.dstOffset = 0;
+                            }
+                            if (this.dstScan === undefined) {
+                                this.dstScan = 0;
+                            }
+                            if (this.grabbing === undefined) {
+                                this.grabbing = false;
+                            }
+                            if (this.flags === undefined) {
+                                this.flags = 0;
+                            }
+                            this.producer = ip;
+                            this.dstX = x;
+                            this.dstY = y;
+                            this.dstW = w;
+                            this.dstH = h;
+                            this.dstBuffer = pix;
+                            this.dstOffset = off;
+                            this.dstScan = scansize;
+                        }
+                        if (this.producer === undefined) {
+                            this.producer = null;
+                        }
+                        if (this.dstX === undefined) {
+                            this.dstX = 0;
+                        }
+                        if (this.dstY === undefined) {
+                            this.dstY = 0;
+                        }
+                        if (this.dstW === undefined) {
+                            this.dstW = 0;
+                        }
+                        if (this.dstH === undefined) {
+                            this.dstH = 0;
+                        }
+                        if (this.dstBuffer === undefined) {
+                            this.dstBuffer = null;
+                        }
+                        if (this.dstOffset === undefined) {
+                            this.dstOffset = 0;
+                        }
+                        if (this.dstScan === undefined) {
+                            this.dstScan = 0;
+                        }
+                        if (this.grabbing === undefined) {
+                            this.grabbing = false;
+                        }
+                        if (this.flags === undefined) {
+                            this.flags = 0;
+                        }
                     }
-                    else if (((img != null && img instanceof java.awt.image.ImageProducer) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                    else if (((img != null && (img.constructor != null && img.constructor["__interfaces"] != null && img.constructor["__interfaces"].indexOf("java.awt.image.ImageProducer") >= 0)) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
                         var __args = arguments;
                         var ip = __args[0];
+                        if (this.producer === undefined) {
+                            this.producer = null;
+                        }
+                        if (this.dstX === undefined) {
+                            this.dstX = 0;
+                        }
+                        if (this.dstY === undefined) {
+                            this.dstY = 0;
+                        }
+                        if (this.dstW === undefined) {
+                            this.dstW = 0;
+                        }
+                        if (this.dstH === undefined) {
+                            this.dstH = 0;
+                        }
+                        if (this.dstBuffer === undefined) {
+                            this.dstBuffer = null;
+                        }
+                        if (this.dstOffset === undefined) {
+                            this.dstOffset = 0;
+                        }
+                        if (this.dstScan === undefined) {
+                            this.dstScan = 0;
+                        }
+                        if (this.grabbing === undefined) {
+                            this.grabbing = false;
+                        }
+                        if (this.flags === undefined) {
+                            this.flags = 0;
+                        }
+                        this.producer = ip;
+                        this.dstX = x;
+                        this.dstY = y;
+                        this.dstW = w;
+                        this.dstH = h;
+                        this.dstBuffer = pix;
+                        this.dstOffset = off;
+                        this.dstScan = scansize;
                     }
                     else if (((img != null && img instanceof java.awt.Image) || img === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((typeof pix === 'boolean') || pix === null) && off === undefined && scansize === undefined) {
                         var __args = arguments;
                         var forceRGB = __args[5];
+                        {
+                            var __args_6 = arguments;
+                            var ip = img.getSource();
+                            var pix_1 = null;
+                            var off_1 = 0;
+                            var scansize_1 = __args_6[3];
+                            if (this.producer === undefined) {
+                                this.producer = null;
+                            }
+                            if (this.dstX === undefined) {
+                                this.dstX = 0;
+                            }
+                            if (this.dstY === undefined) {
+                                this.dstY = 0;
+                            }
+                            if (this.dstW === undefined) {
+                                this.dstW = 0;
+                            }
+                            if (this.dstH === undefined) {
+                                this.dstH = 0;
+                            }
+                            if (this.dstBuffer === undefined) {
+                                this.dstBuffer = null;
+                            }
+                            if (this.dstOffset === undefined) {
+                                this.dstOffset = 0;
+                            }
+                            if (this.dstScan === undefined) {
+                                this.dstScan = 0;
+                            }
+                            if (this.grabbing === undefined) {
+                                this.grabbing = false;
+                            }
+                            if (this.flags === undefined) {
+                                this.flags = 0;
+                            }
+                            this.producer = ip;
+                            this.dstX = x;
+                            this.dstY = y;
+                            this.dstW = w;
+                            this.dstH = h;
+                            this.dstBuffer = pix_1;
+                            this.dstOffset = off_1;
+                            this.dstScan = scansize_1;
+                        }
+                        if (this.producer === undefined) {
+                            this.producer = null;
+                        }
+                        if (this.dstX === undefined) {
+                            this.dstX = 0;
+                        }
+                        if (this.dstY === undefined) {
+                            this.dstY = 0;
+                        }
+                        if (this.dstW === undefined) {
+                            this.dstW = 0;
+                        }
+                        if (this.dstH === undefined) {
+                            this.dstH = 0;
+                        }
+                        if (this.dstBuffer === undefined) {
+                            this.dstBuffer = null;
+                        }
+                        if (this.dstOffset === undefined) {
+                            this.dstOffset = 0;
+                        }
+                        if (this.dstScan === undefined) {
+                            this.dstScan = 0;
+                        }
+                        if (this.grabbing === undefined) {
+                            this.grabbing = false;
+                        }
+                        if (this.flags === undefined) {
+                            this.flags = 0;
+                        }
                     }
                     else
                         throw new Error('invalid overload');
                 }
                 PixelGrabber.prototype.grabPixels$ = function () {
-                    return false;
+                    return this.grabPixels$long(0);
                 };
                 PixelGrabber.prototype.grabPixels$long = function (ms) {
-                    return this.grabPixels$();
+                    if ((this.flags & (java.awt.image.ImageConsumer.IMAGEABORTED | java.awt.image.ImageConsumer.IMAGEERROR)) !== 0) {
+                        return false;
+                    }
+                    this.grabbing = true;
+                    this.producer.startProduction(this);
+                    return (this.flags & (java.awt.image.ImageConsumer.IMAGEABORTED | java.awt.image.ImageConsumer.IMAGEERROR)) === 0;
                 };
                 PixelGrabber.prototype.grabPixels = function (ms) {
                     if (((typeof ms === 'number') || ms === null)) {
@@ -11606,25 +11787,119 @@ var java;
                     else
                         throw new Error('invalid overload');
                 };
+                /**
+                 *
+                 * @param {number} status
+                 */
+                PixelGrabber.prototype.imageComplete = function (status) {
+                    this.grabbing = false;
+                    this.flags = status;
+                };
+                /**
+                 *
+                 * @param {java.awt.image.ColorModel} model
+                 */
+                PixelGrabber.prototype.setColorModel = function (model) {
+                };
+                /**
+                 *
+                 * @param {number} width
+                 * @param {number} height
+                 */
+                PixelGrabber.prototype.setDimensions = function (width, height) {
+                    if (this.dstBuffer == null) {
+                        this.dstBuffer = (function (s) { var a = []; while (s-- > 0)
+                            a.push(0); return a; })(width * height);
+                        this.dstOffset = 0;
+                        this.dstScan = width;
+                        this.dstW = width;
+                        this.dstH = height;
+                    }
+                };
+                /**
+                 *
+                 * @param {number} hintflags
+                 */
+                PixelGrabber.prototype.setHints = function (hintflags) {
+                };
+                PixelGrabber.prototype.setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int = function (x, y, w, h, model, pixels, off, scansize) {
+                    var intPixels = (function (s) { var a = []; while (s-- > 0)
+                        a.push(0); return a; })(w * h);
+                    for (var i = 0; i < w * h; i++) {
+                        {
+                            intPixels[i] = model.getRGB(pixels[off + i] & 255);
+                        }
+                        ;
+                    }
+                    this.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x, y, w, h, model, intPixels, 0, w);
+                };
+                /**
+                 *
+                 * @param {number} x
+                 * @param {number} y
+                 * @param {number} w
+                 * @param {number} h
+                 * @param {java.awt.image.ColorModel} model
+                 * @param {byte[]} pixels
+                 * @param {number} off
+                 * @param {number} scansize
+                 */
+                PixelGrabber.prototype.setPixels = function (x, y, w, h, model, pixels, off, scansize) {
+                    if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((model != null && model instanceof java.awt.image.ColorModel) || model === null) && ((pixels != null && pixels instanceof Array && (pixels.length == 0 || pixels[0] == null || (typeof pixels[0] === 'number'))) || pixels === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        return this.setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int(x, y, w, h, model, pixels, off, scansize);
+                    }
+                    else if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((model != null && model instanceof java.awt.image.ColorModel) || model === null) && ((pixels != null && pixels instanceof Array && (pixels.length == 0 || pixels[0] == null || (typeof pixels[0] === 'number'))) || pixels === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        return this.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x, y, w, h, model, pixels, off, scansize);
+                    }
+                    else
+                        throw new Error('invalid overload');
+                };
+                PixelGrabber.prototype.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int = function (x, y, w, h, model, pixels, off, scansize) {
+                    if (y < this.dstY) {
+                        var diff = this.dstY - y;
+                        h -= diff;
+                        y += diff;
+                        off += diff * scansize;
+                    }
+                    if (y + h > this.dstY + this.dstH) {
+                        h = this.dstY + this.dstH - y;
+                    }
+                    if (x < this.dstX) {
+                        var diff = this.dstX - x;
+                        w -= diff;
+                        x += diff;
+                        off += diff;
+                    }
+                    if (x + w > this.dstX + this.dstW) {
+                        w = this.dstX + this.dstW - x;
+                    }
+                    if (w <= 0 || h <= 0) {
+                        return;
+                    }
+                    if (this.dstBuffer == null) {
+                        return;
+                    }
+                    var dstPtr = this.dstOffset + (y - this.dstY) * this.dstScan + (x - this.dstX);
+                    for (var i = 0; i < h; i++) {
+                        {
+                            java.lang.System.arraycopy(pixels, off, this.dstBuffer, dstPtr, w);
+                            off += scansize;
+                            dstPtr += this.dstScan;
+                        }
+                        ;
+                    }
+                };
+                /**
+                 *
+                 * @param {java.util.Hashtable} props
+                 */
+                PixelGrabber.prototype.setProperties = function (props) {
+                };
                 return PixelGrabber;
             }());
             image.PixelGrabber = PixelGrabber;
             PixelGrabber["__class"] = "java.awt.image.PixelGrabber";
-        })(image = awt.image || (awt.image = {}));
-    })(awt = java.awt || (java.awt = {}));
-})(java || (java = {}));
-(function (java) {
-    var awt;
-    (function (awt) {
-        var image;
-        (function (image) {
-            var ImageProducer = /** @class */ (function () {
-                function ImageProducer() {
-                }
-                return ImageProducer;
-            }());
-            image.ImageProducer = ImageProducer;
-            ImageProducer["__class"] = "java.awt.image.ImageProducer";
+            PixelGrabber["__interfaces"] = ["java.awt.image.ImageConsumer"];
         })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
@@ -11635,11 +11910,105 @@ var java;
         (function (image) {
             var ImageFilter = /** @class */ (function () {
                 function ImageFilter() {
+                    if (this.consumer === undefined) {
+                        this.consumer = null;
+                    }
                 }
+                ImageFilter.prototype.getFilterInstance = function (ic) {
+                    var f = null;
+                    try {
+                        f = (function (o) { if (o.clone != undefined) {
+                            return o.clone();
+                        }
+                        else {
+                            var clone = Object.create(o);
+                            for (var p in o) {
+                                if (o.hasOwnProperty(p))
+                                    clone[p] = o[p];
+                            }
+                            return clone;
+                        } })(this);
+                    }
+                    catch (e) {
+                        console.error(e.message, e);
+                    }
+                    f.consumer = ic;
+                    return f;
+                };
+                /**
+                 *
+                 * @param {number} width
+                 * @param {number} height
+                 */
+                ImageFilter.prototype.setDimensions = function (width, height) {
+                    this.consumer.setDimensions(width, height);
+                };
+                /**
+                 *
+                 * @param {java.util.Hashtable} props
+                 */
+                ImageFilter.prototype.setProperties = function (props) {
+                    this.consumer.setProperties(props);
+                };
+                /**
+                 *
+                 * @param {java.awt.image.ColorModel} model
+                 */
+                ImageFilter.prototype.setColorModel = function (model) {
+                    this.consumer.setColorModel(model);
+                };
+                /**
+                 *
+                 * @param {number} hintflags
+                 */
+                ImageFilter.prototype.setHints = function (hintflags) {
+                    this.consumer.setHints(hintflags);
+                };
+                ImageFilter.prototype.setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int = function (x, y, w, h, model, pixels, off, scansize) {
+                    this.consumer['setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int'](x, y, w, h, model, pixels, off, scansize);
+                };
+                /**
+                 *
+                 * @param {number} x
+                 * @param {number} y
+                 * @param {number} w
+                 * @param {number} h
+                 * @param {java.awt.image.ColorModel} model
+                 * @param {byte[]} pixels
+                 * @param {number} off
+                 * @param {number} scansize
+                 */
+                ImageFilter.prototype.setPixels = function (x, y, w, h, model, pixels, off, scansize) {
+                    if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((model != null && model instanceof java.awt.image.ColorModel) || model === null) && ((pixels != null && pixels instanceof Array && (pixels.length == 0 || pixels[0] == null || (typeof pixels[0] === 'number'))) || pixels === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        return this.setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int(x, y, w, h, model, pixels, off, scansize);
+                    }
+                    else if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((model != null && model instanceof java.awt.image.ColorModel) || model === null) && ((pixels != null && pixels instanceof Array && (pixels.length == 0 || pixels[0] == null || (typeof pixels[0] === 'number'))) || pixels === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        return this.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x, y, w, h, model, pixels, off, scansize);
+                    }
+                    else
+                        throw new Error('invalid overload');
+                };
+                ImageFilter.prototype.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int = function (x, y, w, h, model, pixels, off, scansize) {
+                    this.consumer['setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int'](x, y, w, h, model, pixels, off, scansize);
+                };
+                /**
+                 *
+                 * @param {number} status
+                 */
+                ImageFilter.prototype.imageComplete = function (status) {
+                    this.consumer.imageComplete(status);
+                };
+                ImageFilter.prototype.clone = function () {
+                    return /* clone */ (function (o) { var clone = Object.create(o); for (var p in o) {
+                        if (o.hasOwnProperty(p))
+                            clone[p] = o[p];
+                    } return clone; })(this);
+                };
                 return ImageFilter;
             }());
             image.ImageFilter = ImageFilter;
             ImageFilter["__class"] = "java.awt.image.ImageFilter";
+            ImageFilter["__interfaces"] = ["java.lang.Cloneable", "java.awt.image.ImageConsumer"];
         })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
@@ -11650,11 +12019,81 @@ var java;
         (function (image) {
             var FilteredImageSource = /** @class */ (function () {
                 function FilteredImageSource(orig, imgf) {
+                    if (this.src === undefined) {
+                        this.src = null;
+                    }
+                    if (this.filter === undefined) {
+                        this.filter = null;
+                    }
+                    this.consumers = (new java.util.Hashtable());
+                    this.src = orig;
+                    this.filter = imgf;
                 }
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                FilteredImageSource.prototype.addConsumer = function (ic) {
+                    if (this.consumers.get(ic) == null) {
+                        this.consumers.put(ic, this.filter.getFilterInstance(ic));
+                    }
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 * @return {boolean}
+                 */
+                FilteredImageSource.prototype.isConsumer = function (ic) {
+                    return this.consumers.get(ic) != null;
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                FilteredImageSource.prototype.removeConsumer = function (ic) {
+                    this.consumers.remove(ic);
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                FilteredImageSource.prototype.startProduction = function (ic) {
+                    this.addConsumer(ic);
+                    this.src.startProduction(this.consumers.get(ic));
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                FilteredImageSource.prototype.requestTopDownLeftRightResend = function (ic) {
+                    this.addConsumer(ic);
+                    this.src.requestTopDownLeftRightResend(this.consumers.get(ic));
+                };
                 return FilteredImageSource;
             }());
             image.FilteredImageSource = FilteredImageSource;
             FilteredImageSource["__class"] = "java.awt.image.FilteredImageSource";
+            FilteredImageSource["__interfaces"] = ["java.awt.image.ImageProducer"];
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var ImageConsumer;
+            (function (ImageConsumer) {
+                ImageConsumer.IMAGEERROR = 1;
+                ImageConsumer.SINGLEFRAMEDONE = 2;
+                ImageConsumer.STATICIMAGEDONE = 3;
+                ImageConsumer.IMAGEABORTED = 4;
+                ImageConsumer.RANDOMPIXELORDER = 1;
+                ImageConsumer.TOPDOWNLEFTRIGHT = 2;
+                ImageConsumer.COMPLETESCANLINES = 4;
+                ImageConsumer.SINGLEPASS = 8;
+                ImageConsumer.SINGLEFRAME = 16;
+            })(ImageConsumer = image.ImageConsumer || (image.ImageConsumer = {}));
         })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
@@ -11667,19 +12106,211 @@ var java;
                 function MemoryImageSource(w, h, pix, off, scan, props) {
                     if (((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scan === 'number') || scan === null) && ((props != null && props instanceof java.util.Hashtable) || props === null)) {
                         var __args = arguments;
+                        if (this.width === undefined) {
+                            this.width = 0;
+                        }
+                        if (this.height === undefined) {
+                            this.height = 0;
+                        }
+                        if (this.model === undefined) {
+                            this.model = null;
+                        }
+                        if (this.pixels === undefined) {
+                            this.pixels = null;
+                        }
+                        if (this.offset === undefined) {
+                            this.offset = 0;
+                        }
+                        if (this.scan === undefined) {
+                            this.scan = 0;
+                        }
+                        if (this.properties === undefined) {
+                            this.properties = null;
+                        }
+                        if (this.animated === undefined) {
+                            this.animated = false;
+                        }
+                        this.consumers = (new java.util.Vector());
+                        this.width = w;
+                        this.height = h;
+                        this.model = java.awt.image.ColorModel.getRGBdefault();
+                        this.pixels = pix;
+                        this.offset = off;
+                        this.scan = scan;
+                        this.properties = props;
                     }
                     else if (((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((pix != null && pix instanceof Array && (pix.length == 0 || pix[0] == null || (typeof pix[0] === 'number'))) || pix === null) && ((typeof off === 'number') || off === null) && ((typeof scan === 'number') || scan === null) && props === undefined) {
                         var __args = arguments;
+                        if (this.width === undefined) {
+                            this.width = 0;
+                        }
+                        if (this.height === undefined) {
+                            this.height = 0;
+                        }
+                        if (this.model === undefined) {
+                            this.model = null;
+                        }
+                        if (this.pixels === undefined) {
+                            this.pixels = null;
+                        }
+                        if (this.offset === undefined) {
+                            this.offset = 0;
+                        }
+                        if (this.scan === undefined) {
+                            this.scan = 0;
+                        }
+                        if (this.properties === undefined) {
+                            this.properties = null;
+                        }
+                        if (this.animated === undefined) {
+                            this.animated = false;
+                        }
+                        this.consumers = (new java.util.Vector());
+                        this.width = w;
+                        this.height = h;
+                        this.model = java.awt.image.ColorModel.getRGBdefault();
+                        this.pixels = pix;
+                        this.offset = off;
+                        this.scan = scan;
+                        this.properties = null;
                     }
                     else
                         throw new Error('invalid overload');
                 }
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                MemoryImageSource.prototype.addConsumer = function (ic) {
+                    if (this.consumers.contains(ic)) {
+                        return;
+                    }
+                    this.consumers.addElement(ic);
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 * @return {boolean}
+                 */
+                MemoryImageSource.prototype.isConsumer = function (ic) {
+                    return this.consumers.contains(ic);
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                MemoryImageSource.prototype.removeConsumer = function (ic) {
+                    this.consumers.removeElement(ic);
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                MemoryImageSource.prototype.startProduction = function (ic) {
+                    this.addConsumer(ic);
+                    if (ic != null) {
+                        ic.setDimensions(this.width, this.height);
+                        if (this.properties != null) {
+                            ic.setProperties(this.properties);
+                        }
+                        ic.setColorModel(this.model);
+                        ic.setHints(this.animated ? (java.awt.image.ImageConsumer.SINGLEPASS) : (java.awt.image.ImageConsumer.SINGLEPASS | java.awt.image.ImageConsumer.STATICIMAGEDONE));
+                        this.sendPixels(ic, 0, 0, this.width, this.height);
+                        if (!this.animated) {
+                            ic.imageComplete(java.awt.image.ImageConsumer.STATICIMAGEDONE);
+                            if (this.isConsumer(ic)) {
+                                this.removeConsumer(ic);
+                            }
+                        }
+                    }
+                };
+                /*private*/ MemoryImageSource.prototype.sendPixels = function (ic, x, y, w, h) {
+                    var off = this.offset + this.scan * y + x;
+                    ic['setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int'](x, y, w, h, this.model, this.pixels, off, this.scan);
+                };
+                /**
+                 *
+                 * @param {*} ic
+                 */
+                MemoryImageSource.prototype.requestTopDownLeftRightResend = function (ic) {
+                };
                 MemoryImageSource.prototype.setAnimated = function (animated) {
+                    this.animated = animated;
+                    if (!animated) {
+                        for (var i = 0; i < this.consumers.size(); i++) {
+                            {
+                                var ic = this.consumers.elementAt(i);
+                                ic.imageComplete(java.awt.image.ImageConsumer.STATICIMAGEDONE);
+                            }
+                            ;
+                        }
+                        this.consumers.removeAllElements();
+                    }
+                };
+                MemoryImageSource.prototype.newPixels$ = function () {
+                    this.newPixels$int$int$int$int$boolean(0, 0, this.width, this.height, true);
+                };
+                MemoryImageSource.prototype.newPixels$int$int$int$int = function (x, y, w, h) {
+                    this.newPixels$int$int$int$int$boolean(x, y, w, h, true);
+                };
+                MemoryImageSource.prototype.newPixels$int$int$int$int$boolean = function (x, y, w, h, framenotify) {
+                    if (this.animated) {
+                        if (this.consumers.size() > 0) {
+                            for (var i = 0; i < this.consumers.size(); i++) {
+                                {
+                                    var ic = this.consumers.elementAt(i);
+                                    this.sendPixels(ic, x, y, w, h);
+                                    if (framenotify) {
+                                        ic.imageComplete(java.awt.image.ImageConsumer.SINGLEFRAMEDONE);
+                                    }
+                                }
+                                ;
+                            }
+                        }
+                    }
+                };
+                MemoryImageSource.prototype.newPixels = function (x, y, w, h, framenotify) {
+                    if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((typeof framenotify === 'boolean') || framenotify === null)) {
+                        return this.newPixels$int$int$int$int$boolean(x, y, w, h, framenotify);
+                    }
+                    else if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && framenotify === undefined) {
+                        return this.newPixels$int$int$int$int(x, y, w, h);
+                    }
+                    else if (x === undefined && y === undefined && w === undefined && h === undefined && framenotify === undefined) {
+                        return this.newPixels$();
+                    }
+                    else
+                        throw new Error('invalid overload');
                 };
                 return MemoryImageSource;
             }());
             image.MemoryImageSource = MemoryImageSource;
             MemoryImageSource["__class"] = "java.awt.image.MemoryImageSource";
+            MemoryImageSource["__interfaces"] = ["java.awt.image.ImageProducer"];
+        })(image = awt.image || (awt.image = {}));
+    })(awt = java.awt || (java.awt = {}));
+})(java || (java = {}));
+(function (java) {
+    var awt;
+    (function (awt) {
+        var image;
+        (function (image) {
+            var ColorModel = /** @class */ (function () {
+                function ColorModel() {
+                }
+                ColorModel.aRGBmodel_$LI$ = function () { if (ColorModel.aRGBmodel == null) {
+                    ColorModel.aRGBmodel = new ColorModel();
+                } return ColorModel.aRGBmodel; };
+                ColorModel.getRGBdefault = function () {
+                    return ColorModel.aRGBmodel_$LI$();
+                };
+                ColorModel.prototype.getRGB = function (pixel) {
+                    return pixel;
+                };
+                return ColorModel;
+            }());
+            image.ColorModel = ColorModel;
+            ColorModel["__class"] = "java.awt.image.ColorModel";
         })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
@@ -14613,8 +15244,8 @@ var java;
                     var __args = arguments;
                     {
                         var __args_18 = arguments;
-                        var hgap_6 = 0;
-                        var vgap_6 = 0;
+                        var hgap_4 = 0;
+                        var vgap_4 = 0;
                         if (this.parent === undefined) {
                             this.parent = null;
                         }
@@ -14636,8 +15267,8 @@ var java;
                         this.created = false;
                         this.rows = rows;
                         this.cols = cols;
-                        this.hgap = hgap_6;
-                        this.vgap = vgap_6;
+                        this.hgap = hgap_4;
+                        this.vgap = vgap_4;
                     }
                     if (this.parent === undefined) {
                         this.parent = null;
@@ -14703,7 +15334,19 @@ var java;
                     var parentElement = parent.getHTMLElement();
                     this.gridContainer = document.createElement("div");
                     this.gridContainer.className = "applet-grid-layout";
-                    this.gridContainer.style.display = "grid";
+                    (this.gridContainer.style)["display"] = "grid";
+                    if (this.rows === 0 && this.cols === 0) {
+                        (this.gridContainer.style)["grid-template-columns"] = "repeat(1, 1fr)";
+                    }
+                    else {
+                        if (this.rows > 0) {
+                            (this.gridContainer.style)["grid-template-rows"] = "repeat(" + this.rows + ", 1fr)";
+                        }
+                        if (this.cols > 0) {
+                            (this.gridContainer.style)["grid-template-columns"] = "repeat(" + this.cols + ", 1fr)";
+                        }
+                    }
+                    (this.gridContainer.style)["gap"] = this.vgap + "px " + this.hgap + "px";
                     this.gridContainer.style.width = "100%";
                     this.gridContainer.style.height = "100%";
                     parentElement.appendChild(this.gridContainer);
@@ -15157,21 +15800,74 @@ var java;
 (function (java) {
     var awt;
     (function (awt) {
+        /**
+         * A simplified implementation of `MediaTracker`. NOTE: This implementation is not fully
+         * functional. It assumes that all media (images) are loaded instantly and synchronously. The
+         * `waitForAll` and `waitForID` methods are no-ops and do not block. This class is primarily a stub
+         * to allow code that uses it to compile.
+         * @param {java.awt.Component} comp
+         * @class
+         */
         var MediaTracker = /** @class */ (function () {
             function MediaTracker(comp) {
+                if (this.target === undefined) {
+                    this.target = null;
+                }
+                this.images = (new java.util.Vector());
+                this.target = comp;
             }
+            MediaTracker.prototype.addImage = function (image, id, w, h) {
+                if (w === void 0) { w = -1; }
+                if (h === void 0) { h = -1; }
+                this.images.add(new MediaTracker.TrackedImage(this, image, id, w, h));
+            };
+            MediaTracker.prototype.checkAll$ = function () {
+                return this.checkAll$boolean(false);
+            };
+            MediaTracker.prototype.checkAll$boolean = function (load) {
+                for (var index = this.images.iterator(); index.hasNext();) {
+                    var ti = index.next();
+                    {
+                        if ((ti.status & MediaTracker.COMPLETE) === 0) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
             MediaTracker.prototype.checkAll = function (load) {
-                if (load === void 0) { load = false; }
-                return false;
+                if (((typeof load === 'boolean') || load === null)) {
+                    return this.checkAll$boolean(load);
+                }
+                else if (load === undefined) {
+                    return this.checkAll$();
+                }
+                else
+                    throw new Error('invalid overload');
             };
             MediaTracker.prototype.isErrorAny = function () {
+                for (var index = this.images.iterator(); index.hasNext();) {
+                    var ti = index.next();
+                    {
+                        if ((ti.status & MediaTracker.ERRORED) !== 0) {
+                            return true;
+                        }
+                    }
+                }
                 return false;
             };
             MediaTracker.prototype.waitForAll$ = function () {
             };
             MediaTracker.prototype.waitForAll$long = function (ms) {
-                return false;
+                return true;
             };
+            /**
+             * This method is a no-op in this implementation because blocking is not feasible in a
+             * single-threaded JavaScript environment.
+             *
+             * @return {boolean} always returns true
+             * @param {number} ms
+             */
             MediaTracker.prototype.waitForAll = function (ms) {
                 if (((typeof ms === 'number') || ms === null)) {
                     return this.waitForAll$long(ms);
@@ -15182,27 +15878,57 @@ var java;
                 else
                     throw new Error('invalid overload');
             };
-            MediaTracker.prototype.addImage$java_awt_Image$int = function (image, id) {
-            };
-            MediaTracker.prototype.addImage$java_awt_Image$int$int$int = function (image, id, w, h) {
-            };
-            MediaTracker.prototype.addImage = function (image, id, w, h) {
-                if (((image != null && image instanceof java.awt.Image) || image === null) && ((typeof id === 'number') || id === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null)) {
-                    return this.addImage$java_awt_Image$int$int$int(image, id, w, h);
-                }
-                else if (((image != null && image instanceof java.awt.Image) || image === null) && ((typeof id === 'number') || id === null) && w === undefined && h === undefined) {
-                    return this.addImage$java_awt_Image$int(image, id);
-                }
-                else
-                    throw new Error('invalid overload');
-            };
             MediaTracker.prototype.statusID = function (id, load) {
-                return 0;
+                var status = 0;
+                for (var index = this.images.iterator(); index.hasNext();) {
+                    var ti = index.next();
+                    {
+                        if (ti.id === id) {
+                            status |= ti.status;
+                        }
+                    }
+                }
+                return status;
             };
+            MediaTracker.LOADING = 1;
+            MediaTracker.ABORTED = 2;
+            MediaTracker.ERRORED = 4;
+            MediaTracker.COMPLETE = 8;
             return MediaTracker;
         }());
         awt.MediaTracker = MediaTracker;
         MediaTracker["__class"] = "java.awt.MediaTracker";
+        (function (MediaTracker) {
+            var TrackedImage = /** @class */ (function () {
+                function TrackedImage(__parent, image, id, w, h) {
+                    this.__parent = __parent;
+                    if (this.image === undefined) {
+                        this.image = null;
+                    }
+                    if (this.id === undefined) {
+                        this.id = 0;
+                    }
+                    if (this.width === undefined) {
+                        this.width = 0;
+                    }
+                    if (this.height === undefined) {
+                        this.height = 0;
+                    }
+                    if (this.status === undefined) {
+                        this.status = 0;
+                    }
+                    this.image = image;
+                    this.id = id;
+                    this.width = w;
+                    this.height = h;
+                    this.status = 0;
+                    this.status = java.awt.MediaTracker.COMPLETE;
+                }
+                return TrackedImage;
+            }());
+            MediaTracker.TrackedImage = TrackedImage;
+            TrackedImage["__class"] = "java.awt.MediaTracker.TrackedImage";
+        })(MediaTracker = awt.MediaTracker || (awt.MediaTracker = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -16062,14 +16788,43 @@ var java;
 (function (java) {
     var applet;
     (function (applet) {
+        /**
+         * The <code>AudioClip</code> class is a simple abstraction for playing a sound clip. Multiple
+         * <code>AudioClip</code> items can be playing at the same time, and the resulting sound is mixed
+         * together to produce a composite sound.
+         *
+         * @author Arthur van Hoff
+         * @since 1.0
+         * @param {java.net.URL} url
+         * @class
+         */
         var AudioClip = /** @class */ (function () {
-            function AudioClip() {
+            function AudioClip(url) {
+                if (this.audio === undefined) {
+                    this.audio = null;
+                }
+                this.audio = new HTMLAudioElement();
+                this.audio.src = url.toString();
             }
+            /**
+             * Starts playing this audio clip in a loop.
+             */
             AudioClip.prototype.loop = function () {
+                this.audio.loop = true;
+                this.audio.play();
             };
+            /**
+             * Starts playing this audio clip. Each time this method is called, the clip is restarted from
+             */
             AudioClip.prototype.play = function () {
+                this.audio.play();
             };
+            /**
+             * Stops playing this audio clip.
+             */
             AudioClip.prototype.stop = function () {
+                this.audio.pause();
+                this.audio.currentTime = 0;
             };
             return AudioClip;
         }());
@@ -16105,6 +16860,24 @@ var java;
         applet_1.AppletContext = AppletContext;
         AppletContext["__class"] = "java.applet.AppletContext";
     })(applet = java.applet || (java.applet = {}));
+})(java || (java = {}));
+(function (java) {
+    var text;
+    (function (text) {
+        var Format = /** @class */ (function () {
+            function Format() {
+            }
+            Format.prototype.format = function (obj) {
+                return obj == null ? "" : obj.toString();
+            };
+            Format.prototype.parseObject = function (source) {
+                return source;
+            };
+            return Format;
+        }());
+        text.Format = Format;
+        Format["__class"] = "java.text.Format";
+    })(text = java.text || (java.text = {}));
 })(java || (java = {}));
 (function (java) {
     var beans;
@@ -19286,6 +20059,10 @@ var javax;
                 TableColumn.prototype.getCellEditor = function () {
                     return this.cellEditor;
                 };
+                TableColumn.prototype.setPreferredWidth = function (preferredWidth) {
+                };
+                TableColumn.prototype.setMaxWidth = function (maxWidth) {
+                };
                 return TableColumn;
             }());
             table.TableColumn = TableColumn;
@@ -22374,9 +23151,10 @@ var javax;
     var swing;
     (function (swing) {
         /**
-         * An example implementation of SpinnerModel that defines a sequence of numbers.
-         *
-         * <p>TODO: AI Implemented Stub. Finish
+         * A `SpinnerModel` for a sequence of numbers. The `JSpinner` component that uses this model is
+         * responsible for calling `setValue` with the value returned by `getNextValue` or
+         * `getPreviousValue`. This model does not change its own state when `getNextValue` or
+         * `getPreviousValue` are called.
          * @param {number} value
          * @param {number} minimum
          * @param {number} maximum
@@ -22399,7 +23177,7 @@ var javax;
                     if (this.stepSize === undefined) {
                         this.stepSize = null;
                     }
-                    this.listeners = [];
+                    this.listeners = (new java.util.Vector());
                     this.value = value != null ? /* doubleValue */ value : null;
                     this.minimum = minimum != null ? /* doubleValue */ minimum : null;
                     this.maximum = maximum != null ? /* doubleValue */ maximum : null;
@@ -22425,7 +23203,7 @@ var javax;
                         if (this.stepSize === undefined) {
                             this.stepSize = null;
                         }
-                        this.listeners = [];
+                        this.listeners = (new java.util.Vector());
                         this.value = value_1 != null ? /* doubleValue */ value_1 : null;
                         this.minimum = minimum_1 != null ? /* doubleValue */ minimum_1 : null;
                         this.maximum = maximum_1 != null ? /* doubleValue */ maximum_1 : null;
@@ -22443,7 +23221,7 @@ var javax;
                     if (this.stepSize === undefined) {
                         this.stepSize = null;
                     }
-                    this.listeners = [];
+                    this.listeners = (new java.util.Vector());
                 }
                 else
                     throw new Error('invalid overload');
@@ -22460,13 +23238,13 @@ var javax;
              * @param {*} value
              */
             SpinnerNumberModel.prototype.setValue = function (value) {
-                if (typeof value === 'number') {
-                    var oldValue = this.value;
-                    this.value = /* doubleValue */ value;
-                    this.fireStateChanged(oldValue, this.value);
-                }
-                else {
+                if (!(typeof value === 'number')) {
                     throw new java.lang.IllegalArgumentException("Invalid value type");
+                }
+                var num = value;
+                if (this.value == null || /* doubleValue */ this.value !== /* doubleValue */ num) {
+                    this.value = /* doubleValue */ num;
+                    this.fireStateChanged();
                 }
             };
             /**
@@ -22474,44 +23252,51 @@ var javax;
              * @return {*}
              */
             SpinnerNumberModel.prototype.getNextValue = function () {
-                if (this.maximum != null && /* compareTo */ (function (o1, o2) { if (o1 && o1.compareTo) {
-                    return o1.compareTo(o2);
-                }
-                else {
-                    return o1 < o2 ? -1 : o2 < o1 ? 1 : 0;
-                } })(this.maximum, this.value) <= 0) {
+                if (this.value == null || this.stepSize == null) {
                     return null;
                 }
-                return this.value + this.stepSize;
+                var next = this.value + this.stepSize;
+                if (this.maximum != null && next > this.maximum) {
+                    return null;
+                }
+                return next;
             };
             /**
              *
              * @return {*}
              */
             SpinnerNumberModel.prototype.getPreviousValue = function () {
-                if (this.minimum != null && /* compareTo */ (function (o1, o2) { if (o1 && o1.compareTo) {
-                    return o1.compareTo(o2);
-                }
-                else {
-                    return o1 < o2 ? -1 : o2 < o1 ? 1 : 0;
-                } })(this.minimum, this.value) >= 0) {
+                if (this.value == null || this.stepSize == null) {
                     return null;
                 }
-                return this.value - this.stepSize;
+                var prev = this.value - this.stepSize;
+                if (this.minimum != null && prev < this.minimum) {
+                    return null;
+                }
+                return prev;
             };
             /**
              *
              * @param {*} listener
              */
             SpinnerNumberModel.prototype.addChangeListener = function (listener) {
+                this.listeners.add(listener);
             };
             /**
              *
              * @param {*} listener
              */
             SpinnerNumberModel.prototype.removeChangeListener = function (listener) {
+                this.listeners.remove(listener);
             };
-            SpinnerNumberModel.prototype.fireStateChanged = function (oldValue, newValue) {
+            SpinnerNumberModel.prototype.fireStateChanged = function () {
+                var event = new javax.swing.event.ChangeEvent(this);
+                for (var index = this.listeners.iterator(); index.hasNext();) {
+                    var listener = index.next();
+                    {
+                        listener.stateChanged(event);
+                    }
+                }
             };
             SpinnerNumberModel.prototype.setMinimum = function (minimum) {
                 this.minimum = minimum != null ? /* doubleValue */ minimum : null;
@@ -23289,6 +24074,7 @@ var javax;
         }(java.awt.Image));
         awt.RenderedImage = RenderedImage;
         RenderedImage["__class"] = "java.awt.RenderedImage";
+        RenderedImage["__interfaces"] = ["java.awt.image.ImageProducer"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -23331,7 +24117,7 @@ var javax;
             }(java.awt.Image));
             image.BufferedImage = BufferedImage;
             BufferedImage["__class"] = "java.awt.image.BufferedImage";
-            BufferedImage["__interfaces"] = ["java.awt.image.RenderedImage"];
+            BufferedImage["__interfaces"] = ["java.awt.image.RenderedImage", "java.awt.image.ImageProducer"];
         })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
@@ -28877,21 +29663,102 @@ var javax;
                 if (((typeof label === 'string') || label === null)) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
+                    if (_this.label === undefined) {
+                        _this.label = null;
+                    }
+                    if (_this.htmlElement === undefined) {
+                        _this.htmlElement = null;
+                    }
+                    _this.actionListeners = (new java.util.Vector());
+                    _this.label = label;
+                    _this.createHTML();
+                    _this.initHTML();
                 }
                 else if (label === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_41 = arguments;
+                        var label_1 = "";
+                        _this = _super.call(this) || this;
+                        if (_this.label === undefined) {
+                            _this.label = null;
+                        }
+                        if (_this.htmlElement === undefined) {
+                            _this.htmlElement = null;
+                        }
+                        _this.actionListeners = (new java.util.Vector());
+                        _this.label = label_1;
+                        _this.createHTML();
+                        _this.initHTML();
+                    }
+                    if (_this.label === undefined) {
+                        _this.label = null;
+                    }
+                    if (_this.htmlElement === undefined) {
+                        _this.htmlElement = null;
+                    }
+                    _this.actionListeners = (new java.util.Vector());
                 }
                 else
                     throw new Error('invalid overload');
                 return _this;
             }
             MenuItem.prototype.addActionListener = function (l) {
+                this.actionListeners.add(l);
+            };
+            MenuItem.prototype.removeActionListener = function (l) {
+                this.actionListeners.remove(l);
+            };
+            MenuItem.prototype.getLabel = function () {
+                return this.label;
+            };
+            MenuItem.prototype.setLabel = function (label) {
+                this.label = label;
+                this.htmlElement.textContent = label;
+            };
+            /**
+             *
+             */
+            MenuItem.prototype.createHTML = function () {
+                var _this = this;
+                this.htmlElement = document.createElement("li");
+                this.htmlElement.textContent = this.label;
+                var self = this;
+                this.htmlElement.addEventListener("click", (function (self) {
+                    return function (e) {
+                        var event = new java.awt.event.ActionEvent(self, java.awt.event.ActionEvent.ACTION_PERFORMED_$LI$(), _this.label);
+                        for (var index = _this.actionListeners.iterator(); index.hasNext();) {
+                            var listener = index.next();
+                            {
+                                listener.actionPerformed(event);
+                            }
+                        }
+                    };
+                })(self));
+            };
+            /**
+             *
+             * @return {HTMLElement}
+             */
+            MenuItem.prototype.getHTMLElement = function () {
+                return this.htmlElement;
+            };
+            /**
+             *
+             */
+            MenuItem.prototype.initHTML = function () {
+            };
+            /**
+             *
+             * @param {HTMLElement} htmlElement
+             */
+            MenuItem.prototype.bindHTML = function (htmlElement) {
             };
             return MenuItem;
         }(java.awt.MenuComponent));
         awt.MenuItem = MenuItem;
         MenuItem["__class"] = "java.awt.MenuItem";
+        MenuItem["__interfaces"] = ["java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (javax) {
@@ -28992,12 +29859,98 @@ var javax;
             var CropImageFilter = /** @class */ (function (_super) {
                 __extends(CropImageFilter, _super);
                 function CropImageFilter(x, y, w, h) {
-                    return _super.call(this) || this;
+                    var _this = _super.call(this) || this;
+                    if (_this.cropX === undefined) {
+                        _this.cropX = 0;
+                    }
+                    if (_this.cropY === undefined) {
+                        _this.cropY = 0;
+                    }
+                    if (_this.cropW === undefined) {
+                        _this.cropW = 0;
+                    }
+                    if (_this.cropH === undefined) {
+                        _this.cropH = 0;
+                    }
+                    _this.cropX = x;
+                    _this.cropY = y;
+                    _this.cropW = w;
+                    _this.cropH = h;
+                    return _this;
                 }
+                /**
+                 *
+                 * @param {number} w
+                 * @param {number} h
+                 */
+                CropImageFilter.prototype.setDimensions = function (w, h) {
+                    this.consumer.setDimensions(this.cropW, this.cropH);
+                };
+                CropImageFilter.prototype.setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int = function (x, y, w, h, model, pixels, off, scansize) {
+                    var x1 = Math.max(x, this.cropX);
+                    var y1 = Math.max(y, this.cropY);
+                    var x2 = Math.min(x + w, this.cropX + this.cropW);
+                    var y2 = Math.min(y + h, this.cropY + this.cropH);
+                    if (x1 >= x2 || y1 >= y2) {
+                        return;
+                    }
+                    this.consumer['setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int'](x1 - this.cropX, y1 - this.cropY, (x2 - x1), (y2 - y1), model, pixels, off + (y1 - y) * scansize + (x1 - x), scansize);
+                };
+                /**
+                 *
+                 * @param {number} x
+                 * @param {number} y
+                 * @param {number} w
+                 * @param {number} h
+                 * @param {java.awt.image.ColorModel} model
+                 * @param {byte[]} pixels
+                 * @param {number} off
+                 * @param {number} scansize
+                 */
+                CropImageFilter.prototype.setPixels = function (x, y, w, h, model, pixels, off, scansize) {
+                    if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((model != null && model instanceof java.awt.image.ColorModel) || model === null) && ((pixels != null && pixels instanceof Array && (pixels.length == 0 || pixels[0] == null || (typeof pixels[0] === 'number'))) || pixels === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        return this.setPixels$int$int$int$int$java_awt_image_ColorModel$byte_A$int$int(x, y, w, h, model, pixels, off, scansize);
+                    }
+                    else if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof w === 'number') || w === null) && ((typeof h === 'number') || h === null) && ((model != null && model instanceof java.awt.image.ColorModel) || model === null) && ((pixels != null && pixels instanceof Array && (pixels.length == 0 || pixels[0] == null || (typeof pixels[0] === 'number'))) || pixels === null) && ((typeof off === 'number') || off === null) && ((typeof scansize === 'number') || scansize === null)) {
+                        return this.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int(x, y, w, h, model, pixels, off, scansize);
+                    }
+                    else
+                        throw new Error('invalid overload');
+                };
+                CropImageFilter.prototype.setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int = function (x, y, w, h, model, pixels, off, scansize) {
+                    var x1 = Math.max(x, this.cropX);
+                    var y1 = Math.max(y, this.cropY);
+                    var x2 = Math.min(x + w, this.cropX + this.cropW);
+                    var y2 = Math.min(y + h, this.cropY + this.cropH);
+                    if (x1 >= x2 || y1 >= y2) {
+                        return;
+                    }
+                    this.consumer['setPixels$int$int$int$int$java_awt_image_ColorModel$int_A$int$int'](x1 - this.cropX, y1 - this.cropY, (x2 - x1), (y2 - y1), model, pixels, off + (y1 - y) * scansize + (x1 - x), scansize);
+                };
+                /**
+                 *
+                 * @param {java.util.Hashtable} props
+                 */
+                CropImageFilter.prototype.setProperties = function (props) {
+                    var p = (function (o) { if (o.clone != undefined) {
+                        return o.clone();
+                    }
+                    else {
+                        var clone = Object.create(o);
+                        for (var p_1 in o) {
+                            if (o.hasOwnProperty(p_1))
+                                clone[p_1] = o[p_1];
+                        }
+                        return clone;
+                    } })(props);
+                    p.put("croprect", new java.awt.Rectangle(this.cropX, this.cropY, this.cropW, this.cropH));
+                    _super.prototype.setProperties.call(this, p);
+                };
                 return CropImageFilter;
             }(java.awt.image.ImageFilter));
             image.CropImageFilter = CropImageFilter;
             CropImageFilter["__class"] = "java.awt.image.CropImageFilter";
+            CropImageFilter["__interfaces"] = ["java.lang.Cloneable", "java.awt.image.ImageConsumer"];
         })(image = awt.image || (awt.image = {}));
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
@@ -29159,7 +30112,7 @@ var javax;
                         var __args = arguments;
                         var modifiers_2 = __args[3];
                         {
-                            var __args_41 = arguments;
+                            var __args_42 = arguments;
                             var when_2 = 0;
                             _this = _super.call(this, source, id) || this;
                             if (_this.actionCommand === undefined) {
@@ -29188,10 +30141,10 @@ var javax;
                     else if (((source != null) || source === null) && ((typeof id === 'number') || id === null) && ((typeof command === 'string') || command === null) && when === undefined && modifiers === undefined) {
                         var __args = arguments;
                         {
-                            var __args_42 = arguments;
+                            var __args_43 = arguments;
                             var modifiers_3 = 0;
                             {
-                                var __args_43 = arguments;
+                                var __args_44 = arguments;
                                 var when_3 = 0;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.actionCommand === undefined) {
@@ -29392,7 +30345,7 @@ var javax;
                     else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("java.awt.Adjustable") >= 0)) || source === null) && ((typeof id === 'number') || id === null) && ((typeof type === 'number') || type === null) && ((typeof value === 'number') || value === null) && isAdjusting === undefined) {
                         var __args = arguments;
                         {
-                            var __args_44 = arguments;
+                            var __args_45 = arguments;
                             var isAdjusting_1 = false;
                             _this = _super.call(this, source, id) || this;
                             if (_this.adjustable === undefined) {
@@ -29553,32 +30506,159 @@ var javax;
                 if (((typeof text === 'string') || text === null) && ((typeof rows === 'number') || rows === null) && ((typeof columns === 'number') || columns === null) && ((typeof scrollbars === 'number') || scrollbars === null)) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
+                    if (_this.textAreaElement === undefined) {
+                        _this.textAreaElement = null;
+                    }
+                    if (_this.textAreaElement == null) {
+                        _this.createHTML();
+                    }
+                    _this.textAreaElement.value = text;
+                    if (rows > 0) {
+                        _this.textAreaElement.rows = rows;
+                    }
+                    if (columns > 0) {
+                        _this.textAreaElement.cols = columns;
+                    }
+                    _this.setScrollbars(scrollbars);
                 }
                 else if (((typeof text === 'string') || text === null) && ((typeof rows === 'number') || rows === null) && ((typeof columns === 'number') || columns === null) && scrollbars === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_46 = arguments;
+                        var scrollbars_1 = TextArea.SCROLLBARS_BOTH;
+                        _this = _super.call(this) || this;
+                        if (_this.textAreaElement === undefined) {
+                            _this.textAreaElement = null;
+                        }
+                        if (_this.textAreaElement == null) {
+                            _this.createHTML();
+                        }
+                        _this.textAreaElement.value = text;
+                        if (rows > 0) {
+                            _this.textAreaElement.rows = rows;
+                        }
+                        if (columns > 0) {
+                            _this.textAreaElement.cols = columns;
+                        }
+                        _this.setScrollbars(scrollbars_1);
+                    }
+                    if (_this.textAreaElement === undefined) {
+                        _this.textAreaElement = null;
+                    }
                 }
                 else if (((typeof text === 'number') || text === null) && ((typeof rows === 'number') || rows === null) && columns === undefined && scrollbars === undefined) {
                     var __args = arguments;
-                    var rows_2 = __args[0];
+                    var rows_1 = __args[0];
                     var columns_1 = __args[1];
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_47 = arguments;
+                        var text_1 = "";
+                        var scrollbars_2 = TextArea.SCROLLBARS_BOTH;
+                        _this = _super.call(this) || this;
+                        if (_this.textAreaElement === undefined) {
+                            _this.textAreaElement = null;
+                        }
+                        if (_this.textAreaElement == null) {
+                            _this.createHTML();
+                        }
+                        _this.textAreaElement.value = text_1;
+                        if (rows_1 > 0) {
+                            _this.textAreaElement.rows = rows_1;
+                        }
+                        if (columns_1 > 0) {
+                            _this.textAreaElement.cols = columns_1;
+                        }
+                        _this.setScrollbars(scrollbars_2);
+                    }
+                    if (_this.textAreaElement === undefined) {
+                        _this.textAreaElement = null;
+                    }
                 }
                 else if (((typeof text === 'string') || text === null) && rows === undefined && columns === undefined && scrollbars === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_48 = arguments;
+                        var rows_2 = 0;
+                        var columns_2 = 0;
+                        var scrollbars_3 = TextArea.SCROLLBARS_BOTH;
+                        _this = _super.call(this) || this;
+                        if (_this.textAreaElement === undefined) {
+                            _this.textAreaElement = null;
+                        }
+                        if (_this.textAreaElement == null) {
+                            _this.createHTML();
+                        }
+                        _this.textAreaElement.value = text;
+                        if (rows_2 > 0) {
+                            _this.textAreaElement.rows = rows_2;
+                        }
+                        if (columns_2 > 0) {
+                            _this.textAreaElement.cols = columns_2;
+                        }
+                        _this.setScrollbars(scrollbars_3);
+                    }
+                    if (_this.textAreaElement === undefined) {
+                        _this.textAreaElement = null;
+                    }
                 }
                 else if (text === undefined && rows === undefined && columns === undefined && scrollbars === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_49 = arguments;
+                        var text_2 = "";
+                        var rows_3 = 0;
+                        var columns_3 = 0;
+                        var scrollbars_4 = TextArea.SCROLLBARS_BOTH;
+                        _this = _super.call(this) || this;
+                        if (_this.textAreaElement === undefined) {
+                            _this.textAreaElement = null;
+                        }
+                        if (_this.textAreaElement == null) {
+                            _this.createHTML();
+                        }
+                        _this.textAreaElement.value = text_2;
+                        if (rows_3 > 0) {
+                            _this.textAreaElement.rows = rows_3;
+                        }
+                        if (columns_3 > 0) {
+                            _this.textAreaElement.cols = columns_3;
+                        }
+                        _this.setScrollbars(scrollbars_4);
+                    }
+                    if (_this.textAreaElement === undefined) {
+                        _this.textAreaElement = null;
+                    }
                 }
                 else
                     throw new Error('invalid overload');
                 return _this;
             }
             TextArea.prototype.append = function (str) {
+                this.textAreaElement.value += str;
             };
             TextArea.prototype.setText = function (t) {
+                this.textAreaElement.value = t;
+            };
+            TextArea.prototype.getText = function () {
+                return this.textAreaElement.value;
+            };
+            /*private*/ TextArea.prototype.setScrollbars = function (scrollbars) {
+                switch ((scrollbars)) {
+                    case 0 /* SCROLLBARS_BOTH */:
+                        this.textAreaElement.style.overflow = "auto";
+                        break;
+                    case 1 /* SCROLLBARS_VERTICAL_ONLY */:
+                        this.textAreaElement.style.overflowY = "scroll";
+                        this.textAreaElement.style.overflowX = "hidden";
+                        break;
+                    case 2 /* SCROLLBARS_HORIZONTAL_ONLY */:
+                        this.textAreaElement.style.overflowX = "scroll";
+                        this.textAreaElement.style.overflowY = "hidden";
+                        break;
+                    case 3 /* SCROLLBARS_NONE */:
+                        this.textAreaElement.style.overflow = "hidden";
+                        break;
+                }
             };
             TextArea.prototype.getFontMetrics$ = function () {
                 return null;
@@ -29600,9 +30680,14 @@ var javax;
              *
              */
             TextArea.prototype.createHTML = function () {
-                this.htmlElement = document.createElement("div");
+                this.textAreaElement = document.createElement("textarea");
+                this.htmlElement = this.textAreaElement;
                 this.htmlElement.className = "applet-text-area";
             };
+            TextArea.SCROLLBARS_BOTH = 0;
+            TextArea.SCROLLBARS_VERTICAL_ONLY = 1;
+            TextArea.SCROLLBARS_HORIZONTAL_ONLY = 2;
+            TextArea.SCROLLBARS_NONE = 3;
             return TextArea;
         }(java.awt.Component));
         awt.TextArea = TextArea;
@@ -29662,7 +30747,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_45 = arguments;
+                        var __args_50 = arguments;
                         var value_2 = 0;
                         var visible_1 = 10;
                         var minimum_2 = 0;
@@ -29720,7 +30805,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && visible === undefined && minimum === undefined && maximum === undefined) {
                     var __args = arguments;
                     {
-                        var __args_46 = arguments;
+                        var __args_51 = arguments;
                         var orientation_1 = Scrollbar.VERTICAL;
                         var value_3 = 0;
                         var visible_2 = 10;
@@ -30352,7 +31437,7 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((group != null && group instanceof java.awt.CheckboxGroup) || group === null) && ((typeof state === 'boolean') || state === null)) {
                     var __args = arguments;
                     {
-                        var __args_47 = arguments;
+                        var __args_52 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
                             _this.label = null;
@@ -30434,7 +31519,7 @@ var javax;
                     var __args = arguments;
                     var state_2 = __args[1];
                     {
-                        var __args_48 = arguments;
+                        var __args_53 = arguments;
                         var group_2 = null;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -30485,7 +31570,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_49 = arguments;
+                        var __args_54 = arguments;
                         var state_3 = false;
                         var group_3 = null;
                         _this = _super.call(this) || this;
@@ -30537,8 +31622,8 @@ var javax;
                 else if (label === undefined && group === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_50 = arguments;
-                        var label_1 = "";
+                        var __args_55 = arguments;
+                        var label_2 = "";
                         var state_4 = false;
                         var group_4 = null;
                         _this = _super.call(this) || this;
@@ -30560,7 +31645,7 @@ var javax;
                         if (_this.htmlLabel === undefined) {
                             _this.htmlLabel = null;
                         }
-                        _this.label = label_1;
+                        _this.label = label_2;
                         _this.state = state_4;
                         _this.group = group_4;
                         _this.itemListeners = (new Array());
@@ -30782,8 +31867,8 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_51 = arguments;
-                        var columns_2 = 0;
+                        var __args_56 = arguments;
+                        var columns_4 = 0;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
                             _this.text = null;
@@ -30795,7 +31880,7 @@ var javax;
                             _this.actionListener = null;
                         }
                         _this.text = text;
-                        _this.columns = columns_2;
+                        _this.columns = columns_4;
                     }
                     if (_this.text === undefined) {
                         _this.text = null;
@@ -30809,10 +31894,10 @@ var javax;
                 }
                 else if (((typeof text === 'number') || text === null) && columns === undefined) {
                     var __args = arguments;
-                    var columns_3 = __args[0];
+                    var columns_5 = __args[0];
                     {
-                        var __args_52 = arguments;
-                        var text_1 = "";
+                        var __args_57 = arguments;
+                        var text_3 = "";
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
                             _this.text = null;
@@ -30823,8 +31908,8 @@ var javax;
                         if (_this.actionListener === undefined) {
                             _this.actionListener = null;
                         }
-                        _this.text = text_1;
-                        _this.columns = columns_3;
+                        _this.text = text_3;
+                        _this.columns = columns_5;
                     }
                     if (_this.text === undefined) {
                         _this.text = null;
@@ -30839,9 +31924,9 @@ var javax;
                 else if (text === undefined && columns === undefined) {
                     var __args = arguments;
                     {
-                        var __args_53 = arguments;
-                        var text_2 = "";
-                        var columns_4 = 0;
+                        var __args_58 = arguments;
+                        var text_4 = "";
+                        var columns_6 = 0;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
                             _this.text = null;
@@ -30852,8 +31937,8 @@ var javax;
                         if (_this.actionListener === undefined) {
                             _this.actionListener = null;
                         }
-                        _this.text = text_2;
-                        _this.columns = columns_4;
+                        _this.text = text_4;
+                        _this.columns = columns_6;
                     }
                     if (_this.text === undefined) {
                         _this.text = null;
@@ -30957,7 +32042,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_54 = arguments;
+                        var __args_59 = arguments;
                         var alignment_1 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
@@ -30975,15 +32060,15 @@ var javax;
                 else if (text === undefined && alignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_55 = arguments;
-                        var text_3 = "";
+                        var __args_60 = arguments;
+                        var text_5 = "";
                         var alignment_2 = Label.LEFT;
                         _this = _super.call(this) || this;
                         if (_this.text === undefined) {
                             _this.text = null;
                         }
                         _this.alignment = Label.LEFT;
-                        _this.text = text_3;
+                        _this.text = text_5;
                         _this.setAlignment(alignment_2);
                     }
                     if (_this.text === undefined) {
@@ -31109,7 +32194,7 @@ var javax;
                 else if (((typeof rows === 'number') || rows === null) && multipleMode === undefined) {
                     var __args = arguments;
                     {
-                        var __args_56 = arguments;
+                        var __args_61 = arguments;
                         var multipleMode_1 = false;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -31139,8 +32224,8 @@ var javax;
                 else if (rows === undefined && multipleMode === undefined) {
                     var __args = arguments;
                     {
-                        var __args_57 = arguments;
-                        var rows_3 = 0;
+                        var __args_62 = arguments;
+                        var rows_4 = 0;
                         var multipleMode_2 = false;
                         _this = _super.call(this) || this;
                         if (_this.rows === undefined) {
@@ -31153,7 +32238,7 @@ var javax;
                             _this.itemListener = null;
                         }
                         _this.items = (new java.util.Vector());
-                        _this.rows = rows_3;
+                        _this.rows = rows_4;
                         _this.multipleMode = multipleMode_2;
                     }
                     if (_this.rows === undefined) {
@@ -31317,7 +32402,7 @@ var javax;
                 if (((config != null) || config === null)) {
                     var __args = arguments;
                     {
-                        var __args_58 = arguments;
+                        var __args_63 = arguments;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvasElement === undefined) {
                             _this.htmlCanvasElement = null;
@@ -33765,7 +34850,7 @@ var javax;
                     var p = __args[0];
                     var d = __args[1];
                     {
-                        var __args_59 = arguments;
+                        var __args_64 = arguments;
                         var x_4 = p.x;
                         var y_4 = p.y;
                         var width_4 = d.width;
@@ -33806,7 +34891,7 @@ var javax;
                     var width_5 = __args[0];
                     var height_4 = __args[1];
                     {
-                        var __args_60 = arguments;
+                        var __args_65 = arguments;
                         var x_5 = 0;
                         var y_5 = 0;
                         _this = _super.call(this) || this;
@@ -33844,7 +34929,7 @@ var javax;
                     var __args = arguments;
                     var r = __args[0];
                     {
-                        var __args_61 = arguments;
+                        var __args_66 = arguments;
                         var x_6 = r.x;
                         var y_6 = r.y;
                         var width_6 = r.width;
@@ -33884,7 +34969,7 @@ var javax;
                     var __args = arguments;
                     var p = __args[0];
                     {
-                        var __args_62 = arguments;
+                        var __args_67 = arguments;
                         var x_7 = p.x;
                         var y_7 = p.y;
                         var width_7 = 0;
@@ -33924,7 +35009,7 @@ var javax;
                     var __args = arguments;
                     var d = __args[0];
                     {
-                        var __args_63 = arguments;
+                        var __args_68 = arguments;
                         var x_8 = 0;
                         var y_8 = 0;
                         var width_8 = d.width;
@@ -33963,7 +35048,7 @@ var javax;
                 else if (x === undefined && y === undefined && width === undefined && height === undefined) {
                     var __args = arguments;
                     {
-                        var __args_64 = arguments;
+                        var __args_69 = arguments;
                         var x_9 = 0;
                         var y_9 = 0;
                         var width_9 = 0;
@@ -34879,23 +35964,55 @@ var javax;
                 if (((typeof label === 'string') || label === null) && ((typeof tearOff === 'boolean') || tearOff === null)) {
                     var __args = arguments;
                     {
-                        var __args_65 = arguments;
-                        _this = _super.call(this) || this;
+                        var __args_70 = arguments;
+                        _this = _super.call(this, label) || this;
+                        if (_this.ulElement === undefined) {
+                            _this.ulElement = null;
+                        }
+                        _this.items = (new java.util.Vector());
+                        _this.ulElement = document.createElement("ul");
+                        _this.htmlElement.appendChild(_this.ulElement);
                     }
+                    if (_this.ulElement === undefined) {
+                        _this.ulElement = null;
+                    }
+                    _this.items = (new java.util.Vector());
                 }
                 else if (((typeof label === 'string') || label === null) && tearOff === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    _this = _super.call(this, label) || this;
+                    if (_this.ulElement === undefined) {
+                        _this.ulElement = null;
+                    }
+                    _this.items = (new java.util.Vector());
+                    _this.ulElement = document.createElement("ul");
+                    _this.htmlElement.appendChild(_this.ulElement);
                 }
                 else if (label === undefined && tearOff === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_71 = arguments;
+                        var label_3 = "";
+                        _this = _super.call(this, label_3) || this;
+                        if (_this.ulElement === undefined) {
+                            _this.ulElement = null;
+                        }
+                        _this.items = (new java.util.Vector());
+                        _this.ulElement = document.createElement("ul");
+                        _this.htmlElement.appendChild(_this.ulElement);
+                    }
+                    if (_this.ulElement === undefined) {
+                        _this.ulElement = null;
+                    }
+                    _this.items = (new java.util.Vector());
                 }
                 else
                     throw new Error('invalid overload');
                 return _this;
             }
             Menu.prototype.add$java_awt_MenuItem = function (mi) {
+                this.items.add(mi);
+                this.ulElement.appendChild(mi.getHTMLElement());
                 return mi;
             };
             Menu.prototype.add = function (mi) {
@@ -34909,11 +36026,13 @@ var javax;
                     throw new Error('invalid overload');
             };
             Menu.prototype.add$java_lang_String = function (label) {
+                this.add$java_awt_MenuItem(new java.awt.MenuItem(label));
             };
             return Menu;
         }(java.awt.MenuItem));
         awt.Menu = Menu;
         Menu["__class"] = "java.awt.Menu";
+        Menu["__interfaces"] = ["java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -35840,7 +36959,7 @@ var javax;
                         var oldState_1 = __args[2];
                         var newState_1 = __args[3];
                         {
-                            var __args_66 = arguments;
+                            var __args_72 = arguments;
                             var opposite_1 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.opposite === undefined) {
@@ -35869,7 +36988,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && ((opposite != null && opposite instanceof java.awt.Window) || opposite === null) && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_67 = arguments;
+                            var __args_73 = arguments;
                             var oldState_2 = 0;
                             var newState_2 = 0;
                             _this = _super.call(this, source, id) || this;
@@ -35899,7 +37018,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Window) || source === null) && ((typeof id === 'number') || id === null) && opposite === undefined && oldState === undefined && newState === undefined) {
                         var __args = arguments;
                         {
-                            var __args_68 = arguments;
+                            var __args_74 = arguments;
                             var opposite_2 = null;
                             var oldState_3 = 0;
                             var newState_3 = 0;
@@ -36138,7 +37257,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof temporary === 'boolean') || temporary === null) && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_69 = arguments;
+                            var __args_75 = arguments;
                             var opposite_3 = null;
                             _this = _super.call(this, source, id) || this;
                             if (_this.temporary === undefined) {
@@ -36160,10 +37279,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && temporary === undefined && opposite === undefined) {
                         var __args = arguments;
                         {
-                            var __args_70 = arguments;
+                            var __args_76 = arguments;
                             var temporary_1 = false;
                             {
-                                var __args_71 = arguments;
+                                var __args_77 = arguments;
                                 var opposite_4 = null;
                                 _this = _super.call(this, source, id) || this;
                                 if (_this.temporary === undefined) {
@@ -36367,7 +37486,7 @@ var javax;
                 else if (layout === undefined) {
                     var __args = arguments;
                     {
-                        var __args_72 = arguments;
+                        var __args_78 = arguments;
                         var layout_1 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -36483,7 +37602,7 @@ var javax;
                 else if (view === undefined) {
                     var __args = arguments;
                     {
-                        var __args_73 = arguments;
+                        var __args_79 = arguments;
                         var view_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.view === undefined) {
@@ -37060,7 +38179,7 @@ var javax;
                     else if (((sourceBean != null) || sourceBean === null) && notifyOnEDT === undefined) {
                         var __args = arguments;
                         {
-                            var __args_74 = arguments;
+                            var __args_80 = arguments;
                             var notifyOnEDT_1 = false;
                             _this = _super.call(this, sourceBean) || this;
                             if (_this.notifyOnEDT === undefined) {
@@ -37564,22 +38683,51 @@ var javax;
                 var _this = this;
                 if (((typeof label === 'string') || label === null)) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    _this = _super.call(this, label) || this;
+                    _this.htmlElement = _this.ulElement;
+                    _this.htmlElement.style.position = "absolute";
+                    _this.htmlElement.style.display = "none";
+                    document.body.appendChild(_this.htmlElement);
                 }
                 else if (label === undefined) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_81 = arguments;
+                        var label_4 = "";
+                        _this = _super.call(this, label_4) || this;
+                        _this.htmlElement = _this.ulElement;
+                        _this.htmlElement.style.position = "absolute";
+                        _this.htmlElement.style.display = "none";
+                        document.body.appendChild(_this.htmlElement);
+                    }
                 }
                 else
                     throw new Error('invalid overload');
                 return _this;
             }
             PopupMenu.prototype.show = function (origin, x, y) {
+                var _this = this;
+                this.htmlElement.style.left = x + "px";
+                this.htmlElement.style.top = y + "px";
+                this.htmlElement.style.display = "block";
+                setTimeout(function () {
+                    var listenerHolder = [null];
+                    listenerHolder[0] = function (e) {
+                        _this.htmlElement.style.display = "none";
+                        document.removeEventListener("click", ((function (funcInst) { if (funcInst == null || typeof funcInst == 'function') {
+                            return funcInst;
+                        } return function (arg0) { return (funcInst['$apply'] ? funcInst['$apply'] : funcInst).call(funcInst, arg0); }; })(listenerHolder[0])));
+                    };
+                    document.addEventListener("click", ((function (funcInst) { if (funcInst == null || typeof funcInst == 'function') {
+                        return funcInst;
+                    } return function (arg0) { return (funcInst['$apply'] ? funcInst['$apply'] : funcInst).call(funcInst, arg0); }; })(listenerHolder[0])));
+                }, 0);
             };
             return PopupMenu;
         }(java.awt.Menu));
         awt.PopupMenu = PopupMenu;
         PopupMenu["__class"] = "java.awt.PopupMenu";
+        PopupMenu["__interfaces"] = ["java.awt.HTMLComponent"];
     })(awt = java.awt || (java.awt = {}));
 })(java || (java = {}));
 (function (java) {
@@ -37649,7 +38797,7 @@ var javax;
                         var popupTrigger_1 = __args[7];
                         var button_1 = __args[8];
                         {
-                            var __args_75 = arguments;
+                            var __args_82 = arguments;
                             var xAbs_1 = 0;
                             var yAbs_1 = 0;
                             _this = _super.call(this, source, id, when, modifiers) || this;
@@ -37744,10 +38892,10 @@ var javax;
                         var clickCount_2 = __args[6];
                         var popupTrigger_2 = __args[7];
                         {
-                            var __args_76 = arguments;
+                            var __args_83 = arguments;
                             var button_2 = MouseEvent.NOBUTTON;
                             {
-                                var __args_77 = arguments;
+                                var __args_84 = arguments;
                                 var xAbs_2 = 0;
                                 var yAbs_2 = 0;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
@@ -38147,7 +39295,7 @@ var javax;
                     if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && ((typeof keyLocation === 'number') || keyLocation === null) && ((typeof isProxyActive === 'boolean') || isProxyActive === null)) {
                         var __args = arguments;
                         {
-                            var __args_78 = arguments;
+                            var __args_85 = arguments;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
                                 _this.isProxyActive = false;
@@ -38254,7 +39402,7 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && ((typeof keyChar === 'string') || keyChar === null) && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_79 = arguments;
+                            var __args_86 = arguments;
                             var keyLocation_1 = KeyEvent.KEY_LOCATION_UNKNOWN;
                             _this = _super.call(this, source, id, when, modifiers) || this;
                             if (_this.isProxyActive === undefined) {
@@ -38316,10 +39464,10 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof keyCode === 'number') || keyCode === null) && keyChar === undefined && keyLocation === undefined && isProxyActive === undefined) {
                         var __args = arguments;
                         {
-                            var __args_80 = arguments;
-                            var keyChar_1 = String.fromCharCode(__args_80[4]);
+                            var __args_87 = arguments;
+                            var keyChar_1 = String.fromCharCode(__args_87[4]);
                             {
-                                var __args_81 = arguments;
+                                var __args_88 = arguments;
                                 var keyLocation_2 = KeyEvent.KEY_LOCATION_UNKNOWN;
                                 _this = _super.call(this, source, id, when, modifiers) || this;
                                 if (_this.isProxyActive === undefined) {
@@ -39300,7 +40448,12 @@ var javax;
                 return new java.awt.Image(url.toString());
             };
             Applet.prototype.getImage$java_net_URL$java_lang_String = function (url, name) {
-                return null;
+                try {
+                    return this.getImage$java_net_URL(new java.net.URL(url, name));
+                }
+                catch (e) {
+                    return null;
+                }
             };
             Applet.prototype.getImage = function (url, name) {
                 if (((url != null && url instanceof java.net.URL) || url === null) && ((typeof name === 'string') || name === null)) {
@@ -39349,7 +40502,7 @@ var javax;
                 else if (title === undefined) {
                     var __args = arguments;
                     {
-                        var __args_82 = arguments;
+                        var __args_89 = arguments;
                         var title_1 = "";
                         _this = _super.call(this) || this;
                         if (_this.maximizedBounds === undefined) {
@@ -39579,7 +40732,7 @@ var javax;
                 else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'string') || title === null) && modal === undefined) {
                     var __args = arguments;
                     {
-                        var __args_83 = arguments;
+                        var __args_90 = arguments;
                         var modal_1 = false;
                         _this = _super.call(this, owner) || this;
                         if (_this.title === undefined) {
@@ -39620,7 +40773,7 @@ var javax;
                     var __args = arguments;
                     var modal_2 = __args[1];
                     {
-                        var __args_84 = arguments;
+                        var __args_91 = arguments;
                         var title_2 = "";
                         _this = _super.call(this, owner) || this;
                         if (_this.title === undefined) {
@@ -39660,7 +40813,7 @@ var javax;
                 else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && title === undefined && modal === undefined) {
                     var __args = arguments;
                     {
-                        var __args_85 = arguments;
+                        var __args_92 = arguments;
                         var title_3 = "";
                         var modal_3 = false;
                         _this = _super.call(this, owner) || this;
@@ -39858,7 +41011,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_86 = arguments;
+                        var __args_93 = arguments;
                         var dataModel_1 = new JList.JList$0(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -39937,7 +41090,7 @@ var javax;
                     var __args = arguments;
                     var listData = __args[0];
                     {
-                        var __args_87 = arguments;
+                        var __args_94 = arguments;
                         var dataModel_2 = new JList.JList$1(_this, listData);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -40015,7 +41168,7 @@ var javax;
                 else if (dataModel === undefined) {
                     var __args = arguments;
                     {
-                        var __args_88 = arguments;
+                        var __args_95 = arguments;
                         var dataModel_3 = new JList.JList$2(_this);
                         _this = _super.call(this) || this;
                         if (_this.prototypeCellValue === undefined) {
@@ -41472,7 +42625,7 @@ var javax;
                 else if (orientation === undefined) {
                     var __args = arguments;
                     {
-                        var __args_89 = arguments;
+                        var __args_96 = arguments;
                         var orientation_2 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         _this.orientation = javax.swing.SwingConstants.HORIZONTAL;
@@ -42174,7 +43327,7 @@ var javax;
                     var max_1 = __args[1];
                     var value_4 = __args[2];
                     {
-                        var __args_90 = arguments;
+                        var __args_97 = arguments;
                         var orientation_3 = javax.swing.SwingConstants.HORIZONTAL;
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
@@ -42233,9 +43386,9 @@ var javax;
                     var min_2 = __args[0];
                     var max_2 = __args[1];
                     {
-                        var __args_91 = arguments;
+                        var __args_98 = arguments;
                         var orientation_4 = javax.swing.SwingConstants.HORIZONTAL;
-                        var value_5 = ((__args_91[1] + __args_91[2]) / 2 | 0);
+                        var value_5 = ((__args_98[1] + __args_98[2]) / 2 | 0);
                         _this = _super.call(this) || this;
                         if (_this.sliderModel === undefined) {
                             _this.sliderModel = null;
@@ -42321,7 +43474,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_92 = arguments;
+                        var __args_99 = arguments;
                         var min_3 = 0;
                         var max_3 = 100;
                         var value_6 = 50;
@@ -42380,7 +43533,7 @@ var javax;
                 else if (orientation === undefined && min === undefined && max === undefined && value === undefined) {
                     var __args = arguments;
                     {
-                        var __args_93 = arguments;
+                        var __args_100 = arguments;
                         var orientation_5 = javax.swing.SwingConstants.HORIZONTAL;
                         var min_4 = 0;
                         var max_4 = 100;
@@ -42782,7 +43935,7 @@ var javax;
     var swing;
     (function (swing) {
         var text;
-        (function (text_4) {
+        (function (text_6) {
             var JTextComponent = /** @class */ (function (_super) {
                 __extends(JTextComponent, _super);
                 function JTextComponent() {
@@ -42805,7 +43958,7 @@ var javax;
                 };
                 return JTextComponent;
             }(javax.swing.JComponent));
-            text_4.JTextComponent = JTextComponent;
+            text_6.JTextComponent = JTextComponent;
             JTextComponent["__class"] = "javax.swing.text.JTextComponent";
             JTextComponent["__interfaces"] = ["java.awt.HTMLComponent", "java.io.Serializable"];
         })(text = swing.text || (swing.text = {}));
@@ -42852,7 +44005,7 @@ var javax;
                 else if (((typeof orientation === 'number') || orientation === null) && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_94 = arguments;
+                        var __args_101 = arguments;
                         var value_8 = 0;
                         var extent_3 = 10;
                         var min_5 = 0;
@@ -42889,7 +44042,7 @@ var javax;
                 else if (orientation === undefined && value === undefined && extent === undefined && min === undefined && max === undefined) {
                     var __args = arguments;
                     {
-                        var __args_95 = arguments;
+                        var __args_102 = arguments;
                         var orientation_6 = java.awt.Adjustable.VERTICAL;
                         var value_9 = 0;
                         var extent_4 = 10;
@@ -43169,7 +44322,7 @@ var javax;
                 else if (((layout != null && (layout.constructor != null && layout.constructor["__interfaces"] != null && layout.constructor["__interfaces"].indexOf("java.awt.LayoutManager") >= 0)) || layout === null) && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_96 = arguments;
+                        var __args_103 = arguments;
                         var isDoubleBuffered_1 = true;
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -43185,7 +44338,7 @@ var javax;
                     var __args = arguments;
                     var isDoubleBuffered_2 = __args[0];
                     {
-                        var __args_97 = arguments;
+                        var __args_104 = arguments;
                         var layout_2 = new java.awt.FlowLayout();
                         _this = _super.call(this) || this;
                         if (_this.htmlCanvas === undefined) {
@@ -43200,10 +44353,10 @@ var javax;
                 else if (layout === undefined && isDoubleBuffered === undefined) {
                     var __args = arguments;
                     {
-                        var __args_98 = arguments;
+                        var __args_105 = arguments;
                         var isDoubleBuffered_3 = true;
                         {
-                            var __args_99 = arguments;
+                            var __args_106 = arguments;
                             var layout_3 = new java.awt.FlowLayout();
                             _this = _super.call(this) || this;
                             if (_this.htmlCanvas === undefined) {
@@ -43368,7 +44521,7 @@ var javax;
                 else if (model === undefined) {
                     var __args = arguments;
                     {
-                        var __args_100 = arguments;
+                        var __args_107 = arguments;
                         var model_1 = new javax.swing.SpinnerNumberModel();
                         _this = _super.call(this) || this;
                         if (_this.model === undefined) {
@@ -43831,8 +44984,8 @@ var javax;
                     this.mnemonicIndex = -1;
                 }
                 else {
-                    var text_5 = this.getText();
-                    var textLength = (text_5 == null) ? 0 : text_5.length;
+                    var text_7 = this.getText();
+                    var textLength = (text_7 == null) ? 0 : text_7.length;
                     if (index < -1 || index >= textLength) {
                         throw new java.lang.IllegalArgumentException("index == " + index);
                     }
@@ -45240,7 +46393,7 @@ var javax;
                     var __args = arguments;
                     var horizontalAlignment_1 = __args[1];
                     {
-                        var __args_101 = arguments;
+                        var __args_108 = arguments;
                         var icon_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -45350,8 +46503,8 @@ var javax;
                     var image = __args[0];
                     var horizontalAlignment_2 = __args[1];
                     {
-                        var __args_102 = arguments;
-                        var text_6 = null;
+                        var __args_109 = arguments;
+                        var text_8 = null;
                         var icon_2 = image;
                         _this = _super.call(this) || this;
                         if (_this.mnemonic === undefined) {
@@ -45398,8 +46551,8 @@ var javax;
                         }
                         _this.mnemonic = ('\u0000').charCodeAt(0);
                         _this.mnemonicIndex = -1;
-                        if (text_6 == null) {
-                            text_6 = "";
+                        if (text_8 == null) {
+                            text_8 = "";
                         }
                         _this.defaultIcon = null;
                         _this.disabledIcon = null;
@@ -45409,7 +46562,7 @@ var javax;
                         _this.horizontalTextPosition = javax.swing.SwingConstants.TRAILING;
                         _this.iconTextGap = 4;
                         _this.labelFor = null;
-                        _this.setText(text_6);
+                        _this.setText(text_8);
                         _this.setIcon(icon_2);
                         _this.setHorizontalAlignment(horizontalAlignment_2);
                     }
@@ -45459,7 +46612,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_103 = arguments;
+                        var __args_110 = arguments;
                         var icon_3 = null;
                         var horizontalAlignment_3 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -45569,8 +46722,8 @@ var javax;
                     var __args = arguments;
                     var image = __args[0];
                     {
-                        var __args_104 = arguments;
-                        var text_7 = null;
+                        var __args_111 = arguments;
+                        var text_9 = null;
                         var icon_4 = image;
                         var horizontalAlignment_4 = javax.swing.SwingConstants.CENTER;
                         _this = _super.call(this) || this;
@@ -45618,8 +46771,8 @@ var javax;
                         }
                         _this.mnemonic = ('\u0000').charCodeAt(0);
                         _this.mnemonicIndex = -1;
-                        if (text_7 == null) {
-                            text_7 = "";
+                        if (text_9 == null) {
+                            text_9 = "";
                         }
                         _this.defaultIcon = null;
                         _this.disabledIcon = null;
@@ -45629,7 +46782,7 @@ var javax;
                         _this.horizontalTextPosition = javax.swing.SwingConstants.TRAILING;
                         _this.iconTextGap = 4;
                         _this.labelFor = null;
-                        _this.setText(text_7);
+                        _this.setText(text_9);
                         _this.setIcon(icon_4);
                         _this.setHorizontalAlignment(horizontalAlignment_4);
                     }
@@ -45679,8 +46832,8 @@ var javax;
                 else if (text === undefined && icon === undefined && horizontalAlignment === undefined) {
                     var __args = arguments;
                     {
-                        var __args_105 = arguments;
-                        var text_8 = "";
+                        var __args_112 = arguments;
+                        var text_10 = "";
                         var icon_5 = null;
                         var horizontalAlignment_5 = javax.swing.SwingConstants.LEADING;
                         _this = _super.call(this) || this;
@@ -45728,8 +46881,8 @@ var javax;
                         }
                         _this.mnemonic = ('\u0000').charCodeAt(0);
                         _this.mnemonicIndex = -1;
-                        if (text_8 == null) {
-                            text_8 = "";
+                        if (text_10 == null) {
+                            text_10 = "";
                         }
                         _this.defaultIcon = null;
                         _this.disabledIcon = null;
@@ -45739,7 +46892,7 @@ var javax;
                         _this.horizontalTextPosition = javax.swing.SwingConstants.TRAILING;
                         _this.iconTextGap = 4;
                         _this.labelFor = null;
-                        _this.setText(text_8);
+                        _this.setText(text_10);
                         _this.setIcon(icon_5);
                         _this.setHorizontalAlignment(horizontalAlignment_5);
                     }
@@ -45901,8 +47054,8 @@ var javax;
                     this.mnemonicIndex = -1;
                 }
                 else {
-                    var text_9 = this.getText();
-                    var textLength = (text_9 == null) ? 0 : text_9.length;
+                    var text_11 = this.getText();
+                    var textLength = (text_11 == null) ? 0 : text_11.length;
                     if (index < -1 || index >= textLength) {
                         throw new java.lang.IllegalArgumentException("index == " + index);
                     }
@@ -46135,8 +47288,8 @@ var javax;
                     else if (((source != null && source instanceof java.awt.Component) || source === null) && ((typeof id === 'number') || id === null) && ((typeof when === 'number') || when === null) && ((typeof modifiers === 'number') || modifiers === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof xAbs === 'number') || xAbs === null) && ((typeof yAbs === 'number') || yAbs === null) && ((typeof clickCount === 'number') || clickCount === null) && ((typeof popupTrigger === 'boolean') || popupTrigger === null) && ((typeof scrollType === 'number') || scrollType === null) && ((typeof scrollAmount === 'number') || scrollAmount === null) && ((typeof wheelRotation === 'number') || wheelRotation === null) && preciseWheelRotation === undefined) {
                         var __args = arguments;
                         {
-                            var __args_106 = arguments;
-                            var preciseWheelRotation_1 = __args_106[12];
+                            var __args_113 = arguments;
+                            var preciseWheelRotation_1 = __args_113[12];
                             _this = _super.call(this, source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, java.awt.event.MouseEvent.NOBUTTON) || this;
                             if (_this.scrollType === undefined) {
                                 _this.scrollType = 0;
@@ -46176,12 +47329,12 @@ var javax;
                         var scrollAmount_1 = __args[9];
                         var wheelRotation_1 = __args[10];
                         {
-                            var __args_107 = arguments;
+                            var __args_114 = arguments;
                             var xAbs_3 = 0;
                             var yAbs_3 = 0;
                             {
-                                var __args_108 = arguments;
-                                var preciseWheelRotation_2 = __args_108[12];
+                                var __args_115 = arguments;
+                                var preciseWheelRotation_2 = __args_115[12];
                                 _this = _super.call(this, source, id, when, modifiers, x, y, xAbs_3, yAbs_3, clickCount_3, popupTrigger_3, java.awt.event.MouseEvent.NOBUTTON) || this;
                                 if (_this.scrollType === undefined) {
                                     _this.scrollType = 0;
@@ -47364,7 +48517,7 @@ var javax;
                 else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && ((typeof title === 'string') || title === null) && modal === undefined) {
                     var __args = arguments;
                     {
-                        var __args_109 = arguments;
+                        var __args_116 = arguments;
                         var modal_4 = false;
                         _this = _super.call(this, owner, title, modal_4) || this;
                         if (_this.rootPane === undefined) {
@@ -47380,7 +48533,7 @@ var javax;
                     var __args = arguments;
                     var modal_5 = __args[1];
                     {
-                        var __args_110 = arguments;
+                        var __args_117 = arguments;
                         var title_4 = "";
                         _this = _super.call(this, owner, title_4, modal_5) || this;
                         if (_this.rootPane === undefined) {
@@ -47395,7 +48548,7 @@ var javax;
                 else if (((owner != null && owner instanceof java.awt.Frame) || owner === null) && title === undefined && modal === undefined) {
                     var __args = arguments;
                     {
-                        var __args_111 = arguments;
+                        var __args_118 = arguments;
                         var title_5 = "";
                         var modal_6 = false;
                         _this = _super.call(this, owner, title_5, modal_6) || this;
@@ -47485,11 +48638,11 @@ var javax;
                 }
                 else if (((typeof doc === 'string') || doc === null) && ((typeof text === 'number') || text === null) && ((typeof rows === 'number') || rows === null) && columns === undefined) {
                     var __args = arguments;
-                    var text_10 = __args[0];
-                    var rows_4 = __args[1];
-                    var columns_5 = __args[2];
+                    var text_12 = __args[0];
+                    var rows_5 = __args[1];
+                    var columns_7 = __args[2];
                     {
-                        var __args_112 = arguments;
+                        var __args_119 = arguments;
                         var doc_1 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionListener === undefined) {
@@ -47513,141 +48666,13 @@ var javax;
                         if (_this.word === undefined) {
                             _this.word = false;
                         }
-                        _this.rows = rows_4;
-                        _this.columns = columns_5;
-                        if (text_10 != null) {
-                            _this.setText(text_10);
-                        }
-                        if (rows_4 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_4);
-                        }
-                        if (columns_5 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_5);
-                        }
-                    }
-                    if (_this.actionListener === undefined) {
-                        _this.actionListener = null;
-                    }
-                    if (_this.rows === undefined) {
-                        _this.rows = 0;
-                    }
-                    if (_this.columns === undefined) {
-                        _this.columns = 0;
-                    }
-                    if (_this.columnWidth === undefined) {
-                        _this.columnWidth = 0;
-                    }
-                    if (_this.rowHeight === undefined) {
-                        _this.rowHeight = 0;
-                    }
-                    if (_this.wrap === undefined) {
-                        _this.wrap = false;
-                    }
-                    if (_this.word === undefined) {
-                        _this.word = false;
-                    }
-                }
-                else if (((typeof doc === 'number') || doc === null) && ((typeof text === 'number') || text === null) && rows === undefined && columns === undefined) {
-                    var __args = arguments;
-                    var rows_5 = __args[0];
-                    var columns_6 = __args[1];
-                    {
-                        var __args_113 = arguments;
-                        var doc_2 = null;
-                        var text_11 = null;
-                        _this = _super.call(this) || this;
-                        if (_this.actionListener === undefined) {
-                            _this.actionListener = null;
-                        }
-                        if (_this.rows === undefined) {
-                            _this.rows = 0;
-                        }
-                        if (_this.columns === undefined) {
-                            _this.columns = 0;
-                        }
-                        if (_this.columnWidth === undefined) {
-                            _this.columnWidth = 0;
-                        }
-                        if (_this.rowHeight === undefined) {
-                            _this.rowHeight = 0;
-                        }
-                        if (_this.wrap === undefined) {
-                            _this.wrap = false;
-                        }
-                        if (_this.word === undefined) {
-                            _this.word = false;
-                        }
                         _this.rows = rows_5;
-                        _this.columns = columns_6;
-                        if (text_11 != null) {
-                            _this.setText(text_11);
-                        }
-                        if (rows_5 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_5);
-                        }
-                        if (columns_6 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_6);
-                        }
-                    }
-                    if (_this.actionListener === undefined) {
-                        _this.actionListener = null;
-                    }
-                    if (_this.rows === undefined) {
-                        _this.rows = 0;
-                    }
-                    if (_this.columns === undefined) {
-                        _this.columns = 0;
-                    }
-                    if (_this.columnWidth === undefined) {
-                        _this.columnWidth = 0;
-                    }
-                    if (_this.rowHeight === undefined) {
-                        _this.rowHeight = 0;
-                    }
-                    if (_this.wrap === undefined) {
-                        _this.wrap = false;
-                    }
-                    if (_this.word === undefined) {
-                        _this.word = false;
-                    }
-                }
-                else if (((typeof doc === 'string') || doc === null) && text === undefined && rows === undefined && columns === undefined) {
-                    var __args = arguments;
-                    var text_12 = __args[0];
-                    {
-                        var __args_114 = arguments;
-                        var doc_3 = null;
-                        var rows_6 = 0;
-                        var columns_7 = 0;
-                        _this = _super.call(this) || this;
-                        if (_this.actionListener === undefined) {
-                            _this.actionListener = null;
-                        }
-                        if (_this.rows === undefined) {
-                            _this.rows = 0;
-                        }
-                        if (_this.columns === undefined) {
-                            _this.columns = 0;
-                        }
-                        if (_this.columnWidth === undefined) {
-                            _this.columnWidth = 0;
-                        }
-                        if (_this.rowHeight === undefined) {
-                            _this.rowHeight = 0;
-                        }
-                        if (_this.wrap === undefined) {
-                            _this.wrap = false;
-                        }
-                        if (_this.word === undefined) {
-                            _this.word = false;
-                        }
-                        _this.rows = rows_6;
                         _this.columns = columns_7;
                         if (text_12 != null) {
                             _this.setText(text_12);
                         }
-                        if (rows_6 < 0) {
-                            throw new java.lang.IllegalArgumentException("rows: " + rows_6);
+                        if (rows_5 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_5);
                         }
                         if (columns_7 < 0) {
                             throw new java.lang.IllegalArgumentException("columns: " + columns_7);
@@ -47675,14 +48700,78 @@ var javax;
                         _this.word = false;
                     }
                 }
-                else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
+                else if (((typeof doc === 'number') || doc === null) && ((typeof text === 'number') || text === null) && rows === undefined && columns === undefined) {
                     var __args = arguments;
+                    var rows_6 = __args[0];
+                    var columns_8 = __args[1];
                     {
-                        var __args_115 = arguments;
-                        var doc_4 = null;
+                        var __args_120 = arguments;
+                        var doc_2 = null;
                         var text_13 = null;
+                        _this = _super.call(this) || this;
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
+                        if (_this.rows === undefined) {
+                            _this.rows = 0;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.columnWidth === undefined) {
+                            _this.columnWidth = 0;
+                        }
+                        if (_this.rowHeight === undefined) {
+                            _this.rowHeight = 0;
+                        }
+                        if (_this.wrap === undefined) {
+                            _this.wrap = false;
+                        }
+                        if (_this.word === undefined) {
+                            _this.word = false;
+                        }
+                        _this.rows = rows_6;
+                        _this.columns = columns_8;
+                        if (text_13 != null) {
+                            _this.setText(text_13);
+                        }
+                        if (rows_6 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_6);
+                        }
+                        if (columns_8 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_8);
+                        }
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                    if (_this.rows === undefined) {
+                        _this.rows = 0;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
+                    if (_this.columnWidth === undefined) {
+                        _this.columnWidth = 0;
+                    }
+                    if (_this.rowHeight === undefined) {
+                        _this.rowHeight = 0;
+                    }
+                    if (_this.wrap === undefined) {
+                        _this.wrap = false;
+                    }
+                    if (_this.word === undefined) {
+                        _this.word = false;
+                    }
+                }
+                else if (((typeof doc === 'string') || doc === null) && text === undefined && rows === undefined && columns === undefined) {
+                    var __args = arguments;
+                    var text_14 = __args[0];
+                    {
+                        var __args_121 = arguments;
+                        var doc_3 = null;
                         var rows_7 = 0;
-                        var columns_8 = 0;
+                        var columns_9 = 0;
                         _this = _super.call(this) || this;
                         if (_this.actionListener === undefined) {
                             _this.actionListener = null;
@@ -47706,15 +48795,79 @@ var javax;
                             _this.word = false;
                         }
                         _this.rows = rows_7;
-                        _this.columns = columns_8;
-                        if (text_13 != null) {
-                            _this.setText(text_13);
+                        _this.columns = columns_9;
+                        if (text_14 != null) {
+                            _this.setText(text_14);
                         }
                         if (rows_7 < 0) {
                             throw new java.lang.IllegalArgumentException("rows: " + rows_7);
                         }
-                        if (columns_8 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns: " + columns_8);
+                        if (columns_9 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_9);
+                        }
+                    }
+                    if (_this.actionListener === undefined) {
+                        _this.actionListener = null;
+                    }
+                    if (_this.rows === undefined) {
+                        _this.rows = 0;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
+                    if (_this.columnWidth === undefined) {
+                        _this.columnWidth = 0;
+                    }
+                    if (_this.rowHeight === undefined) {
+                        _this.rowHeight = 0;
+                    }
+                    if (_this.wrap === undefined) {
+                        _this.wrap = false;
+                    }
+                    if (_this.word === undefined) {
+                        _this.word = false;
+                    }
+                }
+                else if (doc === undefined && text === undefined && rows === undefined && columns === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_122 = arguments;
+                        var doc_4 = null;
+                        var text_15 = null;
+                        var rows_8 = 0;
+                        var columns_10 = 0;
+                        _this = _super.call(this) || this;
+                        if (_this.actionListener === undefined) {
+                            _this.actionListener = null;
+                        }
+                        if (_this.rows === undefined) {
+                            _this.rows = 0;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.columnWidth === undefined) {
+                            _this.columnWidth = 0;
+                        }
+                        if (_this.rowHeight === undefined) {
+                            _this.rowHeight = 0;
+                        }
+                        if (_this.wrap === undefined) {
+                            _this.wrap = false;
+                        }
+                        if (_this.word === undefined) {
+                            _this.word = false;
+                        }
+                        _this.rows = rows_8;
+                        _this.columns = columns_10;
+                        if (text_15 != null) {
+                            _this.setText(text_15);
+                        }
+                        if (rows_8 < 0) {
+                            throw new java.lang.IllegalArgumentException("rows: " + rows_8);
+                        }
+                        if (columns_10 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns: " + columns_10);
                         }
                     }
                     if (_this.actionListener === undefined) {
@@ -47953,109 +49106,11 @@ var javax;
                 }
                 else if (((typeof doc === 'string') || doc === null) && ((typeof text === 'number') || text === null) && columns === undefined) {
                     var __args = arguments;
-                    var text_14 = __args[0];
-                    var columns_9 = __args[1];
+                    var text_16 = __args[0];
+                    var columns_11 = __args[1];
                     {
-                        var __args_116 = arguments;
+                        var __args_123 = arguments;
                         var doc_5 = null;
-                        _this = _super.call(this) || this;
-                        if (_this.action === undefined) {
-                            _this.action = null;
-                        }
-                        if (_this.actionPropertyChangeListener === undefined) {
-                            _this.actionPropertyChangeListener = null;
-                        }
-                        if (_this.columns === undefined) {
-                            _this.columns = 0;
-                        }
-                        if (_this.columnWidth === undefined) {
-                            _this.columnWidth = 0;
-                        }
-                        if (_this.command === undefined) {
-                            _this.command = null;
-                        }
-                        _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_9 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns less than zero.");
-                        }
-                        _this.columns = columns_9;
-                        if (text_14 != null) {
-                            _this.setText(text_14);
-                        }
-                    }
-                    if (_this.action === undefined) {
-                        _this.action = null;
-                    }
-                    if (_this.actionPropertyChangeListener === undefined) {
-                        _this.actionPropertyChangeListener = null;
-                    }
-                    if (_this.columns === undefined) {
-                        _this.columns = 0;
-                    }
-                    if (_this.columnWidth === undefined) {
-                        _this.columnWidth = 0;
-                    }
-                    if (_this.command === undefined) {
-                        _this.command = null;
-                    }
-                    _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                }
-                else if (((typeof doc === 'string') || doc === null) && text === undefined && columns === undefined) {
-                    var __args = arguments;
-                    var text_15 = __args[0];
-                    {
-                        var __args_117 = arguments;
-                        var doc_6 = null;
-                        var columns_10 = 0;
-                        _this = _super.call(this) || this;
-                        if (_this.action === undefined) {
-                            _this.action = null;
-                        }
-                        if (_this.actionPropertyChangeListener === undefined) {
-                            _this.actionPropertyChangeListener = null;
-                        }
-                        if (_this.columns === undefined) {
-                            _this.columns = 0;
-                        }
-                        if (_this.columnWidth === undefined) {
-                            _this.columnWidth = 0;
-                        }
-                        if (_this.command === undefined) {
-                            _this.command = null;
-                        }
-                        _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                        if (columns_10 < 0) {
-                            throw new java.lang.IllegalArgumentException("columns less than zero.");
-                        }
-                        _this.columns = columns_10;
-                        if (text_15 != null) {
-                            _this.setText(text_15);
-                        }
-                    }
-                    if (_this.action === undefined) {
-                        _this.action = null;
-                    }
-                    if (_this.actionPropertyChangeListener === undefined) {
-                        _this.actionPropertyChangeListener = null;
-                    }
-                    if (_this.columns === undefined) {
-                        _this.columns = 0;
-                    }
-                    if (_this.columnWidth === undefined) {
-                        _this.columnWidth = 0;
-                    }
-                    if (_this.command === undefined) {
-                        _this.command = null;
-                    }
-                    _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
-                }
-                else if (((typeof doc === 'number') || doc === null) && text === undefined && columns === undefined) {
-                    var __args = arguments;
-                    var columns_11 = __args[0];
-                    {
-                        var __args_118 = arguments;
-                        var doc_7 = null;
-                        var text_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
                             _this.action = null;
@@ -48098,12 +49153,12 @@ var javax;
                     }
                     _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
                 }
-                else if (doc === undefined && text === undefined && columns === undefined) {
+                else if (((typeof doc === 'string') || doc === null) && text === undefined && columns === undefined) {
                     var __args = arguments;
+                    var text_17 = __args[0];
                     {
-                        var __args_119 = arguments;
-                        var doc_8 = null;
-                        var text_17 = null;
+                        var __args_124 = arguments;
+                        var doc_6 = null;
                         var columns_12 = 0;
                         _this = _super.call(this) || this;
                         if (_this.action === undefined) {
@@ -48128,6 +49183,104 @@ var javax;
                         _this.columns = columns_12;
                         if (text_17 != null) {
                             _this.setText(text_17);
+                        }
+                    }
+                    if (_this.action === undefined) {
+                        _this.action = null;
+                    }
+                    if (_this.actionPropertyChangeListener === undefined) {
+                        _this.actionPropertyChangeListener = null;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
+                    if (_this.columnWidth === undefined) {
+                        _this.columnWidth = 0;
+                    }
+                    if (_this.command === undefined) {
+                        _this.command = null;
+                    }
+                    _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
+                }
+                else if (((typeof doc === 'number') || doc === null) && text === undefined && columns === undefined) {
+                    var __args = arguments;
+                    var columns_13 = __args[0];
+                    {
+                        var __args_125 = arguments;
+                        var doc_7 = null;
+                        var text_18 = null;
+                        _this = _super.call(this) || this;
+                        if (_this.action === undefined) {
+                            _this.action = null;
+                        }
+                        if (_this.actionPropertyChangeListener === undefined) {
+                            _this.actionPropertyChangeListener = null;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.columnWidth === undefined) {
+                            _this.columnWidth = 0;
+                        }
+                        if (_this.command === undefined) {
+                            _this.command = null;
+                        }
+                        _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
+                        if (columns_13 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns less than zero.");
+                        }
+                        _this.columns = columns_13;
+                        if (text_18 != null) {
+                            _this.setText(text_18);
+                        }
+                    }
+                    if (_this.action === undefined) {
+                        _this.action = null;
+                    }
+                    if (_this.actionPropertyChangeListener === undefined) {
+                        _this.actionPropertyChangeListener = null;
+                    }
+                    if (_this.columns === undefined) {
+                        _this.columns = 0;
+                    }
+                    if (_this.columnWidth === undefined) {
+                        _this.columnWidth = 0;
+                    }
+                    if (_this.command === undefined) {
+                        _this.command = null;
+                    }
+                    _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
+                }
+                else if (doc === undefined && text === undefined && columns === undefined) {
+                    var __args = arguments;
+                    {
+                        var __args_126 = arguments;
+                        var doc_8 = null;
+                        var text_19 = null;
+                        var columns_14 = 0;
+                        _this = _super.call(this) || this;
+                        if (_this.action === undefined) {
+                            _this.action = null;
+                        }
+                        if (_this.actionPropertyChangeListener === undefined) {
+                            _this.actionPropertyChangeListener = null;
+                        }
+                        if (_this.columns === undefined) {
+                            _this.columns = 0;
+                        }
+                        if (_this.columnWidth === undefined) {
+                            _this.columnWidth = 0;
+                        }
+                        if (_this.command === undefined) {
+                            _this.command = null;
+                        }
+                        _this.horizontalAlignment = javax.swing.SwingConstants.LEADING;
+                        if (columns_14 < 0) {
+                            throw new java.lang.IllegalArgumentException("columns less than zero.");
+                        }
+                        _this.columns = columns_14;
+                        if (text_19 != null) {
+                            _this.setText(text_19);
                         }
                     }
                     if (_this.action === undefined) {
@@ -48580,7 +49733,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && ((icon != null && (icon.constructor != null && icon.constructor["__interfaces"] != null && icon.constructor["__interfaces"].indexOf("javax.swing.Icon") >= 0)) || icon === null) && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_120 = arguments;
+                        var __args_127 = arguments;
                         var selected_1 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -48595,13 +49748,13 @@ var javax;
                     var icon_6 = __args[0];
                     var selected_2 = __args[1];
                     {
-                        var __args_121 = arguments;
-                        var text_18 = null;
+                        var __args_128 = arguments;
+                        var text_20 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
                         _this.setModel(new JToggleButton.ToggleButtonModel());
                         _this.model.setSelected(selected_2);
-                        _this.init(text_18, icon_6);
+                        _this.init(text_20, icon_6);
                     }
                     _this.buttonCreated = false;
                 }
@@ -48609,7 +49762,7 @@ var javax;
                     var __args = arguments;
                     var selected_3 = __args[1];
                     {
-                        var __args_122 = arguments;
+                        var __args_129 = arguments;
                         var icon_7 = null;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
@@ -48623,21 +49776,21 @@ var javax;
                     var __args = arguments;
                     var icon_8 = __args[0];
                     {
-                        var __args_123 = arguments;
-                        var text_19 = null;
+                        var __args_130 = arguments;
+                        var text_21 = null;
                         var selected_4 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
                         _this.setModel(new JToggleButton.ToggleButtonModel());
                         _this.model.setSelected(selected_4);
-                        _this.init(text_19, icon_8);
+                        _this.init(text_21, icon_8);
                     }
                     _this.buttonCreated = false;
                 }
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_124 = arguments;
+                        var __args_131 = arguments;
                         var icon_9 = null;
                         var selected_5 = false;
                         _this = _super.call(this) || this;
@@ -48652,17 +49805,17 @@ var javax;
                     var __args = arguments;
                     var a_5 = __args[0];
                     {
-                        var __args_125 = arguments;
+                        var __args_132 = arguments;
                         {
-                            var __args_126 = arguments;
-                            var text_20 = null;
+                            var __args_133 = arguments;
+                            var text_22 = null;
                             var icon_10 = null;
                             var selected_6 = false;
                             _this = _super.call(this) || this;
                             _this.buttonCreated = false;
                             _this.setModel(new JToggleButton.ToggleButtonModel());
                             _this.model.setSelected(selected_6);
-                            _this.init(text_20, icon_10);
+                            _this.init(text_22, icon_10);
                         }
                         _this.buttonCreated = false;
                     }
@@ -48674,15 +49827,15 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_127 = arguments;
-                        var text_21 = null;
+                        var __args_134 = arguments;
+                        var text_23 = null;
                         var icon_11 = null;
                         var selected_7 = false;
                         _this = _super.call(this) || this;
                         _this.buttonCreated = false;
                         _this.setModel(new JToggleButton.ToggleButtonModel());
                         _this.model.setSelected(selected_7);
-                        _this.init(text_21, icon_11);
+                        _this.init(text_23, icon_11);
                     }
                     _this.buttonCreated = false;
                 }
@@ -48827,19 +49980,19 @@ var javax;
                     var __args = arguments;
                     var icon_12 = __args[0];
                     {
-                        var __args_128 = arguments;
-                        var text_22 = null;
+                        var __args_135 = arguments;
+                        var text_24 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
                         _this.setModel(new javax.swing.DefaultButtonModel());
-                        _this.init(text_22, icon_12);
+                        _this.init(text_24, icon_12);
                     }
                     _this.isMouseDragged = false;
                 }
                 else if (((typeof text === 'string') || text === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_129 = arguments;
+                        var __args_136 = arguments;
                         var icon_13 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
@@ -48852,15 +50005,15 @@ var javax;
                     var __args = arguments;
                     var a_6 = __args[0];
                     {
-                        var __args_130 = arguments;
+                        var __args_137 = arguments;
                         {
-                            var __args_131 = arguments;
-                            var text_23 = null;
+                            var __args_138 = arguments;
+                            var text_25 = null;
                             var icon_14 = null;
                             _this = _super.call(this) || this;
                             _this.isMouseDragged = false;
                             _this.setModel(new javax.swing.DefaultButtonModel());
-                            _this.init(text_23, icon_14);
+                            _this.init(text_25, icon_14);
                         }
                         _this.isMouseDragged = false;
                     }
@@ -48872,13 +50025,13 @@ var javax;
                 else if (text === undefined && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_132 = arguments;
-                        var text_24 = null;
+                        var __args_139 = arguments;
+                        var text_26 = null;
                         var icon_15 = null;
                         _this = _super.call(this) || this;
                         _this.isMouseDragged = false;
                         _this.setModel(new javax.swing.DefaultButtonModel());
-                        _this.init(text_24, icon_15);
+                        _this.init(text_26, icon_15);
                     }
                     _this.isMouseDragged = false;
                 }
@@ -49201,7 +50354,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && icon === undefined) {
                     var __args = arguments;
                     {
-                        var __args_133 = arguments;
+                        var __args_140 = arguments;
                         var icon_16 = null;
                         _this = _super.call(this) || this;
                         if (_this.actionCommand === undefined) {
@@ -49429,20 +50582,59 @@ var javax;
     (function (swing) {
         var JFormattedTextField = /** @class */ (function (_super) {
             __extends(JFormattedTextField, _super);
-            function JFormattedTextField(format) {
+            function JFormattedTextField(value) {
                 var _this = this;
-                if (((format != null) || format === null)) {
+                if (((value != null) || value === null)) {
                     var __args = arguments;
-                    _this = _super.call(this) || this;
+                    {
+                        var __args_141 = arguments;
+                        _this = _super.call(this) || this;
+                        if (_this.format === undefined) {
+                            _this.format = null;
+                        }
+                    }
+                    if (_this.format === undefined) {
+                        _this.format = null;
+                    }
+                    (function () {
+                        _this.setValue(value);
+                    })();
                 }
-                else if (format === undefined) {
+                else if (value === undefined) {
                     var __args = arguments;
                     _this = _super.call(this) || this;
+                    if (_this.format === undefined) {
+                        _this.format = null;
+                    }
                 }
                 else
                     throw new Error('invalid overload');
                 return _this;
             }
+            JFormattedTextField.prototype.setValue = function (value) {
+                if (this.format == null) {
+                    this.setText(value == null ? "" : value.toString());
+                }
+                else {
+                    try {
+                        this.setText(this.format.format(value));
+                    }
+                    catch (e) {
+                    }
+                }
+            };
+            JFormattedTextField.prototype.getValue = function () {
+                var text = this.getText();
+                if (this.format == null) {
+                    return text;
+                }
+                try {
+                    return this.format.parseObject(text);
+                }
+                catch (e) {
+                    return this.getText();
+                }
+            };
             return JFormattedTextField;
         }(javax.swing.JTextField));
         swing.JFormattedTextField = JFormattedTextField;
@@ -49485,7 +50677,7 @@ var javax;
                     var __args = arguments;
                     var selected_8 = __args[1];
                     {
-                        var __args_134 = arguments;
+                        var __args_142 = arguments;
                         var icon_17 = null;
                         _this = _super.call(this, text, icon_17, selected_8) || this;
                         if (_this.name === undefined) {
@@ -49514,9 +50706,9 @@ var javax;
                     var icon_18 = __args[0];
                     var selected_9 = __args[1];
                     {
-                        var __args_135 = arguments;
-                        var text_25 = null;
-                        _this = _super.call(this, text_25, icon_18, selected_9) || this;
+                        var __args_143 = arguments;
+                        var text_27 = null;
+                        _this = _super.call(this, text_27, icon_18, selected_9) || this;
                         if (_this.name === undefined) {
                             _this.name = null;
                         }
@@ -49541,7 +50733,7 @@ var javax;
                 else if (((typeof text === 'string') || text === null) && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_136 = arguments;
+                        var __args_144 = arguments;
                         var icon_19 = null;
                         var selected_10 = false;
                         _this = _super.call(this, text, icon_19, selected_10) || this;
@@ -49570,10 +50762,10 @@ var javax;
                     var __args = arguments;
                     var icon_20 = __args[0];
                     {
-                        var __args_137 = arguments;
-                        var text_26 = null;
+                        var __args_145 = arguments;
+                        var text_28 = null;
                         var selected_11 = false;
-                        _this = _super.call(this, text_26, icon_20, selected_11) || this;
+                        _this = _super.call(this, text_28, icon_20, selected_11) || this;
                         if (_this.name === undefined) {
                             _this.name = null;
                         }
@@ -49598,11 +50790,11 @@ var javax;
                 else if (text === undefined && icon === undefined && selected === undefined) {
                     var __args = arguments;
                     {
-                        var __args_138 = arguments;
-                        var text_27 = null;
+                        var __args_146 = arguments;
+                        var text_29 = null;
                         var icon_21 = null;
                         var selected_12 = false;
-                        _this = _super.call(this, text_27, icon_21, selected_12) || this;
+                        _this = _super.call(this, text_29, icon_21, selected_12) || this;
                         if (_this.name === undefined) {
                             _this.name = null;
                         }
@@ -49724,7 +50916,7 @@ var javax;
                 else if (((typeof label === 'string') || label === null) && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_139 = arguments;
+                        var __args_147 = arguments;
                         var state_5 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -49765,8 +50957,8 @@ var javax;
                 else if (label === undefined && state === undefined) {
                     var __args = arguments;
                     {
-                        var __args_140 = arguments;
-                        var label_2 = "";
+                        var __args_148 = arguments;
+                        var label_5 = "";
                         var state_6 = false;
                         _this = _super.call(this) || this;
                         if (_this.label === undefined) {
@@ -49784,7 +50976,7 @@ var javax;
                         if (_this.htmlLabel === undefined) {
                             _this.htmlLabel = null;
                         }
-                        _this.label = label_2;
+                        _this.label = label_5;
                         _this.state = state_6;
                         _this.itemListeners = (new Array());
                     }
@@ -49952,7 +51144,7 @@ var javax;
                 if (((typeof s === 'string') || s === null) && ((typeof b === 'boolean') || b === null)) {
                     var __args = arguments;
                     {
-                        var __args_141 = arguments;
+                        var __args_149 = arguments;
                         _this = _super.call(this, s) || this;
                         if (_this.popupMenu === undefined) {
                             _this.popupMenu = null;
@@ -49988,9 +51180,9 @@ var javax;
                     var __args = arguments;
                     var a_7 = __args[0];
                     {
-                        var __args_142 = arguments;
+                        var __args_150 = arguments;
                         {
-                            var __args_143 = arguments;
+                            var __args_151 = arguments;
                             var s_1 = "";
                             _this = _super.call(this, s_1) || this;
                             if (_this.popupMenu === undefined) {
@@ -50026,7 +51218,7 @@ var javax;
                 else if (s === undefined && b === undefined) {
                     var __args = arguments;
                     {
-                        var __args_144 = arguments;
+                        var __args_152 = arguments;
                         var s_2 = "";
                         _this = _super.call(this, s_2) || this;
                         if (_this.popupMenu === undefined) {
@@ -50777,8 +51969,8 @@ var javax;
                 else if (label === undefined) {
                     var __args = arguments;
                     {
-                        var __args_145 = arguments;
-                        var label_3 = null;
+                        var __args_153 = arguments;
+                        var label_6 = null;
                         _this = _super.call(this) || this;
                         if (_this.invoker === undefined) {
                             _this.invoker = null;
@@ -50798,7 +51990,7 @@ var javax;
                         _this.label = null;
                         _this.paintBorder = true;
                         _this.margin = null;
-                        _this.label = label_3;
+                        _this.label = label_6;
                         _this.setSelectionModel(new javax.swing.DefaultSingleSelectionModel());
                     }
                     if (_this.invoker === undefined) {
@@ -51668,6 +52860,7 @@ java.awt.Color.LIGHT_GRAY_$LI$();
 java.awt.Color.lightGray_$LI$();
 java.awt.Color.WHITE_$LI$();
 java.awt.Color.white_$LI$();
+java.awt.image.ColorModel.aRGBmodel_$LI$();
 java.awt.geom.EllipseIterator.ctrlpts_$LI$();
 java.awt.geom.EllipseIterator.ncv_$LI$();
 java.awt.geom.EllipseIterator.pcv_$LI$();
